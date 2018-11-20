@@ -4,9 +4,11 @@
   "description": "A voting tool according to the systemic consensys principles",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run mongodb\" \"npm run server\"",
+    "client-install": "npm install --prefix client",
+    "start": "concurrently \"npm run mongodb\" \"npm run server\" \"npm run client\"",
     "server": "nodemon -w server.js",
-    "mongodb": "mongod --dbpath data"
+    "mongodb": "mongod --dbpath data",
+    "client": "npm start --prefix client"
   },
   "repository": {
     "type": "git",
