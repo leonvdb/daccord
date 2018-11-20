@@ -1,0 +1,30 @@
+{
+  "name": "systemic-consensys",
+  "version": "1.0.0",
+  "description": "A voting tool according to the systemic consensys principles",
+  "main": "server.js",
+  "scripts": {
+    "start": "concurrently \"npm run mongodb\" \"npm run server\"",
+    "server": "nodemon -w server.js",
+    "mongodb": "mongod --dbpath data"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonvdb/systemic-consensys.git"
+  },
+  "author": "Marek Meyer & Leon von dem Berge",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/leonvdb/systemic-consensys/issues"
+  },
+  "homepage": "https://github.com/leonvdb/systemic-consensys#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.3.12"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.6"
+  }
+}
