@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 //Import API Routes
 const testRoute = require('./routes/api/test'); //To be deleted after review
-const options = require('./routes/api/options');
+const polls = require('./routes/api/polls');
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.get('/', (req, res) => res.send("Test"));
 
 //Use Routes
 app.use('/api/test', testRoute); //To be deleted after review
-app.use('/api/options', options);
+app.use('/api/polls', polls);
 
 // Setting port for server
 const port = 5000;
