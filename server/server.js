@@ -12,6 +12,11 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+//Configure mongoose
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+
 //Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/systemic-consensys')
     .then(() => console.log("MongoDB connected"))
