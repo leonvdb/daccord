@@ -18,11 +18,11 @@ router.post('/', (req, res) => {
         .catch(err => res.json(err));
 });
 
-//@route    GET api/polls
+//@route    GET api/polls/:poll_id
 //@desc     GET poll by id
 //@access   Private // TODO: Make route private
-router.get('/', (req, res) => {
-    Poll.findById(req.body.id)
+router.get('/:poll_id', (req, res) => {
+    Poll.findById(req.params.poll_id)
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll)
@@ -31,12 +31,12 @@ router.get('/', (req, res) => {
 });
 
 
-//@route    POST api/polls/options
+//@route    POST api/polls/:poll_id/options
 //@desc     Create // TODO : Include Edit to this request
 //@access   Private // TODO: Make route private
-router.post('/options', (req, res) => {
+router.post('/:poll_id/options', (req, res) => {
 
-    Poll.findById(req.body.id)
+    Poll.findById(req.params.poll_id)
         .then(poll => {
             const newOpt = {
                 title: req.body.title,
