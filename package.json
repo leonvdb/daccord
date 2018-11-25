@@ -2,13 +2,16 @@
   "name": "systemic-consensys",
   "version": "1.0.0",
   "description": "A voting tool according to the systemic consensys principles",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "concurrently \"npm run mongodb\" \"npm run server\" \"npm run client\"",
-    "server": "nodemon -w server.js",
-    "mongodb": "mongod --dbpath data",
-    "client": "npm start --prefix client"
+    "server": "nodemon -w server/server.js",
+    "mongodb": "mongod --dbpath data/db",
+    "client": "react-scripts start",
+    "build-client": "react-scripts build",
+    "test-client": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -24,10 +27,23 @@
     "body-parse": "^0.1.0",
     "express": "^4.16.4",
     "mongodb": "^3.1.10",
-    "mongoose": "^5.3.12"
+    "mongoose": "^5.3.12",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts": "2.1.1"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
     "nodemon": "^1.18.6"
-  }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "proxy": "http://localhost:5000"
 }

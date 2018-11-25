@@ -1,6 +1,18 @@
 
 
 
+API Routes: 
+
+poll/create
+poll/edit
+poll/delete
+
+
+option/vote
+option/edit
+option/delete
+option/create
+
 
 Resources: 
 
