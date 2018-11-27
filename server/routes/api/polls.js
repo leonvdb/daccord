@@ -1,21 +1,46 @@
 const express = require('express');
 const router = express.Router();
 
-//Load Option Model
+//Load Models
 const Poll = require('../../models/Poll');
+const User = require('../../models/User');
 
 //@route    POST api/polls
-//@desc     Create // TODO : Include Edit to this request
-//@access   Private // TODO: Make route private
+//@desc     Creates new poll. If Email-address unknown creates new User in database.
+//@access   Public
 router.post('/', (req, res) => {
-    const newPoll = new Poll({
-        title: req.body.title
-    });
 
-    newPoll
-        .save()
-        .then(poll => res.json(poll))
-        .catch(err => res.json(err));
+    // Check if email corresponds to User in DB
+    User.findOne({ email: req.body.email }).then(user => {
+        if (user) {
+            // Create new poll with user.id
+            createNewPoll(user.id);
+        } else {
+            //No corresponding user - Create new User
+            const newUser = new User({
+                email: req.body.email
+            });
+
+            //Save new User and create new poll with user.id
+            newUser
+                .save()
+                .then(user => createNewPoll(user.id))
+        }
+    })
+
+    function createNewPoll(userId) {
+
+        const newPoll = new Poll({
+            title: req.body.title,
+            creator: userId
+        });
+
+        //Save and return new poll
+        newPoll
+            .save()
+            .then(poll => res.json(poll))
+            .catch(err => res.json(err));
+    }
 });
 
 //@route    GET api/polls/:poll_id
