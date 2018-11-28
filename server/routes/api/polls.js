@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
             // Create new poll with user.id
-            createNewPoll(user.id);
+            createNewPoll(user);
         } else {
             //No corresponding user - Create new User
             const newUser = new User({
@@ -24,21 +24,26 @@ router.post('/', (req, res) => {
             //Save new User and create new poll with user.id
             newUser
                 .save()
-                .then(user => createNewPoll(user.id))
+                .then(user => createNewPoll(user))
         }
     })
 
-    function createNewPoll(userId) {
+    function createNewPoll(user) {
 
         const newPoll = new Poll({
             title: req.body.title,
-            creator: userId
+            creator: user.id
         });
 
-        //Save and return new poll
+        //Save new poll
         newPoll
             .save()
-            .then(poll => res.json(poll))
+            .then(poll => {
+                //add poll to user.polls
+                user.polls.push(poll)
+                //Save user and return poll to response object
+                user.save().then(() => res.json(poll))
+            })
             .catch(err => res.json(err));
     }
 });
