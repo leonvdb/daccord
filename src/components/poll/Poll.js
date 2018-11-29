@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Vote from './poll/Vote';
+import Vote from './Vote';
 
 class Poll extends Component {
     render() {

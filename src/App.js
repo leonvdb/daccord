@@ -4,7 +4,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Landing from './components/Landing';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import Poll from './components/Poll';
+import Poll from './components/poll/Poll';
+import CreatePoll from './components/CreatePoll';
 
 import './App.css';
 
@@ -16,6 +17,7 @@ class App extends Component {
           <Header />
           <Route exact path="/" component={Landing} />
           <Route exact path="/poll" component={Poll} />
+          <Route exact path="/create" component={CreatePoll} />
           <Footer />
         </div>
       </BrowserRouter>
