@@ -1,9 +1,13 @@
+WARNING!
+When using Google Chrome, use following plugin, as by default making API requests in Google Chrome is not possible.
 
-DONE:
--When someone wants to create a poll, check if email already in users.
-    If not in users create new unregistered user (only information is email) and retrieve user.id
-    Else if already in users simply retrieve user.id
--Add new poll to db with 'creator' referencing the user by id
+https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en
+
+
+CURRENT STATUS: 
+Can view post on http://localhost:3000/poll/:poll_id
+All other API requests (including for poll creation) still need to be made manually (i.e. with postman)
+
 
 Auth-TODO:
 -Create JWT for accessing Poll with moderator rights
