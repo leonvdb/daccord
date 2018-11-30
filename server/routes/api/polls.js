@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const uuid4 = require('uuid4');
-const base64 = require('js-base64').Base64;
 
 //Load Models
 const Poll = require('../../models/Poll');
@@ -32,7 +31,10 @@ router.post('/', (req, res) => {
 
     function createNewPoll(user) {
 
-        const ref_id = base64.encode((uuid4().replace(/-/g, '')));
+        const clean_uuid = (uuid4().replace(/-/g, ''))
+        const uuid_b64 = Buffer.from(clean_uuid, 'hex').toString('base64');
+        //remove base64 padding
+        const ref_id = uuid_b64.replace(/=/g, '');
 
         const newPoll = new Poll({
             title: req.body.title,
