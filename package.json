@@ -25,12 +25,14 @@
   "homepage": "https://github.com/leonvdb/systemic-consensys#readme",
   "dependencies": {
     "body-parse": "^0.1.0",
+    "bs58": "^4.0.1",
     "express": "^4.16.4",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.12",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "uuid4": "^1.1.4"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
