@@ -11,7 +11,7 @@ class Vote extends Component {
             <div>
                 {options.map(option => (
                     <Option
-                        key={option.id}
+                        key={option._id}
                         option={option}
                     />
                 ))}
