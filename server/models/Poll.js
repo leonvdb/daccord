@@ -22,6 +22,10 @@ const PollSchema = new Schema({
             type: String,
             required: true
         },
+        ref_id: {
+            type: String,
+            required: true
+        },
         description: {
             type: String
         },

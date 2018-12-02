@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
+const createRefId = require('../../utilities/createRefId');
 
 //Load Poll Model
 const Poll = require('../../models/Poll');
@@ -9,12 +10,16 @@ const Poll = require('../../models/Poll');
 //@access   Private // TODO: Make route private
 router.post('/', (req, res) => {
 
-    Poll.findById(req.params.poll_id)
+    Poll.findOne({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
+
+            const ref_id = createRefId();
+
             const newOpt = {
                 title: req.body.title,
-                description: req.body.description
+                description: req.body.description,
+                ref_id
             };
 
             poll.options.push(newOpt);
@@ -32,7 +37,7 @@ router.post('/', (req, res) => {
 //@access   Private // TODO: Make route private
 router.get('/', (req, res) => {
 
-    Poll.findById(req.params.poll_id)
+    Poll.findOne({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll.options)
@@ -47,11 +52,11 @@ router.get('/', (req, res) => {
 //@access   Private // TODO: Make route private
 router.get('/:opt_id', (req, res) => {
 
-    Poll.findById(req.params.poll_id)
+    Poll.findOne({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             const target = poll.options.find(option => {
-                if (option.id === req.params.opt_id) {
+                if (option.ref_id === req.params.opt_id) {
                     return option
                 }
             });
@@ -67,12 +72,11 @@ router.get('/:opt_id', (req, res) => {
 //@desc     Update option
 //@access   Private // TODO: Make route private
 router.put('/:opt_id', (req, res) => {
-    console.log("I run here!")
-    Poll.findById(req.params.poll_id)
+    Poll.findOne({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             const targetIndex = poll.options
-                .map(option => option.id)
+                .map(option => option.ref_id)
                 .indexOf(req.params.opt_id)
 
             if (targetIndex === -1) return res.status(404).json({ 'msg': 'There is no option for this ID' });
@@ -94,11 +98,11 @@ router.put('/:opt_id', (req, res) => {
 //@access   Private // TODO: Make route private
 router.delete('/:opt_id', (req, res) => {
 
-    Poll.findById(req.params.poll_id)
+    Poll.findOne({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             const targetIndex = poll.options
-                .map(option => option.id)
+                .map(option => option.ref_id)
                 .indexOf(req.params.opt_id)
 
             if (targetIndex === -1) return res.status(404).json({ 'msg': 'There is no option for this ID' });

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const uuid4 = require('uuid4');
+const createRefId = require('../../utilities/createRefId');
 
 //Load Models
 const Poll = require('../../models/Poll');
@@ -31,10 +31,7 @@ router.post('/', (req, res) => {
 
     function createNewPoll(user) {
 
-        const clean_uuid = (uuid4().replace(/-/g, ''))
-        const uuid_b64 = Buffer.from(clean_uuid, 'hex').toString('base64');
-        //remove base64 padding
-        const ref_id = uuid_b64.replace(/=/g, '');
+        const ref_id = createRefId();
 
         const newPoll = new Poll({
             title: req.body.title,
@@ -59,7 +56,7 @@ router.post('/', (req, res) => {
 //@desc     GET poll by id
 //@access   Private // TODO: Make route private
 router.get('/:poll_id', (req, res) => {
-    Poll.findById(req.params.poll_id)
+    Poll.findOne({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll)
@@ -77,13 +74,13 @@ router.put('/:poll_id', (req, res) => {
     if (req.body.title) pollFields.title = req.body.title;
 
 
-    Poll.findById(req.params.poll_id)
+    Poll.findOne({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
 
             //Update poll
-            Poll.findByIdAndUpdate(
-                req.params.poll_id,
+            Poll.findOneAndUpdate(
+                { ref_id: req.params.poll_id },
                 pollFields,
                 { new: true }
             )
@@ -102,7 +99,7 @@ router.put('/:poll_id', (req, res) => {
 //@desc     Delete poll
 //@access   Private // TODO: Make route private
 router.delete('/:poll_id', (req, res) => {
-    Poll.findByIdAndRemove(req.params.poll_id)
+    Poll.findOneAndRemove({ ref_id: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json({ success: true });
