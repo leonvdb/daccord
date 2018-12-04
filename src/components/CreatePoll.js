@@ -1,45 +1,74 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { createPoll } from '../actions/pollActions';
+import TextInputGroup from './layout/TextInputGroup';
 
 class CreatePoll extends Component {
     state = {
         title: '',
-        email: ''
+        email: '',
+        errors: {}
     };
 
     onChange = e => this.setState({ [e.target.name]: e.target.value });
 
     onSubmit = e => {
         e.preventDefault();
-        //TODO: Implement Submit with API requests, etc..
-        console.log(this.state);
+
+        const { title, email } = this.state
+
+        // Form validation
+        const errors = {}
+        const valid_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+        if (!valid_email) {
+            errors.email = 'Please enter a valid email address.'
+        }
+
+        if (!title.length > 0) {
+            errors.title = 'Please enter a title'
+        }
+
+        if (Object.keys(errors).length > 0) {
+            this.setState({
+                errors
+            })
+            return;
+        }
+
+        const newPoll = {
+            title,
+            email
+        };
+        this.props.createPoll(newPoll).then(poll => {
+            this.props.history.push(`/poll/${poll.ref_id}`)
+        })
+
     }
 
     render() {
-        const { title, email } = this.state;
+        const { title, email, errors } = this.state;
         return (
             <div>
                 <h2>Creating a new poll</h2>
                 <form onSubmit={this.onSubmit}>
-                    <div>
-                        <label htmlFor="title">Title</label>
-                        <input
-                            type="text"
-                            name="title"
-                            placeholder="title"
-                            value={title}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="text"
-                            name="email"
-                            placeholder="email"
-                            value={email}
-                            onChange={this.onChange}
-                        />
-                    </div>
+                    <TextInputGroup
+                        label="Title"
+                        name="title"
+                        placeholder="Enter Title"
+                        value={title}
+                        onChange={this.onChange}
+                        error={errors.title}
+
+                    />
+                    <TextInputGroup
+                        label="Email"
+                        name="email"
+                        placeholder="Enter Email"
+                        value={email}
+                        onChange={this.onChange}
+                        error={errors.email}
+
+                    />
                     <input type="submit" value="Create" />
                 </form>
             </div>
@@ -47,4 +76,4 @@ class CreatePoll extends Component {
     };
 };
 
-export default CreatePoll;
+export default connect(null, { createPoll })(CreatePoll);
