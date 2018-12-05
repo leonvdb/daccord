@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as React from 'react';
 
-import Vote from './Vote';
-import { getPoll } from '../../actions/pollActions';
+import { getPoll } from '../actions/pollActions';
+import Vote from './poll/Vote';
 
-class Poll extends Component {
+class Poll extends React.Component {
 
     componentDidMount() {
         this.props.getPoll(this.props.match.params.poll_id);
