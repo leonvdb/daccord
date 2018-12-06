@@ -8,7 +8,7 @@ class Vote extends Component {
         const { options } = this.props;
 
         return (
-            <div>
+            <div className="mt-5">
                 {options.map(option => (
                     <Option
                         key={option._id}
