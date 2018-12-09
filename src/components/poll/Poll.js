@@ -14,12 +14,10 @@ class Poll extends Component {
         const { poll } = this.props;
 
         return (
-            <React.Fragment>
-                <h1>I will be a poll container</h1>
-                <h3>The poll id is: {this.props.match.params.poll_id}</h3>
-                <h3>The poll title is:{poll.title}</h3>
+            <div className="container">
+                <h1 className="display-4 text-center mt-5">{poll.title}</h1>
                 <Vote options={poll.options} />
-            </React.Fragment>
+            </div>
         )
     }
 }

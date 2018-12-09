@@ -3,21 +3,23 @@ import { Link } from 'react-router-dom';
 
 function Header() {
     return (
-        <div>
-            <h1>I am the header</h1>
-            <div>
-                <ul>
-                    <li>
-                        <Link to="/">
+        <nav className="navbar navbar-expand-sm navbar-light bg-light">
+            <div className="container">
+                <Link to="/" className="navbar-brand">WorkInProgress</Link>
+                <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/">
                             Home
                         </Link>
-                        <Link to="/create">
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/create">
                             Create poll
                         </Link>
                     </li>
                 </ul>
             </div>
-        </div>
+        </nav>
     )
 }
 
