@@ -1,9 +1,13 @@
-import React, { Component } from 'react'
+import * as React from 'react';
+
+import { Options } from '../../interfaces';
 
 import Option from './Option';
 import AddOption from './AddOption';
 
-class Vote extends Component {
+interface Props { options: Options[] }
+
+class Vote extends React.Component<Props> {
 
     render() {
         const { options } = this.props;
@@ -14,7 +18,7 @@ class Vote extends Component {
                     <AddOption />
                     {options.map(option => (
                         <Option
-                            key={option._id}
+                            key={option.ref_id}
                             option={option}
                         />
                     ))}

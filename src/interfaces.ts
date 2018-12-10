@@ -9,14 +9,17 @@ export interface IPoll extends NewPoll {
 }
 
 export interface NewPoll {
-    title: string,
+    title: string
     email: string
 }
 
-export interface Options {
+export interface NewOption {
     title: string
+    description?: string
+}
+
+export interface Options extends NewOption {
     refId: string
-    description: string
     votes: Votes[]
 }
 

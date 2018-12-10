@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/leonvdb/systemic-consensys#readme",
   "dependencies": {
+    "@types/reactstrap": "^6.4.3",
     "axios": "^0.18.0",
     "body-parse": "^0.1.0",
     "bootstrap": "^4.1.3",
