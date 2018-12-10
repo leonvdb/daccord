@@ -30,9 +30,11 @@ class AddOption extends React.Component<Props, State> {
     };
 
     onChange = (e: React.ChangeEvent<any>) => {
+        const propertyName = e.target.name
+        const value = e.target.value
         this.setState(prevState => {
             let newState = { ...prevState };
-            newState[e.target.name] = e.target.value
+            newState[propertyName] = value
             return newState
         })
     };

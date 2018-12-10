@@ -18,7 +18,7 @@ class Vote extends React.Component<Props> {
                     <AddOption />
                     {options.map(option => (
                         <Option
-                            key={option.ref_id}
+                            key={option.refId}
                             option={option}
                         />
                     ))}
