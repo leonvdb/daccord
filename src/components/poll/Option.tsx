@@ -1,9 +1,12 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Options } from '../../interfaces';
 
-export default class Option extends Component {
+interface Props { option: Options }
+
+export default class Option extends React.Component<Props>{
     render() {
 
-        const { id, title, description } = this.props.option;
+        const { title, description } = this.props.option;
 
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4">

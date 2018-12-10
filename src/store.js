@@ -30,8 +30,5 @@ function createApplicationStore() {
 
 const store = createApplicationStore()
 
-
-
-
 export default store;
 

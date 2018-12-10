@@ -1,30 +1,53 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { connect } from 'react-redux';
 import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { NewOption } from '../../interfaces';
+import { Store } from 'src/reducers';
 
-class AddOption extends Component {
+interface Props extends PropsFromState, PropsFromDispatch { }
+
+interface State {
+    title: string
+    description: string
+    errors: Errors
+    modalOpen: boolean
+}
+
+interface Errors {
+    title?: string
+}
 
 
-    state = {
+class AddOption extends React.Component<Props, State> {
+
+    state: State = {
         title: '',
         description: '',
         errors: {},
         modalOpen: false
     };
 
-    onChange = e => this.setState({ [e.target.name]: e.target.value });
+    onChange = (e: React.ChangeEvent<any>) => {
+        const propertyName = e.target.name
+        const value = e.target.value
+        this.setState(prevState => {
+            let newState = { ...prevState };
+            newState[propertyName] = value
+            return newState
+        })
+    };
 
-    onSubmit = e => {
+    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const { title, description } = this.state
 
         // Form validation
-        const errors = {}
+        const errors: Errors = {}
 
-        if (!title.length > 0) {
+        if (title.length <= 0) {
             errors.title = 'Please enter a title'
         }
 
@@ -83,8 +106,8 @@ class AddOption extends Component {
                                     error={errors.title}
                                 />
                                 <div className="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter Description"
+                                    <label htmlFor="description">Description</label>
+                                    <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
                                         value={description}
                                         onChange={this.onChange}></textarea>
                                 </div>
@@ -98,10 +121,16 @@ class AddOption extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    pollId: state.poll.poll.ref_id
+const mapStateToProps = (state: Store) => ({
+    pollId: state.poll.poll.refId
 });
 
+interface PropsFromState {
+    pollId: string
+}
+interface PropsFromDispatch {
+    addOption: (option: NewOption, pollId: string) => void
+}
 
 
 export default connect(mapStateToProps, { addOption })(AddOption);

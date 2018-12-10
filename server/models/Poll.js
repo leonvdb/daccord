@@ -8,7 +8,7 @@ const PollSchema = new Schema({
         type: String,
         required: true
     },
-    ref_id: {
+    refId: {
         type: String,
         required: true
     },
@@ -22,7 +22,7 @@ const PollSchema = new Schema({
             type: String,
             required: true
         },
-        ref_id: {
+        refId: {
             type: String,
             required: true
         },
