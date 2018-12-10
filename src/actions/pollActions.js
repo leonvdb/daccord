@@ -1,9 +1,9 @@
 import { GET_POLL, CREATE_POLL } from './types';
 import axios from 'axios';
 
-export const getPoll = poll_id => async dispatch => {
+export const getPoll = pollId => async dispatch => {
     // TODO: Add Error handling for invalid id
-    const res = await axios.get(`/api/polls/${poll_id}/`);
+    const res = await axios.get(`/api/polls/${pollId}/`);
     dispatch({
         type: GET_POLL,
         payload: res.data
