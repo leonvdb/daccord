@@ -48,10 +48,11 @@ class CreatePoll extends Component {
     render() {
         const { title, email, errors } = this.state;
         return (
-            <div>
-                <h2>Creating a new poll</h2>
+            <div className="container">
+                <h1 className="display-5 text-center my-4">Creating a new poll</h1>
                 <form onSubmit={this.onSubmit}>
                     <TextInputGroup
+                        classNames="w-50"
                         label="Title"
                         name="title"
                         placeholder="Enter Title"
@@ -61,6 +62,7 @@ class CreatePoll extends Component {
 
                     />
                     <TextInputGroup
+                        classNames="w-50"
                         label="Email"
                         name="email"
                         placeholder="Enter Email"
@@ -69,7 +71,7 @@ class CreatePoll extends Component {
                         error={errors.email}
 
                     />
-                    <input type="submit" value="Create" />
+                    <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Create</button>
                 </form>
             </div>
         )

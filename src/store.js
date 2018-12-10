@@ -4,14 +4,34 @@ import thunk from 'redux-thunk';
 
 const initialState = {};
 
-const middleware = [thunk];
+const middlewares = [thunk];
+
+function createApplicationStore() {
+    // Production Store
+    if (process.env.NODE_ENV === 'production') {
+        return createStore(rootReducer, initialState, compose(
+            applyMiddleware(...middlewares),
+        ));
+    }
+
+    // Development store
+    if (window.__REDUX_DEVTOOLS_EXTENSION__) {
+        return createStore(rootReducer, initialState, compose(
+            applyMiddleware(...middlewares),
+            window.__REDUX_DEVTOOLS_EXTENSION__ &&
+            window.__REDUX_DEVTOOLS_EXTENSION__()
+        ));
+    }
+    // Devtools missing
+    return createStore(rootReducer, initialState, compose(
+        applyMiddleware(...middlewares),
+    ));
+}
+
+const store = createApplicationStore()
 
 
-//TODO: Remove Devtool middleware in production
-const store = createStore(rootReducer, initialState, compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
-));
+
 
 export default store;
+

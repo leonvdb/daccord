@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 
 //Import API Routes
@@ -9,6 +10,10 @@ const polls = require('./routes/api/polls');
 const options = require('./routes/api/options');
 
 const app = express();
+
+if (process.env.NODE_ENV !== 'production') {
+    app.use(cors());
+}
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));

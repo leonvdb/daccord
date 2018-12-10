@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import classname from 'classnames';
 
 const TextInputGroup = ({
     label,
@@ -7,19 +8,22 @@ const TextInputGroup = ({
     error,
     placeholder,
     onChange,
-    type
+    type,
+    classNames
 }) => {
     return (
-        <div>
+        <div className={`form-group mx-auto ${classNames}`} >
             <label htmlFor={name}>{label}</label>
-            <input
+            <input className={classname('form-control', {
+                'is-invalid': error
+            })}
                 type={type}
                 name={name}
                 value={value}
                 placeholder={placeholder}
                 onChange={onChange}
             />
-            {error && <div>{error}</div>}
+            {error && <div className="invalid-feedback">{error}</div>}
         </div>
     );
 };
