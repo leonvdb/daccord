@@ -1,4 +1,6 @@
 import { Action } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+import { Store } from './reducers';
 
 export interface IPoll extends NewPoll {
     ref_id?: string
@@ -36,3 +38,5 @@ export interface AppAction<TPayload = any> extends Action<string> {
     payload?: TPayload
     error?: string
 }
+
+export interface ThunkResult<TResultActionPayload> extends ThunkAction<Promise<AppAction<TResultActionPayload>>, Store, void, AppAction<TResultActionPayload>> { }

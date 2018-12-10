@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { createPoll } from '../actions/pollActions';
 import TextInputGroup from './layout/TextInputGroup';
-import { IPoll, NewPoll } from 'src/interfaces';
+import { NewPoll } from 'src/interfaces';
 import { RouteComponentProps } from 'react-router';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
@@ -25,9 +25,15 @@ class CreatePoll extends React.Component<Props, State> {
         errors: {}
     };
 
-    onChange = e => this.setState({ [e.target.name]: e.target.value });
+    onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState(prevState => {
+            let newState = { ...prevState };
+            newState[e.target.name] = e.target.value
+            return newState
+        })
+    };
 
-    onSubmit = e => {
+    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const { title, email } = this.state
@@ -86,7 +92,6 @@ class CreatePoll extends React.Component<Props, State> {
                         value={email}
                         onChange={this.onChange}
                         error={errors.email}
-
                     />
                     <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Create</button>
                 </form>
@@ -98,7 +103,7 @@ class CreatePoll extends React.Component<Props, State> {
 interface PropsFromState {
 }
 interface PropsFromDispatch {
-    createPoll: (poll: NewPoll) => Promise<IPoll>
+    createPoll: (poll: NewPoll) => void
 }
 
 export default connect<PropsFromState, PropsFromDispatch, void>(null, { createPoll })(CreatePoll);

@@ -1,5 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import classname from 'classnames';
+
+interface Props {
+    label: string,
+    name: string,
+    value: string,
+    error?: string,
+    placeholder: string,
+    onChange: (event: React.ChangeEvent) => void,
+    type?: string,
+    classNames: string
+}
 
 const TextInputGroup = ({
     label,
@@ -8,9 +19,9 @@ const TextInputGroup = ({
     error,
     placeholder,
     onChange,
-    type,
+    type = "text",
     classNames
-}) => {
+}: Props) => {
     return (
         <div className={`form-group mx-auto ${classNames}`} >
             <label htmlFor={name}>{label}</label>
