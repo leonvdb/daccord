@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
-import { Popover, PopoverBody } from 'reactstrap';
-
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class AddOption extends Component {
 
@@ -12,7 +11,7 @@ class AddOption extends Component {
         title: '',
         description: '',
         errors: {},
-        popoverOpen: false
+        modalOpen: false
     };
 
     onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -44,7 +43,7 @@ class AddOption extends Component {
         this.props.addOption(newOption, this.props.pollId);
 
         this.setState({
-            popoverOpen: false,
+            modalOpen: false,
             title: '',
             description: '',
         });
@@ -53,25 +52,26 @@ class AddOption extends Component {
 
     toggle = () => {
         this.setState({
-            popoverOpen: !this.state.popoverOpen
+            modalOpen: !this.state.modalOpen
         });
     }
 
 
     render() {
 
-        const { title, description, errors, popoverOpen } = this.state
+        const { title, description, errors, modalOpen } = this.state
         return (
 
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center align-items-center">
                 <button
-                    id="Popover"
+                    id="Modal"
                     onClick={this.toggle}
                     className="btn btn-light border">
                     <i className="fas fa-plus"></i> Add new option
                 </button>
-                <Popover placement="right" isOpen={popoverOpen} target="Popover" toggle={this.toggle}>
-                    <PopoverBody>
+                <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
+                    <ModalHeader toggle={this.toggle}>Add a new option</ModalHeader>
+                    <ModalBody>
                         <div >
                             <form onSubmit={this.onSubmit}>
                                 <TextInputGroup
@@ -92,8 +92,8 @@ class AddOption extends Component {
                                 <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Add Option</button>
                             </form>
                         </div>
-                    </PopoverBody>
-                </Popover>
+                    </ModalBody>
+                </Modal>
             </div>
         )
     }
