@@ -82,13 +82,12 @@ class AddOption extends Component {
                                     onChange={this.onChange}
                                     error={errors.title}
                                 />
-                                <TextInputGroup
-                                    label="Description"
-                                    name="description"
-                                    placeholder="Enter Description"
-                                    value={description}
-                                    onChange={this.onChange}
-                                />
+                                <div className="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter Description"
+                                        value={description}
+                                        onChange={this.onChange}></textarea>
+                                </div>
                                 <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Add Option</button>
                             </form>
                         </div>
