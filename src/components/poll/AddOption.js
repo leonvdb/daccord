@@ -99,7 +99,7 @@ class AddOption extends Component {
 }
 
 const mapStateToProps = state => ({
-    pollId: state.poll.poll.ref_id
+    pollId: state.poll.poll.refId
 });
 
 

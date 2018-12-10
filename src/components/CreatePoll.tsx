@@ -2,8 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { createPoll } from '../actions/pollActions';
 import TextInputGroup from './layout/TextInputGroup';
-import { NewPoll } from 'src/interfaces';
+import { NewPoll, IPoll } from 'src/interfaces';
 import { RouteComponentProps } from 'react-router';
+import { Store } from 'src/reducers';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -25,10 +26,25 @@ class CreatePoll extends React.Component<Props, State> {
         errors: {}
     };
 
+    componentWillUpdate(nextProps: Props) {
+        console.log('Nextprops id', nextProps.poll);
+
+        if (nextProps.poll.refId) {
+            this.props.history.push(`/poll/${nextProps.poll.refId}`)
+        }
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        console.log('Nextprops will receive id', nextProps);
+    }
+
+
     onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const propertyName = e.target.name
+        const value = e.target.value
         this.setState(prevState => {
-            let newState = { ...prevState };
-            newState[e.target.name] = e.target.value
+            const newState = { ...prevState };
+            newState[propertyName] = value
             return newState
         })
     };
@@ -61,10 +77,6 @@ class CreatePoll extends React.Component<Props, State> {
             email
         };
         this.props.createPoll(newPoll)
-            .then(poll => {
-                this.props.history.push(`/poll/${poll.ref_id}`)
-            })
-            .catch(error => console.error(error));
 
     }
 
@@ -101,9 +113,14 @@ class CreatePoll extends React.Component<Props, State> {
 };
 
 interface PropsFromState {
+    poll: IPoll
 }
 interface PropsFromDispatch {
     createPoll: (poll: NewPoll) => void
 }
 
-export default connect<PropsFromState, PropsFromDispatch, void>(null, { createPoll })(CreatePoll);
+const mapStateToProps = (state: Store) => ({
+    poll: state.poll.poll
+});
+
+export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { createPoll })(CreatePoll);

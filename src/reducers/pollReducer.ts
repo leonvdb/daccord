@@ -1,23 +1,22 @@
-import { GET_POLL, ADD_OPTION } from '../actions/types';
-import { IPoll, User, Options, AppAction } from 'src/interfaces';
+import { GET_POLL, ADD_OPTION, CREATE_POLL } from '../actions/types';
+import { IPoll, AppAction } from 'src/interfaces';
 
 export interface PollReducer {
     poll: IPoll
 }
 
-// TODO fix
-class Poll implements IPoll {
-    title: string
-    email: string
-    ref_id: string
-    creator: User
-    options: Options[]
-
-}
-
 
 const initialState: PollReducer = {
-    poll: new Poll
+    poll: {
+        title: '',
+        email: '',
+        refId: '',
+        creator: {
+            email: '',
+            name: '',
+        },
+        options: []
+    }
 };
 
 export default function (state = initialState, action: AppAction) {
@@ -34,6 +33,11 @@ export default function (state = initialState, action: AppAction) {
                     ...state.poll,
                     options: [action.payload, ...state.poll.options]
                 }
+            }
+        case CREATE_POLL:
+            return {
+                ...state,
+                poll: action.payload
             }
         default:
             return state;

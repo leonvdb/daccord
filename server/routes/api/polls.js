@@ -31,12 +31,12 @@ router.post('/', (req, res) => {
 
     function createNewPoll(user) {
 
-        const ref_id = createRefId();
+        const refId = createRefId();
 
         const newPoll = new Poll({
             title: req.body.title,
             creator: user.id,
-            ref_id
+            refId
         });
 
         //Save new poll
@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
 //@desc     GET poll by id
 //@access   Private // TODO: Make route private
 router.get('/:poll_id', (req, res) => {
-    Poll.findOne({ ref_id: req.params.poll_id })
+    Poll.findOne({ refId: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll)
@@ -74,13 +74,13 @@ router.put('/:poll_id', (req, res) => {
     if (req.body.title) pollFields.title = req.body.title;
 
 
-    Poll.findOne({ ref_id: req.params.poll_id })
+    Poll.findOne({ refId: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
 
             //Update poll
             Poll.findOneAndUpdate(
-                { ref_id: req.params.poll_id },
+                { refId: req.params.poll_id },
                 pollFields,
                 { new: true }
             )
@@ -99,7 +99,7 @@ router.put('/:poll_id', (req, res) => {
 //@desc     Delete poll
 //@access   Private // TODO: Make route private
 router.delete('/:poll_id', (req, res) => {
-    Poll.findOneAndRemove({ ref_id: req.params.poll_id })
+    Poll.findOneAndRemove({ refId: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json({ success: true });

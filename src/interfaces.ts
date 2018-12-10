@@ -3,7 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 import { Store } from './reducers';
 
 export interface IPoll extends NewPoll {
-    ref_id?: string
+    refId?: string
     creator: User
     options: Options[]
 }
@@ -15,7 +15,7 @@ export interface NewPoll {
 
 export interface Options {
     title: string
-    ref_id: string
+    refId: string
     description: string
     votes: Votes[]
 }
@@ -28,9 +28,6 @@ export interface Votes {
 export interface User {
     email: string
     name: string
-    password: string
-    registered: boolean
-    polls: IPoll
 }
 
 
