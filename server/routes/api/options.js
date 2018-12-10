@@ -22,9 +22,9 @@ router.post('/', (req, res) => {
                 ref_id
             };
 
-            poll.options.push(newOpt);
+            poll.options.unshift(newOpt);
 
-            poll.save().then(poll => res.json(poll))
+            poll.save().then(poll => res.json(poll.options[0]))
 
         })
         .catch(err => res.json(err));

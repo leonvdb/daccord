@@ -52,6 +52,7 @@ class CreatePoll extends Component {
                 <h1 className="display-5 text-center my-4">Creating a new poll</h1>
                 <form onSubmit={this.onSubmit}>
                     <TextInputGroup
+                        classNames="w-50"
                         label="Title"
                         name="title"
                         placeholder="Enter Title"
@@ -61,6 +62,7 @@ class CreatePoll extends Component {
 
                     />
                     <TextInputGroup
+                        classNames="w-50"
                         label="Email"
                         name="email"
                         placeholder="Enter Email"
