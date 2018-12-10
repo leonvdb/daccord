@@ -1,12 +1,26 @@
 import { GET_POLL, ADD_OPTION } from '../actions/types';
+import { IPoll, User, Options, AppAction } from 'src/interfaces';
 
-const initialState = {
-    poll: {
-        options: []
-    }
+export interface PollReducer {
+    poll: IPoll
+}
+
+// TODO fix
+class Poll implements IPoll {
+    title: string
+    email: string
+    ref_id: string
+    creator: User
+    options: Options[]
+
+}
+
+
+const initialState: PollReducer = {
+    poll: new Poll
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: AppAction) {
     switch (action.type) {
         case GET_POLL:
             return {
@@ -25,3 +39,4 @@ export default function (state = initialState, action) {
             return state;
     }
 }
+

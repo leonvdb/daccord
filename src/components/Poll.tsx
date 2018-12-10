@@ -3,8 +3,13 @@ import * as React from 'react';
 
 import { getPoll } from '../actions/pollActions';
 import Vote from './poll/Vote';
+import { IPoll } from '../interfaces';
+import { RouteComponentProps } from 'react-router';
+import { Store } from 'src/reducers';
 
-class Poll extends React.Component {
+interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
+
+class Poll extends React.Component<Props> {
 
     componentDidMount() {
         this.props.getPoll(this.props.match.params.poll_id);
@@ -22,8 +27,15 @@ class Poll extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: Store) => ({
     poll: state.poll.poll
 });
 
-export default connect(mapStateToProps, { getPoll })(Poll);
+export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { getPoll })(Poll);
+
+interface PropsFromState {
+    poll: IPoll
+}
+interface PropsFromDispatch {
+    getPoll: (pollId: string) => void
+}

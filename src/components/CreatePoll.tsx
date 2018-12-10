@@ -1,10 +1,25 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { createPoll } from '../actions/pollActions';
 import TextInputGroup from './layout/TextInputGroup';
+import { IPoll, NewPoll } from 'src/interfaces';
+import { RouteComponentProps } from 'react-router';
 
-class CreatePoll extends Component {
-    state = {
+interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
+
+interface State {
+    title: string,
+    email: string,
+    errors: Errors
+}
+
+interface Errors {
+    email?: string,
+    title?: string
+}
+
+class CreatePoll extends React.Component<Props, State> {
+    state: State = {
         title: '',
         email: '',
         errors: {}
@@ -18,13 +33,13 @@ class CreatePoll extends Component {
         const { title, email } = this.state
 
         // Form validation
-        const errors = {}
+        const errors: Errors = {}
         const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
         if (!validEmail) {
             errors.email = 'Please enter a valid email address.'
         }
 
-        if (!title.length > 0) {
+        if (title.length <= 0) {
             errors.title = 'Please enter a title'
         }
 
@@ -35,13 +50,15 @@ class CreatePoll extends Component {
             return;
         }
 
-        const newPoll = {
+        const newPoll: NewPoll = {
             title,
             email
         };
-        this.props.createPoll(newPoll).then(poll => {
-            this.props.history.push(`/poll/${poll.ref_id}`)
-        })
+        this.props.createPoll(newPoll)
+            .then(poll => {
+                this.props.history.push(`/poll/${poll.ref_id}`)
+            })
+            .catch(error => console.error(error));
 
     }
 
@@ -78,4 +95,10 @@ class CreatePoll extends Component {
     };
 };
 
-export default connect(null, { createPoll })(CreatePoll);
+interface PropsFromState {
+}
+interface PropsFromDispatch {
+    createPoll: (poll: NewPoll) => Promise<IPoll>
+}
+
+export default connect<PropsFromState, PropsFromDispatch, void>(null, { createPoll })(CreatePoll);
