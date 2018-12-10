@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { NewOption } from '../../interfaces';
 import { Store } from 'src/reducers';
 
@@ -22,14 +22,14 @@ interface Errors {
 
 class AddOption extends React.Component<Props, State> {
 
-    state = {
+    state: State = {
         title: '',
         description: '',
         errors: {},
         modalOpen: false
     };
 
-    onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange = (e: React.ChangeEvent<any>) => {
         this.setState(prevState => {
             let newState = { ...prevState };
             newState[e.target.name] = e.target.value
@@ -105,7 +105,7 @@ class AddOption extends React.Component<Props, State> {
                                 />
                                 <div className="form-group">
                                     <label htmlFor="description">Description</label>
-                                    <textarea class="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
+                                    <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
                                         value={description}
                                         onChange={this.onChange}></textarea>
                                 </div>

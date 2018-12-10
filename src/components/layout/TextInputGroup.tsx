@@ -10,7 +10,7 @@ interface Props {
     placeholder: string,
     onChange: (event: React.ChangeEvent) => void,
     type?: string,
-    classNames: string
+    classNames?: string
 }
 
 const TextInputGroup = ({

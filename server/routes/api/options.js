@@ -55,11 +55,7 @@ router.get('/:opt_id', (req, res) => {
     Poll.findOne({ refId: req.params.poll_id })
         .then(poll => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            const target = poll.options.find(option => {
-                if (option.refId === req.params.opt_id) {
-                    return option
-                }
-            });
+            const target = poll.options.find(option => option.refId === req.params.opt_id);
             if (!target) return res.status(404).json({ 'msg': 'There is no option for this ID' });
             return res.json(target)
         })
