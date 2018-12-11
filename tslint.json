@@ -1,5 +1,9 @@
 {
-  "extends": [],
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
@@ -14,6 +18,9 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "interface-name": false,
-    "member-access": false
+    "member-access": false,
+    "no-console": {
+      "severity": "warning"
+    }
   }
 }
