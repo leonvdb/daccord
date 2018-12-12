@@ -4,7 +4,7 @@ import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { NewOption } from '../../interfaces';
-import { Store } from 'src/reducers';
+import { Store } from '../../reducers';
 
 interface Props extends PropsFromState, PropsFromDispatch { }
 
