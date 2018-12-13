@@ -4,17 +4,17 @@ import { Options } from '../../interfaces';
 
 const Schema = mongoose.Schema;
 
-//Export Interface
+// Export Interface
 
 export interface IPollModel extends mongoose.Document {
-    title: String,
-    refId: String,
+    title: string,
+    refId: string,
     creator: ObjectId,
     options: Options[],
 
 }
 
-//Create Schema
+// Create Schema
 
 const PollSchema = new Schema({
     title: {
@@ -55,6 +55,4 @@ const PollSchema = new Schema({
     }]
 });
 
-const Poll = mongoose.model('poll', PollSchema);
-
-module.exports = Poll;
+export const Poll = mongoose.model('poll', PollSchema);

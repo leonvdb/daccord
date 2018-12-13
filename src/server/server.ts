@@ -1,13 +1,13 @@
-import express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import * as express from 'express';
+import * as mongoose from 'mongoose';
+import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 
 
 //Import API Routes
-const testRoute = require('./routes/api/test.ts'); //To be deleted after review
-const polls = require('./routes/api/polls');
-const options = require('./routes/api/options');
+import testRoute from './routes/api/test' //To be deleted after review
+import polls from './routes/api/polls'
+import options from './routes/api/options'
 
 const app = express();
 
@@ -27,7 +27,7 @@ mongoose.set('useFindAndModify', false);
 //Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/systemic-consensys')
     .then(() => console.log("MongoDB connected"))
-    .catch((err: String) => console.log(err));
+    .catch((err: Error) => console.log(err));
 
 //Test Index
 app.get('/', (req: express.Request, res: express.Response) => res.send("Test"));

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { createPoll } from '../actions/pollActions';
 import TextInputGroup from './layout/TextInputGroup';
-import { NewPoll, IPoll } from '../../interfaces';
+import { NewPoll, IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
 

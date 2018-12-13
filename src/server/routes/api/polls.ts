@@ -1,14 +1,10 @@
 import * as express from 'express';
 const router = express.Router();
-const createRefId = require('../../utilities/createRefId');
+import createRefId from '../../utilities/createRefId';
 
 //Load Models
-const Poll = require('../../models/Poll');
-const User = require('../../models/User');
-
-//Load interfaces 
-import { IPollModel } from '../../models/Poll';
-import { IUserModel } from '../../models/User';
+import { Poll, IPollModel } from '../../models/Poll';
+import { User, IUserModel } from '../../models/User';
 
 
 //declare interfaces 
@@ -96,14 +92,16 @@ router.put('/:poll_id', (req, res) => {
                 { new: true }
             )
                 .then((poll: IPollModel) => {
-                    res.json(poll)
+                    return res.json(poll)
                 })
                 .catch((err: Error) => {
                     console.log("fail")
-                    res.json(err)
+                    return res.json(err)
                 });
         })
-        .catch((err: Error) => res.json(err));
+        .catch((err: Error) => {
+            return res.json(err)
+        });
 });
 
 //@route    DELETE api/polls/:poll_id
@@ -119,4 +117,4 @@ router.delete('/:poll_id', (req, res) => {
 });
 
 
-module.exports = router;
+export default router;

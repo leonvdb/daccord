@@ -2,16 +2,16 @@ import * as mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
 const Schema = mongoose.Schema;
 
-//Export Interface
+// Export Interface
 export interface IUserModel extends mongoose.Document {
-    email: String,
-    name?: String,
-    password?: String,
-    registered: Boolean,
+    email: string,
+    name?: string,
+    password?: string,
+    registered: boolean,
     polls: ObjectId[]
 }
 
-//Create Schema
+// Create Schema
 
 const UserSchema = new Schema({
     email: {
@@ -34,6 +34,4 @@ const UserSchema = new Schema({
     }]
 });
 
-const User = mongoose.model('user', UserSchema);
-
-module.exports = User
+export const User = mongoose.model('user', UserSchema);

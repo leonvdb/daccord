@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { Store } from './src/reducers';
+import { Store } from './reducers';
 
 export interface IPoll extends NewPoll {
     refId?: string

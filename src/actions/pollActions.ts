@@ -1,6 +1,6 @@
 import { GET_POLL, CREATE_POLL } from './types';
 import axios from 'axios';
-import { NewPoll, ThunkResult, IPoll } from 'interfaces';
+import { NewPoll, ThunkResult, IPoll } from 'src/interfaces';
 import { ActionCreator } from 'redux';
 
 export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string) => async dispatch => {

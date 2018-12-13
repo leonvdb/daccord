@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { NewOption } from '../../../interfaces';
+import { NewOption } from '../../interfaces';
 import { Store } from '../../reducers';
 
 interface Props extends PropsFromState, PropsFromDispatch { }
@@ -90,7 +90,7 @@ class AddOption extends React.Component<Props, State> {
                     id="Modal"
                     onClick={this.toggle}
                     className="btn btn-light border">
-                    <i className="fas fa-plus"></i> Add new option
+                    <i className="fas fa-plus" /> Add new option
                 </button>
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Add a new option</ModalHeader>
@@ -109,7 +109,7 @@ class AddOption extends React.Component<Props, State> {
                                     <label htmlFor="description">Description</label>
                                     <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
                                         value={description}
-                                        onChange={this.onChange}></textarea>
+                                        onChange={this.onChange} />
                                 </div>
                                 <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Add Option</button>
                             </form>

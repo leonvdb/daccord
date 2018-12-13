@@ -16,9 +16,12 @@
   },
   "rules": {
     "object-literal-sort-keys": false,
+    "no-shadowed-variable": false,
     "ordered-imports": false,
+    "curly": false,
     "interface-name": false,
     "member-access": false,
+    "comment-format": false,
     "no-console": {
       "severity": "warning"
     }

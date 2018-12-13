@@ -1,12 +1,9 @@
 import * as express from 'express';
 const router = express.Router({ mergeParams: true });
-const createRefId = require('../../utilities/createRefId');
+import createRefId from '../../utilities/createRefId';
 
-//Load Poll Model
-const Poll = require('../../models/Poll');
-
-//Load interfaces
-import { IPollModel } from '../../models/Poll';
+//Load Models
+import { Poll, IPollModel } from '../../models/Poll';
 
 //@route    POST api/polls/:poll_id/options
 //@desc     Create // TODO : Include Edit to this request
@@ -118,5 +115,4 @@ router.delete('/:opt_id', (req, res) => {
 
 });
 
-//router from options.js will be imported and used by
-module.exports = router;
+export default router;

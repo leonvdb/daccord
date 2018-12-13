@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Options } from '../../../interfaces';
+import { Options } from '../../interfaces';
 
 import Option from './Option';
 import AddOption from './AddOption';
