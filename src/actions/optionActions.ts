@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ActionCreator } from 'redux';
-import { ThunkResult, IPoll, Options } from 'src/interfaces';
+import { ThunkResult, IPoll, Options } from 'interfaces';
 import { ADD_OPTION } from './types';
 
 export const addOption: ActionCreator<ThunkResult<IPoll>> = (option: Options, pollId: string) => async dispatch => {

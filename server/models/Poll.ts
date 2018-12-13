@@ -1,5 +1,18 @@
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
+import { Options } from '../../interfaces';
+
 const Schema = mongoose.Schema;
+
+//Export Interface
+
+export interface IPollModel extends mongoose.Document {
+    title: String,
+    refId: String,
+    creator: ObjectId,
+    options: Options[],
+
+}
 
 //Create Schema
 
@@ -42,4 +55,6 @@ const PollSchema = new Schema({
     }]
 });
 
-module.exports = Poll = mongoose.model('poll', PollSchema);
+const Poll = mongoose.model('poll', PollSchema);
+
+module.exports = Poll;

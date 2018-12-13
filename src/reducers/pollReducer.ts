@@ -1,5 +1,5 @@
 import { GET_POLL, ADD_OPTION, CREATE_POLL } from '../actions/types';
-import { IPoll, AppAction } from 'src/interfaces';
+import { IPoll, AppAction } from 'interfaces';
 
 export interface PollReducer {
     poll: IPoll

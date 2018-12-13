@@ -1,4 +1,4 @@
-const express = require('express');
+import * as express from 'express';
 const router = express.Router();
 const createRefId = require('../../utilities/createRefId');
 
@@ -6,13 +6,24 @@ const createRefId = require('../../utilities/createRefId');
 const Poll = require('../../models/Poll');
 const User = require('../../models/User');
 
+//Load interfaces 
+import { IPollModel } from '../../models/Poll';
+import { IUserModel } from '../../models/User';
+
+
+//declare interfaces 
+
+interface PollFields {
+    title?: string
+}
+
 //@route    POST api/polls
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
 //@access   Public
 router.post('/', (req, res) => {
 
     // Check if email corresponds to User in DB
-    User.findOne({ email: req.body.email }).then(user => {
+    User.findOne({ email: req.body.email }).then((user: IUserModel) => {
         if (user) {
             // Create new poll with user.id
             createNewPoll(user);
@@ -25,11 +36,11 @@ router.post('/', (req, res) => {
             //Save new User and create new poll with user.id
             newUser
                 .save()
-                .then(user => createNewPoll(user))
+                .then((user: IUserModel) => createNewPoll(user))
         }
     })
 
-    function createNewPoll(user) {
+    function createNewPoll(user: IUserModel): void {
 
         const refId = createRefId();
 
@@ -42,13 +53,13 @@ router.post('/', (req, res) => {
         //Save new poll
         newPoll
             .save()
-            .then(poll => {
+            .then((poll: IPollModel) => {
                 //add poll to user.polls
-                user.polls.push(poll)
+                user.polls.push(poll._id)
                 //Save user and return poll to response object
                 user.save().then(() => res.json(poll))
             })
-            .catch(err => res.json(err));
+            .catch((err: Error) => res.json(err));
     }
 });
 
@@ -57,11 +68,11 @@ router.post('/', (req, res) => {
 //@access   Private // TODO: Make route private
 router.get('/:poll_id', (req, res) => {
     Poll.findOne({ refId: req.params.poll_id })
-        .then(poll => {
+        .then((poll: IPollModel) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll)
         })
-        .catch(err => res.json(err));
+        .catch((err: Error) => res.json(err));
 });
 
 //@route    PUT api/polls/:poll_id
@@ -70,12 +81,12 @@ router.get('/:poll_id', (req, res) => {
 router.put('/:poll_id', (req, res) => {
 
     // Collect request body data
-    const pollFields = {};
+    const pollFields: PollFields = {};
     if (req.body.title) pollFields.title = req.body.title;
 
 
     Poll.findOne({ refId: req.params.poll_id })
-        .then(poll => {
+        .then((poll: IPollModel) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
 
             //Update poll
@@ -84,15 +95,15 @@ router.put('/:poll_id', (req, res) => {
                 pollFields,
                 { new: true }
             )
-                .then(poll => {
+                .then((poll: IPollModel) => {
                     res.json(poll)
                 })
-                .catch(err => {
+                .catch((err: Error) => {
                     console.log("fail")
                     res.json(err)
                 });
         })
-        .catch(err => res.json(err));
+        .catch((err: Error) => res.json(err));
 });
 
 //@route    DELETE api/polls/:poll_id
@@ -100,11 +111,11 @@ router.put('/:poll_id', (req, res) => {
 //@access   Private // TODO: Make route private
 router.delete('/:poll_id', (req, res) => {
     Poll.findOneAndRemove({ refId: req.params.poll_id })
-        .then(poll => {
+        .then((poll: IPollModel) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json({ success: true });
         })
-        .catch(err => res.json(err));
+        .catch((err: Error) => res.json(err));
 });
 
 

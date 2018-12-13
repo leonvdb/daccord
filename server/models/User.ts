@@ -1,5 +1,15 @@
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
 const Schema = mongoose.Schema;
+
+//Export Interface
+export interface IUserModel extends mongoose.Document {
+    email: String,
+    name?: String,
+    password?: String,
+    registered: Boolean,
+    polls: ObjectId[]
+}
 
 //Create Schema
 
@@ -25,4 +35,5 @@ const UserSchema = new Schema({
 });
 
 const User = mongoose.model('user', UserSchema);
+
 module.exports = User

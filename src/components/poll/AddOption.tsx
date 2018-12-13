@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { NewOption } from '../../interfaces';
+import { NewOption } from '../../../interfaces';
 import { Store } from '../../reducers';
 
 interface Props extends PropsFromState, PropsFromDispatch { }
@@ -33,7 +33,7 @@ class AddOption extends React.Component<Props, State> {
         const propertyName = e.target.name
         const value = e.target.value
         this.setState(prevState => {
-            let newState = { ...prevState };
+            const newState = { ...prevState };
             newState[propertyName] = value
             return newState
         })
