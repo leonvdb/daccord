@@ -1,5 +1,5 @@
 //To be deleted after review
-const express = require('express');
+import * as express from 'express';
 const router = express.Router();
 
 
@@ -8,4 +8,4 @@ const router = express.Router();
 //@access   Public
 router.get('/', (req, res) => res.json({ test: "success" }));
 
-module.exports = router;
+export default router;

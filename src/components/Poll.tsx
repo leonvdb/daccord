@@ -5,7 +5,7 @@ import { getPoll } from '../actions/pollActions';
 import Vote from './poll/Vote';
 import { IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
-import { Store } from 'src/reducers';
+import { Store } from '../reducers';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 

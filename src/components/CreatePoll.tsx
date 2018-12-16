@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { createPoll } from '../actions/pollActions';
 import TextInputGroup from './layout/TextInputGroup';
-import { NewPoll, IPoll } from 'src/interfaces';
+import { NewPoll, IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
-import { Store } from 'src/reducers';
+import { Store } from '../reducers';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -26,16 +26,8 @@ class CreatePoll extends React.Component<Props, State> {
         errors: {}
     };
 
-    componentWillUpdate(nextProps: Props) {
-        console.log('Nextprops id', nextProps.poll);
-
-        if (nextProps.poll.refId) {
-            this.props.history.push(`/poll/${nextProps.poll.refId}`)
-        }
-    }
-
     componentWillReceiveProps(nextProps: Props) {
-        console.log('Nextprops will receive id', nextProps);
+        this.props.history.push(`/poll/${nextProps.poll.refId}`)
     }
 
 
