@@ -5,6 +5,7 @@ import TextInputGroup from './layout/TextInputGroup';
 import { NewPoll, IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
+import store from '../store';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -26,30 +27,18 @@ class CreatePoll extends React.Component<Props, State> {
         errors: {}
     };
 
-    componentWillUpdate(nextProps: Props) {
-        console.log('Nextprops id', nextProps.poll);
-
-        if (nextProps.poll.refId) {
-            this.props.history.push(`/poll/${nextProps.poll.refId}`)
-        }
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        console.log('Nextprops will receive id', nextProps);
-    }
-
-
     onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const propertyName = e.target.name
         const value = e.target.value
         this.setState(prevState => {
             const newState = { ...prevState };
             newState[propertyName] = value
+            console.log(newState);
             return newState
         })
     };
 
-    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const { title, email } = this.state
@@ -76,7 +65,9 @@ class CreatePoll extends React.Component<Props, State> {
             title,
             email
         };
-        this.props.createPoll(newPoll)
+        await this.props.createPoll(newPoll)
+
+        this.props.history.push(`/poll/${store.getState().poll.poll.refId}`)
 
     }
 
