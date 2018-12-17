@@ -6,12 +6,28 @@ import LanguageButton from './LanguageButton';
 import { Store } from '../../reducers';
 import { connect } from 'react-redux';
 
+interface Language {
+    name: string,
+    code: string
+}
+
 
 
 class Header extends React.Component<PropsFromState>{
 
 
     render() {
+
+        const languages: Language[] = [
+            {
+                name: "English",
+                code: "en"
+            },
+            {
+                name: "Deutsch",
+                code: "de"
+            }
+        ]
 
         return (
             <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -22,8 +38,11 @@ class Header extends React.Component<PropsFromState>{
                             {this.props.language}
                         </DropdownToggle>
                         <DropdownMenu>
-                            <LanguageButton langName="English" langCode="en" />
-                            <LanguageButton langName="Deutsch" langCode="de" />
+                            {languages.map(language => {
+                                if (language.name !== this.props.language) {
+                                    return <LanguageButton langName={language.name} langCode={language.code} />
+                                }
+                            })}
                         </DropdownMenu>
                     </UncontrolledDropdown>
                     <ul className="navbar-nav">
