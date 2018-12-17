@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import { NamespacesConsumer } from 'react-i18next';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import LanguageButton from './LanguageButton';
+import { Store } from '../../reducers';
+import { connect } from 'react-redux';
 
-class Header extends React.Component {
+
+
+class Header extends React.Component<PropsFromState>{
 
 
     render() {
@@ -15,8 +19,8 @@ class Header extends React.Component {
                     <Link to="/" className="navbar-brand">WorkInProgress</Link>
                     <UncontrolledDropdown className="mr-auto ml-3">
                         <DropdownToggle caret={true}>
-                            Dropdown
-                            </DropdownToggle>
+                            {this.props.language}
+                        </DropdownToggle>
                         <DropdownMenu>
                             <LanguageButton langName="English" langCode="en" />
                             <LanguageButton langName="Deutsch" langCode="de" />
@@ -49,4 +53,12 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+interface PropsFromState {
+    language: string
+}
+
+const mapStateToProps = (state: Store) => ({
+    language: state.language.language
+})
+
+export default connect<PropsFromState, null, void>(mapStateToProps, null)(Header);
