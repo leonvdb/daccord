@@ -1,11 +1,10 @@
 import { SET_LANGUAGE } from './types';
-import { ActionCreator, Action, AnyAction } from 'redux';
-import { ThunkAction } from 'redux-thunk';
-import { Store } from '../reducers'
+import { ActionCreator } from 'redux';
+import { AppAction } from 'src/interfaces';
 
-export const setLanguage: ActionCreator<ThunkAction<Action, Store, void, AnyAction>> = (language: string) => dispatch => {
-    return dispatch({
+export const setLanguage: ActionCreator<AppAction> = (language: string) => {
+    return {
         type: SET_LANGUAGE,
         payload: language
-    })
+    }
 }

@@ -5,7 +5,7 @@ function Landing() {
     return (
         <div className="container mt-5">
             <div className="jumbotron text-center">
-                <NamespacesConsumer>{t => <h1 className="display-4">{t("iAmLanding")}</h1>}</NamespacesConsumer>
+                <NamespacesConsumer>{translationFunction => <h1 className="display-4">{translationFunction("iAmLanding")}</h1>}</NamespacesConsumer>
             </div>
         </div>
     )
