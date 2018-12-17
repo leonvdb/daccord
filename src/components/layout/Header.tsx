@@ -33,8 +33,8 @@ class Header extends React.Component<PropsFromState>{
             <nav className="navbar navbar-expand-sm navbar-light bg-light">
                 <div className="container">
                     <Link to="/" className="navbar-brand">WorkInProgress</Link>
-                    <UncontrolledDropdown className="mr-auto ml-3">
-                        <DropdownToggle caret={true}>
+                    <UncontrolledDropdown className="nav-item mr-auto ml-2">
+                        <DropdownToggle className="text-secondary" nav={true} caret={true}>
                             {this.props.language}
                         </DropdownToggle>
                         <DropdownMenu>
@@ -48,12 +48,7 @@ class Header extends React.Component<PropsFromState>{
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <Link className="nav-link" to="/">
-
-                                <NamespacesConsumer>
-                                    {
-                                        t => <div>{t("navHome")}</div>
-                                    }
-                                </NamespacesConsumer>
+                                <NamespacesConsumer>{t => <div>{t("navHome")}</div>}</NamespacesConsumer>
                             </Link>
                         </li>
                         <li className="nav-item">

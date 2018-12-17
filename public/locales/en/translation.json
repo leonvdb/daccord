@@ -1,5 +1,6 @@
 {
     "navHome": "Home",
     "navCreatePoll": "Create Poll",
-    "CreateNewPoll": "Create a new poll"
+    "CreateNewPoll": "Create a new poll",
+    "iAmLanding": "I am the landing page"
 }

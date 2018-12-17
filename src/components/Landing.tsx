@@ -1,10 +1,11 @@
 import * as React from 'react'
+import { NamespacesConsumer } from 'react-i18next';
 
 function Landing() {
     return (
         <div className="container mt-5">
             <div className="jumbotron text-center">
-                <h1 className="display-4">I am the landing page</h1>
+                <NamespacesConsumer>{t => <h1 className="display-4">{t("iAmLanding")}</h1>}</NamespacesConsumer>
             </div>
         </div>
     )
