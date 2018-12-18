@@ -72,7 +72,7 @@ interface PropsFromState {
 }
 
 const mapStateToProps = (state: Store) => ({
-    language: state.language.language
+    language: state.language.languageLabel
 })
 
 export default connect<PropsFromState, null, void>(mapStateToProps, null)(Header);

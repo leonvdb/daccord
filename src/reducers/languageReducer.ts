@@ -2,11 +2,11 @@ import { SET_LANGUAGE } from '../actions/types';
 import { AppAction } from 'src/interfaces';
 
 export interface LanguageReducer {
-    language: string
+    languageLabel: string
 }
 
 const initialState: LanguageReducer = {
-    language: "English"
+    languageLabel: "English"
 }
 
 export default function (state = initialState, action: AppAction) {
@@ -14,7 +14,7 @@ export default function (state = initialState, action: AppAction) {
         case SET_LANGUAGE:
             return {
                 ...state,
-                language: action.payload
+                languageLabel: action.payload
             }
         default:
             return state;
