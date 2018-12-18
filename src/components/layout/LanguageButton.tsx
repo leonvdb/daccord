@@ -3,7 +3,6 @@ import i18n from '../../i18n';
 import { DropdownItem } from 'reactstrap';
 import { setLanguage } from 'src/actions/langActions';
 import { connect } from 'react-redux';
-import { Store } from 'src/reducers';
 import { Dispatch } from 'redux';
 import { AppAction } from 'src/interfaces';
 
