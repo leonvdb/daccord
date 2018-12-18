@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 // Export Interface
 export interface IUserModel extends mongoose.Document {
+    _id: ObjectId,
     email: string,
     name?: string,
     password?: string,
