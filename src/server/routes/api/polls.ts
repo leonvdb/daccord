@@ -145,26 +145,44 @@ router.put('/:poll_id/vote', (req, res) => {
                 }
 
                 function vote(user: IUserModel) {
+                    //TODO: Consider refactoring the Vote DB Schema
 
                     for (let i = 0; i < poll.options.length; i++) {
+
                         //Check if Option has been voted on in this request
                         if (!(req.body.votes.hasOwnProperty(poll.options[i].refId))) {
                             continue;
                         }
-                        //Check if this Option has already been voted on by this User
 
+                        //Check if Payload is valid
+                        const votePayload = Number(req.body.votes[poll.options[i].refId]);
+                        if (votePayload < 0 || votePayload > 10) {
+                            return res.status(400).json({ 'msg': 'Vote value has to be between 0 and 10' });
+                        }
+
+                        //Check if this Option has already been voted on by this User and remove old vote if so
+                        for (let j = 0; j < poll.options[i].votes.length; j++) {
+                            if (poll.options[i].votes[j].voter.toString() === user._id.toString()) {
+                                poll.options[i].votes.splice(j, 1);
+                                j--;
+                            }
+                        }
 
                         //Construct vote for option
-                        const votePayload = req.body.votes[poll.options[i].refId];
                         const newVote = {
                             voter: user._id,
                             vote: votePayload
                         }
+
+                        //Add vote to option
                         poll.options[i].votes.unshift(newVote)
+
                     }
+                    //Save
+                    poll.save()
+                        .then(poll => res.json(poll))
+                        .catch(err => res.json(err))
                 }
-                //Save
-                poll.save().then(poll => res.json(poll));
             })
                 .catch((err: Error) => res.json(err));
 
