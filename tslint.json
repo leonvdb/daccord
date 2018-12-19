@@ -25,6 +25,7 @@
     "comment-format": false,
     "no-console": {
       "severity": "warning"
-    }
+    },
+    "no-empty-interface": false
   }
 }

@@ -5,6 +5,7 @@ import TextInputGroup from './layout/TextInputGroup';
 import { NewPoll, IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
+import { NamespacesConsumer } from 'react-i18next';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -76,7 +77,11 @@ class CreatePoll extends React.Component<Props, State> {
         const { title, email, errors } = this.state;
         return (
             <div className="container">
-                <h1 className="display-5 text-center my-4">Creating a new poll</h1>
+                <NamespacesConsumer>
+                    {
+                        t => <h1 className="display-5 text-center my-4">{t("CreateNewPoll")}</h1>
+                    }
+                </NamespacesConsumer>
                 <form onSubmit={this.onSubmit}>
                     <TextInputGroup
                         classNames="w-50"

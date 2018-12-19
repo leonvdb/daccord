@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
         }
     })
 
-    function createNewPoll(user: IUserModel): void {
+    async function createNewPoll(user: IUserModel): Promise<void> {
 
         const refId = createRefId();
 
@@ -50,15 +50,14 @@ router.post('/', (req, res) => {
         });
 
         //Save new poll
-        newPoll
-            .save()
-            .then((poll: IPollModel) => {
-                //add poll to user.polls
-                user.polls.push(poll._id)
-                //Save user and return poll to response object
-                user.save().then(() => res.json(poll))
-            })
-            .catch((err: Error) => res.json(err));
+        try {
+            const poll = await newPoll.save()
+            user.polls.push(poll._id)
+            await user.save()
+            res.json(poll)
+        } catch (error) {
+            res.json(error)
+        }
     }
 });
 
@@ -83,26 +82,18 @@ router.put('/:poll_id', (req, res) => {
     const pollFields: PollFields = {};
     if (req.body.title) pollFields.title = req.body.title;
 
-
-    Poll.findOne({ refId: req.params.poll_id })
+    //Update poll
+    Poll.findOneAndUpdate(
+        { refId: req.params.poll_id },
+        pollFields,
+        { new: true }
+    )
         .then((poll: IPollModel) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-
-            //Update poll
-            Poll.findOneAndUpdate(
-                { refId: req.params.poll_id },
-                pollFields,
-                { new: true }
-            )
-                .then((poll: IPollModel) => {
-                    return res.json(poll)
-                })
-                .catch((err: Error) => {
-                    console.log("fail")
-                    return res.json(err)
-                });
+            return res.json(poll)
         })
         .catch((err: Error) => {
+            console.log("fail")
             return res.json(err)
         });
 });
