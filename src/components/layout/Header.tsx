@@ -11,8 +11,6 @@ interface Language {
     code: string
 }
 
-
-
 class Header extends React.Component<PropsFromState>{
 
 
@@ -40,7 +38,7 @@ class Header extends React.Component<PropsFromState>{
                         <DropdownMenu>
                             {languages.map(language => {
                                 if (language.name !== this.props.language) {
-                                    return <LanguageButton langName={language.name} langCode={language.code} />
+                                    return <LanguageButton langName={language.name} langCode={language.code} key={language.code} />
                                 }
                             })}
                         </DropdownMenu>
