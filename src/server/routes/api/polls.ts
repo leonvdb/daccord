@@ -5,7 +5,7 @@ import createRefId from '../../utilities/createRefId';
 //Load Models
 import { Poll, IPollModel } from '../../models/Poll';
 import { User, IUserModel } from '../../models/User';
-import { ApiError } from 'src/server/utilities/ApiError';
+import { ApiError } from '../../utilities/ApiError';
 import * as asnycHandler from 'express-async-handler'
 
 
@@ -138,27 +138,27 @@ router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
         }
 
         //Check if this Option has already been voted on by this User and remove old vote if so
-        poll.options[i].votes.filter(vote => {
+        const removePreviousVotes = poll.options[i].votes.filter(vote => {
+
             if (vote.voter.toString() === user._id.toString()) {
                 return false
             }
             return true
         })
-
-
+        poll.options[i].votes = removePreviousVotes;
 
         //Construct vote for option
         const newVote = {
             voter: user._id,
             vote: votePayload
         }
-
         //Add vote to option
         poll.options[i].votes.unshift(newVote)
 
     }
-    //Save
-    await poll.save()
+    //Save and send response
+    const response = await poll.save()
+    res.json(response);
 }))
 
 

@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { Store } from './reducers';
+import { ObjectId } from 'mongodb';
 
 export interface IPoll extends NewPoll {
     refId?: string
@@ -24,7 +25,7 @@ export interface Options extends NewOption {
 }
 
 export interface Votes {
-    voter: User
+    voter: ObjectId
     vote: number
 }
 
