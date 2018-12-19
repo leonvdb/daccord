@@ -5,6 +5,8 @@ import { ObjectId } from 'mongodb';
 
 
 //Poll Interfaces
+
+//TODO: Adapt creator to be typed as ObjectId
 export interface IPoll extends INewPoll {
     refId?: string
     creator: string
