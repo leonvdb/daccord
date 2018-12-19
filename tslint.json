@@ -16,6 +16,7 @@
   },
   "rules": {
     "object-literal-sort-keys": false,
+    "prefer-for-of": false,
     "no-shadowed-variable": false,
     "ordered-imports": false,
     "curly": false,
