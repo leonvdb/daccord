@@ -1,7 +1,8 @@
-import { GET_POLL, CREATE_POLL } from './types';
+import { GET_POLL, CREATE_POLL, CLEAR_POLL_FROM_STATE } from './types';
 import axios from 'axios';
 import { INewPoll, ThunkResult, IPoll } from 'src/interfaces';
 import { ActionCreator } from 'redux';
+import { AppAction } from 'src/interfaces';
 
 export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string) => async dispatch => {
     // TODO: Add Error handling for invalid id
@@ -19,4 +20,10 @@ export const createPoll: ActionCreator<ThunkResult<IPoll>> = (poll: INewPoll) =>
         payload: res.data
     })
     return res.data
+}
+
+export const clearPollFromState: ActionCreator<AppAction> = () => {
+    return {
+        type: CLEAR_POLL_FROM_STATE
+    }
 }

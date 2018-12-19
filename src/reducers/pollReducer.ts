@@ -1,4 +1,4 @@
-import { GET_POLL, ADD_OPTION, CREATE_POLL } from '../actions/types';
+import { GET_POLL, ADD_OPTION, CREATE_POLL, CLEAR_POLL_FROM_STATE } from '../actions/types';
 import { IPoll, AppAction } from 'src/interfaces';
 
 export interface PollReducer {
@@ -35,6 +35,11 @@ export default function (state = initialState, action: AppAction) {
             return {
                 ...state,
                 poll: action.payload
+            }
+        case CLEAR_POLL_FROM_STATE:
+            return {
+                ...state,
+                poll: initialState.poll
             }
         default:
             return state;

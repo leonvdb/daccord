@@ -28,7 +28,9 @@ class CreatePoll extends React.Component<Props, State> {
     };
 
     componentWillReceiveProps(nextProps: Props) {
-        this.props.history.push(`/poll/${nextProps.poll.refId}`)
+        if (nextProps.poll.refId) {
+            this.props.history.push(`/poll/${nextProps.poll.refId}`)
+        }
     }
 
 
