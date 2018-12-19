@@ -3,18 +3,11 @@ const router = express.Router();
 import createRefId from '../../utilities/createRefId';
 
 //Load Models
-import { Poll, IPollModel } from '../../models/Poll';
-import { User, IUserModel } from '../../models/User';
+import { Poll, IPollDocument } from '../../models/Poll';
+import { User, IUserDocument } from '../../models/User';
 import { ApiError } from '../../utilities/ApiError';
 import * as asnycHandler from 'express-async-handler'
 
-
-
-//declare interfaces 
-
-interface PollFields {
-    title?: string
-}
 
 //@route    POST api/polls
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
@@ -22,7 +15,7 @@ interface PollFields {
 router.post('/', (req, res) => {
 
     // Check if email corresponds to User in DB
-    User.findOne({ email: req.body.email }).then((user: IUserModel) => {
+    User.findOne({ email: req.body.email }).then((user: IUserDocument) => {
         if (user) {
             // Create new poll with user.id
             createNewPoll(user);
@@ -35,11 +28,11 @@ router.post('/', (req, res) => {
             //Save new User and create new poll with user.id
             newUser
                 .save()
-                .then((user: IUserModel) => createNewPoll(user))
+                .then((user: IUserDocument) => createNewPoll(user))
         }
     })
 
-    async function createNewPoll(user: IUserModel): Promise<void> {
+    async function createNewPoll(user: IUserDocument): Promise<void> {
 
         const refId = createRefId();
 
@@ -66,7 +59,7 @@ router.post('/', (req, res) => {
 //@access   Private // TODO: Make route private
 router.get('/:poll_id', (req, res) => {
     Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll)
         })
@@ -76,10 +69,16 @@ router.get('/:poll_id', (req, res) => {
 //@route    PUT api/polls/:poll_id
 //@desc     Edit poll
 //@access   Private // TODO: Make route private
+
+//Declare Interfaces 
+interface PollEditFields {
+    title?: string
+}
+
 router.put('/:poll_id', (req, res) => {
 
     // Collect request body data
-    const pollFields: PollFields = {};
+    const pollFields: PollEditFields = {};
     if (req.body.title) pollFields.title = req.body.title;
 
     //Update poll
@@ -88,7 +87,7 @@ router.put('/:poll_id', (req, res) => {
         pollFields,
         { new: true }
     )
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll)
         })
@@ -103,7 +102,7 @@ router.put('/:poll_id', (req, res) => {
 //@access   Private // TODO: Make route private
 router.delete('/:poll_id', (req, res) => {
     Poll.findOneAndRemove({ refId: req.params.poll_id })
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json({ success: true });
         })
@@ -169,7 +168,7 @@ function findPoll(pollId: string) {
 }
 function findUser(email: string) {
     return User.findOne({ email })
-        .then((user: IUserModel) => {
+        .then((user: IUserDocument) => {
             if (!user) {
                 // Create new poll with user.id
                 return createUser(email)
@@ -178,7 +177,7 @@ function findUser(email: string) {
         })
 }
 
-function validatePoll(poll: IPollModel, ): IPollModel {
+function validatePoll(poll: IPollDocument, ): IPollDocument {
     //Check if poll exists
     if (!poll) {
         // This should work because it is handled by the asnycHandler middleware
@@ -189,7 +188,7 @@ function validatePoll(poll: IPollModel, ): IPollModel {
     return poll
 }
 
-function createUser(email: string): Promise<IUserModel> {
+function createUser(email: string): Promise<IUserDocument> {
     //No corresponding user - Create new User
     const newUser = new User({
         email
@@ -197,7 +196,7 @@ function createUser(email: string): Promise<IUserModel> {
 
     //Save new User and create new poll with user.id
     return newUser.save()
-        .then((user: IUserModel) => user)
+        .then((user: IUserDocument) => user)
 
 }
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { createPoll } from '../actions/pollActions';
 import TextInputGroup from './layout/TextInputGroup';
-import { NewPoll, IPoll } from '../interfaces';
+import { INewPoll, IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
 import { NamespacesConsumer } from 'react-i18next';
@@ -65,7 +65,7 @@ class CreatePoll extends React.Component<Props, State> {
             return;
         }
 
-        const newPoll: NewPoll = {
+        const newPoll: INewPoll = {
             title,
             email
         };
@@ -113,7 +113,7 @@ interface PropsFromState {
     poll: IPoll
 }
 interface PropsFromDispatch {
-    createPoll: (poll: NewPoll) => void
+    createPoll: (poll: INewPoll) => void
 }
 
 const mapStateToProps = (state: Store) => ({

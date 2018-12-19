@@ -11,10 +11,7 @@ const initialState: PollReducer = {
         title: '',
         email: '',
         refId: '',
-        creator: {
-            email: '',
-            name: '',
-        },
+        creator: '',
         options: []
     }
 };

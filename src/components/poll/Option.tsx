@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Options } from '../../interfaces';
+import { IOption } from '../../interfaces';
 
-interface Props { option: Options }
+interface Props { option: IOption }
 
 export default class Option extends React.Component<Props>{
     render() {

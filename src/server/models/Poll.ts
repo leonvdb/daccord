@@ -1,16 +1,16 @@
 import * as mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { Options } from '../../interfaces';
+import { IOption } from '../../interfaces';
 
 const Schema = mongoose.Schema;
 
 // Export Interface
 
-export interface IPollModel extends mongoose.Document {
+export interface IPollDocument extends mongoose.Document {
     title: string,
     refId: string,
     creator: ObjectId,
-    options: Options[],
+    options: IOption[],
 
 }
 

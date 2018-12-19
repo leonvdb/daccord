@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { NewOption } from '../../interfaces';
+import { INewOption } from '../../interfaces';
 import { Store } from '../../reducers';
 
 interface Props extends PropsFromState, PropsFromDispatch { }
@@ -129,7 +129,7 @@ interface PropsFromState {
     pollId: string
 }
 interface PropsFromDispatch {
-    addOption: (option: NewOption, pollId: string) => void
+    addOption: (option: INewOption, pollId: string) => void
 }
 
 

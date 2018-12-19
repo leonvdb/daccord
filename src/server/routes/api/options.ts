@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 import createRefId from '../../utilities/createRefId';
 
 //Load Models
-import { Poll, IPollModel } from '../../models/Poll';
+import { Poll, IPollDocument } from '../../models/Poll';
 
 //@route    POST api/polls/:poll_id/options
 //@desc     Create // TODO : Include Edit to this request
@@ -11,7 +11,7 @@ import { Poll, IPollModel } from '../../models/Poll';
 router.post('/', (req, res) => {
 
     Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
 
             const refId = createRefId();
@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
 
     Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             return res.json(poll.options)
         })
@@ -54,7 +54,7 @@ router.get('/', (req, res) => {
 router.get('/:opt_id', (req, res) => {
 
     Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             const target = poll.options.find(option => option.refId === req.params.opt_id);
             if (!target) return res.status(404).json({ 'msg': 'There is no option for this ID' });
@@ -70,7 +70,7 @@ router.get('/:opt_id', (req, res) => {
 //@access   Private // TODO: Make route private
 router.put('/:opt_id', (req, res) => {
     Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             const targetIndex = poll.options
                 .map(option => option.refId)
@@ -96,7 +96,7 @@ router.put('/:opt_id', (req, res) => {
 router.delete('/:opt_id', (req, res) => {
 
     Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollModel) => {
+        .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
             const targetIndex = poll.options
                 .map(option => option.refId)

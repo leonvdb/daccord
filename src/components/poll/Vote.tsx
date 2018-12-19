@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { Options } from '../../interfaces';
+import { IOption } from '../../interfaces';
 
 import Option from './Option';
 import AddOption from './AddOption';
 
-interface Props { options: Options[] }
+interface Props { options: IOption[] }
 
 class Vote extends React.Component<Props> {
 
