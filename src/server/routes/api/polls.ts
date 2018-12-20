@@ -4,8 +4,9 @@ import createRefId from '../../utilities/createRefId';
 import { ApiError } from '../../utilities/ApiError';
 import * as asnycHandler from 'express-async-handler';
 import { transporter } from '../../config/nodemailer';
-import { mailUser, jwtKey } from '../../config/secrets';
+import { mailUser, secretOrKey } from '../../config/secrets';
 import * as jwt from 'jsonwebtoken';
+import * as passport from 'passport';
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
@@ -115,11 +116,12 @@ router.get('/:poll_id/token/:token', (req, res, next) => {
 
             const payload = {
                 userId: poll.creator,
-                pollId: poll.id
+                accountLogin: false,
+                pollId: req.params.poll_id
             }
 
             //Sign JWT
-            jwt.sign(payload, jwtKey, { expiresIn: "1d" }, (err, token) => {
+            jwt.sign(payload, secretOrKey, { expiresIn: "1d" }, (err, token) => {
                 //TODO: Adjust so that Creator Token is not exposed in response object.
                 return res.json({
                     poll,
@@ -139,12 +141,12 @@ interface PollEditFields {
     title?: string
 }
 
-router.put('/:poll_id', (req, res) => {
+router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res) => {
 
+    //TODO: Check that user is authorized to edit poll (i.e.: if user from jwt is creator)
     // Collect request body data
     const pollFields: PollEditFields = {};
     if (req.body.title) pollFields.title = req.body.title;
-
     //Update poll
     Poll.findOneAndUpdate(
         { refId: req.params.poll_id },
