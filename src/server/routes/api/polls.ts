@@ -1,12 +1,14 @@
 import * as express from 'express';
 const router = express.Router();
 import createRefId from '../../utilities/createRefId';
+import { ApiError } from '../../utilities/ApiError';
+import * as asnycHandler from 'express-async-handler';
+import { transporter } from '../../config/nodemailer';
+import { mailUser } from '../../config/secrets';
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
 import { User, IUserDocument } from '../../models/User';
-import { ApiError } from '../../utilities/ApiError';
-import * as asnycHandler from 'express-async-handler'
 
 
 //@route    POST api/polls
@@ -35,24 +37,55 @@ router.post('/', (req, res) => {
     async function createNewPoll(user: IUserDocument): Promise<void> {
 
         const refId = createRefId();
+        const creatorToken = generateToken();
 
         const newPoll = new Poll({
             title: req.body.title,
             creator: user.id,
+            creatorToken,
             refId
         });
 
-        //Save new poll
+
         try {
+            //Save new poll
             const poll = await newPoll.save()
+            //Add poll ref to user
             user.polls.push(poll._id)
             await user.save()
+            //Send email with token to creator
+            sendConfirmMail(user.email, poll)
             res.json(poll)
         } catch (error) {
             res.json(error)
         }
     }
 });
+
+function generateToken(): string {
+    const token = createRefId() + createRefId() + createRefId()
+    return token
+}
+
+function sendConfirmMail(userEmail: string, poll: IPollDocument): void {
+
+    const mailOptions = {
+        from: mailUser, // sender address
+        to: userEmail, // list of receivers
+        subject: `Your new Poll "${poll.title}" has been created!`, // Subject line
+        html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${poll.creatorToken}">here</a> to get to your poll </p>` // plain text body
+    };
+
+    //TODO: Change console logs to log to logfile
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err)
+            console.log(err)
+        else
+            console.log(info);
+    });
+
+
+}
 
 //@route    GET api/polls/:poll_id
 //@desc     GET poll by id
