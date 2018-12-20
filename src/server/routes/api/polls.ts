@@ -4,7 +4,8 @@ import createRefId from '../../utilities/createRefId';
 import { ApiError } from '../../utilities/ApiError';
 import * as asnycHandler from 'express-async-handler';
 import { transporter } from '../../config/nodemailer';
-import { mailUser } from '../../config/secrets';
+import { mailUser, jwtKey } from '../../config/secrets';
+import * as jwt from 'jsonwebtoken';
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
@@ -89,12 +90,42 @@ function sendConfirmMail(userEmail: string, poll: IPollDocument): void {
 
 //@route    GET api/polls/:poll_id
 //@desc     GET poll by id
-//@access   Private // TODO: Make route private
+//@access   Private or Public // TODO: Decide wether it should be private or public
 router.get('/:poll_id', (req, res) => {
     Poll.findOne({ refId: req.params.poll_id })
         .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
+            //TODO: Adjust so that Creator Token is not exposed in response object.
             return res.json(poll)
+        })
+        .catch((err: Error) => res.json(err));
+});
+
+//@route    GET api/polls/:poll_id/token/:token
+//@desc     GET poll by id and authenticate user by token
+//@access   Public
+router.get('/:poll_id/token/:token', (req, res, next) => {
+    Poll.findOne({ refId: req.params.poll_id })
+        .then((poll: IPollDocument) => {
+            if (!poll) return next(new ApiError('There is no poll for this ID', 404))
+
+            if (req.params.token !== poll.creatorToken) {
+                return next(new ApiError('Incorrect Token', 401));
+            }
+
+            const payload = {
+                userId: poll.creator,
+                pollId: poll.id
+            }
+
+            //Sign JWT
+            jwt.sign(payload, jwtKey, { expiresIn: "1d" }, (err, token) => {
+                //TODO: Adjust so that Creator Token is not exposed in response object.
+                return res.json({
+                    poll,
+                    token: "Bearer " + token
+                })
+            })
         })
         .catch((err: Error) => res.json(err));
 });
