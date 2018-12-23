@@ -7,7 +7,6 @@ import { IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
 import { Dispatch } from 'redux';
-import { AppAction } from 'src/interfaces';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -37,14 +36,14 @@ const mapStateToProps = (state: Store) => ({
     poll: state.poll.poll
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AppAction>): PropsFromDispatch => {
+const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
         clearPollFromState: () => dispatch(clearPollFromState()),
-        getPoll: (pollId: string) => getPoll(pollId)
+        getPoll: (pollId: string) => dispatch(getPoll(pollId))
     }
 }
 
-export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, mapDispatchToProps)(Poll);
+export default connect(mapStateToProps, mapDispatchToProps)(Poll);
 
 interface PropsFromState {
     poll: IPoll
