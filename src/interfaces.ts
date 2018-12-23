@@ -20,6 +20,7 @@ export interface INewPoll {
 
 
 export interface IOption extends INewOption {
+    creator: ObjectId
     refId: string
     votes: IVote[]
 }

@@ -281,7 +281,7 @@ function validatePoll(poll: IPollDocument, ): IPollDocument {
     return poll
 }
 
-function createUser(email: string): Promise<IUserDocument> {
+export function createUser(email: string): Promise<IUserDocument> {
     //No corresponding user - Create new User
     const newUser = new User({
         email

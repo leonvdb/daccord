@@ -1,6 +1,8 @@
 import * as express from 'express';
 const router = express.Router({ mergeParams: true });
 import createRefId from '../../utilities/createRefId';
+import { ApiError } from '../../utilities/ApiError';
+import { createUser } from './polls'
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
@@ -8,16 +10,23 @@ import { Poll, IPollDocument } from '../../models/Poll';
 //@route    POST api/polls/:poll_id/options
 //@desc     Create // TODO : Include Edit to this request
 //@access   Private // TODO: Make route private
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
 
     Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-
+        .then(async (poll: IPollDocument) => {
+            if (!poll) return next(new ApiError('There is no poll for this ID', 404))
+            let creatorId;
             const refId = createRefId();
+            if (req.body.userId) {
+                creatorId = req.body.userId
+            } else if (req.body.email) {
+                const creator = await createUser(req.body.email)
+                creatorId = creator._id
+            } else return next(new ApiError('No User found', 404))
 
             const newOpt = {
                 title: req.body.title,
+                creator: creatorId,
                 description: req.body.description,
                 refId,
                 votes: []

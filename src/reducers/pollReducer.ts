@@ -34,7 +34,7 @@ export default function (state = initialState, action: AppAction) {
         case CREATE_POLL:
             return {
                 ...state,
-                poll: action.payload
+                poll: action.payload.poll
             }
         case CLEAR_POLL_FROM_STATE:
             return {
