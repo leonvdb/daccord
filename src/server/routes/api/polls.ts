@@ -58,7 +58,23 @@ router.post('/', (req, res) => {
             await user.save()
             //Send email with token to creator
             sendConfirmMail(user.email, poll)
-            res.json(poll)
+
+            const payload: IJwtPayload = {
+                userId: poll.creator,
+                userType: 'CREATOR',
+                accountLogin: false,
+                pollId: poll.refId
+            }
+
+            //Sign JWT
+            jwt.sign(payload, secretOrKey, { expiresIn: "1d" }, (err, token) => {
+                //TODO: Adjust so that Creator Token is not exposed in response object.
+                return res.json({
+                    poll,
+                    token: "Bearer " + token
+                })
+            })
+
         } catch (error) {
             res.json(error)
         }
@@ -117,6 +133,7 @@ router.get('/:poll_id/token/:token', (req, res, next) => {
 
             const payload: IJwtPayload = {
                 userId: poll.creator,
+                userType: 'CREATOR',
                 accountLogin: false,
                 pollId: req.params.poll_id
             }
@@ -173,6 +190,7 @@ router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, 
 //@access   Private // TODO: Make route private
 router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const jwtPayload: IJwtPayload = req.user
+    console.log(jwtPayload)
     if (jwtPayload.pollId !== req.params.poll_id) {
         return next(new ApiError('Incorrect Token', 401));
     }

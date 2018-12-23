@@ -13,9 +13,10 @@ const opts = {
 export default (passport: PassportStatic) => {
     passport.use(new Strategy(opts, (jwtPayload: IJwtPayload, done) => {
         const user = {
-            pollId: jwtPayload.pollId,
             userId: jwtPayload.userId,
-            accountLogin: jwtPayload.accountLogin
+            userType: jwtPayload.userType,
+            accountLogin: jwtPayload.accountLogin,
+            pollId: jwtPayload.pollId
         }
         return done(null, user)
     }))

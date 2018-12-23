@@ -47,6 +47,7 @@ export interface IUser {
 
 export interface IJwtPayload {
     userId: ObjectId,
+    userType: string,
     accountLogin: boolean,
     pollId: string
 }
