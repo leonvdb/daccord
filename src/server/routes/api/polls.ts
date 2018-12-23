@@ -171,7 +171,11 @@ router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, 
 //@route    DELETE api/polls/:poll_id
 //@desc     Delete poll
 //@access   Private // TODO: Make route private
-router.delete('/:poll_id', (req, res) => {
+router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    const jwtPayload: IJwtPayload = req.user
+    if (jwtPayload.pollId !== req.params.poll_id) {
+        return next(new ApiError('Incorrect Token', 401));
+    }
     Poll.findOneAndRemove({ refId: req.params.poll_id })
         .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
