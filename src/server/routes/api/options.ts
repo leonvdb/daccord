@@ -2,7 +2,7 @@ import * as express from 'express';
 const router = express.Router({ mergeParams: true });
 import createRefId from '../../utilities/createRefId';
 import { ApiError } from '../../utilities/ApiError';
-import { createUser } from './polls'
+import { createUser, createJsonWebToken, sendConfirmMail, findPoll, generateToken } from './polls'
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
@@ -10,34 +10,74 @@ import { Poll, IPollDocument } from '../../models/Poll';
 //@route    POST api/polls/:poll_id/options
 //@desc     Create // TODO : Include Edit to this request
 //@access   Private // TODO: Make route private
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
 
-    Poll.findOne({ refId: req.params.poll_id })
-        .then(async (poll: IPollDocument) => {
-            if (!poll) return next(new ApiError('There is no poll for this ID', 404))
-            let creatorId;
-            const refId = createRefId();
-            if (req.body.userId) {
-                creatorId = req.body.userId
-            } else if (req.body.email) {
-                const creator = await createUser(req.body.email)
-                creatorId = creator._id
-            } else return next(new ApiError('No User found', 404))
+    const poll = await findPoll(req.params.poll_id)
 
-            const newOpt = {
-                title: req.body.title,
-                creator: creatorId,
-                description: req.body.description,
-                refId,
-                votes: []
-            };
+    if (!poll) return next(new ApiError('There is no poll for this ID', 404))
+    let creatorId;
+    let newJWT = '';
+    const refId = createRefId();
+    if (req.body.userId) {
+        //If user is in state userId will be supplied in Request Object
+        creatorId = req.body.userId
+    } else if (req.body.email) {
+        //If user is not yet logged in User has to supply email and new user is created
+        const creator = await createUser(req.body.email)
+        creatorId = creator._id
 
-            poll.options.unshift(newOpt);
+        //JWT is created for user
+        newJWT = createJsonWebToken(creatorId, 'PARTICIPANT', false, poll.refId)
 
-            poll.save().then(poll => res.json(poll.options[0]))
+        //Send email to new user
+        sendConfirmMail(req.body.email, poll, 'becomeNewParticipant')
 
-        })
-        .catch((err: Error) => res.json(err));
+    } else return next(new ApiError('No User found', 404))
+
+    //Check if option creator is in poll participants
+    let creatorInParticipants = false
+    for (let i = 0; i < poll.participants.length; i++) {
+        if (poll.participants[i].participantId.toString() === creatorId.toString()) {
+            creatorInParticipants = true
+        }
+    }
+
+    if (!creatorInParticipants && poll.creator !== creatorId) {
+
+        //Add user to participants
+        const newParticipant = {
+            participantId: creatorId,
+            participantToken: generateToken()
+        }
+
+        poll.participants.push(newParticipant)
+
+    }
+
+    //Add option to poll
+    const newOpt = {
+        title: req.body.title,
+        creator: creatorId,
+        description: req.body.description,
+        refId,
+        votes: []
+    };
+    poll.options.unshift(newOpt);
+
+
+    poll.save().then(poll => {
+
+        //If user is not in State and thus JWT was created,
+        //include it in the json response object
+        if (newJWT) {
+            res.json({
+                option: poll.options[0],
+                token: newJWT
+            })
+        }
+        res.json(poll.options[0])
+    })
+        .catch(err => res.json(err));
 
 
 });
