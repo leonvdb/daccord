@@ -45,6 +45,12 @@ export interface IUser {
 
 //Backend Interfaces
 
+export interface IJwtPayload {
+    userId: ObjectId,
+    accountLogin: boolean,
+    pollId: string
+}
+
 export interface AppAction<TPayload = any> extends Action<string> {
     payload?: TPayload
     error?: string

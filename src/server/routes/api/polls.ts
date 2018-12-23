@@ -11,6 +11,7 @@ import * as passport from 'passport';
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
 import { User, IUserDocument } from '../../models/User';
+import { IJwtPayload } from 'src/interfaces';
 
 
 //@route    POST api/polls
@@ -114,7 +115,7 @@ router.get('/:poll_id/token/:token', (req, res, next) => {
                 return next(new ApiError('Incorrect Token', 401));
             }
 
-            const payload = {
+            const payload: IJwtPayload = {
                 userId: poll.creator,
                 accountLogin: false,
                 pollId: req.params.poll_id
@@ -141,9 +142,13 @@ interface PollEditFields {
     title?: string
 }
 
-router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
 
     //TODO: Check that user is authorized to edit poll (i.e.: if user from jwt is creator)
+    const jwtPayload: IJwtPayload = req.user
+    if (jwtPayload.pollId !== req.params.poll_id) {
+        return next(new ApiError('Incorrect Token', 401));
+    }
     // Collect request body data
     const pollFields: PollEditFields = {};
     if (req.body.title) pollFields.title = req.body.title;
