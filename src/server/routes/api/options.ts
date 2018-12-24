@@ -1,8 +1,10 @@
 import * as express from 'express';
 const router = express.Router({ mergeParams: true });
-import createRefId from '../../utilities/createRefId';
+import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
-import { createJsonWebToken, sendConfirmMail, findPoll, generateToken, findUser } from './polls'
+import { findOrCreateUser, findPoll } from "../../utilities/dataBaseUtilities";
+import { createJsonWebToken } from "../../utilities/createJsonWebToken";
+import { sendConfirmMail } from "../../utilities/sendConfirmMail";
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
@@ -25,7 +27,7 @@ router.post('/', async (req, res, next) => {
         creatorId = req.body.userId
     } else if (req.body.email) {
         //If user is not yet logged in User has to supply email
-        const creator = await findUser(req.body.email)
+        const creator = await findOrCreateUser(req.body.email)
         creatorId = creator._id
     } else return next(new ApiError('Supply userId or Email', 400))
 

@@ -1,18 +1,17 @@
 import * as express from 'express';
 const router = express.Router();
-import createRefId from '../../utilities/createRefId';
+import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
 import * as asnycHandler from 'express-async-handler';
-import { transporter } from '../../config/nodemailer';
-import { mailUser, secretOrKey } from '../../config/secrets';
-import * as jwt from 'jsonwebtoken';
 import * as passport from 'passport';
 import { IJwtPayload } from 'src/interfaces';
-import { ObjectId } from 'mongodb';
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
 import { User, IUserDocument } from '../../models/User';
+import { sendConfirmMail } from '../../utilities/sendConfirmMail';
+import { createJsonWebToken } from '../../utilities/createJsonWebToken';
+import { findOrCreateUser, findPoll } from '../../utilities/dataBaseUtilities';
 
 //@route    POST api/polls
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
@@ -159,7 +158,7 @@ router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), (re
 //@params   UserEmail(could also be ID), {option.RefID: Vote,}
 router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
 
-    const userPromise = findUser(req.body.email)
+    const userPromise = findOrCreateUser(req.body.email)
     const pollPromise = findPoll(req.params.poll_id)
 
 
@@ -202,128 +201,5 @@ router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
     const response = await poll.save()
     res.json(response);
 }))
-
-
-
-export function findPoll(pollId: string) {
-    return Poll.findOne({ refId: pollId })
-        .then(validatePoll)
-        .catch()
-}
-export function findUser(email: string) {
-    return User.findOne({ email })
-        .then((user: IUserDocument) => {
-            if (!user) {
-                // Create new poll with user.id
-                return createUser(email)
-            }
-            return user
-        })
-}
-
-function validatePoll(poll: IPollDocument, ): IPollDocument {
-    //Check if poll exists
-    if (!poll) {
-        // This should work because it is handled by the asnycHandler middleware
-        const message = 'There is no poll for this ID'
-        Promise.reject(message)
-    }
-    //Check if user exists
-    return poll
-}
-
-export function createUser(email: string): Promise<IUserDocument> {
-    //No corresponding user - Create new User
-    const newUser = new User({
-        email
-    });
-
-    //Save new User and create new poll with user.id
-    return newUser.save()
-        .then((user: IUserDocument) => user)
-
-}
-
-export function createJsonWebToken(userId: ObjectId, userType: string, accountLogin: boolean, pollId: string) {
-
-    const payload: IJwtPayload = {
-        userId,
-        userType,
-        accountLogin,
-        pollId
-    }
-
-    //Sign JWT
-    const JWT = jwt.sign(payload, secretOrKey, { expiresIn: "1d" })
-    return "Bearer " + JWT
-}
-
-
-export function generateToken(): string {
-    const token = createRefId() + createRefId() + createRefId()
-    return token
-}
-
-export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType: string, token: string): void {
-
-    let mailOptions = {
-        from: mailUser,
-        to: userEmail,
-        subject: 'Error - Something went wrong',
-        html: '<p>Something went horribly wrong, please contact us.<p>'
-    }
-
-    switch (userType) {
-        case 'createNewPoll':
-            mailOptions = {
-                from: mailUser, // sender address
-                to: userEmail, // list of receivers
-                subject: `Your new Poll "${poll.title}" has been created!`, // Subject line
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to your poll </p>` // plain text body
-            };
-            break;
-
-        case 'becomeNewParticipant':
-            mailOptions = {
-                from: mailUser, // sender address
-                to: userEmail, // list of receivers
-                subject: `You became a participant of "${poll.title}"!`, // Subject line
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
-            };
-            break;
-
-        case 'resendExistingParticipant':
-            mailOptions = {
-                from: mailUser, // sender address
-                to: userEmail, // list of receivers
-                subject: `Your access link for "${poll.title}"!`, // Subject line
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
-            };
-            break;
-
-        case 'resendCreator':
-            mailOptions = {
-                from: mailUser, // sender address
-                to: userEmail, // list of receivers
-                subject: `Your access link for "${poll.title}"!`, // Subject line
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
-            };
-            break;
-
-        default:
-            break;
-    }
-
-
-    //TODO: Change console logs to log to logfile
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err)
-            console.log(err)
-        else
-            console.log(info);
-    });
-
-
-}
 
 export default router;
