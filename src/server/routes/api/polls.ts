@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
             user.polls.push(poll._id)
             await user.save()
             //Send email with token to creator
-            sendConfirmMail(user.email, poll, 'createNewPoll')
+            sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
 
             const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
             res.json({ poll, token })
@@ -210,7 +210,7 @@ export function findPoll(pollId: string) {
         .then(validatePoll)
         .catch()
 }
-function findUser(email: string) {
+export function findUser(email: string) {
     return User.findOne({ email })
         .then((user: IUserDocument) => {
             if (!user) {
@@ -264,7 +264,7 @@ export function generateToken(): string {
     return token
 }
 
-export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType: string): void {
+export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType: string, token: string): void {
 
     let mailOptions = {
         from: mailUser,
@@ -279,7 +279,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
                 from: mailUser, // sender address
                 to: userEmail, // list of receivers
                 subject: `Your new Poll "${poll.title}" has been created!`, // Subject line
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${poll.creatorToken}">here</a> to get to your poll </p>` // plain text body
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to your poll </p>` // plain text body
             };
             break;
 
@@ -288,8 +288,27 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
                 from: mailUser, // sender address
                 to: userEmail, // list of receivers
                 subject: `You became a participant of "${poll.title}"!`, // Subject line
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/$NEWTOKENCOMESHERE">here</a> to get to the poll </p>` // plain text body
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
             };
+            break;
+
+        case 'resendExistingParticipant':
+            mailOptions = {
+                from: mailUser, // sender address
+                to: userEmail, // list of receivers
+                subject: `Your access link for "${poll.title}"!`, // Subject line
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
+            };
+            break;
+
+        case 'resendCreator':
+            mailOptions = {
+                from: mailUser, // sender address
+                to: userEmail, // list of receivers
+                subject: `Your access link for "${poll.title}"!`, // Subject line
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
+            };
+            break;
 
         default:
             break;

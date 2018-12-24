@@ -2,7 +2,7 @@ import * as express from 'express';
 const router = express.Router({ mergeParams: true });
 import createRefId from '../../utilities/createRefId';
 import { ApiError } from '../../utilities/ApiError';
-import { createUser, createJsonWebToken, sendConfirmMail, findPoll, generateToken } from './polls'
+import { createJsonWebToken, sendConfirmMail, findPoll, generateToken, findUser } from './polls'
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
@@ -13,36 +13,69 @@ import { Poll, IPollDocument } from '../../models/Poll';
 router.post('/', async (req, res, next) => {
 
     const poll = await findPoll(req.params.poll_id)
-
     if (!poll) return next(new ApiError('There is no poll for this ID', 404))
+
+
+    //Check if user logged in and set creatorId
     let creatorId;
-    let newJWT = '';
-    const refId = createRefId();
+    let loggedIn = false;
     if (req.body.userId) {
         //If user is in state userId will be supplied in Request Object
+        loggedIn = true;
         creatorId = req.body.userId
     } else if (req.body.email) {
-        //If user is not yet logged in User has to supply email and new user is created
-        const creator = await createUser(req.body.email)
+        //If user is not yet logged in User has to supply email
+        const creator = await findUser(req.body.email)
         creatorId = creator._id
+    } else return next(new ApiError('Supply userId or Email', 400))
 
-        //JWT is created for user
-        newJWT = createJsonWebToken(creatorId, 'PARTICIPANT', false, poll.refId)
 
-        //Send email to new user
-        sendConfirmMail(req.body.email, poll, 'becomeNewParticipant')
-
-    } else return next(new ApiError('No User found', 404))
-
-    //Check if option creator is in poll participants
-    let creatorInParticipants = false
+    //Check if creatorParticipating
+    let creatorParticipating = false
+    let creatorPosition = -1
+    if (poll.creator.toString() === creatorId.toString()) {
+        creatorParticipating = true
+    };
     for (let i = 0; i < poll.participants.length; i++) {
         if (poll.participants[i].participantId.toString() === creatorId.toString()) {
-            creatorInParticipants = true
+            creatorParticipating = true
+            creatorPosition = i
         }
     }
 
-    if (!creatorInParticipants && poll.creator !== creatorId) {
+    if (!loggedIn && creatorParticipating) {
+        if (req.body.requestLink) {
+            if (poll.creator.toString() === creatorId.toString()) {
+                //CASE: PollCreator not logged in, asking for link
+                sendConfirmMail(
+                    req.body.email,
+                    poll,
+                    'resendCreator',
+                    poll.creatorToken
+                )
+            } else {
+                //CASE: User not logged in, participating, asking for link
+                sendConfirmMail(
+                    req.body.email,
+                    poll,
+                    'resendExistingParticipant',
+                    poll.participants[creatorPosition].participantToken
+                )
+            }
+            return res.json({ "msg": "New Link has been sent." })
+
+        } else {
+            //CASE: PollCreator not logged in, not asking for link
+            //CASE: User not logged in, participating, not asking for link
+            //----TODO-----// Put this validation into the front-end
+            return next(new ApiError('Participant already exists - Authenticate or request new link.', 401))
+        }
+    }
+
+    let newJWT = '';
+    if (!creatorParticipating) {
+        //CASE: User not logged in, not participating - give token
+        //CASE: User logged in, not participating - give new token
 
         //Add user to participants
         const newParticipant = {
@@ -50,11 +83,19 @@ router.post('/', async (req, res, next) => {
             participantToken: generateToken()
         }
 
+        //Send email to new user
+        sendConfirmMail(req.body.email, poll, 'becomeNewParticipant', newParticipant.participantToken)
+
         poll.participants.push(newParticipant)
 
+        if (!loggedIn) {
+            //JWT is created for user and will be returned in Request Object
+            newJWT = createJsonWebToken(creatorId, 'PARTICIPANT', false, poll.refId)
+        }
     }
 
     //Add option to poll
+    const refId = createRefId();
     const newOpt = {
         title: req.body.title,
         creator: creatorId,
