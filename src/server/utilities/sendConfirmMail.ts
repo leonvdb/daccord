@@ -14,7 +14,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
                 from: mailUser,
                 to: userEmail,
                 subject: `Your new Poll "${poll.title}" has been created!`,
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to your poll </p>` // plain text body
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to your poll </p>` // plain text body
             };
             break;
         case 'becomeNewParticipant':
@@ -22,7 +22,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
                 from: mailUser,
                 to: userEmail,
                 subject: `You became a participant of "${poll.title}"!`,
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to the poll </p>` // plain text body
             };
             break;
         case 'resendExistingParticipant':
@@ -30,7 +30,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
                 from: mailUser,
                 to: userEmail,
                 subject: `Your access link for "${poll.title}"!`,
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to the poll </p>` // plain text body
             };
             break;
         case 'resendCreator':
@@ -38,7 +38,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
                 from: mailUser,
                 to: userEmail,
                 subject: `Your access link for "${poll.title}"!`,
-                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}/token/${token}">here</a> to get to the poll </p>` // plain text body
+                html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to the poll </p>` // plain text body
             };
             break;
         default:

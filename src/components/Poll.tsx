@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispa
 class Poll extends React.Component<Props> {
 
     componentDidMount() {
-        this.props.getPoll(this.props.match.params.poll_id);
+        this.props.getPoll(this.props.match.params.poll_id, this.props.location.search);
     }
 
     componentWillUnmount() {
@@ -39,7 +39,7 @@ const mapStateToProps = (state: Store) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
         clearPollFromState: () => dispatch(clearPollFromState()),
-        getPoll: (pollId: string) => dispatch(getPoll(pollId))
+        getPoll: (pollId: string, queryParam: string) => dispatch(getPoll(pollId, queryParam))
     }
 }
 
@@ -49,6 +49,6 @@ interface PropsFromState {
     poll: IPoll
 }
 interface PropsFromDispatch {
-    getPoll: (pollId: string) => void
+    getPoll: (pollId: string, queryParam: string) => void
     clearPollFromState: () => void
 }

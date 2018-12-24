@@ -4,9 +4,9 @@ import { INewPoll, ThunkResult, IPoll } from 'src/interfaces';
 import { ActionCreator } from 'redux';
 import { AppAction } from 'src/interfaces';
 
-export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string) => async dispatch => {
+export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, queryParam: string) => async dispatch => {
     // TODO: Add Error handling for invalid id
-    const res = await axios.get(`/api/polls/${pollId}/`);
+    const res = await axios.get(`/api/polls/${pollId}${queryParam}`);
     return dispatch({
         type: GET_POLL,
         payload: res.data

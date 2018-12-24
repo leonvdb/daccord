@@ -21,7 +21,7 @@ export default function (state = initialState, action: AppAction) {
         case GET_POLL:
             return {
                 ...state,
-                poll: action.payload
+                poll: action.payload.poll
             }
         case ADD_OPTION:
             return {

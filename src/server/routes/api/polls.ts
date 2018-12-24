@@ -70,33 +70,25 @@ router.post('/', (req, res) => {
 //@route    GET api/polls/:poll_id
 //@desc     GET poll by id
 //@access   Private or Public // TODO: Decide wether it should be private or public
-router.get('/:poll_id', (req, res) => {
-    Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            //TODO: Adjust so that Creator Token is not exposed in response object.
-            return res.json(poll)
-        })
-        .catch((err: Error) => res.json(err));
-});
-
-//@route    GET api/polls/:poll_id/token/:token
-//@desc     GET poll by id and authenticate user by token
-//@access   Public
-router.get('/:poll_id/token/:token', (req, res, next) => {
-    Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return next(new ApiError('There is no poll for this ID', 404))
-
-            if (req.params.token !== poll.creatorToken) {
-                return next(new ApiError('Incorrect Token', 401));
-            }
-
-            const token = createJsonWebToken(poll.creator, 'CREATOR', false, req.params.poll_id)
+router.get('/:poll_id', async (req, res, next) => {
+    const poll = await findPoll(req.params.poll_id)
+    let token = '';
+    if (req.query.token) {
+        if (req.query.token === poll.creatorToken) {
+            token = createJsonWebToken(poll.creator, 'CREATOR', false, req.params.poll_id)
             return res.json({ poll, token })
+        }
 
-        })
-        .catch((err: Error) => res.json(err));
+        for (let i = 0; i < poll.participants.length; i++) {
+            if (poll.participants[i].participantToken === req.query.token) {
+                const token = createJsonWebToken(poll.creator, 'PARTICIPANT', false, req.params.poll_id)
+                return res.json({ poll, token })
+            }
+        }
+        return next(new ApiError('Incorrect Token', 401));
+    }
+    //TODO: Adjust so that Creator Token is not exposed in response object.
+    return res.json({ poll, token })
 });
 
 //@route    PUT api/polls/:poll_id
