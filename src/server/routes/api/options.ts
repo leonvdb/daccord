@@ -9,6 +9,7 @@ import { sendConfirmMail } from "../../utilities/sendConfirmMail";
 
 //Load Models
 import { IPollDocument } from '../../models/Poll';
+import { IJwtPayload } from 'src/interfaces';
 
 
 //@route    POST api/polls/:poll_id/options
@@ -153,8 +154,17 @@ router.get('/:opt_id', async (req, res, next) => {
 router.put('/:opt_id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
 
     const poll = await findPoll(req.params.poll_id)
-    const { index, error } = findOption(poll, req.params.opt_id)
+    const { option, index, error } = findOption(poll, req.params.opt_id)
     if (error) next(new ApiError(error, 404))
+
+    const jwtPayload: IJwtPayload = req.user
+    if (
+        jwtPayload.pollId !== req.params.poll_id ||
+        jwtPayload.userId.toString() !== option.creator.toString()
+    ) {
+        return next(new ApiError('Incorrect Token', 401));
+    }
+
 
     //Update option
     if (req.body.title) poll.options[index].title = req.body.title;
@@ -168,11 +178,19 @@ router.put('/:opt_id', passport.authenticate('jwt', { session: false }), async (
 //@route    DELETE api/polls/:poll_id/options/:opt_id
 //@desc     Delete option
 //@access   Private // TODO: Make route private
-router.delete('/:opt_id', async (req, res, next) => {
+router.delete('/:opt_id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
 
     const poll = await findPoll(req.params.poll_id)
-    const { index, error } = findOption(poll, req.params.opt_id)
+    const { option, index, error } = findOption(poll, req.params.opt_id)
     if (error) next(new ApiError(error, 404))
+
+    const jwtPayload: IJwtPayload = req.user
+    if (
+        jwtPayload.pollId !== req.params.poll_id ||
+        jwtPayload.userId.toString() !== option.creator.toString()
+    ) {
+        return next(new ApiError('Incorrect Token', 401));
+    }
 
     //Delete option from options array
     poll.options.splice(index, 1);
