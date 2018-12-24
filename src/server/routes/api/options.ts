@@ -1,5 +1,6 @@
 import * as express from 'express';
 const router = express.Router({ mergeParams: true });
+import * as passport from 'passport';
 import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
 import { findOrCreateUser, findPoll } from "../../utilities/dataBaseUtilities";
@@ -7,7 +8,8 @@ import { createJsonWebToken } from "../../utilities/createJsonWebToken";
 import { sendConfirmMail } from "../../utilities/sendConfirmMail";
 
 //Load Models
-import { Poll, IPollDocument } from '../../models/Poll';
+import { IPollDocument } from '../../models/Poll';
+
 
 //@route    POST api/polls/:poll_id/options
 //@desc     Create // TODO : Include Edit to this request
@@ -15,8 +17,6 @@ import { Poll, IPollDocument } from '../../models/Poll';
 router.post('/', async (req, res, next) => {
 
     const poll = await findPoll(req.params.poll_id)
-    if (!poll) return next(new ApiError('There is no poll for this ID', 404))
-
 
     //Check if user logged in and set creatorId
     let creatorId;
@@ -128,83 +128,74 @@ router.post('/', async (req, res, next) => {
 //@route    GET api/polls/:poll_id/options
 //@desc     GET all options of poll
 //@access   Private // TODO: Make route private
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 
-    Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            return res.json(poll.options)
-        })
-        .catch((err: Error) => res.json(err));
-
+    const poll = await findPoll(req.params.poll_id)
+    return res.json(poll.options)
 
 });
 
 //@route    GET api/polls/:poll_id/options/:opt_id
 //@desc     GET option by Id
 //@access   Private // TODO: Make route private
-router.get('/:opt_id', (req, res) => {
+router.get('/:opt_id', async (req, res, next) => {
 
-    Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            const target = poll.options.find(option => option.refId === req.params.opt_id);
-            if (!target) return res.status(404).json({ 'msg': 'There is no option for this ID' });
-            return res.json(target)
-        })
-        .catch((err: Error) => res.json(err));
-
+    const poll = await findPoll(req.params.poll_id)
+    const { option, error } = findOption(poll, req.params.opt_id)
+    if (error) next(new ApiError(error, 404))
+    return res.json(option)
 
 });
 
 //@route    PUT api/polls/:poll_id/options/:opt_id
 //@desc     Update option
 //@access   Private // TODO: Make route private
-router.put('/:opt_id', (req, res) => {
-    Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            const targetIndex = poll.options
-                .map(option => option.refId)
-                .indexOf(req.params.opt_id)
+router.put('/:opt_id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
 
-            if (targetIndex === -1) return res.status(404).json({ 'msg': 'There is no option for this ID' });
+    const poll = await findPoll(req.params.poll_id)
+    const { index, error } = findOption(poll, req.params.opt_id)
+    if (error) next(new ApiError(error, 404))
 
-            //Update option
-            if (req.body.title) poll.options[targetIndex].title = req.body.title;
-            if (req.body.description) poll.options[targetIndex].description = req.body.description;
+    //Update option
+    if (req.body.title) poll.options[index].title = req.body.title;
+    if (req.body.description) poll.options[index].description = req.body.description;
 
-            //Save
-            poll.save().then(poll => res.json(poll));
-        })
-        .catch((err: Error) => res.json(err));
-
+    //Save
+    poll.save().then(poll => res.json(poll));
 
 });
 
 //@route    DELETE api/polls/:poll_id/options/:opt_id
 //@desc     Delete option
 //@access   Private // TODO: Make route private
-router.delete('/:opt_id', (req, res) => {
+router.delete('/:opt_id', async (req, res, next) => {
 
-    Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            const targetIndex = poll.options
-                .map(option => option.refId)
-                .indexOf(req.params.opt_id)
+    const poll = await findPoll(req.params.poll_id)
+    const { index, error } = findOption(poll, req.params.opt_id)
+    if (error) next(new ApiError(error, 404))
 
-            if (targetIndex === -1) return res.status(404).json({ 'msg': 'There is no option for this ID' });
+    //Delete option from options array
+    poll.options.splice(index, 1);
 
-            //Delete option from options array
-            poll.options.splice(targetIndex, 1);
-
-            //Save
-            poll.save().then(poll => res.json(poll));
-        })
-        .catch((err: Error) => res.json(err));
-
+    //Save
+    poll.save().then(poll => res.json(poll));
 
 });
+
+function findOption(poll: IPollDocument, optId: string) {
+    const targetIndex = poll.options
+        .map(option => option.refId)
+        .indexOf(optId)
+    let error = ''
+    console.log(targetIndex);
+    if (targetIndex === -1) {
+        error = 'There is no option for this ID'
+    }
+    return {
+        option: poll.options[targetIndex],
+        index: targetIndex,
+        error
+    }
+}
 
 export default router;
