@@ -13,6 +13,18 @@ export function findOrCreateUser(email: string) {
         });
 }
 
+export function findUserById(userId: string) {
+    return User.findById(userId)
+        .then((user: IUserDocument) => {
+            if (!user) {
+                // Create new poll with user.id
+                const message = 'There is no user for this ID'
+                Promise.reject(message)
+            }
+            return user;
+        });
+}
+
 
 function createUser(email: string): Promise<IUserDocument> {
     //No corresponding user - Create new User

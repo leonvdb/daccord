@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 import * as passport from 'passport';
 import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
-import { findOrCreateUser, findPoll } from "../../utilities/dataBaseUtilities";
+import { findOrCreateUser, findPoll, findUserById } from "../../utilities/dataBaseUtilities";
 import { createJsonWebToken } from "../../utilities/createJsonWebToken";
 import { sendConfirmMail } from "../../utilities/sendConfirmMail";
 
@@ -20,27 +20,27 @@ router.post('/', async (req, res, next) => {
     const poll = await findPoll(req.params.poll_id)
 
     //Check if user logged in and set creatorId
-    let creatorId;
+    let optionCreator;
     let loggedIn = false;
     if (req.body.userId) {
         //If user is in state userId will be supplied in Request Object
         loggedIn = true;
-        creatorId = req.body.userId
+        optionCreator = await findUserById(req.body.userId)
     } else if (req.body.email) {
         //If user is not yet logged in User has to supply email
-        const creator = await findOrCreateUser(req.body.email)
-        creatorId = creator._id
+        optionCreator = await findOrCreateUser(req.body.email)
     } else return next(new ApiError('Supply userId or Email', 400))
+
 
 
     //Check if creatorParticipating
     let creatorParticipating = false
     let creatorPosition = -1
-    if (poll.creator.toString() === creatorId.toString()) {
+    if (poll.creator.toString() === optionCreator._id.toString()) {
         creatorParticipating = true
     };
     for (let i = 0; i < poll.participants.length; i++) {
-        if (poll.participants[i].participantId.toString() === creatorId.toString()) {
+        if (poll.participants[i].participantId.toString() === optionCreator._id.toString()) {
             creatorParticipating = true
             creatorPosition = i
         }
@@ -48,10 +48,10 @@ router.post('/', async (req, res, next) => {
 
     if (!loggedIn && creatorParticipating) {
         if (req.body.requestLink) {
-            if (poll.creator.toString() === creatorId.toString()) {
+            if (poll.creator.toString() === optionCreator._id.toString()) {
                 //CASE: PollCreator not logged in, asking for link
                 sendConfirmMail(
-                    req.body.email,
+                    optionCreator.email,
                     poll,
                     'resendCreator',
                     poll.creatorToken
@@ -59,7 +59,7 @@ router.post('/', async (req, res, next) => {
             } else {
                 //CASE: User not logged in, participating, asking for link
                 sendConfirmMail(
-                    req.body.email,
+                    optionCreator.email,
                     poll,
                     'resendExistingParticipant',
                     poll.participants[creatorPosition].participantToken
@@ -82,26 +82,22 @@ router.post('/', async (req, res, next) => {
 
         //Add user to participants
         const newParticipant = {
-            participantId: creatorId,
+            participantId: optionCreator._id,
             participantToken: generateToken()
         }
 
         //Send email to new user
-        sendConfirmMail(req.body.email, poll, 'becomeNewParticipant', newParticipant.participantToken)
-
+        sendConfirmMail(optionCreator.email, poll, 'becomeNewParticipant', newParticipant.participantToken)
         poll.participants.push(newParticipant)
+        newJWT = createJsonWebToken(optionCreator._id, 'PARTICIPANT', false, poll.refId)
 
-        if (!loggedIn) {
-            //JWT is created for user and will be returned in Request Object
-            newJWT = createJsonWebToken(creatorId, 'PARTICIPANT', false, poll.refId)
-        }
     }
 
     //Add option to poll
     const refId = createRefId();
     const newOpt = {
         title: req.body.title,
-        creator: creatorId,
+        creator: optionCreator._id,
         description: req.body.description,
         refId,
         votes: []
@@ -114,12 +110,16 @@ router.post('/', async (req, res, next) => {
         //If user is not in State and thus JWT was created,
         //include it in the json response object
         if (newJWT) {
-            res.json({
+            console.log({
+                option: poll.options[0],
+                token: newJWT
+            })
+            return res.json({
                 option: poll.options[0],
                 token: newJWT
             })
         }
-        res.json(poll.options[0])
+        return res.json({option : poll.options[0], token: ''})
     })
         .catch(err => res.json(err));
 

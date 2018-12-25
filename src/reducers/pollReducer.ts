@@ -28,7 +28,7 @@ export default function (state = initialState, action: AppAction) {
                 ...state,
                 poll: {
                     ...state.poll,
-                    options: [action.payload, ...state.poll.options]
+                    options: [action.payload.option, ...state.poll.options]
                 }
             }
         case CREATE_POLL:

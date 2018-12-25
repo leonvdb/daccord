@@ -60,7 +60,9 @@ class AddOption extends React.Component<Props, State> {
 
         const newOption = {
             title,
-            description
+            description,
+            userId : this.props.userId
+
         };
 
         this.props.addOption(newOption, this.props.pollId);
@@ -122,11 +124,13 @@ class AddOption extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => ({
-    pollId: state.poll.poll.refId
+    pollId: state.poll.poll.refId,
+    userId: state.user.user.userId
 });
 
 interface PropsFromState {
     pollId: string
+    userId: string
 }
 interface PropsFromDispatch {
     addOption: (option: INewOption, pollId: string) => void
