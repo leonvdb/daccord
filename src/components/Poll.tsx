@@ -15,6 +15,7 @@ interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispa
 class Poll extends React.Component<Props> {
 
     componentDidMount() {
+        //If token parameter is included getPoll authenticates the user and redirects to address without token
         this.props.getPoll(this.props.match.params.poll_id, this.props.location.search, this.props.history);
     }
 

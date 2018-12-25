@@ -2,26 +2,15 @@ import { GET_POLL, CREATE_POLL, CLEAR_POLL_FROM_STATE, SET_CURRENT_USER } from '
 import axios from 'axios';
 import { INewPoll, ThunkResult, IPoll } from 'src/interfaces';
 import { ActionCreator } from 'redux';
-import { AppAction, IUserState, IUserJwt } from 'src/interfaces';
-import setAuthToken from '../utilities/setAuthToken';
-import * as jwtDecode from 'jwt-decode';
+import { AppAction, IUserState } from 'src/interfaces';
 import { History } from 'history';
+import setUserFromJwt from '../utilities/setUserFromJwt';
 
 export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, queryParam: string, history: History) => async dispatch => {
     // TODO: Add Error handling for invalid id
     const res = await axios.get(`/api/polls/${pollId}${queryParam}`);
-    const { token } = res.data;
-    if (token) {
-        localStorage.setItem('jwtToken', token);
-        setAuthToken(token);
-        const decoded: IUserJwt = jwtDecode(token);
-        const user = {
-            accountLogin: decoded.accountLogin,
-            pollId: decoded.pollId,
-            userId: decoded.userId,
-            userType: decoded.userType
-        }
-        dispatch(setCurrentUser(user))
+    if (res.data.token) {
+        setUserFromJwt(res.data.token, dispatch)
         history.push(`/poll/${pollId}`)
     }
     return dispatch({
@@ -32,6 +21,7 @@ export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, query
 
 export const createPoll: ActionCreator<ThunkResult<IPoll>> = (poll: INewPoll) => async dispatch => {
     const res = await axios.post(`/api/polls`, poll)
+    setUserFromJwt(res.data.token, dispatch)
     dispatch({
         type: CREATE_POLL,
         payload: res.data
@@ -51,3 +41,4 @@ export const setCurrentUser: ActionCreator<AppAction> = (user: IUserState) => {
         payload: user
     }
 }
+
