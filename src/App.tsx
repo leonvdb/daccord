@@ -2,6 +2,10 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import store from './store';
+import setAuthToken from './utilities/setAuthToken';
+import * as jwtDecode from 'jwt-decode';
+import { IUserJwt } from './interfaces';
+import { setCurrentUser } from './actions/pollActions';
 
 import CreatePoll from './components/CreatePoll';
 import Landing from './components/Landing';
@@ -11,6 +15,18 @@ import NotFound from './components/NotFound';
 import Poll from './components/Poll';
 
 import './App.css';
+
+if (localStorage.jwtToken) {
+  setAuthToken(localStorage.jwtToken)
+  const decoded: IUserJwt = jwtDecode(localStorage.jwtToken);
+  const user = {
+    accountLogin: decoded.accountLogin,
+    pollId: decoded.pollId,
+    userId: decoded.userId,
+    userType: decoded.userType
+  }
+  store.dispatch(setCurrentUser(user))
+}
 
 class App extends React.Component {
   public render() {

@@ -10,19 +10,11 @@ export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, query
     // TODO: Add Error handling for invalid id
     const res = await axios.get(`/api/polls/${pollId}${queryParam}`);
     const { token } = res.data;
-    console.log("Token", token)
-    let user = {
-        accountLogin: false,
-        pollId: '',
-        userId: '',
-        userType: ''
-    }
-
     if (token) {
         localStorage.setItem('jwtToken', token);
         setAuthToken(token);
         const decoded: IUserJwt = jwtDecode(token);
-        user = {
+        const user = {
             accountLogin: decoded.accountLogin,
             pollId: decoded.pollId,
             userId: decoded.userId,
@@ -51,7 +43,7 @@ export const clearPollFromState: ActionCreator<AppAction> = () => {
     }
 }
 
-const setCurrentUser: ActionCreator<AppAction> = (user: IUserState) => {
+export const setCurrentUser: ActionCreator<AppAction> = (user: IUserState) => {
     return {
         type: SET_CURRENT_USER,
         payload: user
