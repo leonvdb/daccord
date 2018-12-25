@@ -5,18 +5,22 @@ import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { INewOption } from '../../interfaces';
 import { Store } from '../../reducers';
+import validateEmail from 'src/utilities/validateEmail';
 
 interface Props extends PropsFromState, PropsFromDispatch { }
 
 interface State {
     title: string
     description: string
+    email: string
     errors: Errors
     modalOpen: boolean
 }
 
 interface Errors {
     title?: string
+    user?: string
+    email?: string
 }
 
 
@@ -25,6 +29,7 @@ class AddOption extends React.Component<Props, State> {
     state: State = {
         title: '',
         description: '',
+        email: '',
         errors: {},
         modalOpen: false
     };
@@ -42,13 +47,24 @@ class AddOption extends React.Component<Props, State> {
     onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const { title, description } = this.state
+        const { title, description, email } = this.state
+        const { userId } = this.props
 
         // Form validation
         const errors: Errors = {}
 
         if (title.length <= 0) {
             errors.title = 'Please enter a title'
+        }
+
+
+        if (!userId && !validateEmail(email)) {
+            errors.user = 'No logged in user'
+            if (email.length === 0) {
+                errors.email = 'You are not logged in - To post an option enter your email or log into your account.'
+            } else {
+                errors.email = 'Please enter a valid email address.'
+            }
         }
 
         if (Object.keys(errors).length > 0) {
@@ -61,8 +77,8 @@ class AddOption extends React.Component<Props, State> {
         const newOption = {
             title,
             description,
-            userId : this.props.userId
-
+            userId,
+            email
         };
 
         this.props.addOption(newOption, this.props.pollId);
@@ -71,6 +87,7 @@ class AddOption extends React.Component<Props, State> {
             modalOpen: false,
             title: '',
             description: '',
+            email: ''
         });
 
     }
@@ -84,9 +101,24 @@ class AddOption extends React.Component<Props, State> {
 
     render() {
 
-        const { title, description, errors, modalOpen } = this.state
-        return (
 
+        const { title, description, errors, modalOpen, email } = this.state
+
+        let emailField;
+        if (errors.user) {
+            emailField = <div className="form-group">
+                <TextInputGroup
+                    label="Email"
+                    name="email"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={this.onChange}
+                    error={errors.email}
+                />
+            </div>
+        }
+
+        return (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center align-items-center">
                 <button
                     id="Modal"
@@ -113,6 +145,7 @@ class AddOption extends React.Component<Props, State> {
                                         value={description}
                                         onChange={this.onChange} />
                                 </div>
+                                {emailField}
                                 <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Add Option</button>
                             </form>
                         </div>

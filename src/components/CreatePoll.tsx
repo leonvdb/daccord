@@ -6,6 +6,7 @@ import { INewPoll, IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
 import { NamespacesConsumer } from 'react-i18next';
+import validateEmail from 'src/utilities/validateEmail';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -51,8 +52,7 @@ class CreatePoll extends React.Component<Props, State> {
 
         // Form validation
         const errors: Errors = {}
-        const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
-        if (!validEmail) {
+        if (!validateEmail(email)) {
             errors.email = 'Please enter a valid email address.'
         }
 
