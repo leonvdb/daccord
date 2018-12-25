@@ -43,6 +43,18 @@ export interface IUser {
     name: string
 }
 
+export interface IUserState {
+    accountLogin: boolean,
+    pollId: string,
+    userId: string,
+    userType: string
+}
+
+export interface IUserJwt extends IUserState {
+    exp: number
+    iat: number
+}
+
 
 //Backend Interfaces
 
