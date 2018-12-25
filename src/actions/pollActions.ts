@@ -5,8 +5,9 @@ import { ActionCreator } from 'redux';
 import { AppAction, IUserState, IUserJwt } from 'src/interfaces';
 import setAuthToken from '../utilities/setAuthToken';
 import * as jwtDecode from 'jwt-decode';
+import { History } from 'history';
 
-export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, queryParam: string) => async dispatch => {
+export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, queryParam: string, history: History) => async dispatch => {
     // TODO: Add Error handling for invalid id
     const res = await axios.get(`/api/polls/${pollId}${queryParam}`);
     const { token } = res.data;
@@ -21,6 +22,7 @@ export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, query
             userType: decoded.userType
         }
         dispatch(setCurrentUser(user))
+        history.push(`/poll/${pollId}`)
     }
     return dispatch({
         type: GET_POLL,
