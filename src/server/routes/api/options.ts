@@ -71,7 +71,8 @@ router.post('/', async (req, res, next) => {
             //CASE: PollCreator not logged in, not asking for link
             //CASE: User not logged in, participating, not asking for link
             //----TODO-----// Put this validation into the front-end
-            return next(new ApiError('Participant already exists - Authenticate or request new link.', 401))
+            //Participant already exists - Authenticate or request new link.
+            return next(new ApiError('PARTICIPANT_ALREADY_EXISTS', 401))
         }
     }
 
@@ -110,16 +111,12 @@ router.post('/', async (req, res, next) => {
         //If user is not in State and thus JWT was created,
         //include it in the json response object
         if (newJWT) {
-            console.log({
-                option: poll.options[0],
-                token: newJWT
-            })
             return res.json({
                 option: poll.options[0],
                 token: newJWT
             })
         }
-        return res.json({option : poll.options[0], token: ''})
+        return res.json({ option: poll.options[0], token: '' })
     })
         .catch(err => res.json(err));
 
@@ -205,7 +202,6 @@ function findOption(poll: IPollDocument, optId: string) {
         .map(option => option.refId)
         .indexOf(optId)
     let error = ''
-    console.log(targetIndex);
     if (targetIndex === -1) {
         error = 'There is no option for this ID'
     }
