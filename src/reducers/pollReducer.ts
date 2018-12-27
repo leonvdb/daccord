@@ -21,20 +21,20 @@ export default function (state = initialState, action: AppAction) {
         case GET_POLL:
             return {
                 ...state,
-                poll: action.payload
+                poll: action.payload.poll
             }
         case ADD_OPTION:
             return {
                 ...state,
                 poll: {
                     ...state.poll,
-                    options: [action.payload, ...state.poll.options]
+                    options: [action.payload.option, ...state.poll.options]
                 }
             }
         case CREATE_POLL:
             return {
                 ...state,
-                poll: action.payload
+                poll: action.payload.poll
             }
         case CLEAR_POLL_FROM_STATE:
             return {

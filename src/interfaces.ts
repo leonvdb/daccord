@@ -20,6 +20,7 @@ export interface INewPoll {
 
 
 export interface IOption extends INewOption {
+    creator: ObjectId
     refId: string
     votes: IVote[]
 }
@@ -42,8 +43,27 @@ export interface IUser {
     name: string
 }
 
+export interface IUserState {
+    accountLogin: boolean,
+    pollId: string,
+    userId: string,
+    userType: string
+}
+
+export interface IUserJwt extends IUserState {
+    exp: number
+    iat: number
+}
+
 
 //Backend Interfaces
+
+export interface IJwtPayload {
+    userId: ObjectId,
+    userType: string,
+    accountLogin: boolean,
+    pollId: string
+}
 
 export interface AppAction<TPayload = any> extends Action<string> {
     payload?: TPayload

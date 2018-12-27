@@ -1,13 +1,17 @@
 import * as express from 'express';
 const router = express.Router();
-import createRefId from '../../utilities/createRefId';
+import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
+import { ApiError } from '../../utilities/ApiError';
+import * as asnycHandler from 'express-async-handler';
+import * as passport from 'passport';
+import { IJwtPayload } from 'src/interfaces';
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
 import { User, IUserDocument } from '../../models/User';
-import { ApiError } from '../../utilities/ApiError';
-import * as asnycHandler from 'express-async-handler'
-
+import { sendConfirmMail } from '../../utilities/sendConfirmMail';
+import { createJsonWebToken } from '../../utilities/createJsonWebToken';
+import { findOrCreateUser, findPoll } from '../../utilities/dataBaseUtilities';
 
 //@route    POST api/polls
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
@@ -35,19 +39,28 @@ router.post('/', (req, res) => {
     async function createNewPoll(user: IUserDocument): Promise<void> {
 
         const refId = createRefId();
+        const creatorToken = generateToken();
 
         const newPoll = new Poll({
             title: req.body.title,
             creator: user.id,
+            creatorToken,
             refId
         });
 
-        //Save new poll
+
         try {
+            //Save new poll
             const poll = await newPoll.save()
+            //Add poll ref to user
             user.polls.push(poll._id)
             await user.save()
-            res.json(poll)
+            //Send email with token to creator
+            sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
+
+            const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
+            res.json({ poll, token })
+
         } catch (error) {
             res.json(error)
         }
@@ -56,14 +69,26 @@ router.post('/', (req, res) => {
 
 //@route    GET api/polls/:poll_id
 //@desc     GET poll by id
-//@access   Private // TODO: Make route private
-router.get('/:poll_id', (req, res) => {
-    Poll.findOne({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            return res.json(poll)
-        })
-        .catch((err: Error) => res.json(err));
+//@access   Private or Public // TODO: Decide wether it should be private or public
+router.get('/:poll_id', async (req, res, next) => {
+    const poll = await findPoll(req.params.poll_id)
+    let token = '';
+    if (req.query.token) {
+        if (req.query.token === poll.creatorToken) {
+            token = createJsonWebToken(poll.creator, 'CREATOR', false, req.params.poll_id)
+            return res.json({ poll, token })
+        }
+
+        for (let i = 0; i < poll.participants.length; i++) {
+            if (poll.participants[i].participantToken === req.query.token) {
+                const token = createJsonWebToken(poll.creator, 'PARTICIPANT', false, req.params.poll_id)
+                return res.json({ poll, token })
+            }
+        }
+        return next(new ApiError('Incorrect Token', 401));
+    }
+    //TODO: Adjust so that Creator Token is not exposed in response object.
+    return res.json({ poll, token })
 });
 
 //@route    PUT api/polls/:poll_id
@@ -75,12 +100,16 @@ interface PollEditFields {
     title?: string
 }
 
-router.put('/:poll_id', (req, res) => {
+router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
 
+    //TODO: Check that user is authorized to edit poll (i.e.: if user from jwt is creator)
+    const jwtPayload: IJwtPayload = req.user
+    if (jwtPayload.pollId !== req.params.poll_id) {
+        return next(new ApiError('Incorrect Token', 401));
+    }
     // Collect request body data
     const pollFields: PollEditFields = {};
     if (req.body.title) pollFields.title = req.body.title;
-
     //Update poll
     Poll.findOneAndUpdate(
         { refId: req.params.poll_id },
@@ -100,7 +129,12 @@ router.put('/:poll_id', (req, res) => {
 //@route    DELETE api/polls/:poll_id
 //@desc     Delete poll
 //@access   Private // TODO: Make route private
-router.delete('/:poll_id', (req, res) => {
+router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    const jwtPayload: IJwtPayload = req.user
+    console.log(jwtPayload)
+    if (jwtPayload.pollId !== req.params.poll_id) {
+        return next(new ApiError('Incorrect Token', 401));
+    }
     Poll.findOneAndRemove({ refId: req.params.poll_id })
         .then((poll: IPollDocument) => {
             if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
@@ -116,7 +150,7 @@ router.delete('/:poll_id', (req, res) => {
 //@params   UserEmail(could also be ID), {option.RefID: Vote,}
 router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
 
-    const userPromise = findUser(req.body.email)
+    const userPromise = findOrCreateUser(req.body.email)
     const pollPromise = findPoll(req.params.poll_id)
 
 
@@ -159,46 +193,5 @@ router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
     const response = await poll.save()
     res.json(response);
 }))
-
-
-
-function findPoll(pollId: string) {
-    return Poll.findOne({ refId: pollId })
-        .then(validatePoll)
-}
-function findUser(email: string) {
-    return User.findOne({ email })
-        .then((user: IUserDocument) => {
-            if (!user) {
-                // Create new poll with user.id
-                return createUser(email)
-            }
-            return user
-        })
-}
-
-function validatePoll(poll: IPollDocument, ): IPollDocument {
-    //Check if poll exists
-    if (!poll) {
-        // This should work because it is handled by the asnycHandler middleware
-        const message = 'There is no poll for this ID'
-        Promise.reject(message)
-    }
-    //Check if user exists
-    return poll
-}
-
-function createUser(email: string): Promise<IUserDocument> {
-    //No corresponding user - Create new User
-    const newUser = new User({
-        email
-    });
-
-    //Save new User and create new poll with user.id
-    return newUser.save()
-        .then((user: IUserDocument) => user)
-
-}
-
 
 export default router;

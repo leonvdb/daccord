@@ -2,6 +2,8 @@ import * as express from 'express';
 import * as mongoose from 'mongoose';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
+import * as passport from 'passport';
+import configPassport from './config/passport';
 
 //Import API Routes
 import testRoute from './routes/api/test' //To be deleted after review
@@ -19,7 +21,6 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 //Configure mongoose
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -28,6 +29,10 @@ mongoose.set('useFindAndModify', false);
 mongoose.connect('mongodb://localhost:27017/systemic-consensys')
     .then(() => console.log("MongoDB connected"))
     .catch((err: Error) => console.log(err));
+
+//Passport middleware
+app.use(passport.initialize());
+configPassport(passport);
 
 //Test Index
 app.get('/', (req: express.Request, res: express.Response) => res.send("Test"));

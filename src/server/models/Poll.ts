@@ -9,9 +9,16 @@ const Schema = mongoose.Schema;
 export interface IPollDocument extends mongoose.Document {
     title: string,
     refId: string,
+    creatorToken: string,
     creator: ObjectId,
+    participants: IParticipant[],
     options: IOption[],
 
+}
+
+interface IParticipant {
+    participantId: ObjectId,
+    participantToken: string
 }
 
 // Create Schema
@@ -30,9 +37,27 @@ const PollSchema = new Schema({
         ref: 'user',
         required: true
     },
+    creatorToken: {
+        type: String,
+        required: true
+    },
+    participants: [{
+        participantId: {
+            type: Schema.Types.ObjectId,
+            required: true
+        },
+        participantToken: {
+            type: String
+        }
+    }],
     options: [{
         title: {
             type: String,
+            required: true
+        },
+        creator: {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
             required: true
         },
         refId: {
@@ -55,4 +80,4 @@ const PollSchema = new Schema({
     }]
 });
 
-export const Poll = mongoose.model('poll', PollSchema);
+export const Poll = mongoose.model<IPollDocument>('poll', PollSchema);
