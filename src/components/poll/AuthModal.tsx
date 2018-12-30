@@ -3,6 +3,7 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Store } from '../../reducers';
 import { IPoll, IUserState } from '../../interfaces';
+import TextInputGroup from '../layout/TextInputGroup';
 
 interface Props extends PropsFromState {
     isOpen: boolean
@@ -11,19 +12,31 @@ interface Props extends PropsFromState {
 
 class AuthModal extends React.Component<Props> {
     state = {
-        isOpen: this.props.isOpen
+        isOpen: this.props.isOpen,
+        name: '',
+        email: '',
+        errors: {
+            name: '',
+            email: ''
+        }
     }
 
-    constructor(props: Props) {
-        super(props)
-    }
+    onChange = (e: React.ChangeEvent<any>) => {
+        const propertyName = e.target.name
+        const value = e.target.value
+        this.setState(prevState => {
+            const newState = { ...prevState };
+            newState[propertyName] = value
+            return newState
+        })
+    };
 
     toggle = () => {
         this.setState({ isOpen: !this.state.isOpen })
     }
 
     render() {
-        const { isOpen } = this.state
+        const { isOpen, name, email, errors } = this.state
         const { poll, renderButton } = this.props
 
         return (
@@ -38,7 +51,25 @@ class AuthModal extends React.Component<Props> {
                     <ModalHeader toggle={this.toggle}>
                         Become a participant of {poll.title}
                     </ModalHeader>
-                    <ModalBody />
+                    <ModalBody>
+                        <TextInputGroup
+                            label="Name"
+                            name="name"
+                            placeholder="Enter Name"
+                            value={name}
+                            onChange={this.onChange}
+                            error={errors.name}
+                        />
+                        <TextInputGroup
+                            label="Email"
+                            name="email"
+                            placeholder="Enter Email"
+                            value={email}
+                            onChange={this.onChange}
+                            error={errors.email}
+                        />
+                        <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Participate</button>
+                    </ModalBody>
                 </Modal>
             </div>
         )
