@@ -12,7 +12,6 @@ export default router;
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
 //@access   Public
 router.post('/participate', async (req, res, next) => {
-    console.log("Body: ", req.body)
 
     let poll = await findPoll(req.body.pollId)
     let user = await findOrCreateUser(req.body.email)

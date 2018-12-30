@@ -13,6 +13,7 @@ interface Props extends PropsFromState, PropsFromDispatch {
 }
 interface State {
     isOpen: boolean,
+    showParticipantError: boolean
     name: string,
     email: string,
     errors: Errors
@@ -25,9 +26,24 @@ interface Errors {
 class AuthModal extends React.Component<Props> {
     state: State = {
         isOpen: this.props.isOpen,
+        showParticipantError: false,
         name: '',
         email: '',
         errors: {}
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        if (nextProps.apiErrors.indexOf('PARTICIPANT_ALREADY_EXISTS') === -1) {
+            this.setState({
+                isOpen: false,
+                name: '',
+                email: ''
+            });
+        } else {
+            this.setState({
+                showParticipantError: true
+            });
+        }
     }
 
     onChange = (e: React.ChangeEvent<any>) => {
@@ -63,13 +79,6 @@ class AuthModal extends React.Component<Props> {
         }
 
         this.props.participate(newParticipant);
-
-        this.setState({
-            isOpen: false,
-            name: '',
-            email: ''
-        });
-
     }
 
     toggle = () => {
@@ -121,7 +130,8 @@ class AuthModal extends React.Component<Props> {
 
 const mapStateToProps = (state: Store) => ({
     poll: state.poll.poll,
-    user: state.user.user
+    user: state.user.user,
+    apiErrors: state.errors
 });
 
 interface PropsFromDispatch {
@@ -131,6 +141,7 @@ interface PropsFromDispatch {
 interface PropsFromState {
     poll: IPoll
     user: IUserState
+    apiErrors: string[]
 }
 
 export default connect(mapStateToProps, { participate })(AuthModal);; 
