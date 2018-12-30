@@ -2,23 +2,32 @@ import * as React from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Store } from '../../reducers';
-import { IPoll, IUserState } from '../../interfaces';
+import { IPoll, IUserState, INewParticipant } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
+import validateEmail from 'src/utilities/validateEmail';
+import { participate } from '../../actions/userActions';
 
-interface Props extends PropsFromState {
+interface Props extends PropsFromState, PropsFromDispatch {
     isOpen: boolean
     renderButton: boolean
 }
+interface State {
+    isOpen: boolean,
+    name: string,
+    email: string,
+    errors: Errors
+}
+interface Errors {
+    name?: string,
+    email?: string
+}
 
 class AuthModal extends React.Component<Props> {
-    state = {
+    state: State = {
         isOpen: this.props.isOpen,
         name: '',
         email: '',
-        errors: {
-            name: '',
-            email: ''
-        }
+        errors: {}
     }
 
     onChange = (e: React.ChangeEvent<any>) => {
@@ -30,6 +39,38 @@ class AuthModal extends React.Component<Props> {
             return newState
         })
     };
+
+    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const { name, email } = this.state
+        const { poll } = this.props
+
+        // Form validation
+        const errors: Errors = {}
+        if (name.length <= 0) { errors.name = 'Please enter a name' }
+        if (!validateEmail(email)) { errors.email = 'Please enter a valid email address.' }
+        if (Object.keys(errors).length > 0) {
+            this.setState({
+                errors
+            })
+            return;
+        }
+
+        const newParticipant: INewParticipant = {
+            name,
+            email,
+            pollId: poll.refId
+        }
+
+        this.props.participate(newParticipant);
+
+        this.setState({
+            isOpen: false,
+            name: '',
+            email: ''
+        });
+
+    }
 
     toggle = () => {
         this.setState({ isOpen: !this.state.isOpen })
@@ -49,26 +90,28 @@ class AuthModal extends React.Component<Props> {
                 </button>}
                 <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>
-                        Become a participant of {poll.title}
+                        Become a participant of "{poll.title}"
                     </ModalHeader>
                     <ModalBody>
-                        <TextInputGroup
-                            label="Name"
-                            name="name"
-                            placeholder="Enter Name"
-                            value={name}
-                            onChange={this.onChange}
-                            error={errors.name}
-                        />
-                        <TextInputGroup
-                            label="Email"
-                            name="email"
-                            placeholder="Enter Email"
-                            value={email}
-                            onChange={this.onChange}
-                            error={errors.email}
-                        />
-                        <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Participate</button>
+                        <form onSubmit={this.onSubmit}>
+                            <TextInputGroup
+                                label="Name"
+                                name="name"
+                                placeholder="Enter Name"
+                                value={name}
+                                onChange={this.onChange}
+                                error={errors.name}
+                            />
+                            <TextInputGroup
+                                label="Email"
+                                name="email"
+                                placeholder="Enter Email"
+                                value={email}
+                                onChange={this.onChange}
+                                error={errors.email}
+                            />
+                            <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Participate</button>
+                        </form>
                     </ModalBody>
                 </Modal>
             </div>
@@ -81,9 +124,13 @@ const mapStateToProps = (state: Store) => ({
     user: state.user.user
 });
 
+interface PropsFromDispatch {
+    participate: (newParticipant: INewParticipant) => void
+}
+
 interface PropsFromState {
     poll: IPoll
     user: IUserState
 }
 
-export default connect(mapStateToProps, null)(AuthModal);; 
+export default connect(mapStateToProps, { participate })(AuthModal);; 

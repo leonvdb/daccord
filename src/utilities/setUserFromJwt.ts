@@ -14,5 +14,5 @@ export default function setUserFromJwt(token: string, dispatch: Dispatch<any>) {
         userId: decoded.userId,
         userType: decoded.userType
     };
-    dispatch(setCurrentUser(user));
+    dispatch(setCurrentUser(user))
 }

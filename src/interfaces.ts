@@ -8,7 +8,7 @@ import { ObjectId } from 'mongodb';
 
 //TODO: Adapt creator to be typed as ObjectId
 export interface IPoll extends INewPoll {
-    refId?: string
+    refId: string
     creator: string
     options: IOption[]
 }
@@ -55,6 +55,9 @@ export interface IUserJwt extends IUserState {
     iat: number
 }
 
+export interface INewParticipant extends IUser {
+    pollId: string
+}
 
 //Backend Interfaces
 
