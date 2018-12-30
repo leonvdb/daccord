@@ -1,11 +1,9 @@
 import * as express from 'express';
 const router = express.Router({ mergeParams: true });
 import * as passport from 'passport';
-import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
+import { createRefId } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
-import { findOrCreateUser, findPoll, findUserById } from "../../utilities/dataBaseUtilities";
-import { createJsonWebToken } from "../../utilities/createJsonWebToken";
-import { sendConfirmMail } from "../../utilities/sendConfirmMail";
+import { findPoll, findUserById } from "../../utilities/dataBaseUtilities";
 
 //Load Models
 import { IPollDocument } from '../../models/Poll';
@@ -15,87 +13,11 @@ import { IJwtPayload } from 'src/interfaces';
 //@route    POST api/polls/:poll_id/options
 //@desc     Create // TODO : Include Edit to this request
 //@access   Private // TODO: Make route private
-router.post('/', async (req, res, next) => {
-
+router.post('/', async (req, res) => {
     const poll = await findPoll(req.params.poll_id)
-
-    //Check if user logged in and set creatorId
-    let optionCreator;
-    let loggedIn = false;
-    if (req.body.userId) {
-        //If user is in state userId will be supplied in Request Object
-        loggedIn = true;
-        optionCreator = await findUserById(req.body.userId)
-    } else if (req.body.email) {
-        //If user is not yet logged in User has to supply email
-        optionCreator = await findOrCreateUser(req.body.email)
-    } else return next(new ApiError('Supply userId or Email', 400))
-
-
-
-    //Check if creatorParticipating
-    let creatorParticipating = false
-    let creatorPosition = -1
-    if (poll.creator.toString() === optionCreator._id.toString()) {
-        creatorParticipating = true
-    };
-    for (let i = 0; i < poll.participants.length; i++) {
-        if (poll.participants[i].participantId.toString() === optionCreator._id.toString()) {
-            creatorParticipating = true
-            creatorPosition = i
-        }
-    }
-
-    if (!loggedIn && creatorParticipating) {
-        if (req.body.requestLink) {
-            if (poll.creator.toString() === optionCreator._id.toString()) {
-                //CASE: PollCreator not logged in, asking for link
-                sendConfirmMail(
-                    optionCreator.email,
-                    poll,
-                    'resendCreator',
-                    poll.creatorToken
-                )
-            } else {
-                //CASE: User not logged in, participating, asking for link
-                sendConfirmMail(
-                    optionCreator.email,
-                    poll,
-                    'resendExistingParticipant',
-                    poll.participants[creatorPosition].participantToken
-                )
-            }
-            return res.json({ "msg": "New Link has been sent." })
-
-        } else {
-            //CASE: PollCreator not logged in, not asking for link
-            //CASE: User not logged in, participating, not asking for link
-            //----TODO-----// Put this validation into the front-end
-            //Participant already exists - Authenticate or request new link.
-            return next(new ApiError('PARTICIPANT_ALREADY_EXISTS', 401))
-        }
-    }
-
-    let newJWT = '';
-    if (!creatorParticipating) {
-        //CASE: User not logged in, not participating - give token
-        //CASE: User logged in, not participating - give new token
-
-        //Add user to participants
-        const newParticipant = {
-            participantId: optionCreator._id,
-            participantToken: generateToken()
-        }
-
-        //Send email to new user
-        sendConfirmMail(optionCreator.email, poll, 'becomeNewParticipant', newParticipant.participantToken)
-        poll.participants.push(newParticipant)
-        newJWT = createJsonWebToken(optionCreator._id, 'PARTICIPANT', false, poll.refId)
-
-    }
-
-    //Add option to poll
     const refId = createRefId();
+    const optionCreator = await findUserById(req.body.userId)
+
     const newOpt = {
         title: req.body.title,
         creator: optionCreator._id,
@@ -103,21 +25,10 @@ router.post('/', async (req, res, next) => {
         refId,
         votes: []
     };
+
     poll.options.unshift(newOpt);
 
-
-    poll.save().then(poll => {
-
-        //If user is not in State and thus JWT was created,
-        //include it in the json response object
-        if (newJWT) {
-            return res.json({
-                option: poll.options[0],
-                token: newJWT
-            })
-        }
-        return res.json({ option: poll.options[0], token: '' })
-    })
+    poll.save().then(poll => res.json(poll.options[0]))
         .catch(err => res.json(err));
 
 
