@@ -6,6 +6,7 @@ import { IPoll, IUserState, INewParticipant } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
 import { participate } from '../../actions/userActions';
+import { clearError } from '../../actions/errorActions';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
@@ -81,9 +82,64 @@ class AuthModal extends React.Component<Props> {
         this.setState({ isOpen: !this.state.isOpen })
     }
 
+    backFromError = () => {
+        this.props.clearError('PARTICIPANT_ALREADY_EXISTS')
+        this.setState({
+            showParticipantError: false
+        })
+    }
+
     render() {
-        const { isOpen, name, email, errors } = this.state
+        const { isOpen, name, email, errors, showParticipantError } = this.state
         const { poll, renderButton } = this.props
+
+        let modal;
+        if (!showParticipantError) {
+            modal = <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
+                <ModalHeader toggle={this.toggle}>
+                    Become a participant of "{poll.title}"
+                    </ModalHeader>
+                <ModalBody>
+                    <form onSubmit={this.onSubmit}>
+                        <TextInputGroup
+                            label="Name"
+                            name="name"
+                            placeholder="Enter Name"
+                            value={name}
+                            onChange={this.onChange}
+                            error={errors.name}
+                            classNames="w-75"
+                        />
+                        <TextInputGroup
+                            label="Email"
+                            name="email"
+                            placeholder="Enter Email"
+                            value={email}
+                            onChange={this.onChange}
+                            error={errors.email}
+                            classNames="w-75 mb-5"
+                        />
+                        <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
+                    </form>
+                    <p className="text-center my-2">or</p>
+                    <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
+                </ModalBody>
+            </Modal>
+        } else {
+            modal =
+                <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
+                    <ModalHeader toggle={this.toggle}>
+                        <i className="fas fa-arrow-left mr-5" onClick={this.backFromError} style={{ cursor: 'pointer' }} />
+                        Become a participant of "{poll.title}"
+                    </ModalHeader>
+                    <ModalBody>
+                        <div className="alert alert-danger">
+                            Seems like you are already participating
+                </div>
+                        <button className="btn btn-link btn-block mx-auto">Request new access link</button>
+                    </ModalBody>
+                </Modal>
+        }
 
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center align-items-center">
@@ -93,36 +149,7 @@ class AuthModal extends React.Component<Props> {
                     className="btn btn-outline-success">
                     <i className="fas fa-hand-peace mr-1" />Participate
                 </button>}
-                <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>
-                        Become a participant of "{poll.title}"
-                    </ModalHeader>
-                    <ModalBody>
-                        <form onSubmit={this.onSubmit}>
-                            <TextInputGroup
-                                label="Name"
-                                name="name"
-                                placeholder="Enter Name"
-                                value={name}
-                                onChange={this.onChange}
-                                error={errors.name}
-                                classNames="w-75"
-                            />
-                            <TextInputGroup
-                                label="Email"
-                                name="email"
-                                placeholder="Enter Email"
-                                value={email}
-                                onChange={this.onChange}
-                                error={errors.email}
-                                classNames="w-75 mb-5"
-                            />
-                            <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
-                        </form>
-                        <p className="text-center my-2">or</p>
-                        <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
-                    </ModalBody>
-                </Modal>
+                {modal}
             </div>
         )
     }
@@ -135,7 +162,8 @@ const mapStateToProps = (state: Store) => ({
 });
 
 interface PropsFromDispatch {
-    participate: (newParticipant: INewParticipant) => void
+    participate: (newParticipant: INewParticipant) => void,
+    clearError: (error: string) => void
 }
 
 interface PropsFromState {
@@ -144,4 +172,4 @@ interface PropsFromState {
     apiErrors: string[]
 }
 
-export default connect(mapStateToProps, { participate })(AuthModal);
+export default connect(mapStateToProps, { participate, clearError })(AuthModal);
