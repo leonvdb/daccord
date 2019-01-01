@@ -7,6 +7,7 @@ import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
 import { participate } from '../../actions/userActions';
 
+
 interface Props extends PropsFromState, PropsFromDispatch {
     isOpen: boolean
     renderButton: boolean
@@ -33,13 +34,8 @@ class AuthModal extends React.Component<Props> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.apiErrors.indexOf('PARTICIPANT_ALREADY_EXISTS') === -1) {
-            this.setState({
-                isOpen: false,
-                name: '',
-                email: ''
-            });
-        } else {
+        console.log(nextProps)
+        if (nextProps.apiErrors.indexOf('PARTICIPANT_ALREADY_EXISTS') >= 0) {
             this.setState({
                 showParticipantError: true
             });
@@ -79,6 +75,7 @@ class AuthModal extends React.Component<Props> {
         }
 
         this.props.participate(newParticipant);
+
     }
 
     toggle = () => {
@@ -144,4 +141,4 @@ interface PropsFromState {
     apiErrors: string[]
 }
 
-export default connect(mapStateToProps, { participate })(AuthModal);; 
+export default connect(mapStateToProps, { participate })(AuthModal);
