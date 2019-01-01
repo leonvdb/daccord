@@ -34,7 +34,6 @@ class AuthModal extends React.Component<Props> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        console.log(nextProps)
         if (nextProps.apiErrors.indexOf('PARTICIPANT_ALREADY_EXISTS') >= 0) {
             this.setState({
                 showParticipantError: true
@@ -107,6 +106,7 @@ class AuthModal extends React.Component<Props> {
                                 value={name}
                                 onChange={this.onChange}
                                 error={errors.name}
+                                classNames="w-75"
                             />
                             <TextInputGroup
                                 label="Email"
@@ -115,9 +115,12 @@ class AuthModal extends React.Component<Props> {
                                 value={email}
                                 onChange={this.onChange}
                                 error={errors.email}
+                                classNames="w-75 mb-5"
                             />
-                            <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Participate</button>
+                            <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
                         </form>
+                        <p className="text-center my-2">or</p>
+                        <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
                     </ModalBody>
                 </Modal>
             </div>
