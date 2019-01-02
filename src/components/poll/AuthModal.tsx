@@ -5,7 +5,7 @@ import { Store } from '../../reducers';
 import { IPoll, IUserState, INewParticipant } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
-import { participate } from '../../actions/userActions';
+import { participate, resendLink } from '../../actions/userActions';
 import { clearError } from '../../actions/errorActions';
 
 
@@ -89,6 +89,10 @@ class AuthModal extends React.Component<Props> {
         })
     }
 
+    resendLink = () => {
+        this.props.resendLink(this.props.poll.refId, this.state.email)
+    }
+
     render() {
         const { isOpen, name, email, errors, showParticipantError } = this.state
         const { poll, renderButton } = this.props
@@ -136,7 +140,7 @@ class AuthModal extends React.Component<Props> {
                         <div className="alert alert-danger">
                             Seems like you are already participating
                 </div>
-                        <button className="btn btn-link btn-block mx-auto">Request new access link</button>
+                        <button onClick={this.resendLink} className="btn btn-link btn-block mx-auto">Request new access link</button>
                     </ModalBody>
                 </Modal>
         }
@@ -163,7 +167,8 @@ const mapStateToProps = (state: Store) => ({
 
 interface PropsFromDispatch {
     participate: (newParticipant: INewParticipant) => void,
-    clearError: (error: string) => void
+    clearError: (error: string) => void,
+    resendLink: (pollId: string, email: string) => void
 }
 
 interface PropsFromState {
@@ -172,4 +177,4 @@ interface PropsFromState {
     apiErrors: string[]
 }
 
-export default connect(mapStateToProps, { participate, clearError })(AuthModal);
+export default connect(mapStateToProps, { participate, clearError, resendLink })(AuthModal);

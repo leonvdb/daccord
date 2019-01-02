@@ -66,3 +66,34 @@ router.post('/participate', async (req, res, next) => {
     return res.json({ user, token: '' })
 
 });
+
+router.post('/accessLink', async (req, res, next) => {
+
+    console.log(req.body)
+    const poll = await findPoll(req.body.pollId);
+    const user = await findOrCreateUser(req.body.email);
+    let targetToken = -1;
+    const newToken = generateToken();
+
+    poll.participants.forEach(async (participant, index) => {
+        if (participant.participantId.toString() === user._id.toString()) {
+            targetToken = index
+        }
+    })
+
+    if (poll.creator.toString() === user._id.toString()) {
+        targetToken = -2
+    }
+
+    if (targetToken === -2) {
+        poll.creatorToken = newToken
+    } else if (targetToken >= 0) {
+        poll.participants[targetToken].participantToken = newToken
+    } else {
+        return next(new ApiError('USER_NOT_FOUND', 404))
+    }
+    sendConfirmMail(user.email, poll, 'resendExistingParticipant', newToken);
+    await poll.save()
+    return res.json({ msg: 'access Link has been sent to email' })
+
+})
