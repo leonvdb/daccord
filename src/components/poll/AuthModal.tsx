@@ -16,6 +16,7 @@ interface Props extends PropsFromState, PropsFromDispatch {
 interface State {
     isOpen: boolean,
     showParticipantError: boolean
+    showLinkSent: boolean
     name: string,
     email: string,
     errors: Errors
@@ -29,6 +30,7 @@ class AuthModal extends React.Component<Props> {
     state: State = {
         isOpen: this.props.isOpen,
         showParticipantError: false,
+        showLinkSent: false,
         name: '',
         email: '',
         errors: {}
@@ -85,16 +87,18 @@ class AuthModal extends React.Component<Props> {
     backFromError = () => {
         this.props.clearError('PARTICIPANT_ALREADY_EXISTS')
         this.setState({
-            showParticipantError: false
+            showParticipantError: false,
+            showLinkSent: false
         })
     }
 
     resendLink = () => {
         this.props.resendLink(this.props.poll.refId, this.state.email)
+        this.setState({ showLinkSent: true })
     }
 
     render() {
-        const { isOpen, name, email, errors, showParticipantError } = this.state
+        const { isOpen, name, email, errors, showParticipantError, showLinkSent } = this.state
         const { poll, renderButton } = this.props
 
         let modal;
@@ -130,19 +134,33 @@ class AuthModal extends React.Component<Props> {
                 </ModalBody>
             </Modal>
         } else {
-            modal =
-                <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
+            if (!showLinkSent) {
+                modal =
+                    <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
+                        <ModalHeader toggle={this.toggle}>
+                            <i className="fas fa-arrow-left mr-5" onClick={this.backFromError} style={{ cursor: 'pointer' }} />
+                            Become a participant of "{poll.title}"
+                    </ModalHeader>
+                        <ModalBody>
+                            <div className="alert alert-danger">
+                                Seems like you are already participating
+                </div>
+                            <button onClick={this.resendLink} className="btn btn-link btn-block mx-auto">Request new access link</button>
+                        </ModalBody>
+                    </Modal>
+            } else {
+                modal = <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>
                         <i className="fas fa-arrow-left mr-5" onClick={this.backFromError} style={{ cursor: 'pointer' }} />
                         Become a participant of "{poll.title}"
                     </ModalHeader>
                     <ModalBody>
-                        <div className="alert alert-danger">
-                            Seems like you are already participating
+                        <div className="alert alert-success">
+                            Your new access Link has been sent, please check your email.
                 </div>
-                        <button onClick={this.resendLink} className="btn btn-link btn-block mx-auto">Request new access link</button>
                     </ModalBody>
                 </Modal>
+            }
         }
 
         return (
