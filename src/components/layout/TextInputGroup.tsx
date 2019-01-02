@@ -25,7 +25,6 @@ const TextInputGroup = ({
 }: Props) => {
     return (
         <div className={`form-group mx-auto ${classNames}`} >
-            <label htmlFor={name}>{label}</label>
             <input className={classname('form-control', {
                 'is-invalid': error
             })}

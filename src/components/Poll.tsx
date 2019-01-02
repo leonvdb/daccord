@@ -4,11 +4,12 @@ import { withRouter } from 'react-router-dom';
 
 import { getPoll, clearPollFromState } from '../actions/pollActions';
 import Vote from './poll/Vote';
-import { IPoll } from '../interfaces';
+import { IPoll, IUserState } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
 import { Dispatch } from 'redux';
 import { History } from 'history';
+import AuthModal from './poll/AuthModal';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -24,19 +25,24 @@ class Poll extends React.Component<Props> {
     }
 
     render() {
-        const { poll } = this.props;
+        const { poll, user } = this.props;
 
         return (
-            <div className="container">
-                <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                <Vote options={poll.options} />
-            </div>
+            <React.Fragment>
+                {!user.userId && <AuthModal isOpen={true} renderButton={false} />}
+                <div className="container">
+                    <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+
+                    <Vote options={poll.options} />
+                </div>
+            </React.Fragment>
         )
     }
 }
 
 const mapStateToProps = (state: Store) => ({
-    poll: state.poll.poll
+    poll: state.poll.poll,
+    user: state.user.user
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
@@ -50,6 +56,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Poll));
 
 interface PropsFromState {
     poll: IPoll
+    user: IUserState
 }
 interface PropsFromDispatch {
     getPoll: (pollId: string, queryParam: string, history: History) => void
