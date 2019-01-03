@@ -132,6 +132,8 @@ router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, 
 router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const jwtPayload: IJwtPayload = req.user
     console.log(jwtPayload)
+
+    //TODO: THis is insecure - compare userId to creatorId instead
     if (jwtPayload.pollId !== req.params.poll_id) {
         return next(new ApiError('Incorrect Token', 401));
     }
