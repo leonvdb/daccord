@@ -51,4 +51,4 @@ interface PropsFromDispatch {
 
 
 
-export default connect(null, { deletePoll })(withRouter(DeleteModal)) as any;
+export default connect(null, { deletePoll })(withRouter(DeleteModal));
