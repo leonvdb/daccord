@@ -3,8 +3,9 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { deletePoll } from '../../actions/pollActions';
 import { IPoll } from 'src/interfaces';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-interface Props extends PropsFromDispatch {
+interface Props extends PropsFromDispatch, RouteComponentProps {
     poll: IPoll
 }
 
@@ -21,6 +22,7 @@ class DeleteModal extends React.Component<Props> {
 
     deletePoll = () => {
         this.props.deletePoll(this.props.poll.refId)
+        this.props.history.push('/deleted')
     }
 
     render() {
@@ -49,4 +51,4 @@ interface PropsFromDispatch {
 
 
 
-export default connect(null, { deletePoll })(DeleteModal);
+export default connect(null, { deletePoll })(withRouter(DeleteModal)) as any;
