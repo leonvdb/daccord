@@ -3,7 +3,7 @@ import { ActionCreator } from 'redux';
 import { Dispatch } from 'redux';
 
 export const clearError: ActionCreator<any> = (error: string) => (dispatch: Dispatch) => {
-    //TODO: Don't add dispatch here, but in MapDispatchToProps instead
+    //TODO: Don't add dispatch here, but in MapDispatchToProps instead and Type properly
     return dispatch({
         type: CLEAR_ERROR,
         payload: error

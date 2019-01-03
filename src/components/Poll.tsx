@@ -10,6 +10,7 @@ import { Store } from '../reducers';
 import { Dispatch } from 'redux';
 import { History } from 'history';
 import AuthModal from './poll/AuthModal';
+import DeleteModal from './poll/DeleteModal';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -32,7 +33,9 @@ class Poll extends React.Component<Props> {
                 {!user.userId && <AuthModal isOpen={true} renderButton={false} />}
                 <div className="container">
                     <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-
+                    {poll.creator.toString() === user.userId &&
+                        <DeleteModal poll={poll} />
+                    }
                     <Vote options={poll.options} />
                 </div>
             </React.Fragment>
@@ -48,7 +51,7 @@ const mapStateToProps = (state: Store) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
         clearPollFromState: () => dispatch(clearPollFromState()),
-        getPoll: (pollId: string, queryParam: string, history) => dispatch(getPoll(pollId, queryParam, history))
+        getPoll: (pollId: string, queryParam: string, history) => dispatch(getPoll(pollId, queryParam, history)),
     }
 }
 
