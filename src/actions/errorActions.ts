@@ -1,4 +1,4 @@
-import { CLEAR_ERROR, GET_ERRORS } from './types';
+import { CLEAR_ERROR, SET_ERROR } from './types';
 import { ActionCreator } from 'redux';
 import { AppAction } from 'src/interfaces';
 
@@ -12,7 +12,7 @@ export const clearError: ActionCreator<AppAction> = (error: string) => {
 
 export const setError: ActionCreator<AppAction> = (error: string) => {
     return ({
-        type: GET_ERRORS,
+        type: SET_ERROR,
         payload: error
     })
 }

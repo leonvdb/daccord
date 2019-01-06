@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ActionCreator, Dispatch } from 'redux';
 import { ThunkResult, IUser, INewParticipant, AppAction, IUserState } from 'src/interfaces';
 import { getUserFromJwt } from 'src/utilities/setUserFromJwt';
-import { SET_CURRENT_USER, GET_ERRORS } from './types';
+import { SET_CURRENT_USER } from './types';
 import { setError } from './errorActions';
 import setAuthToken from 'src/utilities/setAuthToken';
 
@@ -37,9 +37,6 @@ export const resendLink: ActionCreator<any> = (pollId: string, email: string) =>
             payload: res.data
         }
     } catch (error) {
-        return dispatch({
-            type: GET_ERRORS,
-            payload: error.response.data
-        })
+        return dispatch(setError(error))
     }
 }
