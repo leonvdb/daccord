@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ActionCreator, Dispatch } from 'redux';
 import { ThunkResult, IUser, INewParticipant, AppAction, IUserState } from 'src/interfaces';
-import { getUserFromJwt } from 'src/utilities/setUserFromJwt';
+import { getUserFromJwt } from '../utilities/setUserFromJwt';
 import { SET_CURRENT_USER } from './types';
 import { setError } from './errorActions';
 import setAuthToken from 'src/utilities/setAuthToken';
