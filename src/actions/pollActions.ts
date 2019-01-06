@@ -42,7 +42,7 @@ export const deletePoll: ActionCreator<any> = (pollId: string) => async (dispatc
     } catch (error) {
         return {
             type: GET_ERRORS,
-            payload: error.data.payload
+            payload: error.response.data
         }
     }
 

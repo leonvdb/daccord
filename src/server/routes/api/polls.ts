@@ -129,20 +129,20 @@ router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, 
 //@route    DELETE api/polls/:poll_id
 //@desc     Delete poll
 //@access   Private // TODO: Make route private
-router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     const jwtPayload: IJwtPayload = req.user
-    console.log(jwtPayload)
+    console.log("id:", req.params.poll_id)
+    const poll = await findPoll(req.params.poll_id)
 
-    //TODO: THis is insecure - compare userId to creatorId instead
-    if (jwtPayload.pollId !== req.params.poll_id) {
+    if (jwtPayload.userId.toString() !== poll.creator.toString()) {
         return next(new ApiError('Incorrect Token', 401));
     }
-    Poll.findOneAndRemove({ refId: req.params.poll_id })
-        .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            return res.json({ success: true });
-        })
-        .catch((err: Error) => res.json(err));
+    try {
+        await poll.remove()
+        return res.json({ success: true });
+    } catch (error) {
+        return res.json(error)
+    }
 });
 
 
