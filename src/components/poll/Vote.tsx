@@ -39,6 +39,7 @@ class Vote extends React.Component<Props> {
                         <Option
                             key={option.refId}
                             option={option}
+                            userId={user.userId}
                         />
                     ))}
                 </div>

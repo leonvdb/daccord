@@ -1,18 +1,22 @@
 import * as React from 'react'
 import { IOption } from '../../interfaces';
 
-interface Props { option: IOption }
+interface Props {
+    option: IOption
+    userId: string
+}
 
-export default class Option extends React.Component<Props>{
+class Option extends React.Component<Props>{
     render() {
 
-        const { title, description } = this.props.option;
+        const { title, description, creator } = this.props.option;
 
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div className="card" style={{ height: 150 }}>
                     <div className="card-header">
-                        <h5 className="card-title">{title}</h5>
+                        <h5 className="card-title d-inline-block">{title}</h5>
+                        {creator.toString() === this.props.userId.toString() && <i className="fas fa-pen float-right mt-1" />}
                     </div>
                     <div className="card-body">
                         <p className="card-text">{description}</p>
@@ -22,3 +26,4 @@ export default class Option extends React.Component<Props>{
         )
     }
 }
+export default Option;
