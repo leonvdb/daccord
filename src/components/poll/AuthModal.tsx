@@ -7,6 +7,7 @@ import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
 import { participate, resendLink } from '../../actions/userActions';
 import { clearError } from '../../actions/errorActions';
+import { Dispatch } from 'redux';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
@@ -34,6 +35,10 @@ class AuthModal extends React.Component<Props> {
         name: '',
         email: '',
         errors: {}
+    }
+
+    componentDidMount(){
+        console.log(this.props)
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -189,10 +194,19 @@ interface PropsFromDispatch {
     resendLink: (pollId: string, email: string) => void
 }
 
+const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
+    return {
+        participate: (newParticipant: INewParticipant) => dispatch(participate(newParticipant)),
+        clearError: (error: string) => dispatch(clearError(error)),
+        resendLink: (pollId: string, email: string) => dispatch(resendLink(pollId, email))
+    }
+
+}
+
 interface PropsFromState {
     poll: IPoll
     user: IUserState
     apiErrors: string[]
 }
 
-export default connect(mapStateToProps, { participate, clearError, resendLink })(AuthModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthModal) as any;
