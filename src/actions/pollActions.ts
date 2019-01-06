@@ -42,8 +42,7 @@ export const createPoll: ActionCreator<ThunkResult<IPoll>> = (poll: INewPoll) =>
 }
 
 
-//TODO: Type properly
-export const deletePoll: ActionCreator<ThunkResult<any>> = (pollId: string) => async (dispatch: Dispatch) => {
+export const deletePoll: ActionCreator<ThunkResult<void>> = (pollId: string) => async (dispatch: Dispatch) => {
     try {
         await axios.delete(`/api/polls/${pollId}`)
         return dispatch({
