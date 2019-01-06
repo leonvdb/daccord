@@ -13,9 +13,10 @@ import Poll from './components/Poll';
 
 import './App.css';
 import setAuthToken from './utilities/setAuthToken';
+import { setAuthTokenAndUser } from './actions/userActions';
 
 if (localStorage.jwtToken) {
-  setAuthToken(localStorage.jwtToken)
+  store.dispatch(setAuthTokenAndUser(localStorage.jwtToken))
 }
 
 class App extends React.Component {

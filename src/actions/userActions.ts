@@ -10,9 +10,7 @@ import setAuthToken from 'src/utilities/setAuthToken';
 export const participate: ActionCreator<ThunkResult<IUser>> = (newParticipant: INewParticipant) => async dispatch => {
     try {
         const res = await axios.post('/api/users/participate', newParticipant);
-        setAuthToken(res.data.token)
-        const user = getUserFromJwt(res.data.token)
-        return dispatch(setCurrentUser(user))
+        return dispatch(setAuthTokenAndUser(res.data.token))
     } catch (error) {
         return dispatch(setError(error.response.data))
     }
@@ -23,6 +21,12 @@ export const setCurrentUser: ActionCreator<AppAction> = (user: IUserState) => {
         type: SET_CURRENT_USER,
         payload: user
     }
+}
+
+export const setAuthTokenAndUser: ActionCreator<AppAction> = (token: string) => {
+    setAuthToken(token)
+    const user = getUserFromJwt(token)
+    return setCurrentUser(user)
 }
 
 export const resendLink: ActionCreator<any> = (pollId: string, email: string) => async (dispatch: Dispatch) => {
