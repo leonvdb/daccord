@@ -37,7 +37,7 @@ class AuthModal extends React.Component<Props> {
         errors: {}
     }
 
-    componentDidMount(){
+    componentDidMount() {
         console.log(this.props)
     }
 
