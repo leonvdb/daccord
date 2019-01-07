@@ -37,7 +37,7 @@ class Poll extends React.Component<Props> {
                     {poll.creator.toString() === user.userId &&
                         <DeleteModal poll={poll} />
                     }
-                    <Vote options={poll.options} />
+                    <Vote options={poll.options} pollId={poll.refId} />
                 </div>
             </React.Fragment>
         )
