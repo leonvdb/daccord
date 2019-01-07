@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom';
-import { NamespacesConsumer } from 'react-i18next';
+import { WithNamespaces, withNamespaces } from 'react-i18next';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import LanguageButton from './LanguageButton';
 import { Store } from '../../reducers';
@@ -11,7 +11,11 @@ interface Language {
     code: string
 }
 
-class Header extends React.Component<PropsFromState>{
+interface Props extends PropsFromState, WithNamespaces {
+
+}
+
+class Header extends React.Component<Props>{
 
 
     render() {
@@ -26,6 +30,7 @@ class Header extends React.Component<PropsFromState>{
                 code: "de"
             }
         ]
+        const { t } = this.props
 
         return (
             <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -46,16 +51,12 @@ class Header extends React.Component<PropsFromState>{
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <Link className="nav-link" to="/">
-                                <NamespacesConsumer>{t => <div>{t("navHome")}</div>}</NamespacesConsumer>
+                                <div>{t("Home")}</div>
                             </Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/create">
-                                <NamespacesConsumer>
-                                    {
-                                        t => <div>{t("navCreatePoll")}</div>
-                                    }
-                                </NamespacesConsumer>
+                                <div>{t("Create poll")}</div>
                             </Link>
                         </li>
                     </ul>
@@ -73,4 +74,5 @@ const mapStateToProps = (state: Store) => ({
     language: state.language.languageLabel
 })
 
-export default connect<PropsFromState, null, void>(mapStateToProps, null)(Header);
+const ComponentWithNamespaces = withNamespaces()(Header);
+export default connect(mapStateToProps, null)(ComponentWithNamespaces);
