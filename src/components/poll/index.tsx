@@ -2,15 +2,15 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { getPoll, clearPollFromState } from '../actions/pollActions';
-import Vote from './poll/Vote';
-import { IPoll, IUserState } from '../interfaces';
+import { getPoll, clearPollFromState } from '../../actions/pollActions';
+import Vote from './Vote';
+import { IPoll, IUserState } from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
-import { Store } from '../reducers';
+import { Store } from '../../reducers';
 import { Action } from 'redux';
 import { History } from 'history';
-import AuthModal from './poll/AuthModal';
-import DeleteModal from './poll/DeleteModal';
+import AuthModal from './AuthModal';
+import DeleteModal from './DeleteModal';
 import { ThunkDispatch } from 'redux-thunk';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
@@ -43,12 +43,18 @@ class Poll extends React.Component<Props> {
         )
     }
 }
-
+interface PropsFromState {
+    poll: IPoll
+    user: IUserState
+}
 const mapStateToProps = (state: Store): PropsFromState => ({
     poll: state.poll.poll,
     user: state.user.user
 });
-
+interface PropsFromDispatch {
+    getPoll: (pollId: string, queryParam: string, history: History) => void
+    clearPollFromState: () => void
+}
 const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDispatchToProps<PropsFromDispatch, void> => {
     return {
         clearPollFromState: () => dispatch(clearPollFromState()),
@@ -58,11 +64,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDis
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Poll));
 
-interface PropsFromState {
-    poll: IPoll
-    user: IUserState
-}
-interface PropsFromDispatch {
-    getPoll: (pollId: string, queryParam: string, history: History) => void
-    clearPollFromState: () => void
-}
+
