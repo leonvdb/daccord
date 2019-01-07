@@ -1,4 +1,4 @@
-import { GET_POLL, ADD_OPTION, CREATE_POLL, CLEAR_POLL_FROM_STATE } from '../actions/types';
+import { GET_POLL, ADD_OPTION, CREATE_POLL, CLEAR_POLL_FROM_STATE, EDIT_OPTION } from '../actions/types';
 import { IPoll, AppAction } from 'src/interfaces';
 
 export interface PollReducer {
@@ -29,6 +29,20 @@ export default function (state = initialState, action: AppAction) {
                 poll: {
                     ...state.poll,
                     options: [action.payload, ...state.poll.options]
+                }
+            }
+        case EDIT_OPTION:
+            return {
+                ...state,
+                poll: {
+                    ...state.poll,
+                    options: state.poll.options.map(option => {
+                        if (option.refId === action.payload.refId) {
+                            return option = action.payload
+                        } else {
+                            return option
+                        }
+                    })
                 }
             }
         case CREATE_POLL:

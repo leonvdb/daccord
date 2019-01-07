@@ -10,7 +10,10 @@ import AddOption from './AddOption';
 import AuthModal from './AuthModal';
 import { clearError } from '../../actions/errorActions';
 
-interface Props extends PropsFromState, PropsFromDispatch { options: IOption[] }
+interface Props extends PropsFromState, PropsFromDispatch { 
+    options: IOption[]
+    pollId: string
+}
 
 class Vote extends React.Component<Props> {
 
@@ -21,7 +24,7 @@ class Vote extends React.Component<Props> {
     }
 
     render() {
-        const { options, user } = this.props;
+        const { options, user, pollId } = this.props;
 
         let button;
         if (user.userId) {
@@ -40,6 +43,7 @@ class Vote extends React.Component<Props> {
                             key={option.refId}
                             option={option}
                             userId={user.userId}
+                            pollId={pollId}
                         />
                     ))}
                 </div>

@@ -6,6 +6,7 @@ import OptionEditModal from './OptionEditModal';
 interface Props {
     option: IOption
     userId: string
+    pollId: string
 }
 
 class Option extends React.Component<Props>{
@@ -26,7 +27,7 @@ class Option extends React.Component<Props>{
     }
     render() {
 
-        const { title, description, creator } = this.props.option;
+        const { title, description, creator, refId } = this.props.option;
         const { modalOpen } = this.state
 
         const isCreator = creator.toString() === this.props.userId.toString()
@@ -45,6 +46,8 @@ class Option extends React.Component<Props>{
                 </div>
                 {isCreator ? (
                     <OptionEditModal
+                        pollId={this.props.pollId}
+                        optionId={refId}
                         title={title}
                         description={description}
                         modalOpen={modalOpen}

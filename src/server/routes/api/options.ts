@@ -79,7 +79,7 @@ router.put('/:opt_id', passport.authenticate('jwt', { session: false }), async (
     if (req.body.description) poll.options[index].description = req.body.description;
 
     //Save
-    poll.save().then(poll => res.json(poll));
+    poll.save().then(poll => res.json(poll.options[index]));
 
 });
 

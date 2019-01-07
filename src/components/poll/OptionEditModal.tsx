@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import TextInputGroup from '../layout/TextInputGroup';
+import { editOption } from '../../actions/optionActions';
+import { INewOption } from 'src/interfaces';
+import { connect } from 'react-redux';
 
-interface Props {
+interface Props extends PropsFromDispatch {
+    optionId: string
+    pollId: string
     title: string
     description?: string
     modalOpen: boolean
@@ -36,7 +41,14 @@ class OptionReadModal extends React.Component<Props> {
     onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { title, description } = this.state
-        console.log({ title, description })
+        const { optionId, pollId } = this.props
+
+        const updatedOption: INewOption = {
+            title,
+            description
+        };
+        this.props.editOption(updatedOption, pollId, optionId);
+        this.props.toggle();
     }
 
     render() {
@@ -66,4 +78,8 @@ class OptionReadModal extends React.Component<Props> {
     }
 }
 
-export default OptionReadModal;
+interface PropsFromDispatch {
+    editOption: (option: INewOption, pollId: string, userId: string) => void
+}
+
+export default connect(null, { editOption })(OptionReadModal);
