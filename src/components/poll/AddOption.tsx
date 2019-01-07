@@ -12,7 +12,7 @@ interface State {
     title: string
     description: string
     errors: Errors
-    modalOpen: boolean
+    addOptionOpen: boolean
 }
 
 interface Errors {
@@ -26,7 +26,7 @@ class AddOption extends React.Component<Props, State> {
         title: '',
         description: '',
         errors: {},
-        modalOpen: false
+        addOptionOpen: false
     };
 
     onChange = (e: React.ChangeEvent<any>) => {
@@ -68,7 +68,7 @@ class AddOption extends React.Component<Props, State> {
         this.props.addOption(newOption, this.props.pollId, this.props.userId);
 
         this.setState({
-            modalOpen: false,
+            addOptionOpen: false,
             title: '',
             description: '',
         });
@@ -77,14 +77,14 @@ class AddOption extends React.Component<Props, State> {
 
     toggle = () => {
         this.setState({
-            modalOpen: !this.state.modalOpen
+            addOptionOpen: !this.state.addOptionOpen
         });
     }
 
 
     render() {
 
-        const { title, description, errors, modalOpen } = this.state
+        const { title, description, errors, addOptionOpen } = this.state
         return (
 
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center align-items-center">
@@ -94,7 +94,7 @@ class AddOption extends React.Component<Props, State> {
                     className="btn btn-light border">
                     <i className="fas fa-plus" /> Add new option
                 </button>
-                <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
+                <Modal placement="right" isOpen={addOptionOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Add a new option</ModalHeader>
                     <ModalBody>
                         <div >
