@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { IOption } from '../../interfaces';
-import OptionModal from './OptionModal';
+import OptionReadModal from './OptionReadModal';
+import OptionEditModal from './OptionEditModal';
 
 interface Props {
     option: IOption
@@ -42,12 +43,20 @@ class Option extends React.Component<Props>{
                         <p className="card-text text-truncate">{description}</p>
                     </div>
                 </div>
-                <OptionModal
-                    name={title}
-                    description={description}
-                    modalOpen={modalOpen}
-                    isCreator={isCreator}
-                    toggle={this.toggle} />
+                {isCreator ? (
+                    <OptionEditModal
+                        name={title}
+                        description={description}
+                        modalOpen={modalOpen}
+                        toggle={this.toggle} />
+                ) : (
+                        <OptionReadModal
+                            name={title}
+                            description={description}
+                            modalOpen={modalOpen}
+                            toggle={this.toggle} />
+                    )
+                }
             </div >
         )
     }

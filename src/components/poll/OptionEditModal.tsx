@@ -6,10 +6,9 @@ interface Props {
     description?: string
     modalOpen: boolean
     toggle: () => void
-    isCreator: boolean
 }
 
-class OptionModal extends React.Component<Props> {
+class OptionReadModal extends React.Component<Props> {
 
     state = {
         modalOpen: false
@@ -22,8 +21,7 @@ class OptionModal extends React.Component<Props> {
 
     render() {
         const { modalOpen } = this.state
-        const { name, description, toggle, isCreator } = this.props
-        console.log({ isCreator })
+        const { name, description, toggle } = this.props
 
         return (
             <div>
@@ -31,7 +29,7 @@ class OptionModal extends React.Component<Props> {
                     <ModalHeader toggle={toggle}>{name}</ModalHeader>
                     <ModalBody>
                         <p style={{ wordWrap: 'break-word' }}>{description}</p>
-                        {isCreator && <button className="btn btn-danger w-25">Delete</button>}
+                        <button className="btn btn-danger w-25">Delete</button>
                     </ModalBody>
                 </Modal>
             </div>
@@ -39,4 +37,4 @@ class OptionModal extends React.Component<Props> {
     }
 }
 
-export default OptionModal;
+export default OptionReadModal;
