@@ -45,13 +45,13 @@ class Option extends React.Component<Props>{
                 </div>
                 {isCreator ? (
                     <OptionEditModal
-                        name={title}
+                        title={title}
                         description={description}
                         modalOpen={modalOpen}
                         toggle={this.toggle} />
                 ) : (
                         <OptionReadModal
-                            name={title}
+                            title={title}
                             description={description}
                             modalOpen={modalOpen}
                             toggle={this.toggle} />

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 interface Props {
-    name: string
+    title: string
     description?: string
     modalOpen: boolean
     toggle: () => void
@@ -21,7 +21,7 @@ class OptionReadModal extends React.Component<Props> {
 
     render() {
         const { modalOpen } = this.state
-        const { name, description, toggle } = this.props
+        const { title: name, description, toggle } = this.props
 
         return (
             <div>
