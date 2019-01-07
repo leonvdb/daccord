@@ -38,7 +38,8 @@ class Option extends React.Component<Props>{
                         <h5 className="card-title d-inline-block">{title}</h5>
                     </div>
                     <div className="card-body">
-                        <p className="card-text">{description}</p>
+                        {/* TODO: truncate to two lines */}
+                        <p className="card-text text-truncate">{description}</p>
                     </div>
                 </div>
                 <OptionModal

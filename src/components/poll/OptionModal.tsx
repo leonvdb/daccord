@@ -30,7 +30,7 @@ class OptionModal extends React.Component<Props> {
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={toggle}>
                     <ModalHeader toggle={toggle}>{name}</ModalHeader>
                     <ModalBody>
-                        <p className="lead d-block">{description}</p>
+                        <p style={{ wordWrap: 'break-word' }}>{description}</p>
                         {isCreator && <button className="btn btn-danger w-25">Delete</button>}
                     </ModalBody>
                 </Modal>
