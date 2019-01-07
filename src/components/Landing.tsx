@@ -1,14 +1,15 @@
 import * as React from 'react'
-import { NamespacesConsumer } from 'react-i18next';
+import { withNamespaces, WithNamespaces } from 'react-i18next';
 
-function Landing() {
+function Landing(props: WithNamespaces) {
+    const { t } = props
     return (
         <div className="container mt-5">
             <div className="jumbotron text-center">
-                <NamespacesConsumer>{translate => <h1 className="display-4">{translate("iAmLanding")}</h1>}</NamespacesConsumer>
+                <h1 className="display-4">{t("I am the landing page")}</h1>
             </div>
         </div>
     )
 }
 
-export default Landing;
+export default withNamespaces()(Landing);

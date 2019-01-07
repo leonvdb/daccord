@@ -5,10 +5,10 @@ import TextInputGroup from './layout/TextInputGroup';
 import { INewPoll, IPoll } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
-import { NamespacesConsumer } from 'react-i18next';
+import { WithNamespaces, withNamespaces } from 'react-i18next';
 import validateEmail from 'src/utilities/validateEmail';
 
-interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
+interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch, WithNamespaces { }
 
 interface State {
     title: string,
@@ -77,13 +77,10 @@ class CreatePoll extends React.Component<Props, State> {
 
     render() {
         const { title, email, errors } = this.state;
+        const { t } = this.props
         return (
             <div className="container">
-                <NamespacesConsumer>
-                    {
-                        t => <h1 className="display-5 text-center my-4">{t("CreateNewPoll")}</h1>
-                    }
-                </NamespacesConsumer>
+                <h1 className="display-5 text-center my-4">{t("Create a new poll")}</h1>
                 <form onSubmit={this.onSubmit}>
                     <TextInputGroup
                         classNames="w-50"
@@ -122,4 +119,5 @@ const mapStateToProps = (state: Store) => ({
     poll: state.poll.poll
 });
 
-export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { createPoll })(CreatePoll);
+const ComponentWithNamespaces = withNamespaces()(CreatePoll)
+export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { createPoll })(ComponentWithNamespaces);
