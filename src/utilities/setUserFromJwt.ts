@@ -1,12 +1,7 @@
-import { Dispatch } from 'redux';
-import { IUserJwt } from 'src/interfaces';
-import setAuthToken from './setAuthToken';
-import { setCurrentUser } from '../actions/pollActions';
+import { IUserJwt, IUserState } from 'src/interfaces';
 import * as jwtDecode from 'jwt-decode';
 
-export default function setUserFromJwt(token: string, dispatch: Dispatch<any>) {
-    localStorage.setItem('jwtToken', token);
-    setAuthToken(token);
+export function getUserFromJwt(token: string): IUserState {
     const decoded: IUserJwt = jwtDecode(token);
     const user = {
         accountLogin: decoded.accountLogin,
@@ -14,5 +9,5 @@ export default function setUserFromJwt(token: string, dispatch: Dispatch<any>) {
         userId: decoded.userId,
         userType: decoded.userType
     };
-    dispatch(setCurrentUser(user))
+    return user
 }

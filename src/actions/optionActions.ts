@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { ActionCreator } from 'redux';
 import { ThunkResult, IPoll, IOption } from 'src/interfaces';
-import { ADD_OPTION, GET_ERRORS } from './types';
+import { ADD_OPTION } from './types';
+import { setError } from './errorActions';
 
 export const addOption: ActionCreator<ThunkResult<IPoll>> = (option: IOption, pollId: string) => async dispatch => {
     try {
@@ -12,9 +13,6 @@ export const addOption: ActionCreator<ThunkResult<IPoll>> = (option: IOption, po
         })
 
     } catch (error) {
-        return dispatch({
-            type: GET_ERRORS,
-            payload: error.response.data
-        })
+        return dispatch(setError(error))
     }
 }
