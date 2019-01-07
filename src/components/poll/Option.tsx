@@ -27,7 +27,7 @@ class Option extends React.Component<Props>{
     }
     render() {
 
-        const { title, description, creator, refId } = this.props.option;
+        const { title, description, creator } = this.props.option;
         const { modalOpen } = this.state
 
         const isCreator = creator.toString() === this.props.userId.toString()
@@ -47,9 +47,7 @@ class Option extends React.Component<Props>{
                 {isCreator ? (
                     <OptionEditModal
                         pollId={this.props.pollId}
-                        optionId={refId}
-                        title={title}
-                        description={description}
+                        option={this.props.option}
                         modalOpen={modalOpen}
                         toggle={this.toggle} />
                 ) : (
