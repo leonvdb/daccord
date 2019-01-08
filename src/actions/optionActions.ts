@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ActionCreator } from 'redux';
 import { ThunkResult, IOption, INewOption } from 'src/interfaces';
-import { ADD_OPTION, EDIT_OPTION } from './types';
+import { ADD_OPTION, EDIT_OPTION, DELETE_OPTION } from './types';
 import { setError } from './errorActions';
 
 export const addOption: ActionCreator<ThunkResult<IOption>> = (option: IOption, pollId: string) => async dispatch => {
@@ -23,6 +23,18 @@ export const editOption: ActionCreator<ThunkResult<IOption>> = (option: INewOpti
         return dispatch({
             type: EDIT_OPTION,
             payload: res.data
+        })
+    } catch (error) {
+        return dispatch(setError(error))
+    }
+}
+
+export const deleteOption: ActionCreator<ThunkResult<string>> = (pollId: string, optionId: string) => async dispatch => {
+    try {
+        await axios.delete(`/api/polls/${pollId}/options/${optionId}`)
+        return dispatch({
+            type: DELETE_OPTION,
+            payload: optionId
         })
     } catch (error) {
         return dispatch(setError(error))

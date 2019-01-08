@@ -104,7 +104,7 @@ router.delete('/:opt_id', passport.authenticate('jwt', { session: false }), asyn
     poll.options.splice(index, 1);
 
     //Save
-    poll.save().then(poll => res.json(poll));
+    poll.save().then(() => res.json({ msg: 'success' }));
 
 });
 
