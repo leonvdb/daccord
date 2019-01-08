@@ -10,7 +10,7 @@ import Landing from './components/Landing';
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
 import NotFound from './components/NotFound';
-import Poll from './components/Poll';
+import Poll from './components/poll';
 
 import './App.css';
 import { setAuthTokenAndUser } from './actions/userActions';
