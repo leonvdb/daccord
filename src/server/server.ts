@@ -11,6 +11,7 @@ import polls from './routes/api/polls';
 import options from './routes/api/options';
 import users from './routes/api/users';
 import { ApiError } from './utilities/ApiError';
+import { ApiResponse } from './utilities/ApiResponse';
 
 const app = express();
 
@@ -49,7 +50,8 @@ app.use('/api/users', users)
 app.use((err: ApiError, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.message); // Log error message in our server's console
     if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
-    res.status(err.statusCode).send(err.message); // All HTTP requests must have a response, so let's send back an error with its status code and message
+
+    res.status(err.statusCode).json(new ApiResponse(err.message)); // All HTTP requests must have a response, so let's send back an error with its status code and message
 });
 
 // Setting port for server
