@@ -75,11 +75,11 @@ router.put('/:opt_id', passport.authenticate('jwt', { session: false }), async (
 
 
     //Update option
-    if (req.body.title) poll.options[index].title = req.body.title;
-    if (req.body.description) poll.options[index].description = req.body.description;
+    poll.options[index].title = req.body.title;
+    poll.options[index].description = req.body.description;
 
     //Save
-    poll.save().then(poll => res.json(poll));
+    poll.save().then(poll => res.json(poll.options[index]));
 
 });
 
@@ -104,7 +104,7 @@ router.delete('/:opt_id', passport.authenticate('jwt', { session: false }), asyn
     poll.options.splice(index, 1);
 
     //Save
-    poll.save().then(poll => res.json(poll));
+    poll.save().then(() => res.json({ msg: 'success' }));
 
 });
 
