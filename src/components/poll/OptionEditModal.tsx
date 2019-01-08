@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import TextInputGroup from '../layout/TextInputGroup';
-import { editOption } from '../../actions/optionActions';
+import { editOption, deleteOption } from '../../actions/optionActions';
 import { INewOption, IOption } from 'src/interfaces';
 import { connect } from 'react-redux';
 
@@ -24,6 +24,11 @@ class OptionReadModal extends React.Component<Props> {
         this.setState({
             modalOpen: nextProps.modalOpen
         })
+    }
+
+    deleteOption = () => {
+        this.props.deleteOption(this.props.pollId, this.props.option.refId);
+        this.props.toggle()
     }
 
     onChange = (e: React.ChangeEvent<any>) => {
@@ -49,6 +54,7 @@ class OptionReadModal extends React.Component<Props> {
         this.props.toggle();
     }
 
+
     render() {
         const { modalOpen, title, description } = this.state
         const { toggle } = this.props
@@ -65,8 +71,8 @@ class OptionReadModal extends React.Component<Props> {
                                 value={description}
                                 onChange={this.onChange} />
                             <hr />
-                            <button className="btn btn-link btn-sm d-block mb-3">Delete Option</button>
-                            <button className="btn btn-outline-secondary w-25 mr-2" onClick={toggle}>Cancel</button>
+                            <button className="btn btn-link btn-sm d-block mb-3" type='button' onClick={this.deleteOption}>Delete Option</button>
+                            <button className="btn btn-outline-secondary w-25 mr-2" type='button' onClick={toggle}>Cancel</button>
                             <button className="btn btn-success w-25" type='submit'>Save</button>
                         </form>
                     </ModalBody>
@@ -77,7 +83,8 @@ class OptionReadModal extends React.Component<Props> {
 }
 
 interface PropsFromDispatch {
-    editOption: (option: INewOption, pollId: string, userId: string) => void
+    editOption: (option: INewOption, pollId: string, optionId: string) => void
+    deleteOption: (pollId: string, optionID: string) => void
 }
 
-export default connect(null, { editOption })(OptionReadModal);
+export default connect(null, { editOption, deleteOption })(OptionReadModal);
