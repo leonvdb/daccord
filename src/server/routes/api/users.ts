@@ -1,14 +1,17 @@
 import * as express from 'express';
-import { findOrCreateUser, findPoll } from '../../utilities/dataBaseUtilities';
+import { findOrCreateUser, findPoll, findUserById } from '../../utilities/dataBaseUtilities';
 import { ApiError } from '../../utilities/ApiError';
 import { generateToken } from '../../utilities/cryptoGenerators';
 import { sendConfirmMail } from '../../utilities/sendConfirmMail';
 import { createJsonWebToken } from '../../utilities/createJsonWebToken';
+import { ApiResponse } from '../../utilities/ApiResponse';
+import { IPostUsersParticipate } from './responseInterfaces';
+import { IUser } from 'src/interfaces';
 const router = express.Router({ mergeParams: true });
 
 export default router;
 
-//@route    POST api/polls
+//@route    POST api/users/participate
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
 //@access   Public
 router.post('/participate', async (req, res, next) => {
@@ -57,13 +60,16 @@ router.post('/participate', async (req, res, next) => {
 
     //If user is not in State and thus JWT was created,
     //include it in the json response object
+    // TODO why does this endpoint return different things
     if (newJWT) {
-        return res.json({
+        return res.json(new ApiResponse({
             option: poll.options[0],
-            token: newJWT
-        })
+            token: newJWT,
+            user: user.getUserForFrontend()
+        }))
     }
-    return res.json({ user, token: '' })
+    // TODO why is the user returned here? it should be user for Frontend
+    return res.json(new ApiResponse<IPostUsersParticipate>({ user: user.getUserForFrontend(), token: '' }))
 
 });
 
@@ -94,6 +100,18 @@ router.post('/accessLink', async (req, res, next) => {
     }
     sendConfirmMail(user.email, poll, 'resendExistingParticipant', newToken);
     await poll.save()
-    return res.json({ msg: 'access Link has been sent to email' })
+    return res.json(new ApiResponse('access Link has been sent to email'))
 
+})
+
+//@route    GET api/users/:userId
+//@desc     Creates new poll. If Email-address unknown creates new User in database.
+//@access   Public
+router.get('/:userId', async (req, res, next) => {
+    try {
+        const user = await findUserById(req.params.userId)
+        return res.status(200).json(new ApiResponse<IUser>(user.getUserForFrontend()))
+    } catch (error) {
+        return next(new ApiError('USER_NOT_FOUND', 404))
+    }
 })

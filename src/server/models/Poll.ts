@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { IOption } from '../../interfaces';
+import { IOption, IPoll } from '../../interfaces';
 
 const Schema = mongoose.Schema;
 
@@ -13,6 +13,7 @@ export interface IPollDocument extends mongoose.Document {
     creator: ObjectId,
     participants: IParticipant[],
     options: IOption[],
+    getPollForFrontend: () => IPoll
 
 }
 
@@ -79,5 +80,16 @@ const PollSchema = new Schema({
         }]
     }]
 });
+
+PollSchema.methods.getPollForFrontend = function (): IPoll {
+    // This is necessary to have the nexted documents as plain js objects and not mongoose documents
+    const schemaObject: IPollDocument = this.toObject()
+    return {
+        title: schemaObject.title,
+        refId: schemaObject.refId,
+        creator: schemaObject.creator.toHexString(),
+        options: schemaObject.options,
+    }
+}
 
 export const Poll = mongoose.model<IPollDocument>('poll', PollSchema);

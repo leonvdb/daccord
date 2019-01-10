@@ -2,21 +2,23 @@ import { GET_POLL, CREATE_POLL, CLEAR_POLL_FROM_STATE, SET_CURRENT_USER } from '
 import axios from 'axios';
 import { INewPoll, ThunkResult, IPoll } from 'src/interfaces';
 import { ActionCreator, Dispatch } from 'redux';
-import { AppAction, IUserState } from 'src/interfaces';
+import { AppAction, IJwtPayload } from 'src/interfaces';
 import { History } from 'history';
-import { setAuthTokenAndUser } from './userActions';
 import { setError } from './errorActions';
+import { setAuthTokenAndUser } from './authActions';
+import { ApiResponse } from '../server/utilities/ApiResponse';
+import { IGetPolls } from '../server/routes/api/responseInterfaces';
 
 export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, queryParam: string, history: History) => async dispatch => {
     try {
-        const res = await axios.get(`/api/polls/${pollId}${queryParam}`);
-        if (res.data.token) {
-            dispatch(setAuthTokenAndUser(res.data.token))
+        const res = await axios.get<ApiResponse<IGetPolls>>(`/api/polls/${pollId}${queryParam}`);
+        if (res.data.payload.token) {
+            dispatch(setAuthTokenAndUser(res.data.payload.token, res.data.payload.user))
             history.push(`/poll/${pollId}`)
         }
         return dispatch({
             type: GET_POLL,
-            payload: res.data
+            payload: res.data.payload.poll
         });
     } catch (error) {
         return dispatch(setError(error))
@@ -27,14 +29,12 @@ export const getPoll: ActionCreator<ThunkResult<IPoll>> = (pollId: string, query
 
 export const createPoll: ActionCreator<ThunkResult<IPoll>> = (poll: INewPoll) => async dispatch => {
     try {
-        const res = await axios.post(`/api/polls`, poll)
-        dispatch(setAuthTokenAndUser(res.data.token))
-        dispatch({
+        const res = await axios.post<ApiResponse<IGetPolls>>(`/api/polls`, poll)
+        dispatch(setAuthTokenAndUser(res.data.payload.token, res.data.payload.user))
+        return dispatch({
             type: CREATE_POLL,
-            payload: res.data
+            payload: res.data.payload.poll
         })
-        //TODO: WHy is this returning res.data? 
-        return res.data
     } catch (error) {
         return dispatch(setError(error))
     }
@@ -45,10 +45,7 @@ export const createPoll: ActionCreator<ThunkResult<IPoll>> = (poll: INewPoll) =>
 export const deletePoll: ActionCreator<ThunkResult<void>> = (pollId: string) => async (dispatch: Dispatch) => {
     try {
         await axios.delete(`/api/polls/${pollId}`)
-        return dispatch({
-            type: CLEAR_POLL_FROM_STATE
-        })
-
+        return dispatch(clearPollFromState())
     } catch (error) {
         return dispatch(setError(error))
     }
@@ -61,7 +58,7 @@ export const clearPollFromState: ActionCreator<AppAction> = () => {
     }
 }
 
-export const setCurrentUser: ActionCreator<AppAction> = (user: IUserState) => {
+export const setCurrentUser: ActionCreator<AppAction> = (user: IJwtPayload) => {
     return {
         type: SET_CURRENT_USER,
         payload: user

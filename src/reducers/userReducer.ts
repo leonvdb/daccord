@@ -1,18 +1,17 @@
 import { SET_CURRENT_USER } from '../actions/types';
-import { AppAction, IUserState } from 'src/interfaces';
+import { AppAction, IUser } from 'src/interfaces';
 
 export interface UserReducer {
-    user: IUserState
+    user: IUser
 }
 
 
 const initialState: UserReducer = {
     user: {
-        accountLogin: false,
-        pollId: '',
-        userId: '',
-        userType: ''
-    }
+        id: '',
+        email: '',
+        name: ''
+    },
 };
 
 export default function (state = initialState, action: AppAction) {

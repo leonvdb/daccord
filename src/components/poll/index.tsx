@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getPoll, clearPollFromState } from '../../actions/pollActions';
 import Vote from './Vote';
-import { IPoll, IUserState } from '../../interfaces';
+import { IPoll, IUser } from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
 import { Action } from 'redux';
@@ -31,10 +31,10 @@ class Poll extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                {!user.userId && <AuthModal isOpen={true} renderButton={false} />}
+                {!user.id && <AuthModal isOpen={true} renderButton={false} />}
                 <div className="container">
                     <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                    {poll.creator.toString() === user.userId &&
+                    {poll.creator.toString() === user.id &&
                         <DeleteModal poll={poll} />
                     }
                     <Vote options={poll.options} pollId={poll.refId} />
@@ -45,7 +45,7 @@ class Poll extends React.Component<Props> {
 }
 interface PropsFromState {
     poll: IPoll
-    user: IUserState
+    user: IUser
 }
 const mapStateToProps = (state: Store): PropsFromState => ({
     poll: state.poll.poll,

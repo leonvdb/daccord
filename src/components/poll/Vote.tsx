@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { IUserState } from '../../interfaces';
+import { IUser } from '../../interfaces';
 import { Store } from '../../reducers';
 
 import { IOption } from '../../interfaces';
@@ -10,7 +10,7 @@ import AddOption from './AddOption';
 import AuthModal from './AuthModal';
 import { clearError } from '../../actions/errorActions';
 
-interface Props extends PropsFromState, PropsFromDispatch { 
+interface Props extends PropsFromState, PropsFromDispatch {
     options: IOption[]
     pollId: string
 }
@@ -18,7 +18,7 @@ interface Props extends PropsFromState, PropsFromDispatch {
 class Vote extends React.Component<Props> {
 
     componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.user.userId) {
+        if (nextProps.user.id) {
             this.props.clearError('PARTICIPANT_ALREADY_EXISTS')
         }
     }
@@ -27,7 +27,7 @@ class Vote extends React.Component<Props> {
         const { options, user, pollId } = this.props;
 
         let button;
-        if (user.userId) {
+        if (user.id) {
             button = <AddOption />
         } else {
             button = <AuthModal isOpen={false} renderButton={true} />
@@ -42,7 +42,7 @@ class Vote extends React.Component<Props> {
                         <Option
                             key={option.refId}
                             option={option}
-                            userId={user.userId}
+                            userId={user.id}
                             pollId={pollId}
                         />
                     ))}
@@ -53,7 +53,7 @@ class Vote extends React.Component<Props> {
 }
 
 interface PropsFromState {
-    user: IUserState
+    user: IUser
 }
 
 interface PropsFromDispatch {

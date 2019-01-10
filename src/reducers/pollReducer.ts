@@ -1,5 +1,5 @@
-import { GET_POLL, ADD_OPTION, CREATE_POLL, CLEAR_POLL_FROM_STATE, EDIT_OPTION, DELETE_OPTION } from '../actions/types';
-import { IPoll, AppAction } from 'src/interfaces';
+import { GET_POLL, ADD_OPTION, CREATE_POLL, CLEAR_POLL_FROM_STATE, EDIT_OPTION, DELETE_OPTION, VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE } from '../actions/types';
+import { IPoll, AppAction, IVote } from 'src/interfaces';
 
 export interface PollReducer {
     poll: IPoll
@@ -9,7 +9,6 @@ export interface PollReducer {
 const initialState: PollReducer = {
     poll: {
         title: '',
-        email: '',
         refId: '',
         creator: '',
         options: []
@@ -21,7 +20,7 @@ export default function (state = initialState, action: AppAction) {
         case GET_POLL:
             return {
                 ...state,
-                poll: action.payload.poll
+                poll: action.payload
             }
         case ADD_OPTION:
             return {
@@ -56,13 +55,32 @@ export default function (state = initialState, action: AppAction) {
         case CREATE_POLL:
             return {
                 ...state,
-                poll: action.payload.poll
+                poll: action.payload
             }
         case CLEAR_POLL_FROM_STATE:
             return {
                 ...state,
                 poll: initialState.poll
             }
+        case VOTE_FOR_POLL_REQUEST:
+            return {
+                ...state,
+                poll: state.poll.options.map(option => {
+                    if (option.refId === action.payload.optionId) {
+                        const vote: IVote = {
+                            voter: action.payload.voterId,
+                            rating: action.payload.rating
+                        }
+                        option.votes.push(vote)
+                    }
+                })
+            }
+        case VOTE_FOR_POLL_SUCCESS:
+            // TODO confirm saving of vote
+            return state
+        case VOTE_FOR_POLL_FAILURE:
+            // TODO message about fail of saving
+            return state
         default:
             return state;
     }

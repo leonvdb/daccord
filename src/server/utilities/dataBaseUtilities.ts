@@ -18,7 +18,7 @@ export function findUserById(userId: string) {
         .then((user: IUserDocument) => {
             if (!user) {
                 // Create new poll with user.id
-                const message = 'There is no user for this ID'
+                const message = `There is no user for the ID ${userId}`
                 Promise.reject(message)
             }
             return user;
