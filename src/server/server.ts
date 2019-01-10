@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as passport from 'passport';
+import * as logger from 'morgan';
 import configPassport from './config/passport';
 
 //Import API Routes
@@ -17,6 +18,8 @@ const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(cors());
+
+    app.use(logger('dev'));
 }
 
 // Body parser middleware
