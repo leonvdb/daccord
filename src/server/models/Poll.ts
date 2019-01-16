@@ -18,7 +18,7 @@ export interface IPollDocument extends mongoose.Document {
 }
 
 interface IParticipant {
-    participantId: ObjectId,
+    participant: ObjectId,
     participantToken: string
 }
 
@@ -43,7 +43,7 @@ const PollSchema = new Schema({
         required: true
     },
     participants: [{
-        participantId: {
+        participant: {
             type: Schema.Types.ObjectId,
             required: true
         },
