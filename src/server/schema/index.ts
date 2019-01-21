@@ -1,8 +1,8 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql';
 import { Poll } from '../models/Poll';
 import { User } from '../models/User';
 
-const PollType = new GraphQLObjectType({
+const PollType: GraphQLObjectType = new GraphQLObjectType({
     name: 'Poll',
     fields: () => ({
         id: { type: GraphQLID },
@@ -35,10 +35,21 @@ const ParticipantType = new GraphQLObjectType({
     })
 })
 
-const UserType = new GraphQLObjectType({
+const UserType: GraphQLObjectType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
-        id: { type: GraphQLID }
+        id: { type: GraphQLID },
+        email: { type: GraphQLString },
+        password: { type: GraphQLString },
+        registered: { type: GraphQLBoolean },
+        polls: {
+            type: GraphQLList(PollType),
+            resolve(parent, args) {
+                parent.polls.map(poll: PollType => {
+                    poll
+                })
+            }
+        }
     })
 })
 
