@@ -37,10 +37,6 @@ class AuthModal extends React.Component<Props> {
         errors: {}
     }
 
-    componentDidMount() {
-        console.log(this.props)
-    }
-
     componentWillReceiveProps(nextProps: Props) {
         if (nextProps.apiErrors.indexOf('PARTICIPANT_ALREADY_EXISTS') >= 0) {
             this.setState({

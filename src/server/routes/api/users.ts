@@ -75,7 +75,6 @@ router.post('/participate', async (req, res, next) => {
 
 router.post('/accessLink', async (req, res, next) => {
 
-    console.log(req.body)
     const poll = await findPoll(req.body.pollId);
     const user = await findOrCreateUser(req.body.email);
     let targetToken = -1;

@@ -16,6 +16,10 @@ export function setAuthJwt(jwt: IJwtPayload): AppAction<IJwtPayload> {
 
 }
 
+interface IGetUserResponse {
+    message: string,
+    payload: IUser
+}
 
 export function setAuthTokenAndUser(jwt: string, user?: IUser): ThunkResult<IUser> {
     return async (dispatch: Dispatch) => {
@@ -24,8 +28,8 @@ export function setAuthTokenAndUser(jwt: string, user?: IUser): ThunkResult<IUse
         try {
             // When jwt is from localstorage or store user as json in localstorage
             if (!user) {
-                const response = await axios.get<IUser>(`/api/users/${decodedJwt.userId}`)
-                user = response.data
+                const response = await axios.get<IGetUserResponse>(`/api/users/${decodedJwt.userId}`)
+                user = response.data.payload
             }
             dispatch(setAuthJwt(decodedJwt))
             return dispatch(setCurrentUser(user))

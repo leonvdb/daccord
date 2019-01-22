@@ -46,7 +46,6 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
             type: GraphQLList(PollType),
             resolve(parent, args) {
                 return parent.polls.map(async (pollId: string) => {
-                    console.log(pollId)
                     return await Poll.findById(pollId)
                 })
             }

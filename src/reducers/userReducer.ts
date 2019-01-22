@@ -20,7 +20,7 @@ export default function (state = initialState, action: AppAction) {
         case SET_CURRENT_USER:
             return {
                 ...state,
-                user: action.payload.payload
+                user: action.payload
             }
         default:
             return state;
