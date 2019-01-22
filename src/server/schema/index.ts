@@ -68,6 +68,19 @@ const RootQuery = new GraphQLObjectType({
             resolve() {
                 return Poll.find({})
             }
+        },
+        user: {
+            type: UserType,
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args) {
+                return User.findById(args.id)
+            }
+        },
+        users: {
+            type: GraphQLList(UserType),
+            resolve() {
+                return User.find({})
+            }
         }
     }
 })
