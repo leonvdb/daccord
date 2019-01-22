@@ -2,7 +2,7 @@ import { GraphQLSchema, GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList
 import { Poll } from '../models/Poll';
 import { User } from '../models/User';
 
-const PollType: GraphQLObjectType = new GraphQLObjectType({
+const PollType = new GraphQLObjectType({
     name: 'Poll',
     fields: () => ({
         id: { type: GraphQLID },
@@ -27,8 +27,8 @@ const ParticipantType = new GraphQLObjectType({
     fields: () => ({
         participant: {
             type: UserType,
-            resolve(parent, args) {
-                return User.findById(parent.participant)
+            resolve: async (parent, args) => {
+                return await User.findById(parent.participant)
             }
         },
         participantToken: { type: GraphQLString }
@@ -45,8 +45,9 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
         polls: {
             type: GraphQLList(PollType),
             resolve(parent, args) {
-                parent.polls.map(poll: PollType => {
-                    poll
+                return parent.polls.map(async (pollId: string) => {
+                    console.log(pollId)
+                    return await Poll.findById(pollId)
                 })
             }
         }
