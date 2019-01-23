@@ -26,6 +26,12 @@
     "no-console": {
       "severity": "warning"
     },
-    "no-empty-interface": false
+    "indent": [
+      true,
+      "spaces",
+      4
+    ],
+    "no-empty-interface": false,
+    "only-arrow-functions": false
   }
 }

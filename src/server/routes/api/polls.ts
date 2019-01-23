@@ -4,19 +4,21 @@ import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
 import * as asnycHandler from 'express-async-handler';
 import * as passport from 'passport';
-import { IJwtPayload } from 'src/interfaces';
+import { IJwtPayload, IVoteForPollPayload, IPoll } from 'src/interfaces';
 
 //Load Models
 import { Poll, IPollDocument } from '../../models/Poll';
 import { User, IUserDocument } from '../../models/User';
 import { sendConfirmMail } from '../../utilities/sendConfirmMail';
 import { createJsonWebToken } from '../../utilities/createJsonWebToken';
-import { findOrCreateUser, findPoll } from '../../utilities/dataBaseUtilities';
+import { findOrCreateUser, findPoll, findUserById } from '../../utilities/dataBaseUtilities';
+import { ApiResponse } from '../../utilities/ApiResponse';
+import { IGetPolls } from './responseInterfaces';
 
 //@route    POST api/polls
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
 //@access   Public
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
 
     // Check if email corresponds to User in DB
     User.findOne({ email: req.body.email }).then((user: IUserDocument) => {
@@ -55,14 +57,21 @@ router.post('/', (req, res) => {
             //Add poll ref to user
             user.polls.push(poll._id)
             await user.save()
+
             //Send email with token to creator
             sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
 
             const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
-            res.json({ poll, token })
+            const pollRes = poll.getPollForFrontend()
+            console.log('pollRes', pollRes);
+            res.json(new ApiResponse<IGetPolls>({
+                poll: pollRes,
+                token,
+                user: user.getUserForFrontend()
+            }))
 
         } catch (error) {
-            res.json(error)
+            next(new ApiError(error))
         }
     }
 });
@@ -74,21 +83,42 @@ router.get('/:poll_id', async (req, res, next) => {
     const poll = await findPoll(req.params.poll_id)
     let token = '';
     if (req.query.token) {
+
+        const user = await findUserById(poll.creator.toHexString())
+
         if (req.query.token === poll.creatorToken) {
             token = createJsonWebToken(poll.creator, 'CREATOR', false, req.params.poll_id)
-            return res.json({ poll, token })
+            const pollRes = poll.getPollForFrontend()
+            console.log('pollRes', pollRes);
+
+            return res.json(new ApiResponse<IGetPolls>({
+                poll: pollRes,
+                token,
+                user: user.getUserForFrontend()
+            }))
         }
 
         for (let i = 0; i < poll.participants.length; i++) {
-            if (poll.participants[i].participantToken === req.query.token) {
-                const token = createJsonWebToken(poll.creator, 'PARTICIPANT', false, req.params.poll_id)
-                return res.json({ poll, token })
+            if (poll.participants[i].token === req.query.token) {
+                const token = createJsonWebToken(poll.participants[0].id, 'PARTICIPANT', false, req.params.poll_id)
+                const pollRes = poll.getPollForFrontend()
+                console.log('pollRes', pollRes);
+                return res.json(new ApiResponse<IGetPolls>({
+                    poll: pollRes,
+                    token,
+                    user: user.getUserForFrontend()
+                }))
             }
         }
-        return next(new ApiError('Incorrect Token', 401));
+        return next(new ApiError('INCORRECT_TOKEN', 401));
     }
-    //TODO: Adjust so that Creator Token is not exposed in response object.
-    return res.json({ poll, token })
+    const pollRes = poll.getPollForFrontend()
+    console.log('pollRes', pollRes);
+    return res.json(new ApiResponse<IGetPolls>({
+        poll: pollRes,
+        token: '',
+        user: { email: '', id: '' }
+    }))
 });
 
 //@route    PUT api/polls/:poll_id
@@ -104,7 +134,7 @@ router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, 
 
     //TODO: Check that user is authorized to edit poll (i.e.: if user from jwt is creator)
     const jwtPayload: IJwtPayload = req.user
-    if (jwtPayload.pollId !== req.params.poll_id) {
+    if (!jwtPayload.isForLoggedInAccount && (jwtPayload.forPollId !== req.params.poll_id)) {
         return next(new ApiError('Incorrect Token', 401));
     }
     // Collect request body data
@@ -117,12 +147,11 @@ router.put('/:poll_id', passport.authenticate('jwt', { session: false }), (req, 
         { new: true }
     )
         .then((poll: IPollDocument) => {
-            if (!poll) return res.status(404).json({ 'msg': 'There is no poll for this ID' });
-            return res.json(poll)
+            if (!poll) return next(new ApiError('NO_POLL_FOR_THIS_ID', 404))
+            return res.json(new ApiResponse<IPoll>(poll.getPollForFrontend()))
         })
         .catch((err: Error) => {
-            console.log("fail")
-            return res.json(err)
+            return next(new ApiError(err.message))
         });
 });
 
@@ -139,9 +168,9 @@ router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), asy
     }
     try {
         await poll.remove()
-        return res.json({ success: true });
+        return res.json(new ApiResponse());
     } catch (error) {
-        return res.json(error)
+        return next(new ApiError(error))
     }
 });
 
@@ -152,7 +181,9 @@ router.delete('/:poll_id', passport.authenticate('jwt', { session: false }), asy
 //@params   UserEmail(could also be ID), {option.RefID: Vote,}
 router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
 
-    const userPromise = findOrCreateUser(req.body.email)
+    const vote: IVoteForPollPayload = req.body;
+
+    const userPromise = findOrCreateUser(vote.voterEmail)
     const pollPromise = findPoll(req.params.poll_id)
 
 
@@ -167,8 +198,7 @@ router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
         }
 
         //Check if Payload is valid
-        const votePayload = Number(req.body.votes[poll.options[i].refId]);
-        if (votePayload < 0 || votePayload > 10) {
+        if (vote.rating < 0 || vote.rating > 10) {
             return next(new ApiError('Vote value has to be between 0 and 10', 404));
         }
 
@@ -180,12 +210,13 @@ router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
             }
             return true
         })
+        // TODO check if this line is useless 
         poll.options[i].votes = removePreviousVotes;
 
         //Construct vote for option
         const newVote = {
-            voter: user._id,
-            vote: votePayload
+            voter: user._id.toHexString(),
+            rating: vote.rating
         }
         //Add vote to option
         poll.options[i].votes.unshift(newVote)
@@ -193,6 +224,7 @@ router.put('/:poll_id/vote', asnycHandler(async (req, res, next) => {
     }
     //Save and send response
     const response = await poll.save()
+    // TODO fix this api response with new ApiResponsex
     res.json(response);
 }))
 

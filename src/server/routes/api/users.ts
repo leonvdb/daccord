@@ -1,14 +1,17 @@
 import * as express from 'express';
-import { findOrCreateUser, findPoll } from '../../utilities/dataBaseUtilities';
+import { findOrCreateUser, findPoll, findUserById } from '../../utilities/dataBaseUtilities';
 import { ApiError } from '../../utilities/ApiError';
 import { generateToken } from '../../utilities/cryptoGenerators';
 import { sendConfirmMail } from '../../utilities/sendConfirmMail';
 import { createJsonWebToken } from '../../utilities/createJsonWebToken';
+import { ApiResponse } from '../../utilities/ApiResponse';
+import { IPostUsersParticipate } from './responseInterfaces';
+import { IUser } from 'src/interfaces';
 const router = express.Router({ mergeParams: true });
 
 export default router;
 
-//@route    POST api/polls
+//@route    POST api/users/participate
 //@desc     Creates new poll. If Email-address unknown creates new User in database.
 //@access   Public
 router.post('/participate', async (req, res, next) => {
@@ -22,7 +25,7 @@ router.post('/participate', async (req, res, next) => {
         userParticipating = true
     };
     for (let i = 0; i < poll.participants.length; i++) {
-        if (poll.participants[i].participantId.toString() === user._id.toString()) {
+        if (poll.participants[i].id.toString() === user._id.toString()) {
             userParticipating = true
         }
     }
@@ -41,12 +44,12 @@ router.post('/participate', async (req, res, next) => {
 
         //Add user to participants
         const newParticipant = {
-            participantId: user._id,
-            participantToken: generateToken()
+            id: user._id,
+            token: generateToken()
         }
 
         //Send email to new user
-        sendConfirmMail(user.email, poll, 'becomeNewParticipant', newParticipant.participantToken)
+        sendConfirmMail(user.email, poll, 'becomeNewParticipant', newParticipant.token)
         poll.participants.push(newParticipant)
         user.polls.push(poll._id)
         newJWT = createJsonWebToken(user._id, 'PARTICIPANT', false, poll.refId)
@@ -57,26 +60,28 @@ router.post('/participate', async (req, res, next) => {
 
     //If user is not in State and thus JWT was created,
     //include it in the json response object
+    // TODO why does this endpoint return different things
     if (newJWT) {
-        return res.json({
+        return res.json(new ApiResponse({
             option: poll.options[0],
-            token: newJWT
-        })
+            token: newJWT,
+            user: user.getUserForFrontend()
+        }))
     }
-    return res.json({ user, token: '' })
+    // TODO why is the user returned here? it should be user for Frontend
+    return res.json(new ApiResponse<IPostUsersParticipate>({ user: user.getUserForFrontend(), token: '' }))
 
 });
 
 router.post('/accessLink', async (req, res, next) => {
 
-    console.log(req.body)
     const poll = await findPoll(req.body.pollId);
     const user = await findOrCreateUser(req.body.email);
     let targetToken = -1;
     const newToken = generateToken();
 
     poll.participants.forEach(async (participant, index) => {
-        if (participant.participantId.toString() === user._id.toString()) {
+        if (participant.id.toString() === user._id.toString()) {
             targetToken = index
         }
     })
@@ -88,12 +93,24 @@ router.post('/accessLink', async (req, res, next) => {
     if (targetToken === -2) {
         poll.creatorToken = newToken
     } else if (targetToken >= 0) {
-        poll.participants[targetToken].participantToken = newToken
+        poll.participants[targetToken].token = newToken
     } else {
         return next(new ApiError('USER_NOT_FOUND', 404))
     }
     sendConfirmMail(user.email, poll, 'resendExistingParticipant', newToken);
     await poll.save()
-    return res.json({ msg: 'access Link has been sent to email' })
+    return res.json(new ApiResponse('access Link has been sent to email'))
 
+})
+
+//@route    GET api/users/:userId
+//@desc     Creates new poll. If Email-address unknown creates new User in database.
+//@access   Public
+router.get('/:userId', async (req, res, next) => {
+    try {
+        const user = await findUserById(req.params.userId)
+        return res.status(200).json(new ApiResponse<IUser>(user.getUserForFrontend()))
+    } catch (error) {
+        return next(new ApiError('USER_NOT_FOUND', 404))
+    }
 })

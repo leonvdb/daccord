@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Store } from '../../reducers';
-import { IPoll, IUserState, INewParticipant } from '../../interfaces';
+import { IPoll, INewParticipant, IUser } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
 import { participate, resendLink } from '../../actions/userActions';
@@ -35,10 +35,6 @@ class AuthModal extends React.Component<Props> {
         name: '',
         email: '',
         errors: {}
-    }
-
-    componentDidMount() {
-        console.log(this.props)
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -205,7 +201,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
 
 interface PropsFromState {
     poll: IPoll
-    user: IUserState
+    user: IUser
     apiErrors: string[]
 }
 

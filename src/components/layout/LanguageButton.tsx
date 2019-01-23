@@ -1,7 +1,7 @@
 import * as React from 'react'
 import i18n from '../../i18n';
 import { DropdownItem } from 'reactstrap';
-import { setLanguage } from 'src/actions/langActions';
+import { setLanguage } from '../../actions/langActions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { AppAction } from 'src/interfaces';

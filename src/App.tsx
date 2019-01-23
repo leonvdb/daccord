@@ -13,11 +13,11 @@ import NotFound from './components/NotFound';
 import Poll from './components/poll';
 
 import './App.css';
-import { setAuthTokenAndUser } from './actions/userActions';
 import i18n from './i18n';
+import { setAuthTokenAndUser } from './actions/authActions';
 
 if (localStorage.jwtToken) {
-  store.dispatch(setAuthTokenAndUser(localStorage.jwtToken))
+  store.dispatch(setAuthTokenAndUser(localStorage.jwtToken, localStorage.user))
 }
 
 class App extends React.Component {

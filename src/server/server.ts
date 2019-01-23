@@ -1,9 +1,14 @@
 import * as express from 'express';
+import * as graphqlHTTP from 'express-graphql';
 import * as mongoose from 'mongoose';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as passport from 'passport';
+import * as logger from 'morgan';
 import configPassport from './config/passport';
+
+//Import graphQL Schema
+import schema from './schema'
 
 //Import API Routes
 import testRoute from './routes/api/test' //To be deleted after review
@@ -17,6 +22,8 @@ const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(cors());
+
+    app.use(logger('dev'));
 }
 
 // Body parser middleware
@@ -38,6 +45,12 @@ configPassport(passport);
 
 //Test Index
 app.get('/', (req: express.Request, res: express.Response) => res.send("Test"));
+
+//graphql 
+app.use('/graphql', graphqlHTTP({
+    schema,
+    graphiql: true
+}))
 
 //Merge Routes
 polls.use('/:poll_id/options', options);

@@ -125,7 +125,7 @@ class AddOption extends React.Component<Props, State> {
 
 const mapStateToProps = (state: Store) => ({
     pollId: state.poll.poll.refId,
-    userId: state.user.user.userId
+    userId: state.user.user.id
 });
 
 interface PropsFromState {

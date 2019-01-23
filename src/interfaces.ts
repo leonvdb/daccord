@@ -1,13 +1,11 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { Store } from './reducers';
-import { ObjectId } from 'mongodb';
-
-
 //Poll Interfaces
 
 //TODO: Adapt creator to be typed as ObjectId
-export interface IPoll extends INewPoll {
+export interface IPoll {
+    title: string
     refId: string
     creator: string
     options: IOption[]
@@ -20,7 +18,7 @@ export interface INewPoll {
 
 
 export interface IOption extends INewOption {
-    creator: ObjectId
+    creator: string
     refId: string
     votes: IVote[]
 }
@@ -31,42 +29,42 @@ export interface INewOption {
 }
 
 export interface IVote {
-    voter: ObjectId
-    vote: number
+    voter: string
+    rating: number
 }
 
+export interface IVoteForPollPayload {
+    voterEmail: string
+    optionId: string
+    rating: number
+}
 
-//User Interfaces
-
-export interface IUser {
+// User Interfaces
+export interface IUserInformation {
     email: string
-    name: string
+    name?: string
 }
 
-export interface IUserState {
-    accountLogin: boolean,
-    pollId: string,
-    userId: string,
-    userType: string
+export interface IUser extends IUserInformation {
+    id: string
 }
 
-export interface IUserJwt extends IUserState {
-    exp: number
-    iat: number
-}
-
-export interface INewParticipant extends IUser {
+export interface INewParticipant extends IUserInformation {
     pollId: string
 }
 
-//Backend Interfaces
-
-export interface IJwtPayload {
-    userId: ObjectId,
-    userType: string,
-    accountLogin: boolean,
-    pollId: string
+export interface IJwtPayloadData {
+    userId: string
+    forPollId?: string
+    isForLoggedInAccount: boolean
 }
+
+export interface IJwtPayload extends IJwtPayloadData {
+    exp: number // expiring
+    iat: number // issuedAt
+}
+
+
 
 export interface AppAction<TPayload = any> extends Action<string> {
     payload?: TPayload
@@ -74,3 +72,4 @@ export interface AppAction<TPayload = any> extends Action<string> {
 }
 
 export interface ThunkResult<TResultActionPayload> extends ThunkAction<Promise<AppAction<TResultActionPayload>>, Store, void, AppAction<TResultActionPayload>> { }
+export interface LocalThunkResult<TResultActionPayload> extends ThunkAction<AppAction<TResultActionPayload>, Store, void, AppAction<TResultActionPayload>> { }
