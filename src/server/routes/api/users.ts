@@ -25,7 +25,7 @@ router.post('/participate', async (req, res, next) => {
         userParticipating = true
     };
     for (let i = 0; i < poll.participants.length; i++) {
-        if (poll.participants[i].participantId.toString() === user._id.toString()) {
+        if (poll.participants[i].id.toString() === user._id.toString()) {
             userParticipating = true
         }
     }
@@ -44,12 +44,12 @@ router.post('/participate', async (req, res, next) => {
 
         //Add user to participants
         const newParticipant = {
-            participantId: user._id,
-            participantToken: generateToken()
+            id: user._id,
+            token: generateToken()
         }
 
         //Send email to new user
-        sendConfirmMail(user.email, poll, 'becomeNewParticipant', newParticipant.participantToken)
+        sendConfirmMail(user.email, poll, 'becomeNewParticipant', newParticipant.token)
         poll.participants.push(newParticipant)
         user.polls.push(poll._id)
         newJWT = createJsonWebToken(user._id, 'PARTICIPANT', false, poll.refId)
@@ -81,7 +81,7 @@ router.post('/accessLink', async (req, res, next) => {
     const newToken = generateToken();
 
     poll.participants.forEach(async (participant, index) => {
-        if (participant.participantId.toString() === user._id.toString()) {
+        if (participant.id.toString() === user._id.toString()) {
             targetToken = index
         }
     })
@@ -93,7 +93,7 @@ router.post('/accessLink', async (req, res, next) => {
     if (targetToken === -2) {
         poll.creatorToken = newToken
     } else if (targetToken >= 0) {
-        poll.participants[targetToken].participantToken = newToken
+        poll.participants[targetToken].token = newToken
     } else {
         return next(new ApiError('USER_NOT_FOUND', 404))
     }

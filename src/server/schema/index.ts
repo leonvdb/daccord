@@ -28,15 +28,10 @@ const ParticipantType = new GraphQLObjectType({
         user: {
             type: UserType,
             resolve: async (parent, args) => {
-                return await User.findById(parent.participantId)
+                return await User.findById(parent.id)
             }
         },
-        token: {
-            type: GraphQLString,
-            resolve(parent, args) {
-                return parent.participantToken
-            }
-        }
+        token: { type: GraphQLString }
     })
 })
 

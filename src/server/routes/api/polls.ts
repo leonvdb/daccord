@@ -99,8 +99,8 @@ router.get('/:poll_id', async (req, res, next) => {
         }
 
         for (let i = 0; i < poll.participants.length; i++) {
-            if (poll.participants[i].participantToken === req.query.token) {
-                const token = createJsonWebToken(poll.participants[0].participantId, 'PARTICIPANT', false, req.params.poll_id)
+            if (poll.participants[i].token === req.query.token) {
+                const token = createJsonWebToken(poll.participants[0].id, 'PARTICIPANT', false, req.params.poll_id)
                 const pollRes = poll.getPollForFrontend()
                 console.log('pollRes', pollRes);
                 return res.json(new ApiResponse<IGetPolls>({
