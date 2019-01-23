@@ -25,7 +25,7 @@ router.post('/participate', async (req, res, next) => {
         userParticipating = true
     };
     for (let i = 0; i < poll.participants.length; i++) {
-        if (poll.participants[i].participant.toString() === user._id.toString()) {
+        if (poll.participants[i].participantId.toString() === user._id.toString()) {
             userParticipating = true
         }
     }
@@ -44,7 +44,7 @@ router.post('/participate', async (req, res, next) => {
 
         //Add user to participants
         const newParticipant = {
-            participant: user._id,
+            participantId: user._id,
             participantToken: generateToken()
         }
 
@@ -81,7 +81,7 @@ router.post('/accessLink', async (req, res, next) => {
     const newToken = generateToken();
 
     poll.participants.forEach(async (participant, index) => {
-        if (participant.participant.toString() === user._id.toString()) {
+        if (participant.participantId.toString() === user._id.toString()) {
             targetToken = index
         }
     })

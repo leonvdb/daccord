@@ -25,13 +25,18 @@ const PollType = new GraphQLObjectType({
 const ParticipantType = new GraphQLObjectType({
     name: 'Participant',
     fields: () => ({
-        participant: {
+        user: {
             type: UserType,
             resolve: async (parent, args) => {
-                return await User.findById(parent.participant)
+                return await User.findById(parent.participantId)
             }
         },
-        participantToken: { type: GraphQLString }
+        token: {
+            type: GraphQLString,
+            resolve(parent, args) {
+                return parent.participantToken
+            }
+        }
     })
 })
 
