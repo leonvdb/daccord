@@ -1,9 +1,9 @@
-import * as express from 'express';
+import express from 'express';
 const router = express.Router();
 import { createRefId, generateToken } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
-import * as asnycHandler from 'express-async-handler';
-import * as passport from 'passport';
+import asnycHandler from 'express-async-handler';
+import passport from 'passport';
 import { IJwtPayload, IVoteForPollPayload, IPoll } from 'src/interfaces';
 
 //Load Models

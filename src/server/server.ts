@@ -1,14 +1,14 @@
-import * as express from 'express';
-import * as graphqlHTTP from 'express-graphql';
-import * as mongoose from 'mongoose';
-import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
-import * as passport from 'passport';
-import * as logger from 'morgan';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import passport from 'passport';
+import logger from 'morgan';
 import configPassport from './config/passport';
-
 //Import graphQL Schema
-import schema from './schema'
+import typeDefs from './typeDefs'
+import resolvers from './resolvers';
 
 //Import API Routes
 import testRoute from './routes/api/test' //To be deleted after review
@@ -19,6 +19,10 @@ import { ApiError } from './utilities/ApiError';
 import { ApiResponse } from './utilities/ApiResponse';
 
 const app = express();
+const server = new ApolloServer({
+    typeDefs,
+    resolvers
+})
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(cors());
@@ -47,10 +51,7 @@ configPassport(passport);
 app.get('/', (req: express.Request, res: express.Response) => res.send("Test"));
 
 //graphql 
-app.use('/graphql', graphqlHTTP({
-    schema,
-    graphiql: true
-}))
+server.applyMiddleware({ app, path: '/graphql' })
 
 //Merge Routes
 polls.use('/:poll_id/options', options);
