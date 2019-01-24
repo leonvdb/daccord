@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { IJwtPayload, AppAction, IUser, ThunkResult } from '../interfaces';
 import { SET_JWT_TOKEN } from './types';
-import * as jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import setAuthToken from '../utilities/setAuthToken';
 import { setError } from './errorActions';
 import { setCurrentUser } from './pollActions';

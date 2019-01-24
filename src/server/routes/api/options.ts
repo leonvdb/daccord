@@ -1,6 +1,6 @@
-import * as express from 'express';
+import express from 'express';
 const router = express.Router({ mergeParams: true });
-import * as passport from 'passport';
+import passport from 'passport';
 import { createRefId } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
 import { findPoll, findUserById } from "../../utilities/dataBaseUtilities";
