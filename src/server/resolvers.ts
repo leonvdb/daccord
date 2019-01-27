@@ -11,6 +11,18 @@ const resolvers: IResolvers = {
             return Poll.find({});
         }
     },
+    Mutation: {
+        createPoll: (_, { userId, title }) => {
+            const poll = new Poll({
+                title,
+                creator: userId,
+                creatorToken: 'test',
+                refId: 'testRef'
+            });
+
+            return poll;
+        }
+    },
     Poll: {
         creator: (parent) => {
             return User.findById(parent.creator)
