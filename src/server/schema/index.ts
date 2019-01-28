@@ -14,6 +14,7 @@ const Mutation = `
 type Mutation{
     createPoll(userEmail: String!, title: String!): CreatePollResponse!
     updatePoll(pollId: ID!, title: String): Poll!
+    deletePoll(pollId: ID!): Boolean!
 }
 `
 const server = new ApolloServer({

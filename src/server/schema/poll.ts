@@ -73,6 +73,10 @@ export const resolvers: IResolvers = {
                 { new: true }
             )
             return poll;
+        },
+        deletePoll: async (_, { pollId }) => {
+            const poll = await Poll.findOneAndDelete({ refId: pollId })
+            return poll ? true : false
         }
     },
     Poll: {
