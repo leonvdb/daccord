@@ -1,5 +1,4 @@
 import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -7,9 +6,7 @@ import passport from 'passport';
 import logger from 'morgan';
 import configPassport from './config/passport';
 //Import graphQL Schema
-import typeDefs from './typeDefs'
-import resolvers from './resolvers';
-
+import server from './schema'
 //Import API Routes
 import testRoute from './routes/api/test' //To be deleted after review
 import polls from './routes/api/polls';
@@ -19,10 +16,6 @@ import { ApiError } from './utilities/ApiError';
 import { ApiResponse } from './utilities/ApiResponse';
 
 const app = express();
-const server = new ApolloServer({
-    typeDefs,
-    resolvers
-})
 
 if (process.env.NODE_ENV !== 'production') {
     app.use(cors());

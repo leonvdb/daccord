@@ -4,11 +4,16 @@ const typeDefs = gql`
 type Query {
     polls: [Poll!]
     poll(id: ID!): Poll
-    user(id: ID!): User
 }
 
 type Mutation{
-    createPoll(userId: ID!, title: String!): Poll!
+    createPoll(userEmail: String!, title: String!): CreatePollResponse!
+}
+
+type CreatePollResponse{
+    poll: Poll!
+    token: String!
+    user: User!
 }
 
 type Poll{
