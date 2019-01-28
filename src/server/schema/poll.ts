@@ -49,25 +49,31 @@ export const resolvers: IResolvers = {
                 creatorToken: generateToken(),
                 refId: createRefId()
             });
-            try {
-                const poll = await newPoll.save()
-                user.polls.push(poll._id)
-                await user.save()
+            const poll = await newPoll.save()
+            user.polls.push(poll._id)
+            await user.save()
 
-                sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
+            sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
 
-                const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
-                const response = new ApiResponse({
-                    poll,
-                    token,
-                    user
-                })
-                return response.payload;
+            const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
+            const response = new ApiResponse({
+                poll,
+                token,
+                user
+            })
+            return response.payload;
 
-            } catch (error) {
-                throw new ApiError(error)
+        },
+        updatePoll: async (_, { pollId, title }) => {
+            const pollFields = {
+                title
             }
-
+            const poll = await Poll.findOneAndUpdate(
+                { refId: pollId },
+                pollFields,
+                { new: true }
+            )
+            return poll;
         }
     },
     Poll: {

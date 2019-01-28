@@ -13,6 +13,7 @@ type Query {
 const Mutation = `
 type Mutation{
     createPoll(userEmail: String!, title: String!): CreatePollResponse!
+    updatePoll(pollId: ID!, title: String): Poll!
 }
 `
 const server = new ApolloServer({
