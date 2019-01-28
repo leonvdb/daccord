@@ -5,7 +5,6 @@ import { generateToken, createRefId } from '../utilities/cryptoGenerators';
 import { sendConfirmMail } from '../utilities/sendConfirmMail';
 import { createJsonWebToken } from '../utilities/createJsonWebToken';
 import { ApiResponse } from '../utilities/ApiResponse';
-import { ApiError } from '../utilities/ApiError';
 import { User } from '../models/User';
 
 export const typeDef = `
