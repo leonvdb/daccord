@@ -5,12 +5,12 @@ import { sendConfirmMail } from '../../../utilities/sendConfirmMail';
 import { createJsonWebToken } from '../../../utilities/createJsonWebToken';
 import { ApiResponse } from '../../../utilities/ApiResponse';
 
-interface createPollInput {
+interface ICreatePollInput {
     userEmail: string,
     title: string
 }
 
-export const createPoll = async (_: any, args: createPollInput) => {
+export const createPoll = async (_: any, args: ICreatePollInput) => {
 
     const user = await findOrCreateUser(args.userEmail)
     const newPoll = new Poll({

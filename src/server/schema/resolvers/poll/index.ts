@@ -3,6 +3,8 @@ import { createPoll } from './createPoll';
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
+import { createRefId } from '../../../utilities/cryptoGenerators';
+import { ApiError } from '../../../utilities/ApiError';
 
 export const resolvers: IResolvers = {
     Query: {
@@ -29,6 +31,20 @@ export const resolvers: IResolvers = {
         deletePoll: helmet(async (_, { pollId }) => {
             const poll = await Poll.findOneAndDelete({ refId: pollId })
             return poll ? true : false
+        }),
+        createOption: helmet(async (_, { pollId, title, description, userId }) => {
+            const poll = await Poll.findOne({ refId: pollId });
+            if (!poll) return new ApiError("Poll not found", 404)
+            const newOpt = {
+                title,
+                description,
+                creator: userId,
+                refId: createRefId(),
+                votes: []
+            }
+            poll.options.unshift(newOpt);
+            return await poll.save()
+
         })
     },
     Poll: {
@@ -39,6 +55,16 @@ export const resolvers: IResolvers = {
     Participant: {
         user: (parent) => {
             return User.findById(parent.id)
+        }
+    },
+    Option: {
+        creator: (parent) => {
+            return User.findById(parent.creator)
+        }
+    },
+    Vote: {
+        voter: (parent) => {
+            return User.findById(parent.creator)
         }
     }
 };
