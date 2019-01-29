@@ -1,15 +1,5 @@
 import { IResolvers } from 'graphql-tools';
-import { Poll } from '../models/Poll';
-
-export const typeDef = `
-type User{
-      id: ID!
-      email: String!
-      password: String
-      registered: Boolean!
-      polls: [Poll!]
-}
-`
+import { Poll } from '../../models/Poll';
 
 export const resolvers: IResolvers = {
     User: {
