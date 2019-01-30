@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { I18nextProvider } from "react-i18next";
+import ApolloClient from 'apollo-boost';
+import gql from 'graphql-tag';
 import store from './store';
-
 
 import CreatePoll from './components/CreatePoll';
 import Landing from './components/Landing';
@@ -15,6 +16,22 @@ import Poll from './components/poll';
 import './App.css';
 import i18n from './i18n';
 import { setAuthTokenAndUser } from './actions/authActions';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:5000/graphql'
+})
+
+client.query({
+  query: gql`
+  {
+  polls {
+    title
+    refId
+  }
+}
+  `
+})
+  .then(result => console.log(result));
 
 if (localStorage.jwtToken) {
   store.dispatch(setAuthTokenAndUser(localStorage.jwtToken, localStorage.user))

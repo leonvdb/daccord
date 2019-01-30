@@ -21,8 +21,8 @@ export const updateOption = async (_: any, args: IUpdateOptionInput) => {
     const poll = await findPoll(args.pollId);
     const { index, error } = findOption(poll, args.optionId);
     if (error) return new ApiError(error, 404);
-    args.title && (poll.options[index].title = args.title);
-    args.description && (poll.options[index].description = args.description);
+    if (args.title) poll.options[index].title = args.title;
+    if (args.description) poll.options[index].description = args.description;
     return await poll.save();
 }
 
