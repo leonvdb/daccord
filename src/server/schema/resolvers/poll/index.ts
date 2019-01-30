@@ -4,6 +4,7 @@ import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
 import { createRefId } from '../../../utilities/cryptoGenerators';
+import { findOption, findPoll } from '../../../utilities/dataBaseUtilities'
 import { ApiError } from '../../../utilities/ApiError';
 
 export const resolvers: IResolvers = {
@@ -45,6 +46,13 @@ export const resolvers: IResolvers = {
             poll.options.unshift(newOpt);
             return await poll.save()
 
+        }),
+        deleteOption: helmet(async (_, { pollId, optionId }) => {
+            const poll = await findPoll(pollId)
+            const { index, error } = findOption(poll, optionId)
+            if (error) return new ApiError(error, 404)
+            poll.options.splice(index, 1);
+            return await poll.save()
         })
     },
     Poll: {
