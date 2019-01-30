@@ -1,6 +1,6 @@
 import { IResolvers } from 'graphql-tools';
 import { createPoll, updatePoll, deletePoll } from './cudPoll';
-import { createOption, deleteOption } from './cudOption';
+import { createOption, deleteOption, updateOption } from './cudOption';
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
@@ -19,6 +19,7 @@ export const resolvers: IResolvers = {
         updatePoll: helmet(updatePoll),
         deletePoll: helmet(deletePoll),
         createOption: helmet(createOption),
+        updateOption: helmet(updateOption),
         deleteOption: helmet(deleteOption)
     },
     Poll: {

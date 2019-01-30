@@ -12,9 +12,18 @@ export const createOption = async (_: any, args: ICreateOptionInput) => {
         creator: args.userId,
         refId: createRefId(),
         votes: []
-    }
+    };
     poll.options.unshift(newOpt);
-    return await poll.save()
+    return await poll.save();
+}
+
+export const updateOption = async (_: any, args: IUpdateOptionInput) => {
+    const poll = await findPoll(args.pollId);
+    const { index, error } = findOption(poll, args.optionId);
+    if (error) return new ApiError(error, 404);
+    args.title && (poll.options[index].title = args.title);
+    args.description && (poll.options[index].description = args.description);
+    return await poll.save();
 }
 
 export const deleteOption = async (_: any, args: IDeleteOptionInput) => {
@@ -31,7 +40,12 @@ interface ICreateOptionInput {
     title: string
     description?: string
 }
-
+interface IUpdateOptionInput {
+    pollId: string
+    optionId: string
+    title?: string
+    description?: string
+}
 interface IDeleteOptionInput {
     pollId: string
     optionId: string
