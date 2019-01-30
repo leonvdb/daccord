@@ -5,11 +5,6 @@ import { sendConfirmMail } from '../../../utilities/sendConfirmMail';
 import { createJsonWebToken } from '../../../utilities/createJsonWebToken';
 import { ApiResponse } from '../../../utilities/ApiResponse';
 
-interface ICreatePollInput {
-    userEmail: string,
-    title: string
-}
-
 export const createPoll = async (_: any, args: ICreatePollInput) => {
 
     const user = await findOrCreateUser(args.userEmail)
@@ -33,4 +28,36 @@ export const createPoll = async (_: any, args: ICreatePollInput) => {
     })
     return response.payload;
 
+}
+
+export const updatePoll = async (_: any, args: IUpdatePollInput) => {
+    const pollFields = {
+        title: args.title
+    }
+    const poll = await Poll.findOneAndUpdate(
+        { refId: args.pollId },
+        pollFields,
+        { new: true }
+    )
+    return poll;
+}
+
+export const deletePoll = async (_: any, args: IDeletePollInput) => {
+    const poll = await Poll.findOneAndDelete({ refId: args.pollId })
+    return poll ? true : false
+}
+
+
+
+interface ICreatePollInput {
+    userEmail: string,
+    title: string
+}
+interface IUpdatePollInput {
+    pollId: string,
+    title?: string
+}
+
+interface IDeletePollInput {
+    pollId: string
 }
