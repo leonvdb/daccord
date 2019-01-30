@@ -79,7 +79,8 @@ const PollSchema = new Schema({
             }
         }]
     }]
-});
+},
+    { bufferCommands: false });
 
 PollSchema.methods.getPollForFrontend = function (): IPoll {
     // This is necessary to have the nexted documents as plain js objects and not mongoose documents

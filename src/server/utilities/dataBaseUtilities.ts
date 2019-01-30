@@ -44,6 +44,21 @@ export function findPoll(pollId: string) {
         .catch();
 }
 
+export function findOption(poll: IPollDocument, optId: string) {
+    const targetIndex = poll.options
+        .map(option => option.refId)
+        .indexOf(optId)
+    let error = ''
+    if (targetIndex === -1) {
+        error = 'There is no option for this ID'
+    }
+    return {
+        option: poll.options[targetIndex],
+        index: targetIndex,
+        error
+    }
+}
+
 function validatePoll(poll: IPollDocument, ): IPollDocument {
     //Check if poll exists
     if (!poll) {

@@ -3,10 +3,9 @@ const router = express.Router({ mergeParams: true });
 import passport from 'passport';
 import { createRefId } from '../../utilities/cryptoGenerators';
 import { ApiError } from '../../utilities/ApiError';
-import { findPoll, findUserById } from "../../utilities/dataBaseUtilities";
+import { findPoll, findUserById, findOption } from "../../utilities/dataBaseUtilities";
 
 //Load Models
-import { IPollDocument } from '../../models/Poll';
 import { IJwtPayload, IOption } from 'src/interfaces';
 import { ApiResponse } from '../../utilities/ApiResponse';
 
@@ -121,20 +120,5 @@ router.delete('/:opt_id', passport.authenticate('jwt', { session: false }), asyn
     }
 
 });
-
-function findOption(poll: IPollDocument, optId: string) {
-    const targetIndex = poll.options
-        .map(option => option.refId)
-        .indexOf(optId)
-    let error = ''
-    if (targetIndex === -1) {
-        error = 'There is no option for this ID'
-    }
-    return {
-        option: poll.options[targetIndex],
-        index: targetIndex,
-        error
-    }
-}
 
 export default router;
