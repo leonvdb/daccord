@@ -17,6 +17,11 @@ export interface INewPoll {
 }
 
 
+export interface IOptionQuery extends INewOption {
+    creator: IUser
+    refId: string
+}
+
 export interface IOption extends INewOption {
     creator: string
     refId: string

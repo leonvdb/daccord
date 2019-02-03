@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import TextInputGroup from '../layout/TextInputGroup';
 import { editOption, deleteOption } from '../../actions/optionActions';
-import { INewOption, IOption } from 'src/interfaces';
+import { INewOption, IOptionQuery } from 'src/interfaces';
 import { connect } from 'react-redux';
 
 interface Props extends PropsFromDispatch {
     pollId: string
-    option: IOption
+    option: IOptionQuery
     modalOpen: boolean
     toggle: () => void
 }

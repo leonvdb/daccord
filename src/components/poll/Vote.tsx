@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { IUser } from '../../interfaces';
 import { Store } from '../../reducers';
 
-import { IOption } from '../../interfaces';
+import { IOptionQuery } from '../../interfaces';
 
 import Option from './Option';
 import AddOption from './AddOption';
@@ -11,7 +11,7 @@ import AuthModal from './AuthModal';
 import { clearError } from '../../actions/errorActions';
 
 interface Props extends PropsFromState, PropsFromDispatch {
-    options: IOption[]
+    options: IOptionQuery[]
     pollId: string
 }
 

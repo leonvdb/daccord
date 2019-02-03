@@ -1,6 +1,8 @@
 import { connect, MapDispatchToProps } from 'react-redux';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 import { getPoll, clearPollFromState } from '../../actions/pollActions';
 import Vote from './Vote';
@@ -12,6 +14,7 @@ import { History } from 'history';
 import AuthModal from './AuthModal';
 import DeleteModal from './DeleteModal';
 import { ThunkDispatch } from 'redux-thunk';
+
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { }
 
@@ -28,18 +31,45 @@ class Poll extends React.Component<Props> {
 
     render() {
         const { poll, user } = this.props;
+        console.log("run render")
 
         return (
-            <React.Fragment>
-                {!user.id && <AuthModal isOpen={true} renderButton={false} />}
-                <div className="container">
-                    <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                    {poll.creator.toString() === user.id &&
-                        <DeleteModal poll={poll} />
-                    }
-                    <Vote options={poll.options} pollId={poll.refId} />
-                </div>
-            </React.Fragment>
+            <Query
+                query={gql`
+                {
+  poll(id:"${this.props.match.params.poll_id}"){
+    title
+    refId
+    creator{
+        id
+    }
+    options{
+        title
+        description
+        refId
+        creator{
+            id
+        }
+    }
+  }
+}`
+                }>
+                {({ loading, error, data }) => {
+                    if (loading) return <p>Loading...</p>
+                    if (error) return <p>Error :( </p>
+                    console.log({ data })
+                    return <React.Fragment>
+                        {!user.id && <AuthModal isOpen={true} renderButton={false} />}
+                        <div className="container">
+                            <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+                            {data.poll.creator.id.toString() === user.id &&
+                                <DeleteModal poll={data.poll} />
+                            }
+                            <Vote options={data.poll.options} pollId={data.poll.refId} />
+                        </div>
+                    </React.Fragment>
+                }}
+            </Query>
         )
     }
 }

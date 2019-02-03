@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { IOption } from '../../interfaces';
+import { IOptionQuery } from '../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
 
 interface Props {
-    option: IOption
+    option: IOptionQuery
     userId: string
     pollId: string
 }
@@ -29,8 +29,8 @@ class Option extends React.Component<Props>{
 
         const { title, description, creator } = this.props.option;
         const { modalOpen } = this.state
-
-        const isCreator = creator.toString() === this.props.userId.toString()
+        console.log(creator)
+        const isCreator = creator.id.toString() === this.props.userId.toString()
 
 
         return (

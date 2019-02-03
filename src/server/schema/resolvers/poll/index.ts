@@ -4,11 +4,16 @@ import { createOption, deleteOption, updateOption } from './cudOption';
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
+import { createError } from 'apollo-errors';
 
 export const resolvers: IResolvers = {
     Query: {
-        poll: (_, args) => {
-            return Poll.findOne({ refId: args.id })
+        poll: async (_, args) => {
+            const poll = await Poll.findOne({ refId: args.id })
+            if (!poll) return createError("NotFoundError", {
+                message: "Poll not found"
+            })
+            return poll
         },
         polls: () => {
             return Poll.find({});
