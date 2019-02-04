@@ -39,6 +39,15 @@ mongoose.connect('mongodb://localhost:27017/systemic-consensys')
 //Passport middleware
 app.use(passport.initialize());
 configPassport(passport);
+app.use('/graphql', (req, res, next) => {
+    passport.authenticate('jwt', (err, user, info) => {
+        if (err) {
+            return next(err)
+        }
+        if (user) req.user = user
+        next()
+    })(req, res, next)
+})
 
 //Test Index
 app.get('/', (req: express.Request, res: express.Response) => res.send("Test"));

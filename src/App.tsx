@@ -18,7 +18,14 @@ import i18n from './i18n';
 import { setAuthTokenAndUser } from './actions/authActions';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:5000/graphql'
+  uri: 'http://localhost:5000/graphql',
+  request: async operation => {
+    operation.setContext({
+      headers: {
+        Authorization: localStorage.getItem('jwtToken')
+      }
+    })
+  }
 })
 
 if (localStorage.jwtToken) {
