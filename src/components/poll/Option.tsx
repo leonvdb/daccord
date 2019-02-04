@@ -29,7 +29,6 @@ class Option extends React.Component<Props>{
 
         const { title, description, creator } = this.props.option;
         const { modalOpen } = this.state
-        console.log(creator)
         const isCreator = creator.id.toString() === this.props.userId.toString()
 
 

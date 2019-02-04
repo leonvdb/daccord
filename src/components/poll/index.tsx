@@ -2,8 +2,8 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
 
+import { getPoll as getPollQuery } from '../../graphql/getPoll';
 import { getPoll, clearPollFromState } from '../../actions/pollActions';
 import Vote from './Vote';
 import { IPoll, IUser } from '../../interfaces';
@@ -31,33 +31,11 @@ class Poll extends React.Component<Props> {
 
     render() {
         const { poll, user } = this.props;
-        console.log("run render")
-
         return (
-            <Query
-                query={gql`
-                {
-  poll(id:"${this.props.match.params.poll_id}"){
-    title
-    refId
-    creator{
-        id
-    }
-    options{
-        title
-        description
-        refId
-        creator{
-            id
-        }
-    }
-  }
-}`
-                }>
+            <Query query={getPollQuery} variables={{ id: this.props.match.params.poll_id }}>
                 {({ loading, error, data }) => {
                     if (loading) return <p>Loading...</p>
                     if (error) return <p>Error :( </p>
-                    console.log({ data })
                     return <React.Fragment>
                         {!user.id && <AuthModal isOpen={true} renderButton={false} />}
                         <div className="container">
