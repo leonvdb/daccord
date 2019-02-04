@@ -2,6 +2,7 @@ import { ApiError } from '../../../utilities/ApiError';
 import { Poll } from '../../../models/Poll';
 import { createRefId } from '../../../utilities/cryptoGenerators';
 import { findPoll, findOption } from '../../../utilities/dataBaseUtilities';
+import { IContext } from '../../../../interfaces';
 
 export const createOption = async (_: any, args: ICreateOptionInput) => {
     const poll = await Poll.findOne({ refId: args.pollId });
@@ -17,10 +18,12 @@ export const createOption = async (_: any, args: ICreateOptionInput) => {
     return await poll.save();
 }
 
-export const updateOption = async (_: any, args: IUpdateOptionInput) => {
+export const updateOption = async (_: any, args: IUpdateOptionInput, context: IContext) => {
     const poll = await findPoll(args.pollId);
-    const { index, error } = findOption(poll, args.optionId);
+    console.log(context.user)
+    const { index, error, option } = findOption(poll, args.optionId);
     if (error) return new ApiError(error, 404);
+    if (option.creator.toString() !== context.user.id) return new ApiError("Unauthorized", 401)
     if (args.title) poll.options[index].title = args.title;
     if (args.description) poll.options[index].description = args.description;
     return await poll.save();

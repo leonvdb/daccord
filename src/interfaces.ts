@@ -69,7 +69,15 @@ export interface IJwtPayload extends IJwtPayloadData {
     iat: number // issuedAt
 }
 
-
+export interface IJwtPayloadUser {
+    polls: string[]
+    registered: boolean
+    id: string
+    email: string
+}
+export interface IContext {
+    user: IJwtPayloadUser
+}
 
 export interface AppAction<TPayload = any> extends Action<string> {
     payload?: TPayload

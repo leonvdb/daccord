@@ -5,15 +5,12 @@ import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
 import { createError } from 'apollo-errors';
-import { FatalError } from '../../../utilities/errors/FatalError';
+
 
 export const resolvers: IResolvers = {
     Query: {
         poll: async (_, args, context) => {
             const poll = await Poll.findOne({ refId: args.id })
-            if (!context.user) {
-                return new FatalError({ data: { reason: "Unauthorized" } })
-            }
             if (!poll) return createError("NotFoundError", {
                 message: "Poll not found"
             })
