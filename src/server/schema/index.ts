@@ -6,7 +6,8 @@ const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({ req }: any) => {
-        console.log({ request: req.headers })
+        const user = req.user
+        return ({ user })
     }
 })
 

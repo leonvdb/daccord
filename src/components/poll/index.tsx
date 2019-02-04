@@ -35,7 +35,10 @@ class Poll extends React.Component<Props> {
             <Query query={getPollQuery} variables={{ id: this.props.match.params.poll_id }}>
                 {({ loading, error, data }) => {
                     if (loading) return <p>Loading...</p>
-                    if (error) return <p>Error :( </p>
+                    if (error) {
+                        console.log({ error })
+                        return <p>Error :( </p>
+                    }
                     return <React.Fragment>
                         {!user.id && <AuthModal isOpen={true} renderButton={false} />}
                         <div className="container">
