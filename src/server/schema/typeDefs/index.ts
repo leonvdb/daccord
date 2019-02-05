@@ -5,7 +5,7 @@ import { typeDef as User } from './user';
 const Query = `
 type Query {
     polls: [Poll!]
-    poll(id: ID!): Poll
+    poll(id: ID!, authToken: String): Poll
 }
 `
 const Mutation = `

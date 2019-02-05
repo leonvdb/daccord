@@ -30,9 +30,9 @@ class Poll extends React.Component<Props> {
     }
 
     render() {
-        const { poll, user } = this.props;
+        const { user } = this.props;
         return (
-            <Query query={getPollQuery} variables={{ id: this.props.match.params.poll_id }}>
+            <Query query={getPollQuery} variables={{ id: this.props.match.params.poll_id, authToken: this.props.location.search }}>
                 {({ loading, error, data }) => {
                     if (loading) return <p>Loading...</p>
                     if (error) {
@@ -42,7 +42,7 @@ class Poll extends React.Component<Props> {
                     return <React.Fragment>
                         {!user.id && <AuthModal isOpen={true} renderButton={false} />}
                         <div className="container">
-                            <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+                            <h1 className="display-4 text-center mt-5">{data.poll.title}</h1>
                             {data.poll.creator.id.toString() === user.id &&
                                 <DeleteModal poll={data.poll} />
                             }
