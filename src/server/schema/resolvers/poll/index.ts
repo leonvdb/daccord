@@ -5,17 +5,26 @@ import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
 import { findPoll } from '../../../utilities/dataBaseUtilities';
+import { createJsonWebToken } from '../../../utilities/createJsonWebToken';
 
 
 export const resolvers: IResolvers = {
     Query: {
         poll: async (_, args) => {
-            console.log({ args })
             const poll = await findPoll(args.id)
+            let token = ''
             if (args.authToken) {
-                console.log({ token: args.authToken })
+                if (poll.creatorToken === args.authToken) {
+                    token = createJsonWebToken(poll.creator, 'CREATOR', false, args.id)
+                } else {
+                    poll.participants.forEach((participant) => {
+                        if (participant.token === args.authToken) {
+                            token = createJsonWebToken(participant.id, 'PARTICIPANT', false, args.id)
+                        }
+                    })
+                }
             }
-            return poll
+            return { poll, token }
         },
         polls: () => {
             return Poll.find({});

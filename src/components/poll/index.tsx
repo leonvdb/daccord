@@ -22,7 +22,7 @@ class Poll extends React.Component<Props> {
 
     componentDidMount() {
         //If token parameter is included getPoll authenticates the user and redirects to address without token
-        this.props.getPoll(this.props.match.params.poll_id, this.props.location.search, this.props.history)
+        //this.props.getPoll(this.props.match.params.poll_id, this.props.location.search, this.props.history)
     }
 
     componentWillUnmount() {
@@ -39,14 +39,15 @@ class Poll extends React.Component<Props> {
                         console.log({ error })
                         return <p>Error :( </p>
                     }
+                    const { poll } = data.poll
                     return <React.Fragment>
                         {!user.id && <AuthModal isOpen={true} renderButton={false} />}
                         <div className="container">
-                            <h1 className="display-4 text-center mt-5">{data.poll.title}</h1>
-                            {data.poll.creator.id.toString() === user.id &&
-                                <DeleteModal poll={data.poll} />
+                            <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+                            {poll.creator.id.toString() === user.id &&
+                                <DeleteModal poll={poll} />
                             }
-                            <Vote options={data.poll.options} pollId={data.poll.refId} />
+                            <Vote options={poll.options} pollId={poll.refId} />
                         </div>
                     </React.Fragment>
                 }}

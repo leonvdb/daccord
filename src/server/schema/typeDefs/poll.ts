@@ -5,6 +5,11 @@ type CreatePollResponse{
     user: User!
 }
 
+type PollQueryResponse{
+      poll: Poll!
+      token: String!
+}
+
 type Poll{
       id: ID!
       refId: ID!
