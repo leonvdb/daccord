@@ -56,8 +56,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:opt_id', async (req, res, next) => {
 
     const poll = await findPoll(req.params.poll_id)
-    const { option, error } = findOption(poll, req.params.opt_id)
-    if (error) next(new ApiError(error, 404))
+    const { option } = findOption(poll, req.params.opt_id)
     return res.json(new ApiResponse(option))
 
 });
@@ -68,8 +67,7 @@ router.get('/:opt_id', async (req, res, next) => {
 router.put('/:opt_id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
 
     const poll = await findPoll(req.params.poll_id)
-    const { option, index, error } = findOption(poll, req.params.opt_id)
-    if (error) next(new ApiError(error, 404))
+    const { option, index } = findOption(poll, req.params.opt_id)
 
     const jwtPayload: IJwtPayload = req.user
     if (
@@ -97,9 +95,7 @@ router.put('/:opt_id', passport.authenticate('jwt', { session: false }), async (
 router.delete('/:opt_id', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
 
     const poll = await findPoll(req.params.poll_id)
-    const { option, index, error } = findOption(poll, req.params.opt_id)
-    if (error) next(new ApiError(error, 404))
-
+    const { option, index } = findOption(poll, req.params.opt_id)
     const jwtPayload: IJwtPayload = req.user
     if (
         jwtPayload.forPollId !== req.params.poll_id ||
