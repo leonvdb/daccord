@@ -1,5 +1,6 @@
 import { User, IUserDocument } from '../models/User';
 import { Poll, IPollDocument } from '../models/Poll';
+import { ApiError } from './ApiError';
 
 
 export function findOrCreateUser(email: string) {
@@ -48,14 +49,12 @@ export function findOption(poll: IPollDocument, optId: string) {
     const targetIndex = poll.options
         .map(option => option.refId)
         .indexOf(optId)
-    let error = ''
     if (targetIndex === -1) {
-        error = 'There is no option for this ID'
+        throw new ApiError("Option not found", 404)
     }
     return {
         option: poll.options[targetIndex],
         index: targetIndex,
-        error
     }
 }
 
@@ -63,8 +62,7 @@ function validatePoll(poll: IPollDocument, ): IPollDocument {
     //Check if poll exists
     if (!poll) {
         // This should work because it is handled by the asnycHandler middleware
-        const message = 'There is no poll for this ID'
-        Promise.reject(message)
+        throw new ApiError("Poll not found", 404)
     }
     //Check if user exists
     return poll

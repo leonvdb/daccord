@@ -1,12 +1,10 @@
-import { ApiError } from '../../../utilities/ApiError';
-import { Poll } from '../../../models/Poll';
 import { createRefId } from '../../../utilities/cryptoGenerators';
 import { findPoll, findOption } from '../../../utilities/dataBaseUtilities';
 import { IContext } from '../../../../interfaces';
+import { authenticate } from '../../../utilities/authenticate';
 
 export const createOption = async (_: any, args: ICreateOptionInput) => {
-    const poll = await Poll.findOne({ refId: args.pollId });
-    if (!poll) return new ApiError("Poll not found", 404)
+    const poll = await findPoll(args.pollId);
     const newOpt = {
         title: args.title,
         description: args.description,
@@ -20,19 +18,17 @@ export const createOption = async (_: any, args: ICreateOptionInput) => {
 
 export const updateOption = async (_: any, args: IUpdateOptionInput, context: IContext) => {
     const poll = await findPoll(args.pollId);
-    console.log(context.user)
-    const { index, error, option } = findOption(poll, args.optionId);
-    if (error) return new ApiError(error, 404);
-    if (option.creator.toString() !== context.user.id) return new ApiError("Unauthorized", 401)
+    const { index, option } = findOption(poll, args.optionId);
+    authenticate(context.user, option.creator.toString())
     if (args.title) poll.options[index].title = args.title;
     if (args.description) poll.options[index].description = args.description;
     return await poll.save();
 }
 
-export const deleteOption = async (_: any, args: IDeleteOptionInput) => {
+export const deleteOption = async (_: any, args: IDeleteOptionInput, context: IContext) => {
     const poll = await findPoll(args.pollId)
-    const { index, error } = findOption(poll, args.optionId)
-    if (error) return new ApiError(error, 404)
+    const { index, option } = findOption(poll, args.optionId)
+    authenticate(context.user, option.creator.toString())
     poll.options.splice(index, 1);
     return await poll.save()
 }

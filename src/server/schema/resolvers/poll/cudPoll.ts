@@ -1,9 +1,10 @@
-import { findOrCreateUser } from '../../../utilities/dataBaseUtilities';
+import { findOrCreateUser, findPoll } from '../../../utilities/dataBaseUtilities';
 import { Poll } from '../../../models/Poll';
 import { generateToken, createRefId } from '../../../utilities/cryptoGenerators';
 import { sendConfirmMail } from '../../../utilities/sendConfirmMail';
 import { createJsonWebToken } from '../../../utilities/createJsonWebToken';
-import { ApiResponse } from '../../../utilities/ApiResponse';
+import { IContext } from '../../../../interfaces';
+import { authenticate } from '../../../utilities/authenticate';
 
 export const createPoll = async (_: any, args: ICreatePollInput) => {
 
@@ -19,35 +20,23 @@ export const createPoll = async (_: any, args: ICreatePollInput) => {
     await user.save()
 
     sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
-
     const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
-    const response = new ApiResponse({
-        poll,
-        token,
-        user
-    })
-    return response.payload;
-
+    return { poll, token, user }
 }
 
-export const updatePoll = async (_: any, args: IUpdatePollInput) => {
-    const pollFields = {
-        title: args.title
-    }
-    const poll = await Poll.findOneAndUpdate(
-        { refId: args.pollId },
-        pollFields,
-        { new: true }
-    )
-    return poll;
+export const updatePoll = async (_: any, args: IUpdatePollInput, context: IContext) => {
+    const poll = await findPoll(args.pollId)
+    authenticate(context.user, poll.creator.toString())
+    if (args.title) poll.title = args.title
+    return await poll.save();
 }
 
-export const deletePoll = async (_: any, args: IDeletePollInput) => {
-    const poll = await Poll.findOneAndDelete({ refId: args.pollId })
-    return poll ? true : false
+export const deletePoll = async (_: any, args: IDeletePollInput, context: IContext) => {
+    const poll = await findPoll(args.pollId)
+    authenticate(context.user, poll.creator.toString())
+    poll.remove()
+    return true
 }
-
-
 
 interface ICreatePollInput {
     userEmail: string,
