@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { Query } from "react-apollo";
 
 import { getPoll as getPollQuery } from '../../graphql/getPoll';
-import getCurrentPoll from '../../graphql/getCurrentPoll';
 import { getPoll, clearPollFromState } from '../../actions/pollActions';
 import Vote from './Vote';
 import { IPoll, IUser } from '../../interfaces';
@@ -34,32 +33,28 @@ class Poll extends React.Component<Props> {
         const { user } = this.props;
         return (
             <Query query={getPollQuery} variables={{ id: this.props.match.params.poll_id, authToken: this.props.location.search }}>
-                {({ loading: serverLoading, error, data: serverData }) => (
-                    <Query query={getCurrentPoll}>
-                        {({ loading: clientLoading, data: clientData }) => {
-                            if (serverLoading || clientLoading) return <p>Loading...</p>
-                            if (error) {
-                                console.log({ error })
-                                return <p>Error :( </p>
+                {({ loading, error, data }: any) => {
+                    if (loading) return <p>Loading...</p>
+                    if (error) {
+                        console.log({ error })
+                        return <p>Error :( </p>
+                    }
+                    const { poll } = data.poll
+                    return <React.Fragment>
+                        {!user.id && <AuthModal isOpen={true} renderButton={false} />}
+                        <div className="container">
+                            <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+                            {poll.creator.id.toString() === user.id &&
+                                <DeleteModal poll={poll} />
                             }
-                            console.log({ serverData, clientData })
-                            const { poll } = serverData.poll
-                            return <React.Fragment>
-                                {!user.id && <AuthModal isOpen={true} renderButton={false} />}
-                                <div className="container">
-                                    <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                                    {poll.creator.id.toString() === user.id &&
-                                        <DeleteModal poll={poll} />
-                                    }
-                                    <Vote options={poll.options} pollId={poll.refId} />
-                                </div>
-                            </React.Fragment>
-                        }}
-                    </Query>
-                )}
+                            <Vote options={poll.options} pollId={poll.refId} />
+                        </div>
+                    </React.Fragment>
+                }}
             </Query>
         )
     }
+
 }
 interface PropsFromState {
     poll: IPoll
