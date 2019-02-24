@@ -14,8 +14,9 @@ Based on the principles of *"systemic consensus"* (http://www.sk-prinzip.eu/)
 $ git clone https://github.com/leonvdb/systemic-consensys.git
 $ cd systemic-consensys
 $ npm install
+$ touch src/server/config/secrets.ts
 ```
-Edit *src/server/config/secrets.example.ts* to include a working email address (in gmail less secure apps have to be enabled: https://myaccount.google.com/lesssecureapps) and rename the file to *secrets.ts*
+Edit *src/server/config/secrets.ts*, according to the example file and include a working email address (in gmail less secure apps have to be enabled: https://myaccount.google.com/lesssecureapps).
 
 
 
