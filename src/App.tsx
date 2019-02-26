@@ -13,8 +13,6 @@ import Header from './components/layout/Header';
 import NotFound from './components/NotFound';
 import Poll from './components/poll';
 
-import defaults from './graphql/client/defaults';
-
 import './App.css';
 import i18n from './i18n';
 import { setAuthTokenAndUser } from './actions/authActions';
@@ -27,10 +25,6 @@ const client = new ApolloClient({
         Authorization: localStorage.getItem('jwtToken')
       }
     })
-  },
-  clientState: {
-    defaults,
-    resolvers: {}
   }
 })
 

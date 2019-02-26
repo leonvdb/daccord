@@ -7,6 +7,7 @@ import { INewOption } from '../../interfaces';
 import { Store } from '../../reducers';
 import { Mutation } from "react-apollo";
 import {createOption} from '../../graphql/createOption';
+import {getPoll} from '../../graphql/getPoll'
 
 interface Props extends PropsFromState, PropsFromDispatch { }
 
@@ -99,7 +100,8 @@ class AddOption extends React.Component<Props, State> {
                             mutation={createOption} 
                             update={ // tslint:disable-next-line jsx-no-lambda
                                 (cache, { data: { createOption}}) => {
-                                console.log("updating")
+                                const readPoll = cache.readQuery({ query: getPoll, variables: { id : this.props.pollId, authToken: ""}})
+                                console.log({readPoll})
                             }}
                             >
                                 {(createOption) => (

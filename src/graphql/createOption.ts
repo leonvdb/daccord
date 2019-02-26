@@ -13,9 +13,8 @@ mutation CreateOption(
             title: $title,
             description: $description
         ){
-            options{
-                title
-            }
+            title
+            description
         }
     }
 

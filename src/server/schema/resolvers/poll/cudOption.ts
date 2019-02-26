@@ -13,7 +13,8 @@ export const createOption = async (_: any, args: ICreateOptionInput) => {
         votes: []
     };
     poll.options.unshift(newOpt);
-    return await poll.save();
+    const pollResult = await poll.save();
+    return pollResult.options[0]
 }
 
 export const updateOption = async (_: any, args: IUpdateOptionInput, context: IContext) => {

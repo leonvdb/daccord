@@ -1,3 +1,5 @@
+//For apollo-link-state | delete if not needed
+
 const defaults = {
     currentPoll: {
         __typename: "CurrentPoll",
