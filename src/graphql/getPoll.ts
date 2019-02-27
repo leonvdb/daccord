@@ -18,6 +18,11 @@ query Poll($id: ID!, $authToken: String){
             }
         }
     }
+    token
+    user{
+        id
+        email
+    }
   }
 }
 `;

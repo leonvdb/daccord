@@ -8,6 +8,7 @@ type CreatePollResponse{
 type PollQueryResponse{
       poll: Poll!
       token: String!
+      user: User!
 }
 
 type Poll{

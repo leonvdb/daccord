@@ -11,6 +11,13 @@ export interface IPoll {
     options: IOption[]
 }
 
+export interface IPollQuery {
+    title: string
+    refId: string
+    creator: IUser
+    options: IOptionQuery[]
+}
+
 export interface INewPoll {
     title: string
     email: string

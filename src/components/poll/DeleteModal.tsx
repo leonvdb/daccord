@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { deletePoll } from '../../actions/pollActions';
-import { IPoll } from 'src/interfaces';
+import { IPollQuery } from 'src/interfaces';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 interface Props extends PropsFromDispatch, RouteComponentProps {
-    poll: IPoll
+    poll: IPollQuery
 }
 
 class DeleteModal extends React.Component<Props> {
