@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { INewOption } from '../../interfaces';
+import { INewOption, IPollQueryVariables } from '../../interfaces';
 import { Store } from '../../reducers';
 import { Mutation } from "react-apollo";
 import {createOption} from '../../graphql/createOption';
 import {getPoll} from '../../graphql/getPoll'
 
-interface Props extends PropsFromState, PropsFromDispatch { }
+interface Props extends PropsFromState, PropsFromDispatch {
+
+    pollQueryVariables: IPollQueryVariables
+ }
 
 interface State {
     title: string
@@ -62,10 +65,7 @@ class AddOption extends React.Component<Props, State> {
             return;
         }
 
-
-        console.log({mutation})
-        mutation({variables : {pollId: this.props.pollId, userId, title, description}})
-
+        mutation({variables : {pollId: this.props.pollQueryVariables.id, userId, title, description}})
         this.setState({
             addOptionOpen: false,
             title: '',
@@ -100,8 +100,12 @@ class AddOption extends React.Component<Props, State> {
                             mutation={createOption} 
                             update={ // tslint:disable-next-line jsx-no-lambda
                                 (cache, { data: { createOption}}) => {
-                                const readPoll = cache.readQuery({ query: getPoll, variables: { id : this.props.pollId, authToken: ""}})
-                                console.log({readPoll})
+                                const poll: any = cache.readQuery({ query: getPoll, variables: this.props.pollQueryVariables})
+                                cache.writeQuery({
+                                    query: getPoll,
+                                    variables: this.props.pollQueryVariables,
+                                    data: {poll: {...poll.poll, poll: {...poll.poll.poll, options: [createOption, ...poll.poll.poll.options]}}},
+                                  });
                             }}
                             >
                                 {(createOption) => (

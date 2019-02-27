@@ -6,7 +6,7 @@ import { getPoll as getPollQuery } from '../../graphql/getPoll';
 import { getPoll, clearPollFromState } from '../../actions/pollActions';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import Vote from './Vote';
-import { IPoll, IUser, IPollQuery } from '../../interfaces';
+import { IPoll, IUser, IPollQuery, IPollQueryVariables } from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
 import { Action } from 'redux';
@@ -27,6 +27,7 @@ interface IData {
     loading: boolean
     error: string
     poll: IPollQueryResponse
+    variables: IPollQueryVariables
 }
 
 interface IPollQueryResponse {
@@ -40,7 +41,6 @@ class Poll extends React.Component<Props> {
     componentDidUpdate(){
         if(!this.props.data.loading && !this.props.user.id && this.props.data.poll.token){
             const {token, user} = this.props.data.poll
-            console.log({token, user})
             this.props.setAuthTokenAndUser(token, user)
         }
         if(this.props.location.search && this.props.user.id){
@@ -72,7 +72,7 @@ class Poll extends React.Component<Props> {
                             {poll.creator.id.toString() === user.id &&
                                 <DeleteModal poll={poll} />
                             }
-                            <Vote options={poll.options} pollId={poll.refId} />
+                            <Vote options={poll.options} pollId={poll.refId} pollQueryVariables={this.props.data.variables}/>
                         </div>
                     </React.Fragment>}
         }

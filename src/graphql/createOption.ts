@@ -15,6 +15,10 @@ mutation CreateOption(
         ){
             title
             description
+            refId
+            creator{
+                id
+            }
         }
     }
 
