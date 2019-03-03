@@ -1,15 +1,13 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
-import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { INewOption } from '../../interfaces';
 import { Store } from '../../reducers';
 import { Mutation } from "react-apollo";
 import {createOption} from '../../graphql/createOption';
 import {getPoll} from '../../graphql/getPoll'
 
-interface Props extends PropsFromState, PropsFromDispatch {
+interface Props extends PropsFromState {
     pollId: string
  }
 
@@ -144,9 +142,5 @@ const mapStateToProps = (state: Store) => ({
 interface PropsFromState {
     userId: string
 }
-interface PropsFromDispatch {
-    addOption: (option: INewOption, pollId: string, userId: string) => void
-}
 
-
-export default connect(mapStateToProps, { addOption })(AddOption);
+export default connect(mapStateToProps, {})(AddOption);

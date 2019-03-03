@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import TextInputGroup from '../layout/TextInputGroup';
-import { editOption, deleteOption } from '../../actions/optionActions';
+import { deleteOption } from '../../actions/optionActions';
 import { IOptionQuery } from 'src/interfaces';
 import { connect } from 'react-redux';
 import { Mutation } from 'react-apollo';
@@ -102,4 +102,4 @@ interface PropsFromDispatch {
     deleteOption: (pollId: string, optionID: string) => void
 }
 
-export default connect(null, { editOption, deleteOption })(OptionReadModal);
+export default connect(null, { deleteOption })(OptionReadModal);
