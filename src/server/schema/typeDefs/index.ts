@@ -5,9 +5,11 @@ import { typeDef as User } from './user';
 const Query = `
 type Query {
     polls: [Poll!]
-    poll(id: ID!, authToken: String): PollQueryResponse
+    poll(id: ID!, authToken: String): Poll!
+    authUser(authToken: String!, id: ID!): AuthUser!
 }
 `
+
 const Mutation = `
 type Mutation{
     createPoll(userEmail: String!, title: String!): CreatePollResponse!

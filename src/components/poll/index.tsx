@@ -2,11 +2,11 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { getPoll as getPollQuery } from '../../graphql/getPoll';
-import { getPoll, clearPollFromState } from '../../actions/pollActions';
+import { getPollAndAuthParticipant } from '../../graphql/getPoll';
+import { clearPollFromState } from '../../actions/pollActions';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import Vote from './Vote';
-import { IPoll, IUser, IPollQuery, IPollQueryVariables } from '../../interfaces';
+import { IPoll, IUser, IPollQuery} from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
 import { Action } from 'redux';
@@ -26,21 +26,21 @@ interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispa
 interface IData {
     loading: boolean
     error: string
-    poll: IPollQueryResponse
-    variables: IPollQueryVariables
+    poll: IPollQuery
+    authUser: IAuthUser
 }
 
-interface IPollQueryResponse {
-    poll: IPollQuery
-    token: string
+interface IAuthUser {
+    token: string,
     user: IUser
 }
+
 
 class Poll extends React.Component<Props> {
 
     componentDidUpdate(){
-        if(!this.props.data.loading && !this.props.user.id && this.props.data.poll.token){
-            const {token, user} = this.props.data.poll
+        if(!this.props.data.loading && !this.props.user.id && this.props.data.authUser.token){
+            const {token, user} = this.props.data.authUser
             this.props.setAuthTokenAndUser(token, user)
         }
         if(this.props.location.search && this.props.user.id){
@@ -63,7 +63,7 @@ class Poll extends React.Component<Props> {
                 return <p>Error :( </p>
             }
             if(pollResponse) {
-                const {poll} = this.props.data.poll
+                const {poll} = this.props.data
                 
                 return <React.Fragment>
                         {!user.id && <AuthModal isOpen={true} renderButton={false} />}
@@ -72,7 +72,7 @@ class Poll extends React.Component<Props> {
                             {poll.creator.id.toString() === user.id &&
                                 <DeleteModal poll={poll} />
                             }
-                            <Vote options={poll.options} pollId={poll.refId} pollQueryVariables={this.props.data.variables}/>
+                            <Vote options={poll.options} pollId={poll.refId}/>
                         </div>
                     </React.Fragment>}
         }
@@ -93,20 +93,20 @@ const mapStateToProps = (state: Store): PropsFromState => ({
     user: state.user.user
 });
 interface PropsFromDispatch {
-    getPoll: (pollId: string, queryParam: string, history: History) => void
+    getPollAndAuthParticipant: (pollId: string, queryParam: string, history: History) => void
     clearPollFromState: () => void
     setAuthTokenAndUser: (jwt: string, user: IUser) => void
 }
 const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDispatchToProps<PropsFromDispatch, void> => {
     return {
         clearPollFromState: () => dispatch(clearPollFromState()),
-        getPoll: (pollId: string, queryParam: string, history) => dispatch(getPoll(pollId, queryParam, history)),
+        getPollAndAuthParticipant: (pollId: string, queryParam: string, history) => dispatch(getPollAndAuthParticipant(pollId, queryParam, history)),
         setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
     }
 }
 
 export default compose(
-    graphql(getPollQuery, {
+    graphql(getPollAndAuthParticipant, {
         options: (props: Props) => ({
             variables: {
                 id: props.match.params.poll_id,

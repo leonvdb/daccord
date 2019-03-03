@@ -1,6 +1,7 @@
 import { User, IUserDocument } from '../models/User';
 import { Poll, IPollDocument } from '../models/Poll';
 import { ApiError } from './ApiError';
+import { ObjectID } from 'bson';
 
 
 export function findOrCreateUser(email: string) {
@@ -66,4 +67,17 @@ function validatePoll(poll: IPollDocument, ): IPollDocument {
     }
     //Check if user exists
     return poll
+}
+
+export async function getUser(userId: string | ObjectID){
+    const user = {
+        id: '',
+        email: ''
+    }
+    const userFromDB = await User.findById(userId)
+    if (userFromDB) {
+        user.email = userFromDB.email
+        user.id = userFromDB.id
+    }
+    return user
 }

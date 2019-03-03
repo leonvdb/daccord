@@ -1,9 +1,8 @@
 import gql from 'graphql-tag';
 
 export const getPoll = gql`
-query Poll($id: ID!, $authToken: String){
-    poll(id: $id, authToken: $authToken){
-        poll{
+query($id: ID!){
+    poll(id: $id){
         title
         refId
         creator{
@@ -18,11 +17,33 @@ query Poll($id: ID!, $authToken: String){
             }
         }
     }
-    token
-    user{
-        id
-        email
-    }
-  }
 }
-`;
+`
+;
+
+export const getPollAndAuthParticipant = gql`
+query($id: ID!, $authToken: String!){
+    poll(id: $id){
+        title
+        refId
+        creator{
+            id
+        }
+        options{
+            title
+            description
+            refId
+            creator{
+                id
+            }
+        }
+    }
+    authUser(authToken: $authToken, id: $id){
+        token
+        user{
+            id
+            email
+        }
+    }
+}
+`

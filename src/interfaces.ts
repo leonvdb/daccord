@@ -18,11 +18,6 @@ export interface IPollQuery {
     options: IOptionQuery[]
 }
 
-export interface IPollQueryVariables {
-    id: string
-    authToken: string
-}
-
 export interface INewPoll {
     title: string
     email: string

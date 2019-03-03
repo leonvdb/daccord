@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { IUser, IPollQueryVariables } from '../../interfaces';
+import { IUser } from '../../interfaces';
 import { Store } from '../../reducers';
 
 import { IOptionQuery } from '../../interfaces';
@@ -13,7 +13,6 @@ import { clearError } from '../../actions/errorActions';
 interface Props extends PropsFromState, PropsFromDispatch {
     options: IOptionQuery[]
     pollId: string
-    pollQueryVariables: IPollQueryVariables
 }
 
 class Vote extends React.Component<Props> {
@@ -29,7 +28,7 @@ class Vote extends React.Component<Props> {
 
         let button;
         if (user.id) {
-            button = <AddOption pollQueryVariables={this.props.pollQueryVariables}/>
+            button = <AddOption pollId={this.props.pollId}/>
         } else {
             button = <AuthModal isOpen={false} renderButton={true} />
         }

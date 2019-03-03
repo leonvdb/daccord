@@ -6,4 +6,9 @@ type User{
       registered: Boolean!
       polls: [Poll!]
 }
+
+type AuthUser {
+      token: String!
+      user: User!
+}
 `
