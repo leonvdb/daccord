@@ -16,7 +16,7 @@ type Mutation{
     updatePoll(pollId: ID!, title: String): Poll!
     deletePoll(pollId: ID!): Boolean!
     createOption(pollId: ID!, userId: ID!, title: String!, description: String): Option!
-    updateOption(pollId: ID! optionId: ID!, title: String, description: String): Poll!
+    updateOption(pollId: ID! optionId: ID!, title: String, description: String): Option!
     deleteOption(pollId: ID!, optionId: ID!): Poll!
 }
 `

@@ -23,7 +23,8 @@ export const updateOption = async (_: any, args: IUpdateOptionInput, context: IC
     authenticate(context.user, option.creator.toString())
     if (args.title) poll.options[index].title = args.title;
     if (args.description) poll.options[index].description = args.description;
-    return await poll.save();
+    const pollResult = await poll.save();
+    return pollResult.options[index]
 }
 
 export const deleteOption = async (_: any, args: IDeleteOptionInput, context: IContext) => {
