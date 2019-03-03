@@ -32,7 +32,8 @@ export const deleteOption = async (_: any, args: IDeleteOptionInput, context: IC
     const { index, option } = findOption(poll, args.optionId)
     authenticate(context.user, option.creator.toString())
     poll.options.splice(index, 1);
-    return await poll.save()
+    await poll.save()
+    return true
 }
 
 interface ICreateOptionInput {
