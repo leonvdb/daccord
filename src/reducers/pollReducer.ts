@@ -1,4 +1,4 @@
-import { CREATE_POLL, CLEAR_POLL_FROM_STATE, DELETE_OPTION, VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE } from '../actions/types';
+import { CLEAR_POLL_FROM_STATE, DELETE_OPTION, VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE } from '../actions/types';
 import { IPoll, AppAction, IVote } from 'src/interfaces';
 
 export interface PollReducer {
@@ -24,11 +24,6 @@ export default function (state = initialState, action: AppAction) {
                     ...state.poll,
                     options: state.poll.options.filter(option => option.refId !== action.payload)
                 }
-            }
-        case CREATE_POLL:
-            return {
-                ...state,
-                poll: action.payload
             }
         case CLEAR_POLL_FROM_STATE:
             return {

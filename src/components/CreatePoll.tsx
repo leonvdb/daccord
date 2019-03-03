@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { createPoll } from '../actions/pollActions';
+import { setAuthTokenAndUser } from '../actions/authActions';
 import TextInputGroup from './layout/TextInputGroup';
-import { INewPoll, IPoll } from '../interfaces';
+import { IPoll, IUser } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../reducers';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
 import validateEmail from 'src/utilities/validateEmail';
+import { Mutation } from 'react-apollo';
+import { CREATE_POLL } from '../graphql/createPoll';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch, WithNamespaces { }
 
@@ -28,13 +30,6 @@ class CreatePoll extends React.Component<Props, State> {
         errors: {}
     };
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.poll.refId) {
-            this.props.history.push(`/poll/${nextProps.poll.refId}`)
-        }
-    }
-
-
     onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const propertyName = e.target.name
         const value = e.target.value
@@ -45,7 +40,7 @@ class CreatePoll extends React.Component<Props, State> {
         })
     };
 
-    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
 
         const { title, email } = this.state
@@ -67,11 +62,7 @@ class CreatePoll extends React.Component<Props, State> {
             return;
         }
 
-        const newPoll: INewPoll = {
-            title,
-            email
-        };
-        this.props.createPoll(newPoll)
+        mutation({variables: {title, userEmail: email}})
 
     }
 
@@ -81,7 +72,18 @@ class CreatePoll extends React.Component<Props, State> {
         return (
             <div className="container">
                 <h1 className="display-5 text-center my-4">{t("Create a new poll")}</h1>
-                <form onSubmit={this.onSubmit}>
+                <Mutation mutation={CREATE_POLL}
+                update={// tslint:disable-next-line jsx-no-lambda
+                    (cache, { data: { createPoll}}) => {
+                        const {token, user, poll} = createPoll
+                        this.props.setAuthTokenAndUser(token, user)
+                        this.props.history.push(`/poll/${poll.refId}`)
+                    }
+                }
+                >
+                {(CREATE_POLL) => (
+                <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
+                    (e) => {this.onSubmit(e, CREATE_POLL)}}>
                     <TextInputGroup
                         classNames="w-50"
                         label="Title"
@@ -90,8 +92,8 @@ class CreatePoll extends React.Component<Props, State> {
                         value={title}
                         onChange={this.onChange}
                         error={errors.title}
-
-                    />
+                        
+                        />
                     <TextInputGroup
                         classNames="w-50"
                         label="Email"
@@ -100,9 +102,12 @@ class CreatePoll extends React.Component<Props, State> {
                         value={email}
                         onChange={this.onChange}
                         error={errors.email}
-                    />
+                        />
                     <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Create</button>
                 </form>
+
+                )}
+                        </Mutation>
             </div>
         )
     };
@@ -112,7 +117,7 @@ interface PropsFromState {
     poll: IPoll
 }
 interface PropsFromDispatch {
-    createPoll: (poll: INewPoll) => void
+    setAuthTokenAndUser: (jwt: string, user: IUser) => void
 }
 
 const mapStateToProps = (state: Store) => ({
@@ -120,4 +125,4 @@ const mapStateToProps = (state: Store) => ({
 });
 
 const ComponentWithNamespaces = withNamespaces()(CreatePoll)
-export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { createPoll })(ComponentWithNamespaces);
+export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { setAuthTokenAndUser })(ComponentWithNamespaces);
