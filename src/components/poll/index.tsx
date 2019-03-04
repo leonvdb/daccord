@@ -3,7 +3,6 @@ import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { getPollAndAuthParticipant } from '../../graphql/getPoll';
-import { clearPollFromState } from '../../actions/pollActions';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import Vote from './Vote';
 import { IPoll, IUser, IPollQuery} from '../../interfaces';
@@ -14,7 +13,7 @@ import { History } from 'history';
 import AuthModal from './AuthModal';
 import DeleteModal from './DeleteModal';
 import { ThunkDispatch } from 'redux-thunk';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-boost';
 
 
@@ -49,7 +48,7 @@ class Poll extends React.Component<Props> {
     }
 
     componentWillUnmount() {
-        this.props.clearPollFromState()
+        this.props.client.resetStore();
     }
 
     render() {
@@ -94,18 +93,17 @@ const mapStateToProps = (state: Store): PropsFromState => ({
 });
 interface PropsFromDispatch {
     getPollAndAuthParticipant: (pollId: string, queryParam: string, history: History) => void
-    clearPollFromState: () => void
     setAuthTokenAndUser: (jwt: string, user: IUser) => void
 }
 const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDispatchToProps<PropsFromDispatch, void> => {
     return {
-        clearPollFromState: () => dispatch(clearPollFromState()),
         getPollAndAuthParticipant: (pollId: string, queryParam: string, history) => dispatch(getPollAndAuthParticipant(pollId, queryParam, history)),
         setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
     }
 }
 
 export default compose(
+    withApollo,
     graphql(getPollAndAuthParticipant, {
         options: (props: Props) => ({
             variables: {

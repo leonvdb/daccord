@@ -1,4 +1,4 @@
-import { CLEAR_POLL_FROM_STATE, VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE } from '../actions/types';
+import { VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE } from '../actions/types';
 import { IPoll, AppAction, IVote } from 'src/interfaces';
 
 export interface PollReducer {
@@ -17,11 +17,6 @@ const initialState: PollReducer = {
 
 export default function (state = initialState, action: AppAction) {
     switch (action.type) {
-        case CLEAR_POLL_FROM_STATE:
-            return {
-                ...state,
-                poll: initialState.poll
-            }
         case VOTE_FOR_POLL_REQUEST:
             return {
                 ...state,
