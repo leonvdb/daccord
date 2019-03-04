@@ -81,3 +81,11 @@ export async function getUser(userId: string | ObjectID){
     }
     return user
 }
+
+export function isParticipating(poll: IPollDocument, userId: string){
+    if(userId === poll.creator.toString()) return "CREATOR"
+    for (const participant of poll.participants){
+        if (participant.id.toString() === userId) return "PARTICIPANT"
+    }
+    return false
+}

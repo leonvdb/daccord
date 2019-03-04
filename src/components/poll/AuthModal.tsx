@@ -2,12 +2,15 @@ import * as React from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Store } from '../../reducers';
-import { INewParticipant, IUser, IPollQuery } from '../../interfaces';
+import { IUser, IPollQuery } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
-import { participate, resendLink } from '../../actions/userActions';
+import { resendLink } from '../../actions/userActions';
 import { clearError } from '../../actions/errorActions';
 import { Dispatch } from 'redux';
+import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
+import { Mutation } from 'react-apollo';
+import { setAuthTokenAndUser } from '../../actions/authActions';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
@@ -56,7 +59,7 @@ class AuthModal extends React.Component<Props> {
         })
     };
 
-    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
         const { name, email } = this.state
         const { poll } = this.props
@@ -72,13 +75,7 @@ class AuthModal extends React.Component<Props> {
             return;
         }
 
-        const newParticipant: INewParticipant = {
-            name,
-            email,
-            pollId: poll.refId
-        }
-
-        this.props.participate(newParticipant);
+        mutation({variables: {pollId: poll.refId, email}})
 
     }
 
@@ -111,7 +108,20 @@ class AuthModal extends React.Component<Props> {
                     Become a participant of "{poll.title}"
                     </ModalHeader>
                 <ModalBody>
-                    <form onSubmit={this.onSubmit}>
+                    <Mutation 
+                    mutation={CREATE_PARTICIPANT}
+                    update={// tslint:disable-next-line jsx-no-lambda
+                        (cache, { data: { createParticipant}}) => {
+                            if (createParticipant.token) {
+                                this.props.setAuthTokenAndUser(createParticipant.token, createParticipant.user)
+                            } else {
+                                this.setState({showParticipantError: true})
+                            }
+                        }}
+                    >
+                        {(CREATE_PARTICIPANT) => (
+                    <form onSubmit={// tslint:disable-next-line jsx-no-lambda
+                        (e) => {this.onSubmit(e, CREATE_PARTICIPANT)}}>
                         <TextInputGroup
                             label="Name"
                             name="name"
@@ -132,6 +142,8 @@ class AuthModal extends React.Component<Props> {
                         />
                         <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
                     </form>
+                        )} 
+                    </Mutation>
                     <p className="text-center my-2">or</p>
                     <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
                 </ModalBody>
@@ -186,16 +198,16 @@ const mapStateToProps = (state: Store) => ({
 });
 
 interface PropsFromDispatch {
-    participate: (newParticipant: INewParticipant) => void,
     clearError: (error: string) => void,
-    resendLink: (pollId: string, email: string) => void
+    resendLink: (pollId: string, email: string) => void,
+    setAuthTokenAndUser: (jwt: string, user: IUser) => void
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
-        participate: (newParticipant: INewParticipant) => dispatch(participate(newParticipant)),
         clearError: (error: string) => dispatch(clearError(error)),
-        resendLink: (pollId: string, email: string) => dispatch(resendLink(pollId, email))
+        resendLink: (pollId: string, email: string) => dispatch(resendLink(pollId, email)),
+        setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
     }
 
 }

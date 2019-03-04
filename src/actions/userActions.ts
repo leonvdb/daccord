@@ -1,21 +1,10 @@
 import axios from 'axios';
 import { ActionCreator, Dispatch } from 'redux';
-import { ThunkResult, INewParticipant, AppAction, IJwtPayload } from 'src/interfaces';
+import { AppAction, IJwtPayload } from 'src/interfaces';
 import { SET_CURRENT_USER } from './types';
 import { setError } from './errorActions';
-import { setAuthTokenAndUser } from './authActions';
 import { ApiResponse } from '../server/utilities/ApiResponse';
-import { IPostUsersParticipate } from '../server/routes/api/responseInterfaces';
 
-
-export const participate: ActionCreator<ThunkResult<IJwtPayload>> = (newParticipant: INewParticipant) => async dispatch => {
-    try {
-        const res = await axios.post<ApiResponse<IPostUsersParticipate>>('/api/users/participate', newParticipant);
-        return dispatch(setAuthTokenAndUser(res.data.payload.token, res.data.payload.user))
-    } catch (error) {
-        return dispatch(setError(error.response.data))
-    }
-}
 
 export const setCurrentUser: ActionCreator<AppAction> = (user: IJwtPayload) => {
     return {

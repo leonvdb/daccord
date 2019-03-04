@@ -38,4 +38,10 @@ type Participant{
       user: User!
       token: String!
 }
+
+type CreateParticipantResponse{
+      user: User!
+      token: String
+}
+
 `
