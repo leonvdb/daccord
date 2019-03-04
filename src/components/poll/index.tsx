@@ -63,15 +63,14 @@ class Poll extends React.Component<Props> {
             }
             if(pollResponse) {
                 const {poll} = this.props.data
-                
                 return <React.Fragment>
-                        {!user.id && <AuthModal isOpen={true} renderButton={false} />}
+                        {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll}/>}
                         <div className="container">
                             <h1 className="display-4 text-center mt-5">{poll.title}</h1>
                             {poll.creator.id.toString() === user.id &&
                                 <DeleteModal poll={poll} />
                             }
-                            <Vote options={poll.options} pollId={poll.refId}/>
+                            <Vote options={poll.options} poll={poll}/>
                         </div>
                     </React.Fragment>}
         }

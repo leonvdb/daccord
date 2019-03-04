@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Store } from '../../reducers';
-import { IPoll, INewParticipant, IUser } from '../../interfaces';
+import { INewParticipant, IUser, IPollQuery } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
 import { participate, resendLink } from '../../actions/userActions';
@@ -11,6 +11,7 @@ import { Dispatch } from 'redux';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
+    poll: IPollQuery
     isOpen: boolean
     renderButton: boolean
 }
@@ -99,6 +100,7 @@ class AuthModal extends React.Component<Props> {
     }
 
     render() {
+
         const { isOpen, name, email, errors, showParticipantError, showLinkSent } = this.state
         const { poll, renderButton } = this.props
 
@@ -179,7 +181,6 @@ class AuthModal extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: Store) => ({
-    poll: state.poll.poll,
     user: state.user.user,
     apiErrors: state.errors
 });
@@ -200,7 +201,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
 }
 
 interface PropsFromState {
-    poll: IPoll
     user: IUser
     apiErrors: string[]
 }
