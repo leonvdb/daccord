@@ -9,14 +9,17 @@ import { resendLink } from '../../actions/userActions';
 import { clearError } from '../../actions/errorActions';
 import { Dispatch } from 'redux';
 import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
-import { Mutation } from 'react-apollo';
+import { Mutation, compose, withApollo } from 'react-apollo';
 import { setAuthTokenAndUser } from '../../actions/authActions';
+import { SEND_AUTH_LINK } from '../../graphql/sendAuthLink';
+import DefaultClient from 'apollo-boost';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
     poll: IPollQuery
     isOpen: boolean
     renderButton: boolean
+    client: DefaultClient<any>
 }
 interface State {
     isOpen: boolean,
@@ -92,7 +95,7 @@ class AuthModal extends React.Component<Props> {
     }
 
     resendLink = () => {
-        this.props.resendLink(this.props.poll.refId, this.state.email)
+        this.props.client.mutate({mutation: SEND_AUTH_LINK, variables: {pollId: this.props.poll.refId, email: this.state.email}})
         this.setState({ showLinkSent: true })
     }
 
@@ -217,4 +220,7 @@ interface PropsFromState {
     apiErrors: string[]
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthModal) as any;
+export default compose(
+    withApollo,
+    connect(mapStateToProps, mapDispatchToProps)
+)(AuthModal) as any;

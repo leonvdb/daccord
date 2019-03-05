@@ -89,3 +89,14 @@ export function isParticipating(poll: IPollDocument, userId: string){
     }
     return false
 }
+
+export function getParticipantPosition(poll: IPollDocument, user: IUserDocument){
+    if (poll.creator.toString() === user.id) return -2
+    for (const [index, participant] of poll.participants.entries()){
+        console.log({participant: participant.id})
+        if (participant.id.toString() === user._id.toString()) {
+            return index
+        }
+    }
+    return -1
+}

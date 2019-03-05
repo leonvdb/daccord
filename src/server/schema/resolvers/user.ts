@@ -1,7 +1,9 @@
 import { IResolvers } from 'graphql-tools';
-import { Poll } from '../../models/Poll';
+import { Poll  } from '../../models/Poll';
 import { getUser, findPoll } from '../../utilities/dataBaseUtilities';
 import { createJsonWebToken } from '../../utilities/createJsonWebToken';
+import {helmet} from './helmet'
+import { sendAuthLink } from './authentication';
 
 export const resolvers: IResolvers = {
     Query: {
@@ -17,17 +19,19 @@ export const resolvers: IResolvers = {
                     token = createJsonWebToken(poll.creator, 'CREATOR', false, args.id)
                     user = await getUser(poll.creator)
                 } else {
-                    poll.participants.forEach(async (participant) => {
+                    for (const participant of poll.participants){
                         if (participant.token === args.authToken) {
                             token = createJsonWebToken(participant.id, 'PARTICIPANT', false, args.id)
                             user = await getUser(participant.id)
                         }
-                    })
+                    }
                 }
-            }
+            }   
             return {token, user }
         }
-
+    },
+    Mutation: {
+        sendAuthLink: helmet(sendAuthLink)
     },
     User: {
         polls: (parent) => {
