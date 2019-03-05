@@ -8,10 +8,7 @@ import configPassport from './config/passport';
 //Import graphQL Schema
 import server from './schema'
 //Import API Routes
-import testRoute from './routes/api/test' //To be deleted after review
 import polls from './routes/api/polls';
-import options from './routes/api/options';
-import users from './routes/api/users';
 import { ApiError } from './utilities/ApiError';
 import { ApiResponse } from './utilities/ApiResponse';
 
@@ -55,13 +52,8 @@ app.get('/', (req: express.Request, res: express.Response) => res.send("Test"));
 //graphql 
 server.applyMiddleware({ app, path: '/graphql' })
 
-//Merge Routes
-polls.use('/:poll_id/options', options);
-
 //Use Routes
-app.use('/api/test', testRoute); //To be deleted after review
 app.use('/api/polls', polls);
-app.use('/api/users', users)
 
 app.use((err: ApiError, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.message); // Log error message in our server's console
