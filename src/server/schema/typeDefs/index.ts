@@ -7,6 +7,7 @@ type Query {
     polls: [Poll!]
     poll(id: ID!, authToken: String): Poll!
     authUser(authToken: String!, id: ID!): AuthUser!
+    user(id: ID!): User!
 }
 `
 
