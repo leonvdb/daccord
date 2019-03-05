@@ -4,7 +4,11 @@ import resolvers from './resolvers'
 
 const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context: ({ req }: any) => {
+        const user = req.user
+        return ({ user })
+    }
 })
 
 export default server;

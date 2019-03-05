@@ -1,14 +1,17 @@
 import { IResolvers } from 'graphql-tools';
 import { createPoll, updatePoll, deletePoll } from './cudPoll';
 import { createOption, deleteOption, updateOption } from './cudOption';
+import { createParticipant } from './cudParticipant';
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
+import { findPoll } from '../../../utilities/dataBaseUtilities';
+
 
 export const resolvers: IResolvers = {
     Query: {
-        poll: (_, args) => {
-            return Poll.findOne({ refId: args.id })
+        poll:(_, args) => {
+            return findPoll(args.id)
         },
         polls: () => {
             return Poll.find({});
@@ -20,7 +23,8 @@ export const resolvers: IResolvers = {
         deletePoll: helmet(deletePoll),
         createOption: helmet(createOption),
         updateOption: helmet(updateOption),
-        deleteOption: helmet(deleteOption)
+        deleteOption: helmet(deleteOption),
+        createParticipant: helmet(createParticipant)
     },
     Poll: {
         creator: (parent) => {
@@ -43,3 +47,4 @@ export const resolvers: IResolvers = {
         }
     }
 };
+

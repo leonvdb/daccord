@@ -1,5 +1,7 @@
 import { User, IUserDocument } from '../models/User';
 import { Poll, IPollDocument } from '../models/Poll';
+import { ApiError } from './ApiError';
+import { ObjectID } from 'bson';
 
 
 export function findOrCreateUser(email: string) {
@@ -48,14 +50,12 @@ export function findOption(poll: IPollDocument, optId: string) {
     const targetIndex = poll.options
         .map(option => option.refId)
         .indexOf(optId)
-    let error = ''
     if (targetIndex === -1) {
-        error = 'There is no option for this ID'
+        throw new ApiError("Option not found", 404)
     }
     return {
         option: poll.options[targetIndex],
         index: targetIndex,
-        error
     }
 }
 
@@ -63,9 +63,40 @@ function validatePoll(poll: IPollDocument, ): IPollDocument {
     //Check if poll exists
     if (!poll) {
         // This should work because it is handled by the asnycHandler middleware
-        const message = 'There is no poll for this ID'
-        Promise.reject(message)
+        throw new ApiError("Poll not found", 404)
     }
     //Check if user exists
     return poll
+}
+
+export async function getUser(userId: string | ObjectID){
+    const user = {
+        id: '',
+        email: ''
+    }
+    const userFromDB = await User.findById(userId)
+    if (userFromDB) {
+        user.email = userFromDB.email
+        user.id = userFromDB.id
+    }
+    return user
+}
+
+export function isParticipating(poll: IPollDocument, userId: string){
+    if(userId === poll.creator.toString()) return "CREATOR"
+    for (const participant of poll.participants){
+        if (participant.id.toString() === userId) return "PARTICIPANT"
+    }
+    return false
+}
+
+export function getParticipantPosition(poll: IPollDocument, user: IUserDocument){
+    if (poll.creator.toString() === user.id) return -2
+    for (const [index, participant] of poll.participants.entries()){
+        console.log({participant: participant.id})
+        if (participant.id.toString() === user._id.toString()) {
+            return index
+        }
+    }
+    return -1
 }

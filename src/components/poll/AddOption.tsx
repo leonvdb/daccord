@@ -1,12 +1,15 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
-import { addOption } from '../../actions/optionActions';
 import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { INewOption } from '../../interfaces';
 import { Store } from '../../reducers';
+import { Mutation } from "react-apollo";
+import {createOption} from '../../graphql/cudOption';
+import {getPoll} from '../../graphql/getPoll'
 
-interface Props extends PropsFromState, PropsFromDispatch { }
+interface Props extends PropsFromState {
+    pollId: string
+ }
 
 interface State {
     title: string
@@ -39,7 +42,7 @@ class AddOption extends React.Component<Props, State> {
         })
     };
 
-    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
 
         const { title, description } = this.state
@@ -58,15 +61,7 @@ class AddOption extends React.Component<Props, State> {
             })
             return;
         }
-
-        const newOption = {
-            title,
-            description,
-            userId
-        };
-
-        this.props.addOption(newOption, this.props.pollId, this.props.userId);
-
+        mutation({variables : {pollId: this.props.pollId, userId, title, description}})
         this.setState({
             addOptionOpen: false,
             title: '',
@@ -97,8 +92,22 @@ class AddOption extends React.Component<Props, State> {
                 <Modal placement="right" isOpen={addOptionOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Add a new option</ModalHeader>
                     <ModalBody>
+                            <Mutation 
+                            mutation={createOption} 
+                            update={ // tslint:disable-next-line jsx-no-lambda
+                                (cache, { data: { createOption}}) => {
+                                const poll: any = cache.readQuery({ query: getPoll, variables: {id: this.props.pollId}})
+                                cache.writeQuery({
+                                    query: getPoll,
+                                    variables: {id: this.props.pollId},
+                                    data: {poll: {...poll.poll, options: [createOption, ...poll.poll.options]}},
+                                  });
+                            }}
+                            >
+                                {(createOption) => (
                         <div >
-                            <form onSubmit={this.onSubmit}>
+                            <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
+                                (e) => {this.onSubmit(e, createOption)}}>
                                 <TextInputGroup
                                     label="Title"
                                     name="title"
@@ -116,6 +125,9 @@ class AddOption extends React.Component<Props, State> {
                                 <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Add Option</button>
                             </form>
                         </div>
+                                    
+                                )}
+                        </Mutation>
                     </ModalBody>
                 </Modal>
             </div>
@@ -124,17 +136,11 @@ class AddOption extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => ({
-    pollId: state.poll.poll.refId,
     userId: state.user.user.id
 });
 
 interface PropsFromState {
-    pollId: string
     userId: string
 }
-interface PropsFromDispatch {
-    addOption: (option: INewOption, pollId: string, userId: string) => void
-}
 
-
-export default connect(mapStateToProps, { addOption })(AddOption);
+export default connect(mapStateToProps, {})(AddOption);

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { IUser } from '../../interfaces';
+import { IUser, IPollQuery } from '../../interfaces';
 import { Store } from '../../reducers';
 
-import { IOption } from '../../interfaces';
+import { IOptionQuery } from '../../interfaces';
 
 import Option from './Option';
 import AddOption from './AddOption';
@@ -11,8 +11,8 @@ import AuthModal from './AuthModal';
 import { clearError } from '../../actions/errorActions';
 
 interface Props extends PropsFromState, PropsFromDispatch {
-    options: IOption[]
-    pollId: string
+    options: IOptionQuery[]
+    poll: IPollQuery
 }
 
 class Vote extends React.Component<Props> {
@@ -24,13 +24,13 @@ class Vote extends React.Component<Props> {
     }
 
     render() {
-        const { options, user, pollId } = this.props;
+        const { options, user, poll } = this.props;
 
         let button;
         if (user.id) {
-            button = <AddOption />
+            button = <AddOption pollId={this.props.poll.refId}/>
         } else {
-            button = <AuthModal isOpen={false} renderButton={true} />
+            button = <AuthModal isOpen={false} renderButton={true} poll={poll}/>
         }
 
         return (
@@ -43,7 +43,7 @@ class Vote extends React.Component<Props> {
                             key={option.refId}
                             option={option}
                             userId={user.id}
-                            pollId={pollId}
+                            pollId={poll.refId}
                         />
                     ))}
                 </div>

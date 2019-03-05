@@ -11,11 +11,23 @@ export interface IPoll {
     options: IOption[]
 }
 
+export interface IPollQuery {
+    title: string
+    refId: string
+    creator: IUser
+    options: IOptionQuery[]
+}
+
 export interface INewPoll {
     title: string
     email: string
 }
 
+
+export interface IOptionQuery extends INewOption {
+    creator: IUser
+    refId: string
+}
 
 export interface IOption extends INewOption {
     creator: string
@@ -64,7 +76,15 @@ export interface IJwtPayload extends IJwtPayloadData {
     iat: number // issuedAt
 }
 
-
+export interface IJwtPayloadUser {
+    polls: string[]
+    registered: boolean
+    id: string
+    email: string
+}
+export interface IContext {
+    user: IJwtPayloadUser
+}
 
 export interface AppAction<TPayload = any> extends Action<string> {
     payload?: TPayload

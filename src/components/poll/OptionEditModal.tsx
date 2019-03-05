@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import TextInputGroup from '../layout/TextInputGroup';
-import { editOption, deleteOption } from '../../actions/optionActions';
-import { INewOption, IOption } from 'src/interfaces';
-import { connect } from 'react-redux';
+import { IOptionQuery } from 'src/interfaces';
+import { Mutation } from 'react-apollo';
+import { UPDATE_OPTION, DELETE_OPTION } from '../../graphql/cudOption';
+import { getPoll } from '../../graphql/getPoll';
 
-interface Props extends PropsFromDispatch {
+interface Props {
     pollId: string
-    option: IOption
+    option: IOptionQuery
     modalOpen: boolean
     toggle: () => void
 }
@@ -26,8 +27,8 @@ class OptionReadModal extends React.Component<Props> {
         })
     }
 
-    deleteOption = () => {
-        this.props.deleteOption(this.props.pollId, this.props.option.refId);
+    deleteOption = (mutation: any) => {
+        mutation({variables: {pollId: this.props.pollId, optionId: this.props.option.refId}})
         this.props.toggle()
     }
 
@@ -41,16 +42,11 @@ class OptionReadModal extends React.Component<Props> {
         })
     };
 
-    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
         const { title, description } = this.state
         const { option, pollId } = this.props
-
-        const updatedOption: INewOption = {
-            title,
-            description
-        };
-        this.props.editOption(updatedOption, pollId, option.refId);
+        mutation({variables : {pollId, optionId: option.refId,  title, description}})
         this.props.toggle();
     }
 
@@ -63,18 +59,59 @@ class OptionReadModal extends React.Component<Props> {
             <div>
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={toggle}>
                     <ModalBody>
-                        <form onSubmit={this.onSubmit}>
-                            <label htmlFor={title}>Title</label>
-                            <TextInputGroup label='title' name='title' value={title} placeholder='Enter Title' onChange={this.onChange} />
-                            <label htmlFor={description}>Description</label>
-                            <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
-                                value={description}
-                                onChange={this.onChange} />
-                            <hr />
-                            <button className="btn btn-link btn-sm d-block mb-3" type='button' onClick={this.deleteOption}>Delete Option</button>
-                            <button className="btn btn-outline-secondary w-25 mr-2" type='button' onClick={toggle}>Cancel</button>
-                            <button className="btn btn-success w-25" type='submit'>Save</button>
-                        </form>
+                        <Mutation mutation={UPDATE_OPTION}
+                        
+                        update={ // tslint:disable-next-line jsx-no-lambda
+                            (cache, { data: { updateOption}}) => {
+                            const poll: any = cache.readQuery({ query: getPoll, variables: {id: this.props.pollId}})
+                            cache.writeQuery({
+                                query: getPoll,
+                                variables: {id: this.props.pollId},
+                                data: {poll: {...poll.poll, options: poll.poll.options.map((option: IOptionQuery)=> {
+                                    if(option.refId === updateOption.refId) return option = updateOption
+                                    return option
+                                })}},
+                              });
+                        }}>
+                            {(UPDATE_OPTION) => (
+                                <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
+                                    (e) => {this.onSubmit(e, UPDATE_OPTION)}}>
+                                    <label htmlFor={title}>Title</label>
+                                    <TextInputGroup label='title' name='title' value={title} placeholder='Enter Title' onChange={this.onChange} />
+                                    <label htmlFor={description}>Description</label>
+                                    <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
+                                        value={description}
+                                        onChange={this.onChange} />
+                                    <hr />
+                                    <Mutation 
+                                    mutation={DELETE_OPTION}
+                                    update={// tslint:disable-next-line jsx-no-lambda
+                                        (cache, { data: { deleteOption}}) => {
+                                            const poll: any = cache.readQuery({ query: getPoll, variables: {id: this.props.pollId}})
+                                            cache.writeQuery({
+                                                query: getPoll,
+                                                variables: {id: this.props.pollId},
+                                                data: {poll: {...poll.poll, options: poll.poll.options.filter((option: IOptionQuery) => (
+                                                    option.refId !== this.props.option.refId
+                                                    )
+                                                )}},
+                                              });
+                                        }
+                                    }
+                                    >
+                                        {(DELETE_OPTION) => (
+                                            <button 
+                                            className="btn btn-link btn-sm d-block mb-3" 
+                                            type='button' 
+                                            onClick={ // tslint:disable-next-line jsx-no-lambda
+                                                (e) => {this.deleteOption( DELETE_OPTION)}}>Delete Option</button>
+                                        )}
+                                    </Mutation>
+                                    <button className="btn btn-outline-secondary w-25 mr-2" type='button' onClick={toggle}>Cancel</button>
+                                    <button className="btn btn-success w-25" type='submit'>Save</button>
+                                </form>
+                            )}
+                        </Mutation>
                     </ModalBody>
                 </Modal>
             </div>
@@ -82,9 +119,4 @@ class OptionReadModal extends React.Component<Props> {
     }
 }
 
-interface PropsFromDispatch {
-    editOption: (option: INewOption, pollId: string, optionId: string) => void
-    deleteOption: (pollId: string, optionID: string) => void
-}
-
-export default connect(null, { editOption, deleteOption })(OptionReadModal);
+export default OptionReadModal;

@@ -1,10 +1,9 @@
-import { Dispatch } from 'redux';
+import { Dispatch, ActionCreator } from 'redux';
 import { IJwtPayload, AppAction, IUser, ThunkResult } from '../interfaces';
-import { SET_JWT_TOKEN } from './types';
+import { SET_JWT_TOKEN, SET_CURRENT_USER } from './types';
 import jwtDecode from 'jwt-decode';
 import setAuthToken from '../utilities/setAuthToken';
 import { setError } from './errorActions';
-import { setCurrentUser } from './pollActions';
 import axios from 'axios';
 
 // TODO set the user when the jwt is set, but where????
@@ -36,5 +35,12 @@ export function setAuthTokenAndUser(jwt: string, user?: IUser): ThunkResult<IUse
         } catch (error) {
             return dispatch(setError(error.response.data))
         }
+    }
+}
+
+const setCurrentUser: ActionCreator<AppAction> = (user: IJwtPayload) => {
+    return {
+        type: SET_CURRENT_USER,
+        payload: user
     }
 }

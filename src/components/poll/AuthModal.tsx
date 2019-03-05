@@ -2,17 +2,22 @@ import * as React from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Store } from '../../reducers';
-import { IPoll, INewParticipant, IUser } from '../../interfaces';
+import { IUser, IPollQuery } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
-import { participate, resendLink } from '../../actions/userActions';
-import { clearError } from '../../actions/errorActions';
 import { Dispatch } from 'redux';
+import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
+import { Mutation, compose, withApollo } from 'react-apollo';
+import { setAuthTokenAndUser } from '../../actions/authActions';
+import { SEND_AUTH_LINK } from '../../graphql/sendAuthLink';
+import DefaultClient from 'apollo-boost';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
+    poll: IPollQuery
     isOpen: boolean
     renderButton: boolean
+    client: DefaultClient<any>
 }
 interface State {
     isOpen: boolean,
@@ -37,14 +42,6 @@ class AuthModal extends React.Component<Props> {
         errors: {}
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.apiErrors.indexOf('PARTICIPANT_ALREADY_EXISTS') >= 0) {
-            this.setState({
-                showParticipantError: true
-            });
-        }
-    }
-
     onChange = (e: React.ChangeEvent<any>) => {
         const propertyName = e.target.name
         const value = e.target.value
@@ -55,7 +52,7 @@ class AuthModal extends React.Component<Props> {
         })
     };
 
-    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
         const { name, email } = this.state
         const { poll } = this.props
@@ -71,13 +68,7 @@ class AuthModal extends React.Component<Props> {
             return;
         }
 
-        const newParticipant: INewParticipant = {
-            name,
-            email,
-            pollId: poll.refId
-        }
-
-        this.props.participate(newParticipant);
+        mutation({variables: {pollId: poll.refId, email}})
 
     }
 
@@ -86,7 +77,6 @@ class AuthModal extends React.Component<Props> {
     }
 
     backFromError = () => {
-        this.props.clearError('PARTICIPANT_ALREADY_EXISTS')
         this.setState({
             showParticipantError: false,
             showLinkSent: false
@@ -94,11 +84,12 @@ class AuthModal extends React.Component<Props> {
     }
 
     resendLink = () => {
-        this.props.resendLink(this.props.poll.refId, this.state.email)
+        this.props.client.mutate({mutation: SEND_AUTH_LINK, variables: {pollId: this.props.poll.refId, email: this.state.email}})
         this.setState({ showLinkSent: true })
     }
 
     render() {
+
         const { isOpen, name, email, errors, showParticipantError, showLinkSent } = this.state
         const { poll, renderButton } = this.props
 
@@ -109,7 +100,20 @@ class AuthModal extends React.Component<Props> {
                     Become a participant of "{poll.title}"
                     </ModalHeader>
                 <ModalBody>
-                    <form onSubmit={this.onSubmit}>
+                    <Mutation 
+                    mutation={CREATE_PARTICIPANT}
+                    update={// tslint:disable-next-line jsx-no-lambda
+                        (cache, { data: { createParticipant}}) => {
+                            if (createParticipant.token) {
+                                this.props.setAuthTokenAndUser(createParticipant.token, createParticipant.user)
+                            } else {
+                                this.setState({showParticipantError: true})
+                            }
+                        }}
+                    >
+                        {(CREATE_PARTICIPANT) => (
+                    <form onSubmit={// tslint:disable-next-line jsx-no-lambda
+                        (e) => {this.onSubmit(e, CREATE_PARTICIPANT)}}>
                         <TextInputGroup
                             label="Name"
                             name="name"
@@ -130,6 +134,8 @@ class AuthModal extends React.Component<Props> {
                         />
                         <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
                     </form>
+                        )} 
+                    </Mutation>
                     <p className="text-center my-2">or</p>
                     <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
                 </ModalBody>
@@ -179,30 +185,25 @@ class AuthModal extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: Store) => ({
-    poll: state.poll.poll,
     user: state.user.user,
-    apiErrors: state.errors
 });
 
 interface PropsFromDispatch {
-    participate: (newParticipant: INewParticipant) => void,
-    clearError: (error: string) => void,
-    resendLink: (pollId: string, email: string) => void
+    setAuthTokenAndUser: (jwt: string, user: IUser) => void
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
-        participate: (newParticipant: INewParticipant) => dispatch(participate(newParticipant)),
-        clearError: (error: string) => dispatch(clearError(error)),
-        resendLink: (pollId: string, email: string) => dispatch(resendLink(pollId, email))
+        setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
     }
 
 }
 
 interface PropsFromState {
-    poll: IPoll
     user: IUser
-    apiErrors: string[]
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthModal) as any;
+export default compose(
+    withApollo,
+    connect(mapStateToProps, mapDispatchToProps)
+)(AuthModal) as any;
