@@ -1,8 +1,7 @@
-import { findPoll, findOrCreateUser, getParticipantPosition } from '../../utilities/dataBaseUtilities';
-import { generateToken } from '../../utilities/cryptoGenerators';
-import { FatalError } from '../../utilities/errors/FatalError';
-import { sendConfirmMail } from '../../utilities/sendConfirmMail';
-
+import { findPoll, findOrCreateUser, getParticipantPosition } from '../../../utilities/dataBaseUtilities';
+import { generateToken } from '../../../utilities/cryptoGenerators';
+import { FatalError } from '../../../utilities/errors/FatalError';
+import { sendConfirmMail } from '../../../utilities/sendConfirmMail';
 
 export const sendAuthLink = async (_: any, args: any) => {
     const poll = await findPoll(args.pollId)
