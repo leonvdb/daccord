@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
+import { IUser } from '../../interfaces';
 const Schema = mongoose.Schema;
 
 // Export Interface
@@ -10,6 +11,7 @@ export interface IUserDocument extends mongoose.Document {
     password?: string,
     registered: boolean,
     polls: ObjectId[],
+    getUserForFrontend: () => IUser
 }
 
 // Create Schema
@@ -35,5 +37,13 @@ const UserSchema = new Schema({
 },
     { bufferCommands: false });
 
+
+UserSchema.methods.getUserForFrontend = function (): IUser {
+    return {
+        id: this._id.toHexString(),
+        email: this.email,
+        name: this.name
+    }
+}
 
 export const User = mongoose.model<IUserDocument>('user', UserSchema);

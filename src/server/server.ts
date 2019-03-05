@@ -9,6 +9,7 @@ import configPassport from './config/passport';
 import server from './schema'
 //Import API Routes
 import polls from './routes/api/polls';
+import users from './routes/api/users';
 import { ApiError } from './utilities/ApiError';
 import { ApiResponse } from './utilities/ApiResponse';
 
@@ -54,6 +55,7 @@ server.applyMiddleware({ app, path: '/graphql' })
 
 //Use Routes
 app.use('/api/polls', polls);
+app.use('/api/users', users)
 
 app.use((err: ApiError, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.message); // Log error message in our server's console
