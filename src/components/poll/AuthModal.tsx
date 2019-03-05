@@ -5,8 +5,6 @@ import { Store } from '../../reducers';
 import { IUser, IPollQuery } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from 'src/utilities/validateEmail';
-import { resendLink } from '../../actions/userActions';
-import { clearError } from '../../actions/errorActions';
 import { Dispatch } from 'redux';
 import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
 import { Mutation, compose, withApollo } from 'react-apollo';
@@ -44,14 +42,6 @@ class AuthModal extends React.Component<Props> {
         errors: {}
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.apiErrors.indexOf('PARTICIPANT_ALREADY_EXISTS') >= 0) {
-            this.setState({
-                showParticipantError: true
-            });
-        }
-    }
-
     onChange = (e: React.ChangeEvent<any>) => {
         const propertyName = e.target.name
         const value = e.target.value
@@ -87,7 +77,6 @@ class AuthModal extends React.Component<Props> {
     }
 
     backFromError = () => {
-        this.props.clearError('PARTICIPANT_ALREADY_EXISTS')
         this.setState({
             showParticipantError: false,
             showLinkSent: false
@@ -197,19 +186,14 @@ class AuthModal extends React.Component<Props> {
 
 const mapStateToProps = (state: Store) => ({
     user: state.user.user,
-    apiErrors: state.errors
 });
 
 interface PropsFromDispatch {
-    clearError: (error: string) => void,
-    resendLink: (pollId: string, email: string) => void,
     setAuthTokenAndUser: (jwt: string, user: IUser) => void
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
-        clearError: (error: string) => dispatch(clearError(error)),
-        resendLink: (pollId: string, email: string) => dispatch(resendLink(pollId, email)),
         setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
     }
 
@@ -217,7 +201,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
 
 interface PropsFromState {
     user: IUser
-    apiErrors: string[]
 }
 
 export default compose(
