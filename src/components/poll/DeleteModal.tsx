@@ -4,7 +4,7 @@ import { compose, withApollo } from 'react-apollo';
 import { IPollQuery } from 'src/interfaces';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Mutation } from 'react-apollo';
-import { DELETE_POLL } from '../../graphql/deletePoll'
+import { DELETE_POLL } from '../../graphql/cudPoll'
 import DefaultClient from 'apollo-boost';
 
 interface Props extends RouteComponentProps {

@@ -3,9 +3,8 @@ import { Modal, ModalBody } from 'reactstrap';
 import TextInputGroup from '../layout/TextInputGroup';
 import { IOptionQuery } from 'src/interfaces';
 import { Mutation } from 'react-apollo';
-import { UPDATE_OPTION } from '../../graphql/updateOption';
+import { UPDATE_OPTION, DELETE_OPTION } from '../../graphql/cudOption';
 import { getPoll } from '../../graphql/getPoll';
-import { DELETE_OPTION } from '../../graphql/deleteOption'
 
 interface Props {
     pollId: string

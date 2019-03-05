@@ -15,3 +15,8 @@ mutation CreatePoll($title: String!, $userEmail: String!){
     }
 }
 `
+export const DELETE_POLL = gql`
+mutation DeletePoll($pollId: ID!){
+    deletePoll(pollId: $pollId)
+}
+`;

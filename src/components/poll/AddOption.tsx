@@ -4,7 +4,7 @@ import TextInputGroup from '../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { Store } from '../../reducers';
 import { Mutation } from "react-apollo";
-import {createOption} from '../../graphql/createOption';
+import {createOption} from '../../graphql/cudOption';
 import {getPoll} from '../../graphql/getPoll'
 
 interface Props extends PropsFromState {

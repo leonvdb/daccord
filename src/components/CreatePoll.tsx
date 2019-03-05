@@ -8,7 +8,7 @@ import { Store } from '../reducers';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
 import validateEmail from 'src/utilities/validateEmail';
 import { Mutation } from 'react-apollo';
-import { CREATE_POLL } from '../graphql/createPoll';
+import { CREATE_POLL } from '../graphql/cudPoll';
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch, WithNamespaces { }
 
