@@ -51,6 +51,11 @@ export interface IVoteForPollPayload {
     rating: number
 }
 
+export interface IVoteNew {
+    optionId: string,
+    rating: string
+}
+
 // User Interfaces
 export interface IUserInformation {
     email: string

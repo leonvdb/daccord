@@ -1,8 +1,19 @@
 import { ActionCreator } from 'redux';
-import { ThunkResult, AppAction, IVoteForPollPayload } from '../interfaces';
+import { ThunkResult, AppAction, IVoteForPollPayload, IVoteNew } from '../interfaces';
 import { setError } from './errorActions';
 import axios from 'axios';
-import { VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE } from './types';
+import { VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE, HANDLE_RATING_CHANGE } from './types';
+
+export const handleRatingChange: ActionCreator<AppAction<IVoteNew>> = (optionId: string, rating: string) => {
+    const payload = {
+        optionId,
+        rating
+    }
+    return {
+        type: HANDLE_RATING_CHANGE,
+        payload
+    }
+}
 
 export const voteForPoll: ActionCreator<ThunkResult<any>> = (rating: number, optionId: string) => async (dispatch, getState) => {
     const state = getState()

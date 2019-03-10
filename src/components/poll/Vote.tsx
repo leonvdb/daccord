@@ -35,6 +35,11 @@ class Vote extends React.Component<Props> {
 
         return (
             <div className="container">
+                <button onClick={()=> {// tslint:disable-next-line jsx-no-lambda
+                    console.log(this.props.votes)}
+                    }>
+                        Save Votes
+                </button>
                 <div className="mt-5 d-flex flex-wrap">
 
                     {button}
@@ -54,6 +59,7 @@ class Vote extends React.Component<Props> {
 
 interface PropsFromState {
     user: IUser
+    votes: []
 }
 
 interface PropsFromDispatch {
@@ -63,7 +69,8 @@ interface PropsFromDispatch {
 
 
 const mapStateToProps = (state: Store) => ({
-    user: state.user.user
+    user: state.user.user,
+    votes: state.votes
 });
 
 export default connect(mapStateToProps, { clearError })(Vote);
