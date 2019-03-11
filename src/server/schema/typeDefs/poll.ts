@@ -27,11 +27,17 @@ type Option{
       creator: User!
       description: String
       votes: [Vote!]
+      userRating: Int
 }
 
 type Vote{
       voter: User!
-      vote: Int!
+      rating: Int!
+}
+
+input VoteInput{
+      optionId: String!
+      rating: Int
 }
 
 type Participant{

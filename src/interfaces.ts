@@ -27,6 +27,7 @@ export interface INewPoll {
 export interface IOptionQuery extends INewOption {
     creator: IUser
     refId: string
+    userRating: number
 }
 
 export interface IOption extends INewOption {
@@ -48,6 +49,11 @@ export interface IVote {
 export interface IVoteForPollPayload {
     voterEmail: string
     optionId: string
+    rating: number
+}
+
+export interface IVoteNew {
+    optionId: string,
     rating: number
 }
 

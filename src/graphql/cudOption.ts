@@ -16,6 +16,7 @@ mutation CreateOption(
             title
             description
             refId
+            userRating
             creator{
                 id
             }
@@ -29,6 +30,7 @@ mutation UpdateOption($pollId: ID!, $optionId: ID!, $title: String, $description
         title
         description
         refId
+        userRating
         creator{
             id
         }

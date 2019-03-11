@@ -9,6 +9,8 @@ import Option from './Option';
 import AddOption from './AddOption';
 import AuthModal from './AuthModal';
 import { clearError } from '../../actions/errorActions';
+import { Mutation } from 'react-apollo';
+import { UPDATE_VOTES } from '../../graphql/vote';
 
 interface Props extends PropsFromState, PropsFromDispatch {
     options: IOptionQuery[]
@@ -35,6 +37,17 @@ class Vote extends React.Component<Props> {
 
         return (
             <div className="container">
+            <Mutation mutation={UPDATE_VOTES}>
+            {(UPDATE_VOTES) => (
+                <button onClick={()=> {// tslint:disable-next-line jsx-no-lambda
+                    console.log({variables: {pollId: this.props.poll.refId, votes: this.props.votes}})
+                    UPDATE_VOTES({variables: {pollId: this.props.poll.refId, votes: this.props.votes}})}
+                    }>
+                        Save Votes
+                </button>
+
+            )}
+            </Mutation>
                 <div className="mt-5 d-flex flex-wrap">
 
                     {button}
@@ -44,6 +57,7 @@ class Vote extends React.Component<Props> {
                             option={option}
                             userId={user.id}
                             pollId={poll.refId}
+                            userRating={option.userRating}
                         />
                     ))}
                 </div>
@@ -54,6 +68,7 @@ class Vote extends React.Component<Props> {
 
 interface PropsFromState {
     user: IUser
+    votes: []
 }
 
 interface PropsFromDispatch {
@@ -63,7 +78,8 @@ interface PropsFromDispatch {
 
 
 const mapStateToProps = (state: Store) => ({
-    user: state.user.user
+    user: state.user.user,
+    votes: state.votes.votes
 });
 
 export default connect(mapStateToProps, { clearError })(Vote);

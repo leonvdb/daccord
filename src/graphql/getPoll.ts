@@ -12,6 +12,7 @@ query($id: ID!){
             title
             description
             refId
+            userRating
             creator{
                 id
             }
@@ -33,6 +34,7 @@ query($id: ID!, $authToken: String!){
             title
             description
             refId
+            userRating
             creator{
                 id
             }

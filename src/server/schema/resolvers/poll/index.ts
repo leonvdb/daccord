@@ -2,10 +2,12 @@ import { IResolvers } from 'graphql-tools';
 import { createPoll, updatePoll, deletePoll } from './cudPoll';
 import { createOption, deleteOption, updateOption } from './cudOption';
 import { createParticipant } from './cudParticipant';
+import { updateVotes } from './vote'
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
 import { findPoll } from '../../../utilities/dataBaseUtilities';
+import { IVote } from '../../../../interfaces';
 
 
 export const resolvers: IResolvers = {
@@ -24,7 +26,8 @@ export const resolvers: IResolvers = {
         createOption: helmet(createOption),
         updateOption: helmet(updateOption),
         deleteOption: helmet(deleteOption),
-        createParticipant: helmet(createParticipant)
+        createParticipant: helmet(createParticipant),
+        updateVotes: helmet(updateVotes)
     },
     Poll: {
         creator: (parent) => {
@@ -39,11 +42,22 @@ export const resolvers: IResolvers = {
     Option: {
         creator: (parent) => {
             return User.findById(parent.creator)
+        },
+        userRating: (parent, _, context) => {
+            let userRating = null;
+            if (context.user){
+                parent.votes.forEach((vote: IVote) => {
+                    if (context.user.id.toString() === vote.voter.toString()){
+                        userRating = vote.rating
+                    }
+                })
+            }
+            return userRating
         }
     },
     Vote: {
         voter: (parent) => {
-            return User.findById(parent.creator)
+            return User.findById(parent.voter)
         }
     }
 };
