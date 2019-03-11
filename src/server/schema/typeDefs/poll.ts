@@ -27,6 +27,7 @@ type Option{
       creator: User!
       description: String
       votes: [Vote!]
+      userRating: Int
 }
 
 type Vote{
