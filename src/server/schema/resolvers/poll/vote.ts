@@ -15,7 +15,11 @@ export const updateVotes = async (_: any, args: IUpdateVotesInput, context: ICon
                     let updated = false
                     for (const [voteIndex, vote] of option.votes.entries()){
                         if (vote.voter.toString() === context.user.id){
-                            poll.options[optionIndex].votes[voteIndex].rating = inputVote.rating
+                            if(inputVote.rating){
+                                poll.options[optionIndex].votes[voteIndex].rating = inputVote.rating
+                            } else {
+                                poll.options[optionIndex].votes.splice(voteIndex, 1)
+                            }
                             updated = true
                             break;
                         }

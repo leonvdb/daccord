@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IOptionQuery } from '../../interfaces';
+import { IOptionQuery} from '../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ interface Props extends PropsFromDispatch{
     option: IOptionQuery
     userId: string
     pollId: string
+    userRating: number
 }
 
 class Option extends React.Component<Props>{
@@ -46,8 +47,9 @@ class Option extends React.Component<Props>{
                         <p className="card-text text-truncate">{description}</p>
                         <form >
                             <input onChange={// tslint:disable-next-line jsx-no-lambda
-                                (e) => this.props.handleRatingChange(this.props.option.refId, parseInt(e.target.value, 10))
-                                } className="mb-5" type="text" style={{ width: "30px"}}/>
+                                (e) => this.props.handleRatingChange(this.props.option.refId, parseInt(e.target.value, 10))} 
+                                defaultValue={this.props.userRating === null ? "": this.props.userRating.toString()}
+                                className="mb-5" type="text" style={{ width: "30px"}}/>
                         </form>
                     </div>
                 </div>

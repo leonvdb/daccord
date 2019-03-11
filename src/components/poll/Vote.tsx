@@ -57,6 +57,7 @@ class Vote extends React.Component<Props> {
                             option={option}
                             userId={user.id}
                             pollId={poll.refId}
+                            userRating={option.userRating}
                         />
                     ))}
                 </div>
