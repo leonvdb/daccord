@@ -46,7 +46,7 @@ class Option extends React.Component<Props>{
                         <p className="card-text text-truncate">{description}</p>
                         <form >
                             <input onChange={// tslint:disable-next-line jsx-no-lambda
-                                (e) => this.props.handleRatingChange(this.props.option.refId, e.target.value)
+                                (e) => this.props.handleRatingChange(this.props.option.refId, parseInt(e.target.value, 10))
                                 } className="mb-5" type="text" style={{ width: "30px"}}/>
                         </form>
                     </div>
@@ -71,12 +71,12 @@ class Option extends React.Component<Props>{
 }
 
 interface PropsFromDispatch {
-    handleRatingChange: (optionId: string, rating: string) => void;
+    handleRatingChange: (optionId: string, rating: number) => void;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch => {
     return {
-        handleRatingChange: (optionId: string, rating: string) => dispatch(handleRatingChange(optionId, rating))
+        handleRatingChange: (optionId: string, rating: number) => dispatch(handleRatingChange(optionId, rating))
     }
 }
 export default connect(null, mapDispatchToProps)(Option);
