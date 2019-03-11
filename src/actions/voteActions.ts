@@ -4,7 +4,7 @@ import { setError } from './errorActions';
 import axios from 'axios';
 import { VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE, HANDLE_RATING_CHANGE } from './types';
 
-export const handleRatingChange: ActionCreator<AppAction<IVoteNew>> = (optionId: string, rating: string) => {
+export const handleRatingChange: ActionCreator<AppAction<IVoteNew>> = (optionId: string, rating: number) => {
     const payload = {
         optionId,
         rating

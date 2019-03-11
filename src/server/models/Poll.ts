@@ -71,7 +71,7 @@ const PollSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 required: true
             },
-            vote: {
+            rating: {
                 type: Number,
                 required: true
             }

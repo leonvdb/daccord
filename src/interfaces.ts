@@ -53,7 +53,7 @@ export interface IVoteForPollPayload {
 
 export interface IVoteNew {
     optionId: string,
-    rating: string
+    rating: number
 }
 
 // User Interfaces
