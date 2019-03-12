@@ -36,7 +36,7 @@ class Vote extends React.Component<Props> {
         }
 
         return (
-            <div className="container">
+            <div className="container-fluid w-100">
             <Mutation mutation={UPDATE_VOTES}>
             {(UPDATE_VOTES) => (
                 <button onClick={()=> {// tslint:disable-next-line jsx-no-lambda

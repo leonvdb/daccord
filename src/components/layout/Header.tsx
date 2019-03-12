@@ -33,7 +33,7 @@ class Header extends React.Component<Props>{
         const { t } = this.props
 
         return (
-            <nav className="navbar navbar-expand-sm navbar-light bg-light">
+            <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{height: "8vh"}}>
                 <div className="container">
                     <Link to="/" className="navbar-brand">WorkInProgress</Link>
                     <UncontrolledDropdown className="nav-item mr-auto ml-2">
