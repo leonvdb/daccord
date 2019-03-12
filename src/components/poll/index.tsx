@@ -16,6 +16,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { compose, graphql, withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-boost';
 import Results from './Results';
+import Settings from './Settings';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { 
@@ -78,6 +79,8 @@ class Poll extends React.Component<Props> {
                             {
                                 this.state.tab === "RESULTS" ? (
                                     <Results/>
+                                ) : this.state.tab === "SETTINGS" ? (
+                                    <Settings/>
                                 ) : (
                                     <React.Fragment>
                                         <h1 className="display-4 text-center mt-5">{poll.title}</h1>
@@ -108,6 +111,13 @@ class Poll extends React.Component<Props> {
                                         (e) => {this.handleMenuClick(e, "RESULTS")} } 
                                         className="unstyled-button">
                                             Results
+                                        </button>
+                                    </div>
+                                    <div style={{ marginTop: "3rem", width: "100%", textAlign: "center"}}>
+                                        <button onClick={// tslint:disable-next-line jsx-no-lambda
+                                        (e) => {this.handleMenuClick(e, "SETTINGS")} } 
+                                        className="unstyled-button">
+                                            Settings
                                         </button>
                                     </div>
                                 </div>
