@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { IUser, IPollQuery } from '../../interfaces';
-import { Store } from '../../reducers';
+import { IUser, IPollQuery } from '../../../interfaces';
+import { Store } from '../../../reducers';
 
-import { IOptionQuery } from '../../interfaces';
+import { IOptionQuery } from '../../../interfaces';
 
 import Option from './Option';
 import AddOption from './AddOption';
-import AuthModal from './AuthModal';
-import { clearError } from '../../actions/errorActions';
+import AuthModal from '../AuthModal';
+import { clearError } from '../../../actions/errorActions';
 import { Mutation } from 'react-apollo';
-import { UPDATE_VOTES } from '../../graphql/vote';
+import { UPDATE_VOTES } from '../../../graphql/vote';
 
 interface Props extends PropsFromState, PropsFromDispatch {
     options: IOptionQuery[]

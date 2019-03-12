@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
-import TextInputGroup from '../layout/TextInputGroup';
+import TextInputGroup from '../../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { Store } from '../../reducers';
+import { Store } from '../../../reducers';
 import { Mutation } from "react-apollo";
-import {createOption} from '../../graphql/cudOption';
-import {getPoll} from '../../graphql/getPoll'
+import {createOption} from '../../../graphql/cudOption';
+import {getPoll} from '../../../graphql/getPoll'
 
 interface Props extends PropsFromState {
     pollId: string

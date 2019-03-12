@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { IOptionQuery} from '../../interfaces';
+import { IOptionQuery} from '../../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
 import { connect } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
-import { handleRatingChange } from '../../actions/voteActions';
+import { handleRatingChange } from '../../../actions/voteActions';
 
 interface Props extends PropsFromDispatch{
     option: IOptionQuery

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
-import Vote from './Vote';
+import Vote from './overview';
 import { IPoll, IUser, IPollQuery} from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
@@ -17,6 +17,7 @@ import { compose, graphql, withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-boost';
 import Results from './Results';
 import Settings from './Settings';
+import SideNav from './layout/SideNav';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { 
@@ -57,7 +58,7 @@ class Poll extends React.Component<Props> {
         this.props.client.resetStore();
     }
 
-    handleMenuClick(e: React.MouseEvent<HTMLElement>, tab: string){
+    handleMenuClick = (e: React.MouseEvent<HTMLElement>, tab: string) => {
         e.preventDefault()
         this.setState({tab})
     }
@@ -97,31 +98,7 @@ class Poll extends React.Component<Props> {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-1" style={{paddingLeft: "0px", paddingRight: "0px"}}>
-                            <div className="bg-secondary" style={{width: "100%", height: "92vh"}}>
-                                <div>
-                                    <div style={{ marginTop: "15rem", width: "100%", textAlign: "center", display: "inline-block"}}>
-                                        <button onClick={// tslint:disable-next-line jsx-no-lambda
-                                        (e) => {this.handleMenuClick(e, "OVERVIEW")} } 
-                                        className="unstyled-button">
-                                            Overview
-                                        </button>
-                                    </div>
-                                    <div style={{ marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                                        <button onClick={// tslint:disable-next-line jsx-no-lambda
-                                        (e) => {this.handleMenuClick(e, "RESULTS")} } 
-                                        className="unstyled-button">
-                                            Results
-                                        </button>
-                                    </div>
-                                    <div style={{ marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                                        <button onClick={// tslint:disable-next-line jsx-no-lambda
-                                        (e) => {this.handleMenuClick(e, "SETTINGS")} } 
-                                        className="unstyled-button">
-                                            Settings
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            <SideNav handleMenuClick={this.handleMenuClick}/>
                         </div>
                         <div className="col-11">
                             {body()}
