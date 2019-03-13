@@ -40,6 +40,19 @@ export const resolvers: IResolvers = {
         }
     },
     Option: {
+        result: (parent) => {
+            let total = 0
+            let possibleVotes = 0
+            parent.votes.forEach((vote: IVote) => {
+                total += vote.rating
+                possibleVotes += 10
+            })
+            return {
+                totalOpposition: total, 
+                agreementInPercent : Math.round((1-total/possibleVotes)*100),
+                totalVotes: possibleVotes/10
+            }
+        },
         creator: (parent) => {
             return User.findById(parent.creator)
         },
@@ -53,7 +66,7 @@ export const resolvers: IResolvers = {
                 })
             }
             return userRating
-        }
+        },
     },
     Vote: {
         voter: (parent) => {

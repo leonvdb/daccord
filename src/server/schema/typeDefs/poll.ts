@@ -28,11 +28,18 @@ type Option{
       description: String
       votes: [Vote!]
       userRating: Int
+      result: Result
 }
 
 type Vote{
       voter: User!
       rating: Int!
+}
+
+type Result{
+      totalOpposition: Int
+      agreementInPercent: Int
+      totalVotes: Int
 }
 
 input VoteInput{
