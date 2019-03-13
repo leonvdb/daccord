@@ -4,7 +4,7 @@ import { compose, withApollo } from 'react-apollo';
 import { IPollQuery } from 'src/interfaces';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Mutation } from 'react-apollo';
-import { DELETE_POLL } from '../../graphql/cudPoll'
+import { DELETE_POLL } from '../../../graphql/cudPoll'
 import DefaultClient from 'apollo-boost';
 
 interface Props extends RouteComponentProps {
@@ -28,7 +28,7 @@ class DeleteModal extends React.Component<Props> {
 
         return (
             <div>
-                <i id="Modal" onClick={this.toggle} className="fas fa-trash-alt float-right" style={{ cursor: 'pointer' }} />
+                <button className="btn btn-secondary" onClick={this.toggle}>Delete Poll</button>
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Delete Poll</ModalHeader>
                     <ModalBody>

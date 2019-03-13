@@ -11,12 +11,11 @@ import { Store } from '../../reducers';
 import { Action } from 'redux';
 import { History } from 'history';
 import AuthModal from './AuthModal';
-import DeleteModal from './DeleteModal';
 import { ThunkDispatch } from 'redux-thunk';
 import { compose, graphql, withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-boost';
 import Results from './Results';
-import Settings from './Settings';
+import Settings from './settings';
 import SideNav from './layout/SideNav';
 
 
@@ -81,11 +80,10 @@ class Poll extends React.Component<Props> {
                                 this.state.tab === "RESULTS" ? (
                                     <Results/>
                                 ) : this.state.tab === "SETTINGS" ? (
-                                    <Settings/>
+                                    <Settings poll={poll} user={user}/>
                                 ) : (
                                     <React.Fragment>
                                         <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                                        {poll.creator.id.toString() === user.id && <DeleteModal poll={poll} />}
                                         <Vote options={poll.options} poll={poll}/>
                                     </React.Fragment>
                                 )
