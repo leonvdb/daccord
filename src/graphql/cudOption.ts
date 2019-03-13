@@ -17,6 +17,10 @@ mutation CreateOption(
             description
             refId
             userRating
+            result{
+                totalOpposition
+                agreementInPercent
+            }
             creator{
                 id
             }
