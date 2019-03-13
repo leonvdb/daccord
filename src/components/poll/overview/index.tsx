@@ -17,7 +17,7 @@ interface Props extends PropsFromState, PropsFromDispatch {
     poll: IPollQuery
 }
 
-class Vote extends React.Component<Props> {
+class Overview extends React.Component<Props> {
 
     componentWillReceiveProps(nextProps: Props) {
         if (nextProps.user.id) {
@@ -36,18 +36,9 @@ class Vote extends React.Component<Props> {
         }
 
         return (
+            <React.Fragment>
             <div className="container-fluid w-100">
-            <Mutation mutation={UPDATE_VOTES}>
-            {(UPDATE_VOTES) => (
-                <button onClick={()=> {// tslint:disable-next-line jsx-no-lambda
-                    console.log({variables: {pollId: this.props.poll.refId, votes: this.props.votes}})
-                    UPDATE_VOTES({variables: {pollId: this.props.poll.refId, votes: this.props.votes}})}
-                    }>
-                        Save Votes
-                </button>
-
-            )}
-            </Mutation>
+            
                 <div className="mt-5 d-flex flex-wrap">
 
                     {button}
@@ -62,6 +53,24 @@ class Vote extends React.Component<Props> {
                     ))}
                 </div>
             </div>
+                <div style={{maxWidth: "inherit", width: "100%", height: "6vh", position: "fixed", bottom: "0px", display: "table", borderTop: "1px solid #ccc",background: "rgba(193, 193, 193, 0.88)"}}>
+                <div style={{display: "table-cell", verticalAlign: "middle"}}>
+                <p style={{ display: "inline-block"}} className="ml-4">you made changes that are currently unsaved</p>
+                    <Mutation mutation={UPDATE_VOTES}>
+                        {(UPDATE_VOTES) => (
+                        <button 
+                        className="btn btn-secondary mr-4"
+                        style={{float: "right", display: "inline-block"}}
+                        onClick={()=> {// tslint:disable-next-line jsx-no-lambda
+                        UPDATE_VOTES({variables: {pollId: this.props.poll.refId, votes: this.props.votes}})}
+                        }>
+                            Save
+                        </button>
+                        )}
+                    </Mutation>
+                </div>
+                </div>
+            </React.Fragment>
         );
     }
 }
@@ -82,4 +91,4 @@ const mapStateToProps = (state: Store) => ({
     votes: state.votes.votes
 });
 
-export default connect(mapStateToProps, { clearError })(Vote);
+export default connect(mapStateToProps, { clearError })(Overview);

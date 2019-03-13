@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
-import Vote from './overview';
+import Overview from './overview';
 import { IPoll, IUser, IPollQuery} from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
@@ -84,7 +84,7 @@ class Poll extends React.Component<Props> {
                                 ) : (
                                     <React.Fragment>
                                         <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                                        <Vote options={poll.options} poll={poll}/>
+                                        <Overview options={poll.options} poll={poll}/>
                                     </React.Fragment>
                                 )
                             }
@@ -98,7 +98,7 @@ class Poll extends React.Component<Props> {
                         <div className="col-1" style={{paddingLeft: "0px", paddingRight: "0px"}}>
                             <SideNav handleMenuClick={this.handleMenuClick}/>
                         </div>
-                        <div className="col-11">
+                        <div className="col-11" style={{paddingLeft: "0px", paddingRight: "0px"}}>
                             {body()}
                         </div>
                     </div>
