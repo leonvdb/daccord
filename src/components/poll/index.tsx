@@ -4,17 +4,19 @@ import { withRouter } from 'react-router-dom';
 
 import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
-import Vote from './Vote';
+import Overview from './overview';
 import { IPoll, IUser, IPollQuery} from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
 import { Action } from 'redux';
 import { History } from 'history';
 import AuthModal from './AuthModal';
-import DeleteModal from './DeleteModal';
 import { ThunkDispatch } from 'redux-thunk';
 import { compose, graphql, withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-boost';
+import Results from './results';
+import Settings from './settings';
+import SideNav from './layout/SideNav';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { 
@@ -37,6 +39,10 @@ interface IAuthUser {
 
 class Poll extends React.Component<Props> {
 
+    state={
+        tab: "OVERVIEW"
+    }
+
     componentDidUpdate(){
         if(!this.props.data.loading && !this.props.user.id && this.props.data.authUser.token){
             const {token, user} = this.props.data.authUser
@@ -49,6 +55,11 @@ class Poll extends React.Component<Props> {
 
     componentWillUnmount() {
         this.props.client.resetStore();
+    }
+
+    handleMenuClick = (e: React.MouseEvent<HTMLElement>, tab: string) => {
+        e.preventDefault()
+        this.setState({tab})
     }
 
     render() {
@@ -65,18 +76,33 @@ class Poll extends React.Component<Props> {
                 const {poll} = this.props.data
                 return <React.Fragment>
                         {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll}/>}
-                        <div className="container">
-                            <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                            {poll.creator.id.toString() === user.id &&
-                                <DeleteModal poll={poll} />
+                            {
+                                this.state.tab === "RESULTS" ? (
+                                    <Results poll={poll}/>
+                                ) : this.state.tab === "SETTINGS" ? (
+                                    <Settings poll={poll} user={user}/>
+                                ) : (
+                                    <React.Fragment>
+                                        <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+                                        <Overview options={poll.options} poll={poll}/>
+                                    </React.Fragment>
+                                )
                             }
-                            <Vote options={poll.options} poll={poll}/>
-                        </div>
+                            
                     </React.Fragment>}
         }
         return (
             <React.Fragment>
-               {body()}
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-1" style={{paddingLeft: "0px", paddingRight: "0px"}}>
+                            <SideNav handleMenuClick={this.handleMenuClick}/>
+                        </div>
+                        <div className="col-11" style={{paddingLeft: "0px", paddingRight: "0px"}}>
+                            {body()}
+                        </div>
+                    </div>
+                </div>
             </React.Fragment>
         )
     }

@@ -33,7 +33,9 @@ class Header extends React.Component<Props>{
         const { t } = this.props
 
         return (
-            <nav className="navbar navbar-expand-sm navbar-light bg-light">
+            <React.Fragment>
+            <div style={{height: "8vh"}}/>
+            <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{height: "8vh", position: "fixed", width: "100%", top: "0px", zIndex: 1}}>
                 <div className="container">
                     <Link to="/" className="navbar-brand">WorkInProgress</Link>
                     <UncontrolledDropdown className="nav-item mr-auto ml-2">
@@ -62,6 +64,7 @@ class Header extends React.Component<Props>{
                     </ul>
                 </div>
             </nav>
+            </React.Fragment>
         )
     }
 }

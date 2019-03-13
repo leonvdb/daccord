@@ -13,6 +13,10 @@ query($id: ID!){
             description
             refId
             userRating
+            result{
+                totalOpposition
+                agreementInPercent
+            }
             creator{
                 id
             }
@@ -35,6 +39,10 @@ query($id: ID!, $authToken: String!){
             description
             refId
             userRating
+            result{
+                totalOpposition
+                agreementInPercent
+            }
             creator{
                 id
             }

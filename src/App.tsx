@@ -8,7 +8,6 @@ import store from './store';
 
 import CreatePoll from './components/CreatePoll';
 import Landing from './components/Landing';
-import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
 import NotFound from './components/NotFound';
 import Poll from './components/poll';
@@ -47,7 +46,6 @@ class App extends React.Component {
                   <Route exact={true} path="/create" component={CreatePoll} />
                   <Route component={NotFound} />
                 </Switch>
-                <Footer />
               </div>
             </BrowserRouter>
           </Provider>
