@@ -35,6 +35,10 @@ mutation UpdateOption($pollId: ID!, $optionId: ID!, $title: String, $description
         description
         refId
         userRating
+        result{
+            totalOpposition
+            agreementInPercent
+        }
         creator{
             id
         }
