@@ -25,10 +25,10 @@ export const updateVotes = async (_: any, args: IUpdateVotesInput, context: ICon
                         }
                     }
                     if (!updated){
-                        poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
+                        if(inputVote.rating) poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
                     }
                 } else {
-                    poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
+                    if(inputVote.rating) poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
                 }
             }
         })

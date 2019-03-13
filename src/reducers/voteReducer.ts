@@ -1,5 +1,5 @@
 import { AppAction, IVoteNew } from 'src/interfaces';
-import { HANDLE_RATING_CHANGE } from '../actions/types'
+import { HANDLE_RATING_CHANGE, CLEAR_RATING_CHANGES } from '../actions/types'
 
 export interface VoteReducer {
     votes: IVoteNew[]
@@ -27,7 +27,11 @@ export default function (state = initialState, action: AppAction) {
                 ...state,
                 votes
             }
-        
+        case CLEAR_RATING_CHANGES:
+            return {
+                ...state,
+                votes: []
+            }
         default:
             return state;
     }

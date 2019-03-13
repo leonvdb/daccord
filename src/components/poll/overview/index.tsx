@@ -11,6 +11,7 @@ import AuthModal from '../AuthModal';
 import { clearError } from '../../../actions/errorActions';
 import { Mutation } from 'react-apollo';
 import { UPDATE_VOTES } from '../../../graphql/vote';
+import { clearRatingChanges } from '../../../actions/voteActions';
 
 interface Props extends PropsFromState, PropsFromDispatch {
     options: IOptionQuery[]
@@ -37,7 +38,7 @@ class Overview extends React.Component<Props> {
 
         return (
             <React.Fragment>
-            <div className="container-fluid w-100">
+            <div className="container-fluid px-5">
             
                 <div className="mt-5 d-flex flex-wrap">
 
@@ -53,23 +54,29 @@ class Overview extends React.Component<Props> {
                     ))}
                 </div>
             </div>
+            {this.props.votes.length > 0 && 
                 <div style={{maxWidth: "inherit", width: "100%", height: "6vh", position: "fixed", bottom: "0px", display: "table", borderTop: "1px solid #ccc",background: "rgba(193, 193, 193, 0.88)"}}>
-                <div style={{display: "table-cell", verticalAlign: "middle"}}>
-                <p style={{ display: "inline-block"}} className="ml-4">you made changes that are currently unsaved</p>
-                    <Mutation mutation={UPDATE_VOTES}>
-                        {(UPDATE_VOTES) => (
-                        <button 
-                        className="btn btn-secondary mr-4"
-                        style={{float: "right", display: "inline-block"}}
-                        onClick={()=> {// tslint:disable-next-line jsx-no-lambda
-                        UPDATE_VOTES({variables: {pollId: this.props.poll.refId, votes: this.props.votes}})}
-                        }>
-                            Save
-                        </button>
-                        )}
-                    </Mutation>
+                    <div style={{display: "table-cell", verticalAlign: "middle"}}>
+                    <p style={{ display: "inline-block"}} className="ml-5">you made changes that are currently unsaved</p>
+                        <Mutation mutation={UPDATE_VOTES}
+                        update={// tslint:disable-next-line jsx-no-lambda
+                            (cache, { data: { updateVotes}}) => {
+                                if(updateVotes) this.props.clearRatingChanges()
+                        }}>
+                            {(UPDATE_VOTES) => (
+                            <button 
+                            className="btn btn-secondary mr-5"
+                            style={{float: "right", display: "inline-block"}}
+                            onClick={()=> {// tslint:disable-next-line jsx-no-lambda
+                            UPDATE_VOTES({variables: {pollId: this.props.poll.refId, votes: this.props.votes}})}
+                            }>
+                                Save
+                            </button>
+                            )}
+                        </Mutation>
+                    </div>
                 </div>
-                </div>
+            }
             </React.Fragment>
         );
     }
@@ -82,6 +89,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
     clearError: (error: string) => void
+    clearRatingChanges: () => void
 }
 
 
@@ -91,4 +99,4 @@ const mapStateToProps = (state: Store) => ({
     votes: state.votes.votes
 });
 
-export default connect(mapStateToProps, { clearError })(Overview);
+export default connect(mapStateToProps, { clearError, clearRatingChanges })(Overview);

@@ -2,7 +2,7 @@ import { ActionCreator } from 'redux';
 import { ThunkResult, AppAction, IVoteForPollPayload, IVoteNew } from '../interfaces';
 import { setError } from './errorActions';
 import axios from 'axios';
-import { VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE, HANDLE_RATING_CHANGE } from './types';
+import { VOTE_FOR_POLL_REQUEST, VOTE_FOR_POLL_SUCCESS, VOTE_FOR_POLL_FAILURE, HANDLE_RATING_CHANGE, CLEAR_RATING_CHANGES } from './types';
 
 export const handleRatingChange: ActionCreator<AppAction<IVoteNew>> = (optionId: string, rating: number) => {
     const payload = {
@@ -12,6 +12,12 @@ export const handleRatingChange: ActionCreator<AppAction<IVoteNew>> = (optionId:
     return {
         type: HANDLE_RATING_CHANGE,
         payload
+    }
+}
+
+export const clearRatingChanges: ActionCreator<AppAction<void>> = () => {
+    return {
+        type: CLEAR_RATING_CHANGES
     }
 }
 
