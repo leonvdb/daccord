@@ -14,7 +14,7 @@ import AuthModal from './AuthModal';
 import { ThunkDispatch } from 'redux-thunk';
 import { compose, graphql, withApollo } from 'react-apollo';
 import { ApolloClient } from 'apollo-boost';
-import Results from './Results';
+import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 
@@ -78,7 +78,7 @@ class Poll extends React.Component<Props> {
                         {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll}/>}
                             {
                                 this.state.tab === "RESULTS" ? (
-                                    <Results/>
+                                    <Results poll={poll}/>
                                 ) : this.state.tab === "SETTINGS" ? (
                                     <Settings poll={poll} user={user}/>
                                 ) : (
