@@ -7,9 +7,9 @@ interface Props {
 class SideNav extends React.Component<Props> {
     render(){
         return (
-            <div className="bg-secondary" style={{width: "100%", height: "92vh"}}>
+            <div className="bg-secondary" style={{maxWidth: "inherit", width: "100%", height: "92vh", position: "fixed", bottom: "0px"}}>
                                 <div>
-                                    <div style={{ marginTop: "15rem", width: "100%", textAlign: "center", display: "inline-block"}}>
+                                    <div style={{ marginTop: "20rem", width: "100%", textAlign: "center", display: "inline-block"}}>
                                         <button onClick={// tslint:disable-next-line jsx-no-lambda
                                         (e) => {this.props.handleMenuClick(e, "OVERVIEW")} } 
                                         className="unstyled-button">
