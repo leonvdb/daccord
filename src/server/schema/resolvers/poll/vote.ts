@@ -15,7 +15,7 @@ export const updateVotes = async (_: any, args: IUpdateVotesInput, context: ICon
                     let updated = false
                     for (const [voteIndex, vote] of option.votes.entries()){
                         if (vote.voter.toString() === context.user.id){
-                            if(inputVote.rating){
+                            if(inputVote.rating !== null){
                                 poll.options[optionIndex].votes[voteIndex].rating = inputVote.rating
                             } else {
                                 poll.options[optionIndex].votes.splice(voteIndex, 1)
@@ -25,10 +25,13 @@ export const updateVotes = async (_: any, args: IUpdateVotesInput, context: ICon
                         }
                     }
                     if (!updated){
-                        if(inputVote.rating) poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
+                        if(inputVote.rating !== null) poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
                     }
                 } else {
-                    if(inputVote.rating) poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
+
+                    if(inputVote.rating !== null) {
+                        poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
+                    }
                 }
             }
         })

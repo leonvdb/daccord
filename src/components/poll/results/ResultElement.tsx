@@ -8,7 +8,6 @@ interface Props {
 class ResultElement extends React.Component<Props>{
     render(){
         const { option } = this.props
-        console.log(option.result.agreementInPercent)
         return (
             <React.Fragment>
                 <p style={{marginBottom: "0"}}>{option.title}</p>
