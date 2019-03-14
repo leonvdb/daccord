@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Props {
-    handleMenuClick: (e: React.MouseEvent<HTMLElement>, tab: string) => void
+    pollId: string
 }
 
 class SideNav extends React.Component<Props> {
@@ -10,25 +11,13 @@ class SideNav extends React.Component<Props> {
             <div className="bg-secondary" style={{maxWidth: "inherit", width: "100%", height: "92vh", position: "fixed", bottom: "0px"}}>
                                 <div>
                                     <div style={{ marginTop: "20rem", width: "100%", textAlign: "center", display: "inline-block"}}>
-                                        <button onClick={// tslint:disable-next-line jsx-no-lambda
-                                        (e) => {this.props.handleMenuClick(e, "OVERVIEW")} } 
-                                        className="unstyled-button">
-                                            Overview
-                                        </button>
+                                    <Link className="unstyled-link" to={`/poll/${this.props.pollId}/`}>Overview</Link>
                                     </div>
                                     <div style={{ marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                                        <button onClick={// tslint:disable-next-line jsx-no-lambda
-                                        (e) => {this.props.handleMenuClick(e, "RESULTS")} } 
-                                        className="unstyled-button">
-                                            Results
-                                        </button>
+                                    <Link className="unstyled-link" to={`/poll/${this.props.pollId}/results`}>Results</Link>
                                     </div>
                                     <div style={{ marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                                        <button onClick={// tslint:disable-next-line jsx-no-lambda
-                                        (e) => {this.props.handleMenuClick(e, "SETTINGS")} } 
-                                        className="unstyled-button">
-                                            Settings
-                                        </button>
+                                        <Link className="unstyled-link" to={`/poll/${this.props.pollId}/settings`}>Settings</Link>
                                     </div>
                                 </div>
                             </div>

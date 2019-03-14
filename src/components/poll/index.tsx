@@ -39,10 +39,6 @@ interface IAuthUser {
 
 class Poll extends React.Component<Props> {
 
-    state={
-        tab: "OVERVIEW"
-    }
-
     componentDidUpdate(){
         if(!this.props.data.loading && !this.props.user.id && this.props.data.authUser.token){
             const {token, user} = this.props.data.authUser
@@ -55,11 +51,6 @@ class Poll extends React.Component<Props> {
 
     componentWillUnmount() {
         this.props.client.resetStore();
-    }
-
-    handleMenuClick = (e: React.MouseEvent<HTMLElement>, tab: string) => {
-        e.preventDefault()
-        this.setState({tab})
     }
 
     render() {
@@ -77,9 +68,9 @@ class Poll extends React.Component<Props> {
                 return <React.Fragment>
                         {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll}/>}
                             {
-                                this.state.tab === "RESULTS" ? (
+                                this.props.match.params.pollNavRoute === "results" ? (
                                     <Results poll={poll}/>
-                                ) : this.state.tab === "SETTINGS" ? (
+                                ) : this.props.match.params.pollNavRoute === "settings" ? (
                                     <Settings poll={poll} user={user}/>
                                 ) : (
                                     <React.Fragment>
@@ -96,7 +87,7 @@ class Poll extends React.Component<Props> {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-1" style={{paddingLeft: "0px", paddingRight: "0px"}}>
-                            <SideNav handleMenuClick={this.handleMenuClick}/>
+                            <SideNav pollId={this.props.match.params.poll_id}/>
                         </div>
                         <div className="col-11" style={{paddingLeft: "0px", paddingRight: "0px"}}>
                             {body()}
