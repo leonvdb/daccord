@@ -31,8 +31,8 @@ export interface IOptionQuery extends INewOption {
     result: IResult
 }
 export interface IResult{
-    totalOpposition?: number
-    agreementInPercent?: number
+    totalOpposition: number
+    agreementInPercent: number
 }
 export interface IOption extends INewOption {
     creator: string
