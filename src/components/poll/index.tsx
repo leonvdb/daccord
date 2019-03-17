@@ -69,7 +69,7 @@ class Poll extends React.Component<Props> {
                         {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll}/>}
                             {
                                 this.props.match.params.pollNavRoute === "results" ? (
-                                    <Results poll={poll}/>
+                                    <Results poll={poll} user={user}/>
                                 ) : this.props.match.params.pollNavRoute === "settings" ? (
                                     <Settings poll={poll} user={user}/>
                                 ) : (

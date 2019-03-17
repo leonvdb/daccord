@@ -8,6 +8,7 @@ type Query {
     poll(id: ID!, authToken: String): Poll!
     authUser(authToken: String!, id: ID!): AuthUser!
     user(id: ID!): User!
+    option(pollId: ID!, optionId: ID!): Option!
 }
 `
 

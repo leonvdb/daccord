@@ -30,6 +30,22 @@ export interface IOptionQuery extends INewOption {
     userRating: number
     result: IResult
 }
+
+export interface IOptionDetails {
+    votes: IVoteDetails[]
+}
+
+export interface IVoteDetails {
+    id: string
+    rating: number
+    voter: IVoterQuery
+}
+
+export interface IVoterQuery {
+    user: IUser
+    pseudonym: string
+}
+
 export interface IResult{
     totalOpposition: number
     agreementInPercent: number

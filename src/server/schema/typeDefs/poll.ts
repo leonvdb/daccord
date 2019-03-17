@@ -33,8 +33,14 @@ type Option{
 }
 
 type Vote{
-      voter: User!
+      id: ID!
+      voter: Voter!
       rating: Int!
+}
+
+type Voter{
+      user: User!
+      pseudonym: String!
 }
 
 type Result{

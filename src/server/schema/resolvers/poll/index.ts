@@ -17,6 +17,14 @@ export const resolvers: IResolvers = {
         },
         polls: () => {
             return Poll.find({});
+        },
+        option: async (_, args) => {
+            const poll = await findPoll(args.pollId)
+            for (const option of poll.options){
+                if (option.refId === args.optionId){
+                    return option
+                }
+            }
         }
     },
     Mutation: {
@@ -70,7 +78,19 @@ export const resolvers: IResolvers = {
     },
     Vote: {
         voter: (parent) => {
-            return User.findById(parent.voter)
+            const user = User.findById(parent.voter)
+            const participants = parent.parent().parent().participants
+            let pseudonym = ''
+            for (const participant of participants){
+                if (participant.id.toString() === parent.voter.toString()){
+                    pseudonym = participant.pseudonym
+                    break;
+                }
+            }
+            return {
+                user,
+                pseudonym
+            }
         }
     }
 };
