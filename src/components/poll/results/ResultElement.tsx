@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { IOptionQuery, IUser } from '../../../interfaces';
+import { IOptionQuery, IUser, IPollQuery } from '../../../interfaces';
 import ResultDetails from './ResultDetails';
 
 interface Props {
     option: IOptionQuery
-    pollId: string
+    poll: IPollQuery
     user: IUser
 }
 
@@ -20,7 +20,7 @@ class ResultElement extends React.Component<Props>{
     }
 
     render(){
-        const { option, pollId } = this.props
+        const { option, poll} = this.props
         return (
             <React.Fragment>
                 <div className="clearfix">
@@ -30,7 +30,7 @@ class ResultElement extends React.Component<Props>{
                 <div className="mb-3" style={{width: `${option.result.agreementInPercent ? option.result.agreementInPercent : 0}%`, height: "10px", background: "#ccc", display: "inline-block"}}/>
                 <div className="mb-3" style={{width: `${option.result.agreementInPercent ? 100-option.result.agreementInPercent : 100}%`, height: "10px", background: "#F3F3F3", display: "inline-block"}}/>
                 <button onClick={this.toggle}>Details</button>
-                {this.state.showDetails && <ResultDetails option={option} pollId={pollId} user={this.props.user}/>}
+                {this.state.showDetails && <ResultDetails option={option} poll={poll} user={this.props.user}/>}
             </React.Fragment>
         )
     }

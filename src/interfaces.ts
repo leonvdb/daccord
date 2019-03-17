@@ -16,6 +16,7 @@ export interface IPollQuery {
     refId: string
     creator: IUser
     options: IOptionQuery[]
+    participants: IParticipant[]
 }
 
 export interface INewPoll {
@@ -87,6 +88,10 @@ export interface IUser extends IUserInformation {
     id: string
 }
 
+
+export interface IParticipant {
+    user: IUser
+}
 export interface INewParticipant extends IUserInformation {
     pollId: string
 }

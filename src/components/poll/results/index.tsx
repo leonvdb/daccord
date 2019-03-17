@@ -9,7 +9,7 @@ interface Props {
 
 class Results extends React.Component<Props>{
     render(){
-        const {options, refId} = this.props.poll
+        const {options} = this.props.poll
         const sortedOptions = options.sort((a, b) => {
             if(a.result.agreementInPercent > b.result.agreementInPercent){
                 return -1
@@ -25,7 +25,7 @@ class Results extends React.Component<Props>{
                 <h1 className="my-5">Results</h1>
                 
                 {sortedOptions.map(option => {
-                    return <ResultElement key={option.refId} option={option} pollId={refId} user={this.props.user}/>
+                    return <ResultElement key={option.refId} option={option} poll={this.props.poll} user={this.props.user}/>
                 })}
             </div>
         )
