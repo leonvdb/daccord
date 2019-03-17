@@ -68,7 +68,7 @@ class AuthModal extends React.Component<Props> {
             return;
         }
 
-        mutation({variables: {pollId: poll.refId, email}})
+        mutation({variables: {pollId: poll.refId, email, pseudonym: name}})
 
     }
 
