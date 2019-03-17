@@ -17,6 +17,7 @@ type Poll{
       title: String!
       creator: User!
       creatorToken: String!
+      creatorPseudonym: String!
       participants: [Participant!]
       options: [Option!]
 }
@@ -49,6 +50,7 @@ input VoteInput{
 
 type Participant{
       user: User!
+      pseudonym: String!
       token: String!
 }
 

@@ -15,18 +15,21 @@ interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispa
 interface State {
     title: string,
     email: string,
+    name: string
     errors: Errors
 }
 
 interface Errors {
     email?: string,
-    title?: string
+    title?: string,
+    name?: string
 }
 
 class CreatePoll extends React.Component<Props, State> {
     state: State = {
         title: '',
         email: '',
+        name: '',
         errors: {}
     };
 
@@ -43,7 +46,7 @@ class CreatePoll extends React.Component<Props, State> {
     onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
 
-        const { title, email } = this.state
+        const { title, email, name } = this.state
 
         // Form validation
         const errors: Errors = {}
@@ -61,13 +64,12 @@ class CreatePoll extends React.Component<Props, State> {
             })
             return;
         }
-
-        mutation({variables: {title, userEmail: email}})
+        mutation({variables: {title, userEmail: email, userName: name}})
 
     }
 
     render() {
-        const { title, email, errors } = this.state;
+        const { title, email, errors, name } = this.state;
         const { t } = this.props
         return (
             <div className="container">
@@ -102,6 +104,15 @@ class CreatePoll extends React.Component<Props, State> {
                         value={email}
                         onChange={this.onChange}
                         error={errors.email}
+                        />
+                    <TextInputGroup
+                        classNames="w-50"
+                        label="Name"
+                        name="name"
+                        placeholder="Enter Name"
+                        value={name}
+                        onChange={this.onChange}
+                        error={errors.name}
                         />
                     <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Create</button>
                 </form>

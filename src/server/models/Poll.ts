@@ -11,12 +11,14 @@ export interface IPollDocument extends mongoose.Document {
     refId: string,
     creatorToken: string,
     creator: ObjectId,
+    creatorPseudonym: string,
     participants: IParticipant[],
     options: IOption[],
 }
 
 interface IParticipant {
     id: ObjectId,
+    pseudonym: string,
     token: string
 }
 
@@ -36,6 +38,10 @@ const PollSchema = new Schema({
         ref: 'user',
         required: true
     },
+    creatorPseudonym: {
+        type: String,
+        required: true
+    },
     creatorToken: {
         type: String,
         required: true
@@ -43,6 +49,10 @@ const PollSchema = new Schema({
     participants: [{
         id: {
             type: Schema.Types.ObjectId,
+            required: true
+        },
+        pseudonym: {
+            type: String,
             required: true
         },
         token: {
