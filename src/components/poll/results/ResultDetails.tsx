@@ -7,6 +7,7 @@ interface Props {
     option: IOptionQuery
     poll: IPollQuery
     user: IUser
+    rank: number
 }
 
 class ResultDetails extends React.Component<Props> {
@@ -22,6 +23,7 @@ class ResultDetails extends React.Component<Props> {
                     <p>My Vote: {option.userRating}</p>
                     <p>Agreement: {option.result.agreementInPercent}%</p>
                     <p>Participation: {queryOption.votes.length/poll.participants.length * 100}%</p>
+                    <p>Rank: {this.props.rank}</p>
 
                     {queryOption.votes.map(vote => {
                         if (vote.voter.user.id !== this.props.user.id){

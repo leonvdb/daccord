@@ -24,8 +24,8 @@ class Results extends React.Component<Props>{
             <div className="container-fluid px-5">
                 <h1 className="my-5">Results</h1>
                 
-                {sortedOptions.map(option => {
-                    return <ResultElement key={option.refId} option={option} poll={this.props.poll} user={this.props.user}/>
+                {sortedOptions.map((option, index) => {
+                    return <ResultElement key={option.refId} option={option} poll={this.props.poll} user={this.props.user} rank={index+1}/>
                 })}
             </div>
         )
