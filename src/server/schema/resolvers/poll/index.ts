@@ -79,12 +79,16 @@ export const resolvers: IResolvers = {
     Vote: {
         voter: (parent) => {
             const user = User.findById(parent.voter)
-            const participants = parent.parent().parent().participants
+            const {participants, creator, creatorPseudonym} = parent.parent().parent()
             let pseudonym = ''
-            for (const participant of participants){
-                if (participant.id.toString() === parent.voter.toString()){
-                    pseudonym = participant.pseudonym
-                    break;
+            if(creator.toString() === parent.voter.toString()){
+                pseudonym = creatorPseudonym
+            } else {
+                for (const participant of participants){
+                    if (participant.id.toString() === parent.voter.toString()){
+                        pseudonym = participant.pseudonym
+                        break;
+                    }
                 }
             }
             return {
