@@ -64,6 +64,7 @@ query($id: ID!, $authToken: String!){
             id
             email
         }
+        pseudonym
     }
 }
 `

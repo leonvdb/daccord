@@ -34,6 +34,7 @@ interface IData {
 interface IAuthUser {
     token: string,
     user: IUser
+    pseudonym: string
 }
 
 
@@ -43,6 +44,7 @@ class Poll extends React.Component<Props> {
         if(!this.props.data.loading && !this.props.user.id && this.props.data.authUser.token){
             const {token, user} = this.props.data.authUser
             this.props.setAuthTokenAndUser(token, user)
+            console.log({pseudonym: this.props.data.authUser.pseudonym})
         }
         if(this.props.location.search && this.props.user.id){
             this.props.history.push(`/poll/${this.props.match.params.poll_id}`)
