@@ -78,7 +78,7 @@ class CreatePoll extends React.Component<Props, State> {
                 update={// tslint:disable-next-line jsx-no-lambda
                     (cache, { data: { createPoll}}) => {
                         const {token, user, poll} = createPoll
-                        this.props.setAuthTokenAndUser(token, user)
+                        this.props.setAuthTokenAndUser(user, token)
                         this.props.history.push(`/poll/${poll.refId}`)
                     }
                 }
@@ -128,7 +128,7 @@ interface PropsFromState {
     poll: IPoll
 }
 interface PropsFromDispatch {
-    setAuthTokenAndUser: (jwt: string, user: IUser) => void
+    setAuthTokenAndUser: ( user: IUser, jwt: string) => void
 }
 
 const mapStateToProps = (state: Store) => ({

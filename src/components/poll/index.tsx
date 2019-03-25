@@ -41,10 +41,9 @@ interface IAuthUser {
 class Poll extends React.Component<Props> {
 
     componentDidUpdate(){
-        if(!this.props.data.loading && !this.props.user.id && this.props.data.authUser.token){
+        if(!this.props.data.loading && !this.props.user.id){
             const {token, user} = this.props.data.authUser
-            this.props.setAuthTokenAndUser(token, user)
-            console.log({pseudonym: this.props.data.authUser.pseudonym})
+            this.props.setAuthTokenAndUser(user, token)
         }
         if(this.props.location.search && this.props.user.id){
             this.props.history.push(`/poll/${this.props.match.params.poll_id}`)
@@ -111,12 +110,12 @@ const mapStateToProps = (state: Store): PropsFromState => ({
 });
 interface PropsFromDispatch {
     getPollAndAuthParticipant: (pollId: string, queryParam: string, history: History) => void
-    setAuthTokenAndUser: (jwt: string, user: IUser) => void
+    setAuthTokenAndUser: (user: IUser,jwt: string) => void
 }
 const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDispatchToProps<PropsFromDispatch, void> => {
     return {
         getPollAndAuthParticipant: (pollId: string, queryParam: string, history) => dispatch(getPollAndAuthParticipant(pollId, queryParam, history)),
-        setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
+        setAuthTokenAndUser: (user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt))
     }
 }
 

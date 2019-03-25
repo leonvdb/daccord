@@ -105,7 +105,7 @@ class AuthModal extends React.Component<Props> {
                     update={// tslint:disable-next-line jsx-no-lambda
                         (cache, { data: { createParticipant}}) => {
                             if (createParticipant.token) {
-                                this.props.setAuthTokenAndUser(createParticipant.token, createParticipant.user)
+                                this.props.setAuthTokenAndUser(createParticipant.user, createParticipant.token)
                             } else {
                                 this.setState({showParticipantError: true})
                             }
@@ -189,12 +189,12 @@ const mapStateToProps = (state: Store) => ({
 });
 
 interface PropsFromDispatch {
-    setAuthTokenAndUser: (jwt: string, user: IUser) => void
+    setAuthTokenAndUser: (user: IUser, jwt: string) => void
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
-        setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
+        setAuthTokenAndUser: ( user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt))
     }
 
 }

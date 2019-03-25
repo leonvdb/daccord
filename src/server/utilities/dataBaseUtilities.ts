@@ -100,3 +100,17 @@ export function getParticipantPosition(poll: IPollDocument, user: IUserDocument)
     }
     return -1
 }
+
+
+export function getPseudonymOfUser(userId: string, poll: IPollDocument){
+    if(poll.creator.toString() === userId){
+        return poll.creatorPseudonym
+    } else {
+        for (const participant of poll.participants){
+            if (participant.id.toString() === userId){
+                return participant.pseudonym
+            }
+        }
+    }
+    return ''
+}

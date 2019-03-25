@@ -6,7 +6,7 @@ import { updateVotes } from './vote'
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
-import { findPoll } from '../../../utilities/dataBaseUtilities';
+import { findPoll, getPseudonymOfUser } from '../../../utilities/dataBaseUtilities';
 import { IVote } from '../../../../interfaces';
 
 
@@ -79,18 +79,7 @@ export const resolvers: IResolvers = {
     Vote: {
         voter: (parent) => {
             const user = User.findById(parent.voter)
-            const {participants, creator, creatorPseudonym} = parent.parent().parent()
-            let pseudonym = ''
-            if(creator.toString() === parent.voter.toString()){
-                pseudonym = creatorPseudonym
-            } else {
-                for (const participant of participants){
-                    if (participant.id.toString() === parent.voter.toString()){
-                        pseudonym = participant.pseudonym
-                        break;
-                    }
-                }
-            }
+            const pseudonym = getPseudonymOfUser(parent.voter.toString(),parent.parent().parent())
             return {
                 user,
                 pseudonym
@@ -98,4 +87,3 @@ export const resolvers: IResolvers = {
         }
     }
 };
-

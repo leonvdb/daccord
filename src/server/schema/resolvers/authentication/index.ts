@@ -1,13 +1,13 @@
 import { IResolvers } from 'graphql-tools';
 import { helmet } from '../helmet';
 import { sendAuthLink } from './sendAuthLink';
-import { findPoll, getUser } from '../../../utilities/dataBaseUtilities';
+import { findPoll, getUser, getPseudonymOfUser } from '../../../utilities/dataBaseUtilities';
 import { createJsonWebToken } from '../../../utilities/createJsonWebToken';
 
 
 export const resolvers: IResolvers = {
     Query: {
-        authUser: async (_, args) => {
+        authUser: async (_, args, context) => {
             const poll = await findPoll(args.id)
             let token = ''
             let pseudonym = ''
@@ -29,7 +29,10 @@ export const resolvers: IResolvers = {
                         }
                     }
                 }
-            }   
+            } else if (context.user){
+                user = await getUser(context.user.id)
+                pseudonym = getPseudonymOfUser(user.id, poll)
+            }  
             return {token, user, pseudonym }
         }
 
