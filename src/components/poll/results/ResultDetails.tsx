@@ -22,7 +22,7 @@ class ResultDetails extends React.Component<Props> {
                 <React.Fragment>
                     <p>My Vote: {option.userRating}</p>
                     <p>Agreement: {option.result.agreementInPercent}%</p>
-                    <p>Participation: {queryOption.votes.length/poll.participants.length * 100}%</p>
+                    <p>Participation: {queryOption.votes.length/(poll.participants.length + 1) * 100}%</p>
                     <p>Rank: {this.props.rank}</p>
 
                     {queryOption.votes.map(vote => {
