@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
+import { setPseudonym } from '../../actions/userActions';
 import Overview from './overview';
 import { IPoll, IUser, IPollQuery} from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
@@ -42,8 +43,10 @@ class Poll extends React.Component<Props> {
 
     componentDidUpdate(){
         if(!this.props.data.loading && !this.props.user.id){
-            const {token, user} = this.props.data.authUser
+            const {token, user, pseudonym} = this.props.data.authUser
             this.props.setAuthTokenAndUser(user, token)
+            console.log({pseudonym})
+            this.props.setPseudonym(pseudonym)
         }
         if(this.props.location.search && this.props.user.id){
             this.props.history.push(`/poll/${this.props.match.params.poll_id}`)
@@ -76,6 +79,7 @@ class Poll extends React.Component<Props> {
                                 ) : (
                                     <React.Fragment>
                                         <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+                                        <p>participating as: <i>{this.props.pseudonym}</i></p>
                                         <Overview options={poll.options} poll={poll}/>
                                     </React.Fragment>
                                 )
@@ -103,19 +107,23 @@ class Poll extends React.Component<Props> {
 interface PropsFromState {
     poll: IPoll
     user: IUser
+    pseudonym: string
 }
 const mapStateToProps = (state: Store): PropsFromState => ({
     poll: state.poll.poll,
-    user: state.user.user
+    user: state.user.user,
+    pseudonym: state.participant.pseudonym
 });
 interface PropsFromDispatch {
     getPollAndAuthParticipant: (pollId: string, queryParam: string, history: History) => void
     setAuthTokenAndUser: (user: IUser,jwt: string) => void
+    setPseudonym: (pseudonym: string) => void
 }
 const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDispatchToProps<PropsFromDispatch, void> => {
     return {
         getPollAndAuthParticipant: (pollId: string, queryParam: string, history) => dispatch(getPollAndAuthParticipant(pollId, queryParam, history)),
-        setAuthTokenAndUser: (user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt))
+        setAuthTokenAndUser: (user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt)),
+        setPseudonym: (pseudonym: string) => dispatch(setPseudonym(pseudonym))
     }
 }
 

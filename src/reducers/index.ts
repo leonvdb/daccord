@@ -4,6 +4,7 @@ import userReducer, { UserReducer } from './userReducer';
 import languageReducer, { LanguageReducer } from './languageReducer';
 import errorReducer from './errorReducer';
 import voteReducer, { VoteReducer } from './voteReducer';
+import participantReducer, {ParticipantReducer} from './participantReducer';
 
 export interface Store {
     poll: PollReducer
@@ -11,6 +12,7 @@ export interface Store {
     language: LanguageReducer
     errors: string[]
     votes: VoteReducer
+    participant: ParticipantReducer
 }
 
 export default combineReducers({
@@ -18,6 +20,7 @@ export default combineReducers({
     user: userReducer,
     language: languageReducer,
     errors: errorReducer,
-    votes: voteReducer
+    votes: voteReducer,
+    participant: participantReducer
 
 })

@@ -1,5 +1,6 @@
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const SET_PSEUDONYM = 'SET_PSEUDONYM';
 export const SET_ERROR = 'SET_ERROR';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 export const VOTE_FOR_POLL_REQUEST = 'VOTE_FOR_POLL';
