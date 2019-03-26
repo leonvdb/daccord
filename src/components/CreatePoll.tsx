@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { setAuthTokenAndUser } from '../actions/authActions';
+import { setPseudonym } from '../actions/userActions';
 import TextInputGroup from './layout/TextInputGroup';
 import { IPoll, IUser } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
@@ -77,8 +78,9 @@ class CreatePoll extends React.Component<Props, State> {
                 <Mutation mutation={CREATE_POLL}
                 update={// tslint:disable-next-line jsx-no-lambda
                     (cache, { data: { createPoll}}) => {
-                        const {token, user, poll} = createPoll
+                        const {token, user, poll, pseudonym} = createPoll
                         this.props.setAuthTokenAndUser(user, token)
+                        this.props.setPseudonym(pseudonym)
                         this.props.history.push(`/poll/${poll.refId}`)
                     }
                 }
@@ -129,6 +131,7 @@ interface PropsFromState {
 }
 interface PropsFromDispatch {
     setAuthTokenAndUser: ( user: IUser, jwt: string) => void
+    setPseudonym: (pseudonym: string) => void
 }
 
 const mapStateToProps = (state: Store) => ({
@@ -136,4 +139,4 @@ const mapStateToProps = (state: Store) => ({
 });
 
 const ComponentWithNamespaces = withNamespaces()(CreatePoll)
-export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { setAuthTokenAndUser })(ComponentWithNamespaces);
+export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { setAuthTokenAndUser, setPseudonym })(ComponentWithNamespaces);

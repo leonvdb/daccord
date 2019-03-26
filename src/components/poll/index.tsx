@@ -45,7 +45,6 @@ class Poll extends React.Component<Props> {
         if(!this.props.data.loading && !this.props.user.id){
             const {token, user, pseudonym} = this.props.data.authUser
             this.props.setAuthTokenAndUser(user, token)
-            console.log({pseudonym})
             this.props.setPseudonym(pseudonym)
         }
         if(this.props.location.search && this.props.user.id){

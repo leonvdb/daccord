@@ -12,6 +12,7 @@ mutation CreatePoll($title: String!, $userEmail: String!, $userName: String!){
             refId
         }
         token
+        pseudonym
     }
 }
 `

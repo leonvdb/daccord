@@ -3,6 +3,7 @@ type CreatePollResponse{
     poll: Poll!
     token: String!
     user: User!
+    pseudonym: String!
 }
 
 type PollQueryResponse{

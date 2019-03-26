@@ -22,7 +22,7 @@ export const createPoll = async (_: any, args: ICreatePollInput) => {
 
     sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
     const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
-    return { poll, token, user }
+    return { poll, token, user, pseudonym: args.userName }
 }
 
 export const updatePoll = async (_: any, args: IUpdatePollInput, context: IContext) => {
