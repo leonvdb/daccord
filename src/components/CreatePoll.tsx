@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import { setAuthTokenAndUser } from '../actions/authActions';
 import { setPseudonym } from '../actions/userActions';
 import TextInputGroup from './layout/TextInputGroup';
-import { IPoll, IUser } from '../interfaces';
+import { IUser } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
-import { Store } from '../reducers';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
 import validateEmail from 'src/utilities/validateEmail';
 import { Mutation } from 'react-apollo';
 import { CREATE_POLL } from '../graphql/cudPoll';
 
-interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch, WithNamespaces { }
+interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces { }
 
 interface State {
     title: string,
@@ -126,17 +125,12 @@ class CreatePoll extends React.Component<Props, State> {
     };
 };
 
-interface PropsFromState {
-    poll: IPoll
-}
+
 interface PropsFromDispatch {
     setAuthTokenAndUser: ( user: IUser, jwt: string) => void
     setPseudonym: (pseudonym: string) => void
 }
 
-const mapStateToProps = (state: Store) => ({
-    poll: state.poll.poll
-});
 
 const ComponentWithNamespaces = withNamespaces()(CreatePoll)
-export default connect<PropsFromState, PropsFromDispatch, void>(mapStateToProps, { setAuthTokenAndUser, setPseudonym })(ComponentWithNamespaces);
+export default connect<void, PropsFromDispatch, void>(null, { setAuthTokenAndUser, setPseudonym })(ComponentWithNamespaces);

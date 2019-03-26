@@ -6,7 +6,7 @@ import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import { setPseudonym } from '../../actions/userActions';
 import Overview from './overview';
-import { IPoll, IUser, IPollQuery} from '../../interfaces';
+import { IUser, IPollQuery} from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
 import { Action } from 'redux';
@@ -104,12 +104,10 @@ class Poll extends React.Component<Props> {
 
 }
 interface PropsFromState {
-    poll: IPoll
     user: IUser
     pseudonym: string
 }
 const mapStateToProps = (state: Store): PropsFromState => ({
-    poll: state.poll.poll,
     user: state.user.user,
     pseudonym: state.participant.pseudonym
 });
