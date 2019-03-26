@@ -11,6 +11,7 @@ import { Mutation, compose, withApollo } from 'react-apollo';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import { SEND_AUTH_LINK } from '../../graphql/sendAuthLink';
 import DefaultClient from 'apollo-boost';
+import { setPseudonym } from '../../actions/userActions';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
@@ -106,6 +107,7 @@ class AuthModal extends React.Component<Props> {
                         (cache, { data: { createParticipant}}) => {
                             if (createParticipant.token) {
                                 this.props.setAuthTokenAndUser(createParticipant.user, createParticipant.token)
+                                this.props.setPseudonym(createParticipant.pseudonym)
                             } else {
                                 this.setState({showParticipantError: true})
                             }
@@ -190,11 +192,13 @@ const mapStateToProps = (state: Store) => ({
 
 interface PropsFromDispatch {
     setAuthTokenAndUser: (user: IUser, jwt: string) => void
+    setPseudonym: (pseudonym: string) => void
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
-        setAuthTokenAndUser: ( user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt))
+        setAuthTokenAndUser: ( user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt)),
+        setPseudonym: (pseudonym: string) => dispatch(setPseudonym(pseudonym))
     }
 
 }

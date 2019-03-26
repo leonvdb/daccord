@@ -8,6 +8,7 @@ mutation CreateParticipant($pollId: ID!, $email: String!, $pseudonym: String!){
             email
         }
         token
+        pseudonym
     }
 }
 `

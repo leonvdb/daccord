@@ -19,7 +19,7 @@ export const createParticipant = async (_: any, args: ICreateParticipantInput, c
         token = createJsonWebToken(user.id, 'PARTICIPANT', false, poll.refId)
 
     }
-    return {user, token}
+    return {user, token, pseudonym: args.pseudonym}
 }
 
 interface ICreateParticipantInput {

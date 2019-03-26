@@ -64,6 +64,7 @@ type Participant{
 type CreateParticipantResponse{
       user: User!
       token: String
+      pseudonym: String!
 }
 
 `
