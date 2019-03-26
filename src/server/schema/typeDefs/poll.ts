@@ -3,6 +3,7 @@ type CreatePollResponse{
     poll: Poll!
     token: String!
     user: User!
+    pseudonym: String!
 }
 
 type PollQueryResponse{
@@ -17,6 +18,7 @@ type Poll{
       title: String!
       creator: User!
       creatorToken: String!
+      creatorPseudonym: String!
       participants: [Participant!]
       options: [Option!]
 }
@@ -32,8 +34,14 @@ type Option{
 }
 
 type Vote{
-      voter: User!
+      id: ID!
+      voter: Voter!
       rating: Int!
+}
+
+type Voter{
+      user: User!
+      pseudonym: String!
 }
 
 type Result{
@@ -49,12 +57,14 @@ input VoteInput{
 
 type Participant{
       user: User!
+      pseudonym: String!
       token: String!
 }
 
 type CreateParticipantResponse{
       user: User!
       token: String
+      pseudonym: String!
 }
 
 `

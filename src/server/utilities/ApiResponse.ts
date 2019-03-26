@@ -1,4 +1,7 @@
-import { IApiResponse } from '../routes/api/responseInterfaces';
+interface IApiResponse<TPayload>{
+    message: string,
+    payload: TPayload
+}
 
 export class ApiResponse<TPayload> implements IApiResponse<TPayload> {
     message: string = 'SUCCESS'

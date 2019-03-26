@@ -14,7 +14,7 @@ import Poll from './components/poll';
 
 import './App.css';
 import i18n from './i18n';
-import { setAuthTokenAndUser } from './actions/authActions';
+import setAuthToken from './utilities/setAuthToken';
 
 const client = new ApolloClient({
   uri: 'http://localhost:5000/graphql',
@@ -28,7 +28,7 @@ const client = new ApolloClient({
 })
 
 if (localStorage.jwtToken) {
-  store.dispatch(setAuthTokenAndUser(localStorage.jwtToken, localStorage.user))
+  setAuthToken(localStorage.jwtToken)
 }
 
 class App extends React.Component {

@@ -12,6 +12,7 @@ export const createPoll = async (_: any, args: ICreatePollInput) => {
     const newPoll = new Poll({
         title: args.title,
         creator: user.id,
+        creatorPseudonym: args.userName,
         creatorToken: generateToken(),
         refId: createRefId()
     });
@@ -21,7 +22,7 @@ export const createPoll = async (_: any, args: ICreatePollInput) => {
 
     sendConfirmMail(user.email, poll, 'createNewPoll', poll.creatorToken)
     const token = createJsonWebToken(poll.creator, 'CREATOR', false, poll.refId)
-    return { poll, token, user }
+    return { poll, token, user, pseudonym: args.userName }
 }
 
 export const updatePoll = async (_: any, args: IUpdatePollInput, context: IContext) => {
@@ -41,6 +42,7 @@ export const deletePoll = async (_: any, args: IDeletePollInput, context: IConte
 interface ICreatePollInput {
     userEmail: string,
     title: string
+    userName: string
 }
 interface IUpdatePollInput {
     pollId: string,

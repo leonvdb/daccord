@@ -4,8 +4,9 @@ import { withRouter } from 'react-router-dom';
 
 import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
+import { setPseudonym } from '../../actions/userActions';
 import Overview from './overview';
-import { IPoll, IUser, IPollQuery} from '../../interfaces';
+import { IUser, IPollQuery} from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
 import { Action } from 'redux';
@@ -34,15 +35,17 @@ interface IData {
 interface IAuthUser {
     token: string,
     user: IUser
+    pseudonym: string
 }
 
 
 class Poll extends React.Component<Props> {
 
     componentDidUpdate(){
-        if(!this.props.data.loading && !this.props.user.id && this.props.data.authUser.token){
-            const {token, user} = this.props.data.authUser
-            this.props.setAuthTokenAndUser(token, user)
+        if(!this.props.data.loading && !this.props.user.id){
+            const {token, user, pseudonym} = this.props.data.authUser
+            this.props.setAuthTokenAndUser(user, token)
+            this.props.setPseudonym(pseudonym)
         }
         if(this.props.location.search && this.props.user.id){
             this.props.history.push(`/poll/${this.props.match.params.poll_id}`)
@@ -69,12 +72,13 @@ class Poll extends React.Component<Props> {
                         {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll}/>}
                             {
                                 this.props.match.params.pollNavRoute === "results" ? (
-                                    <Results poll={poll}/>
+                                    <Results poll={poll} user={user}/>
                                 ) : this.props.match.params.pollNavRoute === "settings" ? (
                                     <Settings poll={poll} user={user}/>
                                 ) : (
                                     <React.Fragment>
                                         <h1 className="display-4 text-center mt-5">{poll.title}</h1>
+                                        <p>participating as: <i>{this.props.pseudonym}</i></p>
                                         <Overview options={poll.options} poll={poll}/>
                                     </React.Fragment>
                                 )
@@ -100,21 +104,23 @@ class Poll extends React.Component<Props> {
 
 }
 interface PropsFromState {
-    poll: IPoll
     user: IUser
+    pseudonym: string
 }
 const mapStateToProps = (state: Store): PropsFromState => ({
-    poll: state.poll.poll,
-    user: state.user.user
+    user: state.user.user,
+    pseudonym: state.participant.pseudonym
 });
 interface PropsFromDispatch {
     getPollAndAuthParticipant: (pollId: string, queryParam: string, history: History) => void
-    setAuthTokenAndUser: (jwt: string, user: IUser) => void
+    setAuthTokenAndUser: (user: IUser,jwt: string) => void
+    setPseudonym: (pseudonym: string) => void
 }
 const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDispatchToProps<PropsFromDispatch, void> => {
     return {
         getPollAndAuthParticipant: (pollId: string, queryParam: string, history) => dispatch(getPollAndAuthParticipant(pollId, queryParam, history)),
-        setAuthTokenAndUser: (jwt: string, user: IUser) => dispatch(setAuthTokenAndUser(jwt, user))
+        setAuthTokenAndUser: (user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt)),
+        setPseudonym: (pseudonym: string) => dispatch(setPseudonym(pseudonym))
     }
 }
 

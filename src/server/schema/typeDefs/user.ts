@@ -10,5 +10,6 @@ type User{
 type AuthUser {
       token: String!
       user: User!
+      pseudonym: String!
 }
 `

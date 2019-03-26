@@ -6,7 +6,7 @@ import { updateVotes } from './vote'
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
 import { helmet } from '../helmet';
-import { findPoll } from '../../../utilities/dataBaseUtilities';
+import { findPoll, getPseudonymOfUser } from '../../../utilities/dataBaseUtilities';
 import { IVote } from '../../../../interfaces';
 
 
@@ -17,6 +17,14 @@ export const resolvers: IResolvers = {
         },
         polls: () => {
             return Poll.find({});
+        },
+        option: async (_, args) => {
+            const poll = await findPoll(args.pollId)
+            for (const option of poll.options){
+                if (option.refId === args.optionId){
+                    return option
+                }
+            }
         }
     },
     Mutation: {
@@ -70,8 +78,12 @@ export const resolvers: IResolvers = {
     },
     Vote: {
         voter: (parent) => {
-            return User.findById(parent.voter)
+            const user = User.findById(parent.voter)
+            const pseudonym = getPseudonymOfUser(parent.voter.toString(),parent.parent().parent())
+            return {
+                user,
+                pseudonym
+            }
         }
     }
 };
-

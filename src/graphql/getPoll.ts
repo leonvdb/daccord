@@ -8,6 +8,11 @@ query($id: ID!){
         creator{
             id
         }
+        participants{
+            user{
+                id
+            }
+        }
         options{
             title
             description
@@ -34,6 +39,11 @@ query($id: ID!, $authToken: String!){
         creator{
             id
         }
+        participants{
+            user{
+                id
+            }
+        }
         options{
             title
             description
@@ -54,6 +64,7 @@ query($id: ID!, $authToken: String!){
             id
             email
         }
+        pseudonym
     }
 }
 `
