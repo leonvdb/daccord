@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 
 export const CREATE_POLL = gql`
 
-mutation CreatePoll($title: String!, $userEmail: String!, $userName: String!){
-    createPoll(title: $title, userEmail: $userEmail, userName: $userName){
+mutation CreatePoll($title: String!, $userEmail: String!, $userName: String!, $description: String){
+    createPoll(title: $title, userEmail: $userEmail, userName: $userName, description: $description){
         user{
             id
             email

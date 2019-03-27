@@ -13,6 +13,7 @@ export interface IPoll {
 
 export interface IPollQuery {
     title: string
+    description?: string
     refId: string
     creator: IUser
     options: IOptionQuery[]
