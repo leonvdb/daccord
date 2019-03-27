@@ -5,6 +5,7 @@ query($id: ID!){
     poll(id: $id){
         title
         refId
+        description
         creator{
             id
         }
@@ -36,6 +37,7 @@ query($id: ID!, $authToken: String!){
     poll(id: $id){
         title
         refId
+        description
         creator{
             id
         }

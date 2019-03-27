@@ -13,16 +13,18 @@ import { CREATE_POLL } from '../graphql/cudPoll';
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces { }
 
 interface State {
-    title: string,
-    email: string,
+    title: string
+    email: string
     name: string
+    description: string
     errors: Errors
 }
 
 interface Errors {
-    email?: string,
-    title?: string,
+    email?: string
+    title?: string
     name?: string
+    description?: string
 }
 
 class CreatePoll extends React.Component<Props, State> {
@@ -30,6 +32,7 @@ class CreatePoll extends React.Component<Props, State> {
         title: '',
         email: '',
         name: '',
+        description: '',
         errors: {}
     };
 
@@ -46,7 +49,7 @@ class CreatePoll extends React.Component<Props, State> {
     onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
 
-        const { title, email, name } = this.state
+        const { title, email, name, description } = this.state
 
         // Form validation
         const errors: Errors = {}
@@ -64,12 +67,12 @@ class CreatePoll extends React.Component<Props, State> {
             })
             return;
         }
-        mutation({variables: {title, userEmail: email, userName: name}})
+        mutation({variables: {title, userEmail: email, userName: name, description}})
 
     }
 
     render() {
-        const { title, email, errors, name } = this.state;
+        const { title, email, errors, name, description } = this.state;
         const { t } = this.props
         return (
             <div className="container">
@@ -96,6 +99,15 @@ class CreatePoll extends React.Component<Props, State> {
                         onChange={this.onChange}
                         error={errors.title}
                         
+                        />
+                    <TextInputGroup
+                        classNames="w-50"
+                        label="Description"
+                        name="description"
+                        placeholder="Enter Description"
+                        value={description}
+                        onChange={this.onChange}
+                        error={errors.description}
                         />
                     <TextInputGroup
                         classNames="w-50"
