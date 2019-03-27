@@ -12,6 +12,7 @@ export const createPoll = async (_: any, args: ICreatePollInput) => {
     const newPoll = new Poll({
         title: args.title,
         creator: user.id,
+        description: args.description ? args.description: '',
         creatorPseudonym: args.userName,
         creatorToken: generateToken(),
         refId: createRefId()
@@ -42,6 +43,7 @@ export const deletePoll = async (_: any, args: IDeletePollInput, context: IConte
 interface ICreatePollInput {
     userEmail: string,
     title: string
+    description?: string,
     userName: string
 }
 interface IUpdatePollInput {

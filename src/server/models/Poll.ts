@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 
 export interface IPollDocument extends mongoose.Document {
     title: string,
+    description: string,
     refId: string,
     creatorToken: string,
     creator: ObjectId,
@@ -28,6 +29,9 @@ const PollSchema = new Schema({
     title: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
     },
     refId: {
         type: String,

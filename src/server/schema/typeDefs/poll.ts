@@ -16,6 +16,7 @@ type Poll{
       id: ID!
       refId: ID!
       title: String!
+      description: String!
       creator: User!
       creatorToken: String!
       creatorPseudonym: String!
