@@ -77,7 +77,6 @@ class Overview extends React.Component<Props> {
                                     })
                                 }},
                                   });
-                                console.log(updateVotes)
                         }}>
                             {(UPDATE_VOTES) => (
                             <button 
