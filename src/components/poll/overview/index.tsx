@@ -12,6 +12,7 @@ import { clearError } from '../../../actions/errorActions';
 import { Mutation } from 'react-apollo';
 import { UPDATE_VOTES } from '../../../graphql/vote';
 import { clearRatingChanges } from '../../../actions/voteActions';
+import { getPoll } from '../../../graphql/getPoll';
 
 interface Props extends PropsFromState, PropsFromDispatch {
     options: IOptionQuery[]
@@ -62,6 +63,21 @@ class Overview extends React.Component<Props> {
                         update={// tslint:disable-next-line jsx-no-lambda
                             (cache, { data: { updateVotes}}) => {
                                 if(updateVotes) this.props.clearRatingChanges()
+                                const poll: any = cache.readQuery({ query: getPoll, variables: {id: this.props.poll.refId}});
+                                cache.writeQuery({
+                                    query: getPoll,
+                                    variables: {id: this.props.poll.refId},
+                                    data: {poll: {...poll.poll, options: poll.poll.options.map((option: IOptionQuery)=> {
+                                        updateVotes.forEach((updatedOption: IOptionQuery) => {
+                                            if (updatedOption.refId === option.refId){
+                                                return option = updatedOption
+                                            }
+                                        })
+                                        return option
+                                    })
+                                }},
+                                  });
+                                console.log(updateVotes)
                         }}>
                             {(UPDATE_VOTES) => (
                             <button 

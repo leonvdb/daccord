@@ -22,7 +22,7 @@ type Mutation{
     deleteOption(pollId: ID!, optionId: ID!): Boolean!
     createParticipant(pollId: ID!, email: String!, pseudonym: String!): CreateParticipantResponse!
     sendAuthLink(pollId: ID!, email: String!): Boolean!
-    updateVotes(pollId: ID!, votes: [VoteInput!]): Boolean!
+    updateVotes(pollId: ID!, votes: [VoteInput!]): [Option!]
 }
 `
 const typeDefs = gql(Query + Mutation + Poll + User)
