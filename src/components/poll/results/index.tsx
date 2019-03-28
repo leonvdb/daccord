@@ -9,8 +9,8 @@ interface Props {
 
 class Results extends React.Component<Props>{
     render(){
-        const {options} = this.props.poll
-        const sortedOptions = options.sort((a, b) => {
+        const unsortedOptions = [...this.props.poll.options]
+        const sortedOptions = unsortedOptions.sort((a, b) => {
             if(a.result.agreementInPercent > b.result.agreementInPercent){
                 return -1
             } else if(a.result.agreementInPercent < b.result.agreementInPercent){
@@ -19,7 +19,6 @@ class Results extends React.Component<Props>{
                 return 0
             }
         })
-
         return (
             <div className="container-fluid px-5">
                 <h1 className="my-5">Results</h1>

@@ -8,6 +8,7 @@ interface IUpdateVotesInput {
 
 export const updateVotes = async (_: any, args: IUpdateVotesInput, context: IContext) => {
     const poll = await findPoll(args.pollId);
+    const modifiedOptions: any = []
     poll.options.forEach((option, optionIndex) => {
         args.votes.forEach(inputVote => {
             if (option.refId === inputVote.optionId){
@@ -33,9 +34,10 @@ export const updateVotes = async (_: any, args: IUpdateVotesInput, context: ICon
                         poll.options[optionIndex].votes.push({voter: context.user.id, rating: inputVote.rating})
                     }
                 }
+                modifiedOptions.push(option)
             }
         })
     })
     await poll.save()
-    return true
+    return modifiedOptions
 }
