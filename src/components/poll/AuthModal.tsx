@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Store } from '../../reducers';
 import { IUser, IPollQuery } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
-import validateEmail from 'src/utilities/validateEmail';
+import validateEmail from '../../utilities/validateEmail';
 import { Dispatch } from 'redux';
 import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
 import { Mutation, compose, withApollo } from 'react-apollo';

@@ -6,7 +6,7 @@ import TextInputGroup from './layout/TextInputGroup';
 import { IUser } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
-import validateEmail from 'src/utilities/validateEmail';
+import validateEmail from '../utilities/validateEmail';
 import { Mutation } from 'react-apollo';
 import { CREATE_POLL } from '../graphql/cudPoll';
 
