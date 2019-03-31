@@ -25,7 +25,7 @@ class OptionReadModal extends React.Component<Props> {
 
         return (
             <div>
-                <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={toggle}>
+                <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={toggle} data-testid="option-read-modal">
                     <ModalHeader toggle={toggle}>{name}</ModalHeader>
                     <ModalBody>
                         <p style={{ wordWrap: 'break-word' }}>{description}</p>
