@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import * as bs58 from 'bs58';
+import * as cryptoGenerators from './cryptoGenerators';
 
 export function createRefId() {
 
@@ -11,6 +12,7 @@ export function createRefId() {
 }
 
 export function generateToken(): string {
+    const createRefId = cryptoGenerators.createRefId
     const token = createRefId() + createRefId() + createRefId()
     return token
 }

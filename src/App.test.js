@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import validateEmail from './utilities/validateEmail'
 import { createJsonWebToken } from './server/utilities/createJsonWebToken'
-import { createRefId, generateToken } from './server/utilities/cryptoGenerators'
+import * as cryptoGenerators from './server/utilities/cryptoGenerators'
 
 test('renders without crashing', () => {
   const div = document.createElement('div');
@@ -28,19 +28,17 @@ test('createJsonWebToken', () => {
   expect(jwt).toContain('Bearer')
 })
 
-
-//this doesnt make much sense from here on... just for reference
-
 test('createRefId', () => {
-  const refId = createRefId();
+  const refId = cryptoGenerators.createRefId();
   expect(refId).toBeTruthy()
 })
 
-jest.mock('./server/utilities/cryptoGenerators', () => ({
-  createRefId: () => 'xD',
-  generateToken: () => 'hmmm'
-}))
-
 test('generateToken', () => {
-  expect(generateToken()).toBeTruthy()
+  //TODO: consider replacing this with rewiremock or babel-plugin-rewire
+  const createRefId = jest.spyOn(cryptoGenerators, 'createRefId');
+  createRefId.mockReturnValue('mockRef')
+  const token = cryptoGenerators.generateToken()
+  expect(createRefId).toHaveBeenCalledTimes(3)
+  expect(token).toBe('mockRefmockRefmockRef')
+  createRefId.mockRestore();
 })
