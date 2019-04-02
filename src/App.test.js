@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import validateEmail from './utilities/validateEmail'

@@ -69,7 +69,7 @@ class AuthModal extends React.Component<Props> {
             return;
         }
 
-        mutation({variables: {pollId: poll.refId, email, pseudonym: name}})
+        mutation({ variables: { pollId: poll.refId, email, pseudonym: name } })
 
     }
 
@@ -85,7 +85,7 @@ class AuthModal extends React.Component<Props> {
     }
 
     resendLink = () => {
-        this.props.client.mutate({mutation: SEND_AUTH_LINK, variables: {pollId: this.props.poll.refId, email: this.state.email}})
+        this.props.client.mutate({ mutation: SEND_AUTH_LINK, variables: { pollId: this.props.poll.refId, email: this.state.email } })
         this.setState({ showLinkSent: true })
     }
 
@@ -96,47 +96,47 @@ class AuthModal extends React.Component<Props> {
 
         let modal;
         if (!showParticipantError) {
-            modal = <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
+            modal = <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle} data-testid="auth-modal">
                 <ModalHeader toggle={this.toggle}>
                     Become a participant of "{poll.title}"
                     </ModalHeader>
                 <ModalBody>
-                    <Mutation 
-                    mutation={CREATE_PARTICIPANT}
-                    update={// tslint:disable-next-line jsx-no-lambda
-                        (cache, { data: { createParticipant}}) => {
-                            if (createParticipant.token) {
-                                this.props.setAuthTokenAndUser(createParticipant.user, createParticipant.token)
-                                this.props.setPseudonym(createParticipant.pseudonym)
-                            } else {
-                                this.setState({showParticipantError: true})
-                            }
-                        }}
+                    <Mutation
+                        mutation={CREATE_PARTICIPANT}
+                        update={// tslint:disable-next-line jsx-no-lambda
+                            (cache, { data: { createParticipant } }) => {
+                                if (createParticipant.token) {
+                                    this.props.setAuthTokenAndUser(createParticipant.user, createParticipant.token)
+                                    this.props.setPseudonym(createParticipant.pseudonym)
+                                } else {
+                                    this.setState({ showParticipantError: true })
+                                }
+                            }}
                     >
                         {(CREATE_PARTICIPANT) => (
-                    <form onSubmit={// tslint:disable-next-line jsx-no-lambda
-                        (e) => {this.onSubmit(e, CREATE_PARTICIPANT)}}>
-                        <TextInputGroup
-                            label="Name"
-                            name="name"
-                            placeholder="Enter Name"
-                            value={name}
-                            onChange={this.onChange}
-                            error={errors.name}
-                            classNames="w-75"
-                        />
-                        <TextInputGroup
-                            label="Email"
-                            name="email"
-                            placeholder="Enter Email"
-                            value={email}
-                            onChange={this.onChange}
-                            error={errors.email}
-                            classNames="w-75 mb-5"
-                        />
-                        <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
-                    </form>
-                        )} 
+                            <form onSubmit={// tslint:disable-next-line jsx-no-lambda
+                                (e) => { this.onSubmit(e, CREATE_PARTICIPANT) }}>
+                                <TextInputGroup
+                                    label="Name"
+                                    name="name"
+                                    placeholder="Enter Name"
+                                    value={name}
+                                    onChange={this.onChange}
+                                    error={errors.name}
+                                    classNames="w-75"
+                                />
+                                <TextInputGroup
+                                    label="Email"
+                                    name="email"
+                                    placeholder="Enter Email"
+                                    value={email}
+                                    onChange={this.onChange}
+                                    error={errors.email}
+                                    classNames="w-75 mb-5"
+                                />
+                                <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
+                            </form>
+                        )}
                     </Mutation>
                     <p className="text-center my-2">or</p>
                     <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
@@ -175,6 +175,7 @@ class AuthModal extends React.Component<Props> {
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center align-items-center">
                 {renderButton && <button
+                    data-testid='participate-button'
                     id="Modal"
                     onClick={this.toggle}
                     className="btn btn-outline-success">
@@ -197,7 +198,7 @@ interface PropsFromDispatch {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): PropsFromDispatch => {
     return {
-        setAuthTokenAndUser: ( user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt)),
+        setAuthTokenAndUser: (user: IUser, jwt: string) => dispatch(setAuthTokenAndUser(user, jwt)),
         setPseudonym: (pseudonym: string) => dispatch(setPseudonym(pseudonym))
     }
 

@@ -16,7 +16,7 @@ import './App.css';
 import i18n from './i18n';
 import setAuthToken from './utilities/setAuthToken';
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: 'http://localhost:5000/graphql',
   request: async operation => {
     operation.setContext({
@@ -43,7 +43,7 @@ class App extends React.Component {
                 <Switch>
                   <Route exact={true} path="/" component={Landing} />
                   <Route exact={true} path="/poll/:poll_id" component={Poll} />
-                  <Route name="pollNavRoute" path="/poll/:poll_id/:pollNavRoute" component={Poll}/>
+                  <Route name="pollNavRoute" path="/poll/:poll_id/:pollNavRoute" component={Poll} />
                   <Route exact={true} path="/create" component={CreatePoll} />
                   <Route component={NotFound} />
                 </Switch>
