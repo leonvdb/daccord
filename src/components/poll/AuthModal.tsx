@@ -12,6 +12,7 @@ import { setAuthTokenAndUser } from '../../actions/authActions';
 import { SEND_AUTH_LINK } from '../../graphql/sendAuthLink';
 import DefaultClient from 'apollo-boost';
 import { setPseudonym } from '../../actions/userActions';
+import { onChange } from '../../utilities/onChange';
 
 
 interface Props extends PropsFromState, PropsFromDispatch {
@@ -42,16 +43,6 @@ class AuthModal extends React.Component<Props> {
         email: '',
         errors: {}
     }
-
-    onChange = (e: React.ChangeEvent<any>) => {
-        const propertyName = e.target.name
-        const value = e.target.value
-        this.setState(prevState => {
-            const newState = { ...prevState };
-            newState[propertyName] = value
-            return newState
-        })
-    };
 
     onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
@@ -121,7 +112,7 @@ class AuthModal extends React.Component<Props> {
                                     name="name"
                                     placeholder="Enter Name"
                                     value={name}
-                                    onChange={this.onChange}
+                                    onChange={onChange.bind(this)}
                                     error={errors.name}
                                     classNames="w-75"
                                 />
@@ -130,7 +121,7 @@ class AuthModal extends React.Component<Props> {
                                     name="email"
                                     placeholder="Enter Email"
                                     value={email}
-                                    onChange={this.onChange}
+                                    onChange={onChange.bind(this)}
                                     error={errors.email}
                                     classNames="w-75 mb-5"
                                 />

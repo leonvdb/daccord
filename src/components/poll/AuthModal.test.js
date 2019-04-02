@@ -52,5 +52,12 @@ test('<AuthModal /> Modal Closed, button Rendered', () => {
     const participateButton = getByTestId('participate-button');
     fireEvent.click(participateButton);
     expect(getByTestId('auth-modal'));
-    debug();
+    expect(getByTestId('auth-modal')).toMatchSnapshot();
+    const inputElement = getByTestId('input')
+    fireEvent.change(inputElement, {
+        target: {
+            value: 'test'
+        }
+    })
+    expect(inputElement.value).toBe('test')
 })
