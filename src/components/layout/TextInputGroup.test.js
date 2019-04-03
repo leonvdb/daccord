@@ -1,18 +1,30 @@
 import React from 'react';
-import { render, fireEvent } from 'react-testing-library';
+import { render, fireEvent, cleanup } from 'react-testing-library';
 import { onChange } from '../../utilities/onChange'
 import TextInputGroupParent from './TextInputGroupParent'
 
+
+afterEach(cleanup);
+
+const testError = "Test Error"
+
 test('<TextInputGroupParent>', () => {
-    const { debug, getByTestId } = render(
+    const { debug, getByTestId, queryByText } = render(
         <TextInputGroupParent />
     );
+    expect(queryByText(testError)).toBeFalsy()
     const inputElement = getByTestId('input')
     fireEvent.change(inputElement, {
         target: {
             value: 'test'
         }
     })
-    debug();
     expect(inputElement.value).toBe('test')
+})
+
+test('<TextInputGroupParent> with Error', () => {
+    const { debug, getByText } = render(
+        <TextInputGroupParent error={testError} />
+    );
+    expect(getByText(testError))
 })
