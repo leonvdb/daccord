@@ -40,7 +40,7 @@ const poll = {
 }
 
 
-test('<AuthModal /> Modal Closed, button Rendered', () => {
+test('<AuthModal /> to show Modal on Click', () => {
     const { debug, getByTestId, queryByTestId } = render(
         <Provider store={store}>
             <ApolloProvider client={client}>
@@ -53,11 +53,25 @@ test('<AuthModal /> Modal Closed, button Rendered', () => {
     fireEvent.click(participateButton);
     expect(getByTestId('auth-modal'));
     expect(getByTestId('auth-modal')).toMatchSnapshot();
-    const inputElement = getByTestId('input')
-    fireEvent.change(inputElement, {
+})
+
+test('<AuthModal /> to accept and verify input', () => {
+    const { debug, getByTestId, getByPlaceholderText } = render(
+        <Provider store={store}>
+            <ApolloProvider client={client}>
+                <AuthModal poll={poll} modalOpen={true} />
+            </ApolloProvider>
+        </Provider>
+    );
+
+    expect(getByTestId('auth-modal'));
+    const emailInput = getByPlaceholderText("Enter Email")
+    fireEvent.change(emailInput, {
         target: {
-            value: 'test'
+            value: 'invalid Email'
         }
     })
-    expect(inputElement.value).toBe('test')
+    expect(emailInput.value).toBe('invalid Email')
+    fireEvent.click(getByTestId('submit-button'))
+    expect(getByTestId('error-message'))
 })

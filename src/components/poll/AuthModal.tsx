@@ -125,7 +125,7 @@ class AuthModal extends React.Component<Props> {
                                     error={errors.email}
                                     classNames="w-75 mb-5"
                                 />
-                                <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Continue</button>
+                                <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit" data-testid="submit-button">Continue</button>
                             </form>
                         )}
                     </Mutation>

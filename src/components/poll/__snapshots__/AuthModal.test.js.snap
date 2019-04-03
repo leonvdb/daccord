@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AuthModal /> Modal Closed, button Rendered 1`] = `
+exports[`<AuthModal /> to show Modal on Click 1`] = `
 <div
   class="modal-dialog"
   data-testid="auth-modal"
@@ -63,6 +63,7 @@ exports[`<AuthModal /> Modal Closed, button Rendered 1`] = `
         </div>
         <button
           class="btn btn-secondary mx-auto btn-block w-50 mt-5"
+          data-testid="submit-button"
           type="submit"
         >
           Continue
