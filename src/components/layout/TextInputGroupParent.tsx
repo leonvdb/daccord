@@ -1,24 +1,24 @@
 //This module is only for testing
 
-
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import TextInputGroup from './TextInputGroup';
-import { onChange } from '../../utilities/onChange';
 
 interface Props {
     error?: string
 }
 
-export default class TextInputGroupParent extends Component<Props> {
-    state = {
-        test: ''
-    }
-    render() {
-        const { test } = this.state
-        return (
-            <div>
-                <TextInputGroup label="Test" name="test" value={test} onChange={onChange.bind(this)} placeholder="TestPlaceHolder" error={this.props.error ? this.props.error : undefined} />
-            </div>
-        )
-    }
+const TextInputGroupParent = (props: Props) => {
+    const [test, setTest] = useState('')
+    return (
+        <div>
+            <TextInputGroup
+                label="Test"
+                name="test"
+                value={test}
+                onChange={(e: React.ChangeEvent<any>) => setTest(e.target.value)}
+                placeholder="TestPlaceHolder" error={props.error ? props.error : undefined} />
+        </div>
+    )
 }
+
+export default TextInputGroupParent;
