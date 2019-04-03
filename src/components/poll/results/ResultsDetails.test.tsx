@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-testing-library';
+import { render, waitForElement } from 'react-testing-library';
 import ResultDetails from './ResultDetails'
 import { MockedProvider } from 'react-apollo/test-utils';
 import { GET_VOTES_FROM_OPTION } from '../../../graphql/getOption';
@@ -18,17 +18,42 @@ const mocks = [
         },
         result: {
             data: {
-                dog: { id: '1', name: 'Buck', breed: 'bulldog' },
+                option: {
+                    votes: [
+                        {
+                            id: "5c8e3c9c4160c2dd23e60e7e",
+                            voter: {
+                                user: {
+                                    id: "5c8e228eae9bd6d9cea09c4f"
+                                },
+                                pseudonym: "Eve"
+                            },
+                            rating: 4
+                        },
+                        {
+                            id: "5c8e67a8072925f2c180a658",
+                            voter: {
+                                user: {
+                                    id: "5c8e67a1072925f2c180a656"
+                                },
+                                pseudonym: "Alf"
+                            },
+                            rating: 9
+                        }
+                    ]
+                }
             },
         },
     },
 ];
 
-test('<Poll />', () => {
-    const { debug } = render(
-        <MockedProvider mocks={mocks}>
+test('<Poll />', async () => {
+    const { getByTestId } = render(
+        <MockedProvider mocks={mocks} addTypename={false}>
             <ResultDetails poll={mockPoll} option={mockOption} user={mockUser} rank={1} />
         </MockedProvider>
     );
-    debug();
+    expect(getByTestId('loading-state'));
+    await waitForElement(() => getByTestId('result-details'));
+    expect(getByTestId('my-vote'))
 })

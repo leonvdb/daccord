@@ -15,12 +15,12 @@ class ResultDetails extends React.Component<Props> {
         const { poll, option } = this.props
         return <Query query={GET_VOTES_FROM_OPTION} variables={{ pollId: poll.refId, optionId: option.refId }}>
             {({ loading, error, data }) => {
-                if (loading) return <p>Loading...</p>
+                if (loading) return <p data-testid="loading-state">Loading...</p>
                 if (error) return <p>Error :(</p>
                 const queryOption: IOptionDetails = data.option
                 return (
-                    <React.Fragment>
-                        <p>My Vote: {option.userRating}</p>
+                    <div data-testid="result-details">
+                        <p data-testid="my-vote">My Vote: {option.userRating}</p>
                         <p>Agreement: {option.result.agreementInPercent}%</p>
                         <p>Participation: {queryOption.votes.length / (poll.participants.length + 1) * 100}%</p>
                         <p>Rank: {this.props.rank}</p>
@@ -33,7 +33,7 @@ class ResultDetails extends React.Component<Props> {
                                 </div>
                             }
                         })}
-                    </React.Fragment>
+                    </div>
                 )
             }}
         </Query>
