@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent, cleanup } from 'react-testing-library';
-import { onChange } from '../../utilities/onChange'
 import TextInputGroupParent from './TextInputGroupParent'
 
 
@@ -9,11 +8,11 @@ afterEach(cleanup);
 const testError = "Test Error"
 
 test('<TextInputGroupParent>', () => {
-    const { debug, getByTestId, queryByText } = render(
+    const { getByTestId, queryByText } = render(
         <TextInputGroupParent />
     );
     expect(queryByText(testError)).toBeFalsy()
-    const inputElement = getByTestId('input')
+    const inputElement = (getByTestId('input') as HTMLInputElement)
     fireEvent.change(inputElement, {
         target: {
             value: 'test'
@@ -23,7 +22,7 @@ test('<TextInputGroupParent>', () => {
 })
 
 test('<TextInputGroupParent> with Error', () => {
-    const { debug, getByText } = render(
+    const { getByText } = render(
         <TextInputGroupParent error={testError} />
     );
     expect(getByText(testError))

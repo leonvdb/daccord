@@ -10,7 +10,7 @@ interface Props extends PropsFromDispatch {
     option: IOptionQuery
     userId: string
     pollId: string
-    userRating: number
+    userRating: number | null
 }
 
 class Option extends React.Component<Props>{

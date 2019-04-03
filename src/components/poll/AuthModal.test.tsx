@@ -41,7 +41,7 @@ const poll = {
 
 
 test('<AuthModal /> to show Modal on Click', () => {
-    const { debug, getByTestId, queryByTestId } = render(
+    const { getByTestId, queryByTestId } = render(
         <Provider store={store}>
             <ApolloProvider client={client}>
                 <AuthModal poll={poll} renderButton={true} />
@@ -56,7 +56,7 @@ test('<AuthModal /> to show Modal on Click', () => {
 })
 
 test('<AuthModal /> to accept and verify input', () => {
-    const { debug, getByTestId, getByPlaceholderText } = render(
+    const { getByTestId, getByPlaceholderText } = render(
         <Provider store={store}>
             <ApolloProvider client={client}>
                 <AuthModal poll={poll} modalOpen={true} />
@@ -65,7 +65,7 @@ test('<AuthModal /> to accept and verify input', () => {
     );
 
     expect(getByTestId('auth-modal'));
-    const emailInput = getByPlaceholderText("Enter Email")
+    const emailInput = (getByPlaceholderText("Enter Email") as HTMLInputElement)
     fireEvent.change(emailInput, {
         target: {
             value: 'invalid Email'
