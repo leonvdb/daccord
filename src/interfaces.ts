@@ -82,7 +82,7 @@ export interface IVoteNew {
 // User Interfaces
 export interface IUserInformation {
     email: string
-    name?: string
+    name: string
 }
 
 export interface IUser extends IUserInformation {

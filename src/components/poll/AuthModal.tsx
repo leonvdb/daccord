@@ -104,30 +104,34 @@ class AuthModal extends React.Component<Props> {
                                 }
                             }}
                     >
-                        {(CREATE_PARTICIPANT) => (
-                            <form onSubmit={// tslint:disable-next-line jsx-no-lambda
-                                (e) => { this.onSubmit(e, CREATE_PARTICIPANT) }}>
-                                <TextInputGroup
-                                    label="Name"
-                                    name="name"
-                                    placeholder="Enter Name"
-                                    value={name}
-                                    onChange={onChange.bind(this)}
-                                    error={errors.name}
-                                    classNames="w-75"
-                                />
-                                <TextInputGroup
-                                    label="Email"
-                                    name="email"
-                                    placeholder="Enter Email"
-                                    value={email}
-                                    onChange={onChange.bind(this)}
-                                    error={errors.email}
-                                    classNames="w-75 mb-5"
-                                />
-                                <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit" data-testid="submit-button">Continue</button>
-                            </form>
-                        )}
+                        {(CREATE_PARTICIPANT, { loading, error }) => {
+                            if (loading) return <p data-testid="loading-state">Loading...</p>
+                            if (error) return <p data-testid="error-state">Error :(</p>
+                            return (
+                                <form onSubmit={// tslint:disable-next-line jsx-no-lambda
+                                    (e) => { this.onSubmit(e, CREATE_PARTICIPANT) }}>
+                                    <TextInputGroup
+                                        label="Name"
+                                        name="name"
+                                        placeholder="Enter Name"
+                                        value={name}
+                                        onChange={onChange.bind(this)}
+                                        error={errors.name}
+                                        classNames="w-75"
+                                    />
+                                    <TextInputGroup
+                                        label="Email"
+                                        name="email"
+                                        placeholder="Enter Email"
+                                        value={email}
+                                        onChange={onChange.bind(this)}
+                                        error={errors.email}
+                                        classNames="w-75 mb-5"
+                                    />
+                                    <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit" data-testid="submit-button">Continue</button>
+                                </form>
+                            )
+                        }}
                     </Mutation>
                     <p className="text-center my-2">or</p>
                     <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
@@ -138,11 +142,11 @@ class AuthModal extends React.Component<Props> {
                 modal =
                     <Modal placement="right" isOpen={isOpen} target="Modal" toggle={this.toggle}>
                         <ModalHeader toggle={this.toggle}>
-                            <i className="fas fa-arrow-left mr-5" onClick={this.backFromError} style={{ cursor: 'pointer' }} />
+                            <i className="fas fa-arrow-left mr-5" onClick={this.backFromError} style={{ cursor: 'pointer' }} data-testid="back-button" />
                             Become a participant of "{poll.title}"
                     </ModalHeader>
                         <ModalBody>
-                            <div className="alert alert-danger">
+                            <div data-testid="participant-error" className="alert alert-danger">
                                 Seems like you are already participating
                 </div>
                             <button onClick={this.resendLink} className="btn btn-link btn-block mx-auto">Request new access link</button>
