@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { ObjectId } from 'mongodb';
 import { IOption } from '../../interfaces';
 
 const Schema = mongoose.Schema;
@@ -11,14 +10,14 @@ export interface IPollDocument extends mongoose.Document {
     description: string,
     refId: string,
     creatorToken: string,
-    creator: ObjectId,
+    creator: string,
     creatorPseudonym: string,
     participants: IParticipant[],
     options: IOption[],
 }
 
 interface IParticipant {
-    id: ObjectId,
+    id: string,
     pseudonym: string,
     token: string
 }

@@ -1,9 +1,8 @@
 import { secretOrKey } from '../config/secrets';
 import { IJwtPayloadData } from 'src/interfaces';
 import * as jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongodb';
 
-export function createJsonWebToken(userId: ObjectId, userType: string, isForLoggedInAccount: boolean, forPollId?: string): string {
+export function createJsonWebToken(userId: string, userType: string, isForLoggedInAccount: boolean, forPollId?: string): string {
     const jwtPayload: IJwtPayloadData = {
         userId: userId.toString(),
         isForLoggedInAccount,

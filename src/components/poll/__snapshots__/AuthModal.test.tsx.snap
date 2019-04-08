@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AuthModal /> to show Modal on Click 1`] = `
+<div
+  class="modal-dialog"
+  data-testid="auth-modal"
+  placement="right"
+  role="document"
+  target="Modal"
+>
+  <div
+    class="modal-content"
+  >
+    <div
+      class="modal-header"
+    >
+      <h5
+        class="modal-title"
+      >
+        Become a participant of "
+        Test Poll
+        "
+      </h5>
+      <button
+        aria-label="Close"
+        class="close"
+        type="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ×
+        </span>
+      </button>
+    </div>
+    <div
+      class="modal-body"
+    >
+      <form>
+        <div
+          class="form-group mx-auto w-75"
+        >
+          <input
+            class="form-control"
+            data-testid="input"
+            name="name"
+            placeholder="Enter Name"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="form-group mx-auto w-75 mb-5"
+        >
+          <input
+            class="form-control"
+            data-testid="input"
+            name="email"
+            placeholder="Enter Email"
+            type="text"
+            value=""
+          />
+        </div>
+        <button
+          class="btn btn-secondary mx-auto btn-block w-50 mt-5"
+          data-testid="submit-button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+      <p
+        class="text-center my-2"
+      >
+        or
+      </p>
+      <button
+        class="btn btn-outline-info btn-block w-50 mx-auto"
+      >
+        Sign in
+      </button>
+    </div>
+  </div>
+</div>
+`;

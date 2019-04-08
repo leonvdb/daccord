@@ -8,18 +8,17 @@ export const createParticipant = async (_: any, args: ICreateParticipantInput, c
     const poll = await findPoll(args.pollId);
     const user = await findOrCreateUser(args.email)
     let token = ''
-    const participantType = isParticipating(poll, user.id)
-    if (!participantType){
+    if (!isParticipating(poll, user.id)) {
         const AuthToken = generateToken()
         sendConfirmMail(user.email, poll, 'becomeNewParticipant', AuthToken)
-        poll.participants.push({id: user.id, token: AuthToken, pseudonym: args.pseudonym })
+        poll.participants.push({ id: user.id, token: AuthToken, pseudonym: args.pseudonym })
         user.polls.push(poll.id)
         await poll.save()
         await user.save()
         token = createJsonWebToken(user.id, 'PARTICIPANT', false, poll.refId)
 
     }
-    return {user, token, pseudonym: args.pseudonym}
+    return { user, token, pseudonym: args.pseudonym }
 }
 
 interface ICreateParticipantInput {

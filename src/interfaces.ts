@@ -29,7 +29,7 @@ export interface INewPoll {
 export interface IOptionQuery extends INewOption {
     creator: IUser
     refId: string
-    userRating: number
+    userRating: number | null
     result: IResult
 }
 
@@ -48,7 +48,7 @@ export interface IVoterQuery {
     pseudonym: string
 }
 
-export interface IResult{
+export interface IResult {
     totalOpposition: number
     agreementInPercent: number
 }
@@ -82,7 +82,7 @@ export interface IVoteNew {
 // User Interfaces
 export interface IUserInformation {
     email: string
-    name?: string
+    name: string
 }
 
 export interface IUser extends IUserInformation {
