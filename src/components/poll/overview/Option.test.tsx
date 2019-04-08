@@ -11,7 +11,7 @@ test('<Option> with user that is not creator', () => {
                 option={{
                     title: "A test Option Title",
                     refId: "testOptionRefId",
-                    creator: { id: "testUser1", email: "testUser1@example.com" },
+                    creator: { id: "testUser1", email: "testUser1@example.com", name: "Test User 1" },
                     description: "A description of a test Option",
                     userRating: null,
                     result: {

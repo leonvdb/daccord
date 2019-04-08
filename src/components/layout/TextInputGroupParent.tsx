@@ -9,13 +9,14 @@ interface Props {
 
 const TextInputGroupParent = (props: Props) => {
     const [test, setTest] = useState('')
+    const onChange = (e: React.ChangeEvent<any>) => setTest(e.target.value)
     return (
         <div>
             <TextInputGroup
                 label="Test"
                 name="test"
                 value={test}
-                onChange={(e: React.ChangeEvent<any>) => setTest(e.target.value)}
+                onChange={onChange}
                 placeholder="TestPlaceHolder" error={props.error ? props.error : undefined} />
         </div>
     )
