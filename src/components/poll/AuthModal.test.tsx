@@ -9,6 +9,20 @@ import mockPoll from '../../testingResources/mockPoll'
 import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
 import { MockedProvider } from 'react-apollo/test-utils';
 
+const originalError = console.error
+beforeAll(() => {
+    console.error = (...args: any) => {
+        if (/Warning.*not wrapped in act/.test(args[0])) {
+            return
+        }
+        originalError.call(console, ...args)
+    }
+})
+
+afterAll(() => {
+    console.error = originalError
+})
+
 afterEach(cleanup);
 
 const createMock = (email: string, name: string, returnToken: boolean) => ([
