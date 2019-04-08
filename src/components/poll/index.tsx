@@ -6,7 +6,7 @@ import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import { setPseudonym } from '../../actions/userActions';
 import Overview from './overview';
-import { IUser, IPollQuery} from '../../interfaces';
+import { IUser, IPollQuery } from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { Store } from '../../reducers';
 import { Action } from 'redux';
@@ -20,7 +20,7 @@ import Settings from './settings';
 import SideNav from './layout/SideNav';
 
 
-interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch { 
+interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
     client: ApolloClient<any>
     data: IData
 }
@@ -41,13 +41,13 @@ interface IAuthUser {
 
 class Poll extends React.Component<Props> {
 
-    componentDidUpdate(){
-        if(!this.props.data.loading && !this.props.user.id){
-            const {token, user, pseudonym} = this.props.data.authUser
+    componentDidUpdate() {
+        if (!this.props.data.loading && !this.props.user.id) {
+            const { token, user, pseudonym } = this.props.data.authUser
             this.props.setAuthTokenAndUser(user, token)
             this.props.setPseudonym(pseudonym)
         }
-        if(this.props.location.search && this.props.user.id){
+        if (this.props.location.search && this.props.user.id) {
             this.props.history.push(`/poll/${this.props.match.params.poll_id}`)
         }
     }
@@ -58,7 +58,7 @@ class Poll extends React.Component<Props> {
 
     render() {
         const { user } = this.props;
-        const { loading, error} = this.props.data
+        const { loading, error } = this.props.data
         const pollResponse = this.props.data.poll
         const body = () => {
             if (loading) return <p>Loading...</p>
@@ -66,35 +66,36 @@ class Poll extends React.Component<Props> {
                 console.log({ error })
                 return <p>Error :( </p>
             }
-            if(pollResponse) {
-                const {poll} = this.props.data
+            if (pollResponse) {
+                const { poll } = this.props.data
                 return <React.Fragment>
-                        {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll}/>}
-                            {
-                                this.props.match.params.pollNavRoute === "results" ? (
-                                    <Results poll={poll} user={user}/>
-                                ) : this.props.match.params.pollNavRoute === "settings" ? (
-                                    <Settings poll={poll} user={user}/>
-                                ) : (
+                    {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll} />}
+                    {
+                        this.props.match.params.pollNavRoute === "results" ? (
+                            <Results poll={poll} user={user} />
+                        ) : this.props.match.params.pollNavRoute === "settings" ? (
+                            <Settings poll={poll} user={user} />
+                        ) : (
                                     <React.Fragment>
                                         <h1 className="display-4 text-center mt-5">{poll.title}</h1>
                                         {poll.description && <p>Description: {poll.description}</p>}
                                         <p>participating as: <i>{this.props.pseudonym}</i></p>
-                                        <Overview options={poll.options} poll={poll}/>
+                                        <Overview poll={poll} />
                                     </React.Fragment>
                                 )
-                            }
-                            
-                    </React.Fragment>}
+                    }
+
+                </React.Fragment>
+            }
         }
         return (
             <React.Fragment>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-1" style={{paddingLeft: "0px", paddingRight: "0px"}}>
-                            <SideNav pollId={this.props.match.params.poll_id}/>
+                        <div className="col-1" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                            <SideNav pollId={this.props.match.params.poll_id} />
                         </div>
-                        <div className="col-11" style={{paddingLeft: "0px", paddingRight: "0px"}}>
+                        <div className="col-11" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
                             {body()}
                         </div>
                     </div>
@@ -114,7 +115,7 @@ const mapStateToProps = (state: Store): PropsFromState => ({
 });
 interface PropsFromDispatch {
     getPollAndAuthParticipant: (pollId: string, queryParam: string, history: History) => void
-    setAuthTokenAndUser: (user: IUser,jwt: string) => void
+    setAuthTokenAndUser: (user: IUser, jwt: string) => void
     setPseudonym: (pseudonym: string) => void
 }
 const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDispatchToProps<PropsFromDispatch, void> => {
@@ -131,10 +132,10 @@ export default compose(
         options: (props: Props) => ({
             variables: {
                 id: props.match.params.poll_id,
-                authToken: props.location.search.replace('?token=','')
+                authToken: props.location.search.replace('?token=', '')
             }
         }),
-        props: ({data}) => ({data})
+        props: ({ data }) => ({ data })
     }),
     withRouter,
     connect(mapStateToProps, mapDispatchToProps))

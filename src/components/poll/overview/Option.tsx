@@ -49,6 +49,7 @@ class Option extends React.Component<Props>{
                         <p className="card-text text-truncate">{description}</p>
                         <form >
                             <input
+                                data-testid="rating-input"
                                 onChange={this.onChange}
                                 value={this.props.userRating === null ? "" : this.props.userRating.toString()}
                                 className="mb-5" type="text" style={{ width: "30px" }} />
