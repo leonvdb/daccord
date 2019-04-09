@@ -82,6 +82,12 @@ const CreatePoll = (props: Props) => {
     const { t } = props
     return (
         <div className="container">
+            <div>
+                <button className="nav-link float-right" type="button" // tslint:disable-next-line jsx-no-lambda
+                    onClick={() => { props.history.goBack(); }}>
+                    <div>Close X</div>
+                </button>
+            </div>
             <h1 className="display-5 text-center my-4">{t("Create a new poll")}</h1>
             <Mutation mutation={CREATE_POLL}
                 update={// tslint:disable-next-line jsx-no-lambda

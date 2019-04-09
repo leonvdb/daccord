@@ -18,6 +18,7 @@ import { ApolloClient } from 'apollo-boost';
 import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
+import Header from '../layout/Header';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -90,6 +91,7 @@ class Poll extends React.Component<Props> {
         }
         return (
             <React.Fragment>
+                <Header />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-1" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
