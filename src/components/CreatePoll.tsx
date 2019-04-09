@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { setAuthTokenAndUser } from '../actions/authActions';
 import { setPseudonym } from '../actions/userActions';
@@ -12,14 +12,6 @@ import { CREATE_POLL } from '../graphql/cudPoll';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces { }
 
-interface State {
-    title: string
-    email: string
-    name: string
-    description: string
-    errors: Errors
-}
-
 interface Errors {
     email?: string
     title?: string
@@ -27,119 +19,110 @@ interface Errors {
     description?: string
 }
 
-class CreatePoll extends React.Component<Props, State> {
-    state: State = {
-        title: '',
-        email: '',
-        name: '',
-        description: '',
-        errors: {}
-    };
+const CreatePoll = (props: Props) => {
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [errors, setErrors]: [Errors, ({ }: Errors) => void] = useState({});
 
-    onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const propertyName = e.target.name
-        const value = e.target.value
-        this.setState(prevState => {
-            const newState = { ...prevState };
-            newState[propertyName] = value
-            return newState
-        })
+        const { value } = e.target
+        switch (propertyName) {
+            case 'title':
+                setTitle(value);
+                break;
+            case 'description':
+                setDescription(value);
+                break;
+            case 'name':
+                setName(value);
+                break;
+            case 'email':
+                setEmail(value);
+                break;
+        }
     };
 
-    onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault();
-
-        const { title, email, name, description } = this.state
-
-        // Form validation
-        const errors: Errors = {}
-        if (!validateEmail(email)) {
-            errors.email = 'Please enter a valid email address.'
-        }
-
-        if (title.length <= 0) {
-            errors.title = 'Please enter a title'
-        }
-
-        if (Object.keys(errors).length > 0) {
-            this.setState({
-                errors
-            })
+        const currentErrors: Errors = {}
+        if (!validateEmail(email)) currentErrors.email = 'Please enter a valid email address.'
+        if (title.length <= 0) currentErrors.title = 'Please enter a title'
+        if (Object.keys(currentErrors).length > 0) {
+            setErrors(currentErrors)
             return;
         }
-        mutation({variables: {title, userEmail: email, userName: name, description}})
-
+        mutation({ variables: { title, userEmail: email, userName: name, description } })
     }
 
-    render() {
-        const { title, email, errors, name, description } = this.state;
-        const { t } = this.props
-        return (
-            <div className="container">
-                <h1 className="display-5 text-center my-4">{t("Create a new poll")}</h1>
-                <Mutation mutation={CREATE_POLL}
+    const { t } = props
+    return (
+        <div className="container">
+            <h1 className="display-5 text-center my-4">{t("Create a new poll")}</h1>
+            <Mutation mutation={CREATE_POLL}
                 update={// tslint:disable-next-line jsx-no-lambda
-                    (cache, { data: { createPoll}}) => {
-                        const {token, user, poll, pseudonym} = createPoll
-                        this.props.setAuthTokenAndUser(user, token)
-                        this.props.setPseudonym(pseudonym)
-                        this.props.history.push(`/poll/${poll.refId}`)
+                    (cache, { data: { createPoll } }) => {
+                        const { token, user, poll, pseudonym } = createPoll
+                        props.setAuthTokenAndUser(user, token)
+                        props.setPseudonym(pseudonym)
+                        props.history.push(`/poll/${poll.refId}`)
                     }
                 }
-                >
+            >
                 {(CREATE_POLL) => (
-                <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
-                    (e) => {this.onSubmit(e, CREATE_POLL)}}>
-                    <TextInputGroup
-                        classNames="w-50"
-                        label="Title"
-                        name="title"
-                        placeholder="Enter Title"
-                        value={title}
-                        onChange={this.onChange}
-                        error={errors.title}
-                        
+                    <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
+                        (e) => { onSubmit(e, CREATE_POLL) }}>
+                        <TextInputGroup
+                            classNames="w-50"
+                            label="Title"
+                            name="title"
+                            placeholder="Enter Title"
+                            value={title}
+                            onChange={onChange}
+                            error={errors.title}
+
                         />
-                    <TextInputGroup
-                        classNames="w-50"
-                        label="Description"
-                        name="description"
-                        placeholder="Enter Description"
-                        value={description}
-                        onChange={this.onChange}
-                        error={errors.description}
+                        <TextInputGroup
+                            classNames="w-50"
+                            label="Description"
+                            name="description"
+                            placeholder="Enter Description"
+                            value={description}
+                            onChange={onChange}
+                            error={errors.description}
                         />
-                    <TextInputGroup
-                        classNames="w-50"
-                        label="Email"
-                        name="email"
-                        placeholder="Enter Email"
-                        value={email}
-                        onChange={this.onChange}
-                        error={errors.email}
+                        <TextInputGroup
+                            classNames="w-50"
+                            label="Email"
+                            name="email"
+                            placeholder="Enter Email"
+                            value={email}
+                            onChange={onChange}
+                            error={errors.email}
                         />
-                    <TextInputGroup
-                        classNames="w-50"
-                        label="Name"
-                        name="name"
-                        placeholder="Enter Name"
-                        value={name}
-                        onChange={this.onChange}
-                        error={errors.name}
+                        <TextInputGroup
+                            classNames="w-50"
+                            label="Name"
+                            name="name"
+                            placeholder="Enter Name"
+                            value={name}
+                            onChange={onChange}
+                            error={errors.name}
                         />
-                    <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Create</button>
-                </form>
+                        <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit">Create</button>
+                    </form>
 
                 )}
-                        </Mutation>
-            </div>
-        )
-    };
+            </Mutation>
+        </div>
+    )
 };
 
 
 interface PropsFromDispatch {
-    setAuthTokenAndUser: ( user: IUser, jwt: string) => void
+    setAuthTokenAndUser: (user: IUser, jwt: string) => void
     setPseudonym: (pseudonym: string) => void
 }
 
