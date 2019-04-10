@@ -81,10 +81,12 @@ const CreatePoll = (props: Props) => {
 
     const { t } = props
     return (
-        <div className="container">
+        <div data-testid="create-poll-form" className="container">
             <div>
-                <button className="nav-link float-right" type="button" // tslint:disable-next-line jsx-no-lambda
-                    onClick={() => { props.history.goBack(); }}>
+                <button data-testid="close-button" className="nav-link float-right" type="button" // tslint:disable-next-line jsx-no-lambda
+                    onClick={() => {
+                        props.history.goBack();
+                    }}>
                     <div>Close X</div>
                 </button>
             </div>
