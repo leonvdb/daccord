@@ -6,16 +6,16 @@ interface Props {
     poll: IPollQuery
     user: IUser
 }
-class Settings extends React.Component<Props>{
-    render(){
-        const {poll, user} = this.props
-        return (
-            <React.Fragment>
-                <h1>Settings</h1>
-                {poll.creator.id.toString() === user.id && <DeleteModal poll={poll} />}
-            </React.Fragment>
-        )
-    }
+
+const Settings = (props: Props) => {
+    const { poll, user } = props
+    const isCreator = poll.creator.id.toString() === user.id
+    return (
+        <React.Fragment>
+            <h1>Settings</h1>
+            {isCreator && <DeleteModal poll={poll} />}
+        </React.Fragment>
+    )
 }
 
 export default Settings;

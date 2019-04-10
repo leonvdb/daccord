@@ -5,7 +5,7 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import { GET_VOTES_FROM_OPTION } from '../../../graphql/getOption';
 import mockPoll from '../../../testingResources/mockPoll';
 import mockOption from '../../../testingResources/mockOption';
-import mockUser from '../../../testingResources/mockUser';
+import { mockCreatorUser } from '../../../testingResources/mockUser';
 
 const mocks = [
     {
@@ -50,7 +50,7 @@ const mocks = [
 test('<Poll />', async () => {
     const { getByTestId } = render(
         <MockedProvider mocks={mocks} addTypename={false}>
-            <ResultDetails poll={mockPoll} option={mockOption} user={mockUser} rank={1} />
+            <ResultDetails poll={mockPoll} option={mockOption} user={mockCreatorUser} rank={1} />
         </MockedProvider>
     );
     expect(getByTestId('loading-state'));
