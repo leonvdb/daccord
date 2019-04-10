@@ -101,59 +101,78 @@ const CreatePoll = (props: Props) => {
                     }
                 }
             >
-                {(CREATE_POLL) => (
-                    <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
-                        (e) => { onSubmit(e, CREATE_POLL) }}>
-                        {counter === 1 && <div>
-                            <TextInputGroup
-                                classNames="w-50"
-                                label="Title"
-                                name="title"
-                                placeholder="Enter Title"
-                                value={title}
-                                onChange={onChange}
-                                error={errors.title}
-                            />
-                            <TextInputGroup
-                                classNames="w-50"
-                                label="Description"
-                                name="description"
-                                placeholder="Enter Description"
-                                value={description}
-                                onChange={onChange}
-                                error={errors.description}
-                            />
-                        </div>
-                        }
-                        {counter === 2 && <div>
-                            <TextInputGroup
-                                classNames="w-50"
-                                label="Email"
-                                name="email"
-                                placeholder="Enter Email"
-                                value={email}
-                                onChange={onChange}
-                                error={errors.email}
-                            />
-                            <TextInputGroup
-                                classNames="w-50"
-                                label="Name"
-                                name="name"
-                                placeholder="Enter Name"
-                                value={name}
-                                onChange={onChange}
-                                error={errors.name}
-                            />
-                        </div>
-                        }
-                        <div className="mx-auto w-50 clearfix">
-                            {counter > 1 && <button className="btn btn-secondary w-25 mt-5 d-inline-block" onClick={handlePrevious} type="button">Previous</button>}
-                            {counter === counterLimit && <button className="btn btn-primary w-25 mt-5 d-inline-block float-right" type="submit" >Finish</button>}
-                            {counter !== counterLimit && <button className="btn btn-primary w-25 mt-5 d-inline-block float-right" onClick={handleNext} type="button">Next</button>}
-                        </div>
-                    </form>
+                {(CREATE_POLL, { loading, error }) => {
+                    if (loading) return <div data-testid="loading-state">Loading...</div>
+                    if (error) return <div>Error :(</div>
+                    return (
+                        <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
+                            (e) => { onSubmit(e, CREATE_POLL) }}>
+                            {counter === 1 && <div>
+                                <TextInputGroup
+                                    classNames="w-50"
+                                    label="Title"
+                                    name="title"
+                                    placeholder="Enter Title"
+                                    value={title}
+                                    onChange={onChange}
+                                    error={errors.title}
+                                />
+                                <TextInputGroup
+                                    classNames="w-50"
+                                    label="Description"
+                                    name="description"
+                                    placeholder="Enter Description"
+                                    value={description}
+                                    onChange={onChange}
+                                    error={errors.description}
+                                />
+                            </div>
+                            }
+                            {counter === 2 && <div>
+                                <TextInputGroup
+                                    classNames="w-50"
+                                    label="Email"
+                                    name="email"
+                                    placeholder="Enter Email"
+                                    value={email}
+                                    onChange={onChange}
+                                    error={errors.email}
+                                />
+                                <TextInputGroup
+                                    classNames="w-50"
+                                    label="Name"
+                                    name="name"
+                                    placeholder="Enter Name"
+                                    value={name}
+                                    onChange={onChange}
+                                    error={errors.name}
+                                />
+                            </div>
+                            }
+                            <div className="mx-auto w-50 clearfix">
+                                {counter > 1 && <button className="btn btn-secondary w-25 mt-5 d-inline-block" onClick={handlePrevious} type="button">Previous</button>}
+                                {counter === counterLimit &&
+                                    <button
+                                        className="btn btn-primary w-25 mt-5 d-inline-block float-right"
+                                        type="submit"
+                                        data-testid="finish-button" >
+                                        Finish
+                            </button>
+                                }
+                                {counter !== counterLimit &&
+                                    <button
+                                        className="btn btn-primary w-25 mt-5 d-inline-block float-right"
+                                        onClick={handleNext}
+                                        type="button"
+                                        data-testid="next-button">
+                                        Next
+                            </button>
+                                }
+                            </div>
+                        </form>
 
-                )}
+                    )
+                }}
             </Mutation>
             <span className="mx-auto mt-5 d-block text-center">
                 {counter}/{counterLimit}
