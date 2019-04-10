@@ -105,5 +105,6 @@ test('<Route exact={true} path="/create" component={CreatePoll} /> validate titl
     expect(getByTestId('loading-state'));
     await wait(() => {
         expect(history.push).toBeCalledTimes(1);
+        expect(history.push).toBeCalledWith(`/poll/${mockPoll.refId}`);
     });
 })
