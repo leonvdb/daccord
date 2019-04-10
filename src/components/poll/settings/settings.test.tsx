@@ -17,7 +17,7 @@ test('<Settings> as non-Creator', () => {
     expect(queryByTestId('delete-button')).toBeFalsy()
 })
 test('<Settings> as Creator', () => {
-    const { getByTestId } = render(
+    const { debug, getByTestId } = render(
         <MockedProvider>
             <MemoryRouter>
                 <Settings poll={mockPoll} user={mockCreatorUser} />
@@ -25,4 +25,5 @@ test('<Settings> as Creator', () => {
         </MockedProvider>
     );
     expect(getByTestId('delete-button'));
+    debug();
 })

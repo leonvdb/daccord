@@ -21,3 +21,11 @@ mutation DeletePoll($pollId: ID!){
     deletePoll(pollId: $pollId)
 }
 `;
+
+export const UPDATE_POLL = gql`
+mutation UpdatePoll($pollId: ID!, $title: String){
+    updatePoll(pollId: $pollId, title: $title){
+        title
+    }
+}
+`
