@@ -52,7 +52,7 @@ class Overview extends React.Component<Props> {
                             let rating = option.userRating;
                             this.props.votes.forEach(vote => {
                                 if (vote.optionId === option.refId) {
-                                    vote.rating ? rating = vote.rating : rating = null
+                                    Number.isNaN(vote.rating) ? rating = null : rating = vote.rating
                                 }
                             })
                             return (<Option
