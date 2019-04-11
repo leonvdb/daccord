@@ -62,7 +62,7 @@ const Settings = (props: Props) => {
                                         name="title"
                                         placeholder="Enter Title "
                                         testId="title-input" />
-                                    <button>Save</button>
+                                    <button data-testid="title-save-button">Save</button>
                                     <button type="button" onClick={cancel}>cancel</button>
                                 </form>
                             }}

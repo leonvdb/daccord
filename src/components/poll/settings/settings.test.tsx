@@ -5,12 +5,30 @@ import mockPoll from '../../../testingResources/mockPoll';
 import { mockParticipantUser, mockCreatorUser } from '../../../testingResources/mockUser';
 import { MemoryRouter } from 'react-router';
 import { MockedProvider } from 'react-apollo/test-utils';
-
+import { UPDATE_POLL } from '../../../graphql/cudPoll';
 interface Props {
     isCreator: boolean
 }
+const updatedTitle = 'updated Title'
+const mockEditTitle = {
+    request: {
+        query: UPDATE_POLL,
+        variables: {
+            pollId: mockPoll.refId,
+            title: updatedTitle
+        }
+    },
+    result: {
+        data: {
+            updatePoll: {
+                title: updatedTitle
+            }
+        }
+    },
+};
+const mocks = [mockEditTitle]
 
-const WrappedSettings = (props: Props) => (<MockedProvider>
+const WrappedSettings = (props: Props) => (<MockedProvider mocks={mocks} addTypename={false}>
     <MemoryRouter>
         <Settings poll={mockPoll} user={props.isCreator ? mockCreatorUser : mockParticipantUser} />
     </MemoryRouter>
@@ -28,10 +46,17 @@ test('<Settings> as Creator open delete Modal', () => {
     fireEvent.click(getByTestId('delete-button'));
     expect(getByTestId('delete-modal'));
 })
-test('<Settings> as Creator open delete Modal', () => {
+test('<Settings> as Creator open delete Modal', async () => {
     const { debug, getByTestId, queryByTestId } = render(<WrappedSettings isCreator={true} />);
     expect(queryByTestId('edit-title-form')).toBeFalsy();
     fireEvent.click(getByTestId('edit-title-button'));
     expect(getByTestId('edit-title-form'));
-    expect(getByTestId('title-input'))
+    const titleInput = (getByTestId('title-input') as HTMLInputElement)
+    fireEvent.change(titleInput, {
+        target: {
+            value: updatedTitle
+        }
+    })
+    fireEvent.click(getByTestId('title-save-button'))
+    debug();
 })
