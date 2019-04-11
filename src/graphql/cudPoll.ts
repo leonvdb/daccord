@@ -23,9 +23,10 @@ mutation DeletePoll($pollId: ID!){
 `;
 
 export const UPDATE_POLL = gql`
-mutation UpdatePoll($pollId: ID!, $title: String){
-    updatePoll(pollId: $pollId, title: $title){
+mutation UpdatePoll($pollId: ID!, $title: String, $description: String){
+    updatePoll(pollId: $pollId, title: $title, description: $description){
         title
+        description
     }
 }
 `

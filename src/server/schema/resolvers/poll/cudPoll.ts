@@ -12,7 +12,7 @@ export const createPoll = async (_: any, args: ICreatePollInput) => {
     const newPoll = new Poll({
         title: args.title,
         creator: user.id,
-        description: args.description ? args.description: '',
+        description: args.description ? args.description : '',
         creatorPseudonym: args.userName,
         creatorToken: generateToken(),
         refId: createRefId()
@@ -30,6 +30,7 @@ export const updatePoll = async (_: any, args: IUpdatePollInput, context: IConte
     const poll = await findPoll(args.pollId)
     authenticate(context.user, poll.creator.toString())
     if (args.title) poll.title = args.title
+    if (args.description) poll.description = args.description;
     return await poll.save();
 }
 
@@ -48,7 +49,8 @@ interface ICreatePollInput {
 }
 interface IUpdatePollInput {
     pollId: string,
-    title?: string
+    title?: string,
+    description?: string
 }
 
 interface IDeletePollInput {

@@ -15,7 +15,7 @@ type Query {
 const Mutation = `
 type Mutation{
     createPoll(userEmail: String!, userName: String!, title: String!, description: String): CreatePollResponse!
-    updatePoll(pollId: ID!, title: String): Poll!
+    updatePoll(pollId: ID!, title: String, description: String): Poll!
     deletePoll(pollId: ID!): Boolean!
     createOption(pollId: ID!, userId: ID!, title: String!, description: String): Option!
     updateOption(pollId: ID! optionId: ID!, title: String, description: String): Option!
