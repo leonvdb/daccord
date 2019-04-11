@@ -27,7 +27,7 @@ class DeleteModal extends React.Component<Props> {
         const { modalOpen } = this.state
 
         return (
-            <div>
+            <div data-testid="delete-modal">
                 <button data-testid="delete-button" className="btn btn-secondary" onClick={this.toggle}>Delete Poll</button>
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Delete Poll</ModalHeader>

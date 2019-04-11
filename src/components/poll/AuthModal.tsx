@@ -90,7 +90,7 @@ const AuthModal = (props: Props) => {
                             <form onSubmit={// tslint:disable-next-line jsx-no-lambda
                                 (e) => { onSubmit(e, CREATE_PARTICIPANT) }}>
                                 <TextInputGroup
-                                    label="Name"
+                                    testId="name-input"
                                     name="name"
                                     placeholder="Enter Name"
                                     value={name}
@@ -100,7 +100,7 @@ const AuthModal = (props: Props) => {
                                     classNames="w-75"
                                 />
                                 <TextInputGroup
-                                    label="Email"
+                                    testId="email-input"
                                     name="email"
                                     placeholder="Enter Email"
                                     value={email}

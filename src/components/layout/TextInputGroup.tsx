@@ -3,31 +3,31 @@ import classname from 'classnames';
 
 
 interface Props {
-    label: string,
     name: string,
     value: string,
     error?: string,
     placeholder: string,
     onChange: (event: React.ChangeEvent) => void,
     type?: string,
-    classNames?: string
+    classNames?: string,
+    testId: string
 }
 
 const TextInputGroup = ({
-    label,
     name,
     value,
     error,
     placeholder,
     onChange,
     type = "text",
-    classNames
+    classNames,
+    testId
 }: Props) => {
     return (
         <div className={`form-group mx-auto ${classNames ? classNames : ''}`} >
             <input
                 className={classname('form-control', { 'is-invalid': error })}
-                data-testid="input"
+                data-testid={testId}
                 type={type}
                 name={name}
                 value={value}

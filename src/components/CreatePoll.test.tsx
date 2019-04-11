@@ -75,11 +75,11 @@ test('<Route exact={true} path="/create" component={CreatePoll} /> to goBack', (
 });
 
 test('<Route exact={true} path="/create" component={CreatePoll} /> validate title', async () => {
-    const { getByPlaceholderText, getByTestId, queryByTestId, getAllByTestId } = render(<TestedComponent />)
+    const { getByTestId, queryByTestId, getAllByTestId } = render(<TestedComponent />)
     const nextButton = (getByTestId('next-button'));
     fireEvent.click(nextButton);
     expect(getByTestId('error-message'));
-    const titleInput = (getByPlaceholderText("Enter Title") as HTMLInputElement)
+    const titleInput = (getByTestId("title-input") as HTMLInputElement)
     fireEvent.change(titleInput, {
         target: {
             value: mockPoll.title
@@ -89,8 +89,8 @@ test('<Route exact={true} path="/create" component={CreatePoll} /> validate titl
     expect(queryByTestId('error-message')).toBeFalsy()
     fireEvent.click(getByTestId('finish-button'))
     expect(getAllByTestId('error-message').length).toBe(2)
-    const nameInput = (getByPlaceholderText("Enter Name") as HTMLInputElement)
-    const emailInput = (getByPlaceholderText("Enter Email") as HTMLInputElement)
+    const nameInput = (getByTestId("name-input") as HTMLInputElement)
+    const emailInput = (getByTestId("email-input") as HTMLInputElement)
     fireEvent.change(nameInput, {
         target: {
             value: mockPoll.creator.name

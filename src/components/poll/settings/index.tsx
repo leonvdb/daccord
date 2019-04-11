@@ -53,15 +53,15 @@ const Settings = (props: Props) => {
                             {(UPDATE_POLL, { loading, error }) => {
                                 if (loading) return <div>Loading...</div>
                                 if (error) return <div>Error :(</div>
-                                return <form name="title" onSubmit={ // tslint:disable-next-line jsx-no-lambda
+                                return <form name="title" data-testid="edit-title-form" onSubmit={ // tslint:disable-next-line jsx-no-lambda
                                     (e) => { onSubmit(e, UPDATE_POLL) }}>
                                     <TextInputGroup
                                         value={title}
                                         onChange={// tslint:disable-next-line jsx-no-lambda
                                             (e: React.ChangeEvent<any>) => { setTitle(e.target.value) }}
                                         name="title"
-                                        label="Title"
-                                        placeholder="Enter Title " />
+                                        placeholder="Enter Title "
+                                        testId="title-input" />
                                     <button>Save</button>
                                     <button type="button" onClick={cancel}>cancel</button>
                                 </form>
@@ -69,7 +69,7 @@ const Settings = (props: Props) => {
                         </Mutation> :
                         <div>
                             <p className="d-inline-block">{poll.title}</p>
-                            <button name="title" onClick={handleEditClick}>Edit</button>
+                            <button data-testid="edit-title-button" name="title" onClick={handleEditClick}>Edit</button>
                         </div>
                     }
                 </div>

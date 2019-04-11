@@ -12,7 +12,7 @@ test('<TextInputGroupParent>', () => {
         <TextInputGroupParent />
     );
     expect(queryByText(testError)).toBeFalsy()
-    const inputElement = (getByTestId('input') as HTMLInputElement)
+    const inputElement = (getByTestId('test-input') as HTMLInputElement)
     fireEvent.change(inputElement, {
         target: {
             value: 'test'
