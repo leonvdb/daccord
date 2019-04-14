@@ -17,7 +17,7 @@ const WithdrawModal = (props: Props) => {
     const [modalOpen, setModalOpen] = useState(false)
     const toggle = () => { setModalOpen(!modalOpen) }
     return (
-        <div>
+        <div data-testid="withdraw-modal">
             <button data-testid="withdraw-button" className="btn btn-secondary" onClick={toggle}>Withdraw from Poll</button>
             <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={toggle}>
                 <ModalHeader toggle={toggle}>Withdraw from Poll</ModalHeader>
@@ -36,6 +36,7 @@ const WithdrawModal = (props: Props) => {
                         {(DELETE_PARTICIPANT) => (
                             <button onClick={// tslint:disable-next-line jsx-no-lambda
                                 (e) => DELETE_PARTICIPANT({ variables: { pollId: props.poll.refId } })}
+                                data-testid="confirm-withdraw-button"
                                 className="btn btn-danger w-25">Withdraw</button>
                         )}
                     </Mutation>

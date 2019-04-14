@@ -12,6 +12,7 @@ interface Props {
     isCreator: boolean
 }
 const updatedTitle = 'updated Title'
+
 const mockEditTitle = {
     request: {
         query: UPDATE_POLL,
@@ -48,6 +49,14 @@ test('<Settings> as non-Creator', () => {
     const { queryByTestId } = render(<WrappedSettings isCreator={false} />);
     expect(queryByTestId('delete-button')).toBeFalsy()
 })
+
+test('<Settings> as non-Creator', () => {
+    const { queryByTestId, getByTestId } = render(<WrappedSettings isCreator={false} />);
+    expect(queryByTestId('delete-button')).toBeFalsy();
+    fireEvent.click(getByTestId('withdraw-button'));
+    expect(getByTestId('withdraw-modal'));
+})
+
 test('<Settings> as Creator open delete Modal', () => {
     const { getByTestId } = render(<WrappedSettings isCreator={true} />);
     expect(getByTestId('delete-button'));
