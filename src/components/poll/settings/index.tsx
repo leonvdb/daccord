@@ -38,6 +38,9 @@ const Settings = (props: Props) => {
         setOpenEditField('')
     }
     const cancel = () => {
+        if (openEditField === 'title') setTitle(poll.title)
+        if (openEditField === 'description') setDescription(poll.description)
+        if (openEditField === 'pseudonym') setPseudonym(props.pseudonym)
         setOpenEditField('')
     }
     return (
