@@ -15,13 +15,15 @@ const mockEditTitle = {
         query: UPDATE_POLL,
         variables: {
             pollId: mockPoll.refId,
-            title: updatedTitle
+            title: updatedTitle,
+            description: mockPoll.description
         }
     },
     result: {
         data: {
             updatePoll: {
-                title: updatedTitle
+                title: updatedTitle,
+                description: mockPoll.description
             }
         }
     },
@@ -47,7 +49,7 @@ test('<Settings> as Creator open delete Modal', () => {
     expect(getByTestId('delete-modal'));
 })
 test('<Settings> as Creator open delete Modal', async () => {
-    const { debug, getByTestId, queryByTestId } = render(<WrappedSettings isCreator={true} />);
+    const { getByTestId, queryByTestId } = render(<WrappedSettings isCreator={true} />);
     expect(queryByTestId('edit-title-form')).toBeFalsy();
     fireEvent.click(getByTestId('edit-title-button'));
     expect(getByTestId('edit-title-form'));
@@ -58,5 +60,4 @@ test('<Settings> as Creator open delete Modal', async () => {
         }
     })
     fireEvent.click(getByTestId('title-save-button'))
-    debug();
 })
