@@ -44,7 +44,8 @@ export const deleteParticipant = async (_: any, args: IUpdateParticipantInput, c
     poll.participants.splice(participantIndex, 1)
     const filteredOptions = poll.options.filter(option => option.creator.toString() !== context.user.id.toString())
     filteredOptions.forEach(option => {
-        option.votes.filter(vote => vote.voter.toString() !== context.user.id.toString())
+        const filteredVotes = option.votes.filter(vote => vote.voter.toString() !== context.user.id.toString())
+        option.votes = filteredVotes
     })
     poll.options = filteredOptions;
     await poll.save();
