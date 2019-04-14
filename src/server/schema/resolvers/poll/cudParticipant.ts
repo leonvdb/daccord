@@ -32,8 +32,23 @@ export const updateParticipant = async (_: any, args: IUpdateParticipantInput, c
     } else {
         poll.participants[participantIndex].pseudonym = args.pseudonym
     }
-    poll.save();
+    await poll.save();
     return args.pseudonym
+}
+
+export const deleteParticipant = async (_: any, args: IUpdateParticipantInput, context: IContext) => {
+    const poll = await findPoll(args.pollId);
+    const user = await findUserById(context.user.id)
+    const participantIndex = getParticipantPosition(poll, user)
+    if (participantIndex < 0) throw new AuthenticationError("Unauthorized")
+    poll.participants.splice(participantIndex, 1)
+    const filteredOptions = poll.options.filter(option => option.creator.toString() !== context.user.id.toString())
+    filteredOptions.forEach(option => {
+        option.votes.filter(vote => vote.voter.toString() !== context.user.id.toString())
+    })
+    poll.options = filteredOptions;
+    await poll.save();
+    return true
 }
 
 interface ICreateParticipantInput {
