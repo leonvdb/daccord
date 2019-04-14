@@ -28,7 +28,7 @@ class OptionReadModal extends React.Component<Props> {
     }
 
     deleteOption = (mutation: any) => {
-        mutation({variables: {pollId: this.props.pollId, optionId: this.props.option.refId}})
+        mutation({ variables: { pollId: this.props.pollId, optionId: this.props.option.refId } })
         this.props.toggle()
     }
 
@@ -46,7 +46,7 @@ class OptionReadModal extends React.Component<Props> {
         e.preventDefault();
         const { title, description } = this.state
         const { option, pollId } = this.props
-        mutation({variables : {pollId, optionId: option.refId,  title, description}})
+        mutation({ variables: { pollId, optionId: option.refId, title, description } })
         this.props.toggle();
     }
 
@@ -60,51 +60,59 @@ class OptionReadModal extends React.Component<Props> {
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={toggle}>
                     <ModalBody>
                         <Mutation mutation={UPDATE_OPTION}
-                        
-                        update={ // tslint:disable-next-line jsx-no-lambda
-                            (cache, { data: { updateOption}}) => {
-                            const poll: any = cache.readQuery({ query: getPoll, variables: {id: this.props.pollId}})
-                            cache.writeQuery({
-                                query: getPoll,
-                                variables: {id: this.props.pollId},
-                                data: {poll: {...poll.poll, options: poll.poll.options.map((option: IOptionQuery)=> {
-                                    if(option.refId === updateOption.refId) return option = updateOption
-                                    return option
-                                })}},
-                              });
-                        }}>
+
+                            update={ // tslint:disable-next-line jsx-no-lambda
+                                (cache, { data: { updateOption } }) => {
+                                    const poll: any = cache.readQuery({ query: getPoll, variables: { id: this.props.pollId } })
+                                    cache.writeQuery({
+                                        query: getPoll,
+                                        variables: { id: this.props.pollId },
+                                        data: {
+                                            poll: {
+                                                ...poll.poll, options: poll.poll.options.map((option: IOptionQuery) => {
+                                                    if (option.refId === updateOption.refId) return option = updateOption
+                                                    return option
+                                                })
+                                            }
+                                        },
+                                    });
+                                }}>
                             {(UPDATE_OPTION) => (
                                 <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
-                                    (e) => {this.onSubmit(e, UPDATE_OPTION)}}>
+                                    (e) => { this.onSubmit(e, UPDATE_OPTION) }}>
                                     <label htmlFor={title}>Title</label>
-                                    <TextInputGroup label='title' name='title' value={title} placeholder='Enter Title' onChange={this.onChange} />
+                                    <TextInputGroup testId="title-input" name='title' value={title} placeholder='Enter Title' onChange={this.onChange} />
                                     <label htmlFor={description}>Description</label>
                                     <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
                                         value={description}
                                         onChange={this.onChange} />
                                     <hr />
-                                    <Mutation 
-                                    mutation={DELETE_OPTION}
-                                    update={// tslint:disable-next-line jsx-no-lambda
-                                        (cache, { data: { deleteOption}}) => {
-                                            const poll: any = cache.readQuery({ query: getPoll, variables: {id: this.props.pollId}})
-                                            cache.writeQuery({
-                                                query: getPoll,
-                                                variables: {id: this.props.pollId},
-                                                data: {poll: {...poll.poll, options: poll.poll.options.filter((option: IOptionQuery) => (
-                                                    option.refId !== this.props.option.refId
-                                                    )
-                                                )}},
-                                              });
+                                    <Mutation
+                                        mutation={DELETE_OPTION}
+                                        update={// tslint:disable-next-line jsx-no-lambda
+                                            (cache, { data: { deleteOption } }) => {
+                                                const poll: any = cache.readQuery({ query: getPoll, variables: { id: this.props.pollId } })
+                                                cache.writeQuery({
+                                                    query: getPoll,
+                                                    variables: { id: this.props.pollId },
+                                                    data: {
+                                                        poll: {
+                                                            ...poll.poll, options: poll.poll.options.filter((option: IOptionQuery) => (
+                                                                option.refId !== this.props.option.refId
+                                                            )
+                                                            )
+                                                        }
+                                                    },
+                                                });
+                                            }
                                         }
-                                    }
                                     >
                                         {(DELETE_OPTION) => (
-                                            <button 
-                                            className="btn btn-link btn-sm d-block mb-3" 
-                                            type='button' 
-                                            onClick={ // tslint:disable-next-line jsx-no-lambda
-                                                (e) => {this.deleteOption( DELETE_OPTION)}}>Delete Option</button>
+                                            <button
+                                                className="btn btn-link btn-sm d-block mb-3"
+                                                type='button'
+                                                onClick={ // tslint:disable-next-line jsx-no-lambda
+                                                    (e) => { this.deleteOption(DELETE_OPTION) }}>Delete Option</button>
                                         )}
                                     </Mutation>
                                     <button className="btn btn-outline-secondary w-25 mr-2" type='button' onClick={toggle}>Cancel</button>

@@ -27,27 +27,27 @@ class DeleteModal extends React.Component<Props> {
         const { modalOpen } = this.state
 
         return (
-            <div>
-                <button className="btn btn-secondary" onClick={this.toggle}>Delete Poll</button>
+            <div data-testid="delete-modal">
+                <button data-testid="delete-button" className="btn btn-secondary" onClick={this.toggle}>Delete Poll</button>
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Delete Poll</ModalHeader>
                     <ModalBody>
                         <p className="lead d-block">Are you sure you want to delete this Poll?</p>
                         <button onClick={this.toggle} className="btn btn-outline-info w-25 mr-2">Cancel</button>
-                        <Mutation 
-                        mutation={DELETE_POLL}
-                        update={// tslint:disable-next-line jsx-no-lambda
-                            () => {
-                                this.props.client.resetStore()
-                                this.props.history.push('/deleted')
+                        <Mutation
+                            mutation={DELETE_POLL}
+                            update={// tslint:disable-next-line jsx-no-lambda
+                                () => {
+                                    this.props.client.resetStore()
+                                    this.props.history.push('/deleted')
+                                }
                             }
-                        }
                         >
-                        {(DELETE_POLL) => (
-                            <button onClick={// tslint:disable-next-line jsx-no-lambda
-                                (e) => DELETE_POLL({variables: {pollId: this.props.poll.refId}})} 
-                            className="btn btn-danger w-25">Delete</button>
-                        )}
+                            {(DELETE_POLL) => (
+                                <button onClick={// tslint:disable-next-line jsx-no-lambda
+                                    (e) => DELETE_POLL({ variables: { pollId: this.props.poll.refId } })}
+                                    className="btn btn-danger w-25">Delete</button>
+                            )}
                         </Mutation>
                     </ModalBody>
                 </Modal>

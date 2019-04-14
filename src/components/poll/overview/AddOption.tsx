@@ -4,12 +4,12 @@ import TextInputGroup from '../../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { Store } from '../../../reducers';
 import { Mutation } from "react-apollo";
-import {createOption} from '../../../graphql/cudOption';
-import {getPoll} from '../../../graphql/getPoll'
+import { createOption } from '../../../graphql/cudOption';
+import { getPoll } from '../../../graphql/getPoll'
 
 interface Props extends PropsFromState {
     pollId: string
- }
+}
 
 interface State {
     title: string
@@ -61,7 +61,7 @@ class AddOption extends React.Component<Props, State> {
             })
             return;
         }
-        mutation({variables : {pollId: this.props.pollId, userId, title, description}})
+        mutation({ variables: { pollId: this.props.pollId, userId, title, description } })
         this.setState({
             addOptionOpen: false,
             title: '',
@@ -92,41 +92,41 @@ class AddOption extends React.Component<Props, State> {
                 <Modal placement="right" isOpen={addOptionOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Add a new option</ModalHeader>
                     <ModalBody>
-                            <Mutation 
-                            mutation={createOption} 
+                        <Mutation
+                            mutation={createOption}
                             update={ // tslint:disable-next-line jsx-no-lambda
-                                (cache, { data: { createOption}}) => {
-                                const poll: any = cache.readQuery({ query: getPoll, variables: {id: this.props.pollId}})
-                                cache.writeQuery({
-                                    query: getPoll,
-                                    variables: {id: this.props.pollId},
-                                    data: {poll: {...poll.poll, options: [createOption, ...poll.poll.options]}},
-                                  });
-                            }}
-                            >
-                                {(createOption) => (
-                        <div >
-                            <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
-                                (e) => {this.onSubmit(e, createOption)}}>
-                                <TextInputGroup
-                                    label="Title"
-                                    name="title"
-                                    placeholder="Enter Title"
-                                    value={title}
-                                    onChange={this.onChange}
-                                    error={errors.title}
-                                />
-                                <div className="form-group">
-                                    <label htmlFor="description">Description</label>
-                                    <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
-                                        value={description}
-                                        onChange={this.onChange} />
+                                (cache, { data: { createOption } }) => {
+                                    const poll: any = cache.readQuery({ query: getPoll, variables: { id: this.props.pollId } })
+                                    cache.writeQuery({
+                                        query: getPoll,
+                                        variables: { id: this.props.pollId },
+                                        data: { poll: { ...poll.poll, options: [createOption, ...poll.poll.options] } },
+                                    });
+                                }}
+                        >
+                            {(createOption) => (
+                                <div >
+                                    <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
+                                        (e) => { this.onSubmit(e, createOption) }}>
+                                        <TextInputGroup
+                                            testId="title-input"
+                                            name="title"
+                                            placeholder="Enter Title"
+                                            value={title}
+                                            onChange={this.onChange}
+                                            error={errors.title}
+                                        />
+                                        <div className="form-group">
+                                            <label htmlFor="description">Description</label>
+                                            <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
+                                                value={description}
+                                                onChange={this.onChange} />
+                                        </div>
+                                        <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Add Option</button>
+                                    </form>
                                 </div>
-                                <button className="btn btn-secondary mx-auto btn-block w-100 mt-4" type="submit">Add Option</button>
-                            </form>
-                        </div>
-                                    
-                                )}
+
+                            )}
                         </Mutation>
                     </ModalBody>
                 </Modal>

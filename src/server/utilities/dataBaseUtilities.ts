@@ -69,7 +69,7 @@ function validatePoll(poll: IPollDocument, ): IPollDocument {
     return poll
 }
 
-export async function getUser(userId: string | ObjectID){
+export async function getUser(userId: string | ObjectID) {
     const user = {
         id: '',
         email: ''
@@ -82,18 +82,17 @@ export async function getUser(userId: string | ObjectID){
     return user
 }
 
-export function isParticipating(poll: IPollDocument, userId: string){
-    if(userId === poll.creator.toString()) return "CREATOR"
-    for (const participant of poll.participants){
+export function isParticipating(poll: IPollDocument, userId: string) {
+    if (userId === poll.creator.toString()) return "CREATOR"
+    for (const participant of poll.participants) {
         if (participant.id.toString() === userId) return "PARTICIPANT"
     }
     return false
 }
 
-export function getParticipantPosition(poll: IPollDocument, user: IUserDocument){
+export function getParticipantPosition(poll: IPollDocument, user: IUserDocument) {
     if (poll.creator.toString() === user.id) return -2
-    for (const [index, participant] of poll.participants.entries()){
-        console.log({participant: participant.id})
+    for (const [index, participant] of poll.participants.entries()) {
         if (participant.id.toString() === user._id.toString()) {
             return index
         }
@@ -102,12 +101,12 @@ export function getParticipantPosition(poll: IPollDocument, user: IUserDocument)
 }
 
 
-export function getPseudonymOfUser(userId: string, poll: IPollDocument){
-    if(poll.creator.toString() === userId){
+export function getPseudonymOfUser(userId: string, poll: IPollDocument) {
+    if (poll.creator.toString() === userId) {
         return poll.creatorPseudonym
     } else {
-        for (const participant of poll.participants){
-            if (participant.id.toString() === userId){
+        for (const participant of poll.participants) {
+            if (participant.id.toString() === userId) {
                 return participant.pseudonym
             }
         }

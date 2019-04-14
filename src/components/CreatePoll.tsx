@@ -110,7 +110,7 @@ const CreatePoll = (props: Props) => {
                             {counter === 1 && <div>
                                 <TextInputGroup
                                     classNames="w-50"
-                                    label="Title"
+                                    testId="title-input"
                                     name="title"
                                     placeholder="Enter Title"
                                     value={title}
@@ -119,7 +119,7 @@ const CreatePoll = (props: Props) => {
                                 />
                                 <TextInputGroup
                                     classNames="w-50"
-                                    label="Description"
+                                    testId="description-input"
                                     name="description"
                                     placeholder="Enter Description"
                                     value={description}
@@ -131,7 +131,7 @@ const CreatePoll = (props: Props) => {
                             {counter === 2 && <div>
                                 <TextInputGroup
                                     classNames="w-50"
-                                    label="Email"
+                                    testId="email-input"
                                     name="email"
                                     placeholder="Enter Email"
                                     value={email}
@@ -140,7 +140,7 @@ const CreatePoll = (props: Props) => {
                                 />
                                 <TextInputGroup
                                     classNames="w-50"
-                                    label="Name"
+                                    testId="name-input"
                                     name="name"
                                     placeholder="Enter Name"
                                     value={name}

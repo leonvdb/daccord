@@ -5,7 +5,7 @@ import { IUser, IPollQuery } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from '../../utilities/validateEmail';
 import { Dispatch } from 'redux';
-import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
+import { CREATE_PARTICIPANT } from '../../graphql/cudParticipant';
 import { Mutation, compose, withApollo } from 'react-apollo';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import { SEND_AUTH_LINK } from '../../graphql/sendAuthLink';
@@ -90,7 +90,7 @@ const AuthModal = (props: Props) => {
                             <form onSubmit={// tslint:disable-next-line jsx-no-lambda
                                 (e) => { onSubmit(e, CREATE_PARTICIPANT) }}>
                                 <TextInputGroup
-                                    label="Name"
+                                    testId="name-input"
                                     name="name"
                                     placeholder="Enter Name"
                                     value={name}
@@ -100,7 +100,7 @@ const AuthModal = (props: Props) => {
                                     classNames="w-75"
                                 />
                                 <TextInputGroup
-                                    label="Email"
+                                    testId="email-input"
                                     name="email"
                                     placeholder="Enter Email"
                                     value={email}

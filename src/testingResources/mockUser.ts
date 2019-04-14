@@ -1,9 +1,13 @@
 import { IUser } from '../interfaces';
 
-const mockUser: IUser = {
+export const mockCreatorUser: IUser = {
     id: "TestCreatorId",
     email: "creator@example.com",
     name: "Test Creator"
 }
 
-export default mockUser
+export const mockParticipantUser: IUser = {
+    id: "TestParticipantId",
+    email: "participant@example.com",
+    name: "Test Participant"
+}

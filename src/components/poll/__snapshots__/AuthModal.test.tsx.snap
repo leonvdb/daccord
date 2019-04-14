@@ -42,7 +42,7 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
         >
           <input
             class="form-control"
-            data-testid="input"
+            data-testid="name-input"
             name="name"
             placeholder="Enter Name"
             type="text"
@@ -54,7 +54,7 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
         >
           <input
             class="form-control"
-            data-testid="input"
+            data-testid="email-input"
             name="email"
             placeholder="Enter Email"
             type="text"
