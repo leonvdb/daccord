@@ -5,8 +5,11 @@ import { UPDATE_POLL } from '../../../graphql/cudPoll';
 import { getPoll } from '../../../graphql/getPoll';
 import EditField from './EditField';
 import { UPDATE_PARTICIPANT } from '../../../graphql/cudParticipant';
+import { setPseudonym } from '../../../actions/userActions';
+import { Dispatch, AnyAction } from 'redux';
+import { connect } from 'react-redux';
 
-interface Props {
+interface Props extends PropsFromDispatch {
     poll: IPollQuery
     user: IUser
     pseudonym: string
@@ -55,13 +58,7 @@ const Settings = (props: Props) => {
                 handleEditClick={handleEditClick}
                 update={// tslint:disable-next-line jsx-no-lambda
                     (cache, { data: { updateParticipant } }) => {
-                        console.log(updateParticipant)
-                        // const poll: any = cache.readQuery({ query: getPoll, variables: { id: props.poll.refId } })
-                        // cache.writeQuery({
-                        //     query: getPoll,
-                        //     variables: { id: props.poll.refId },
-                        //     data: { poll: { ...poll.poll, title: updatePoll.title } },
-                        // });
+                        props.setPseudonym(updateParticipant);
                     }} />
             {isCreator &&
                 <div>
@@ -116,4 +113,15 @@ const Settings = (props: Props) => {
     )
 }
 
-export default Settings;
+interface PropsFromDispatch {
+    setPseudonym: (pseudonym: string) => void
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch => {
+    return {
+        setPseudonym: (pseudonym: string) => dispatch(setPseudonym(pseudonym))
+    }
+
+}
+
+export default connect(null, mapDispatchToProps)(Settings);

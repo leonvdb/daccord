@@ -6,6 +6,8 @@ import { mockParticipantUser, mockCreatorUser } from '../../../testingResources/
 import { MemoryRouter } from 'react-router';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { UPDATE_POLL } from '../../../graphql/cudPoll';
+import { Provider } from 'react-redux';
+import store from '../../../store';
 interface Props {
     isCreator: boolean
 }
@@ -30,11 +32,15 @@ const mockEditTitle = {
 };
 const mocks = [mockEditTitle]
 
-const WrappedSettings = (props: Props) => (<MockedProvider mocks={mocks} addTypename={false}>
-    <MemoryRouter>
-        <Settings poll={mockPoll} user={props.isCreator ? mockCreatorUser : mockParticipantUser} pseudonym="Test Pseudonym" />
-    </MemoryRouter>
-</MockedProvider>)
+const WrappedSettings = (props: Props) => (
+    <Provider store={store}>
+        <MockedProvider mocks={mocks} addTypename={false}>
+            <MemoryRouter>
+                <Settings poll={mockPoll} user={props.isCreator ? mockCreatorUser : mockParticipantUser} pseudonym="Test Pseudonym" />
+            </MemoryRouter>
+        </MockedProvider>
+    </Provider>
+)
 
 afterEach(cleanup);
 
