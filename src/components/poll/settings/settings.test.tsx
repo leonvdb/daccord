@@ -32,7 +32,7 @@ const mocks = [mockEditTitle]
 
 const WrappedSettings = (props: Props) => (<MockedProvider mocks={mocks} addTypename={false}>
     <MemoryRouter>
-        <Settings poll={mockPoll} user={props.isCreator ? mockCreatorUser : mockParticipantUser} />
+        <Settings poll={mockPoll} user={props.isCreator ? mockCreatorUser : mockParticipantUser} pseudonym="Test Pseudonym" />
     </MemoryRouter>
 </MockedProvider>)
 

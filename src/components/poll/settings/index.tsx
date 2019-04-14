@@ -4,15 +4,19 @@ import DeleteModal from './DeleteModal';
 import { UPDATE_POLL } from '../../../graphql/cudPoll';
 import { getPoll } from '../../../graphql/getPoll';
 import EditField from './EditField';
+import { UPDATE_PARTICIPANT } from '../../../graphql/cudParticipant';
 
 interface Props {
     poll: IPollQuery
     user: IUser
+    pseudonym: string
 }
+
 const Settings = (props: Props) => {
     const { poll, user } = props
     const [title, setTitle] = useState(poll.title)
     const [description, setDescription] = useState(poll.description)
+    const [pseudonym, setPseudonym] = useState(props.pseudonym)
     const [openEditField, setOpenEditField] = useState('')
     const isCreator = poll.creator.id.toString() === user.id
 
@@ -31,6 +35,21 @@ const Settings = (props: Props) => {
     return (
         <React.Fragment>
             <h1>Settings</h1>
+            <h2>User</h2>
+            <EditField
+                label="Pseudonym"
+                open={openEditField === 'pseudonym'}
+                mutation={UPDATE_PARTICIPANT}
+                poll={poll}
+                value={pseudonym}
+                setValue={setPseudonym}
+                name="pseudonym"
+                placeholder="Enter Pseudonym"
+                onSubmit={onSubmit}
+                cancel={cancel}
+                handleEditClick={handleEditClick}
+                update={// tslint:disable-next-line jsx-no-lambda
+                    () => { console.log("updating") }} />
             {isCreator &&
                 <div>
                     <h2>Poll</h2>

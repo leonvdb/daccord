@@ -6,7 +6,7 @@ import { client } from '../../App';
 import { Provider } from 'react-redux';
 import store from '../../store';
 import mockPoll from '../../testingResources/mockPoll'
-import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
+import { CREATE_PARTICIPANT } from '../../graphql/cudParticipant';
 import { MockedProvider } from 'react-apollo/test-utils';
 
 const originalError = console.error

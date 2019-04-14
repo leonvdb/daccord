@@ -5,7 +5,7 @@ import { IUser, IPollQuery } from '../../interfaces';
 import TextInputGroup from '../layout/TextInputGroup';
 import validateEmail from '../../utilities/validateEmail';
 import { Dispatch } from 'redux';
-import { CREATE_PARTICIPANT } from '../../graphql/createParticipant';
+import { CREATE_PARTICIPANT } from '../../graphql/cudParticipant';
 import { Mutation, compose, withApollo } from 'react-apollo';
 import { setAuthTokenAndUser } from '../../actions/authActions';
 import { SEND_AUTH_LINK } from '../../graphql/sendAuthLink';
