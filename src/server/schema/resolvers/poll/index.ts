@@ -1,7 +1,7 @@
 import { IResolvers } from 'graphql-tools';
 import { createPoll, updatePoll, deletePoll } from './cudPoll';
 import { createOption, deleteOption, updateOption } from './cudOption';
-import { createParticipant } from './cudParticipant';
+import { createParticipant, updateParticipant } from './cudParticipant';
 import { updateVotes } from './vote'
 import { Poll } from '../../../models/Poll';
 import { User } from '../../../models/User';
@@ -12,7 +12,7 @@ import { IVote } from '../../../../interfaces';
 
 export const resolvers: IResolvers = {
     Query: {
-        poll:(_, args) => {
+        poll: (_, args) => {
             return findPoll(args.id)
         },
         polls: () => {
@@ -20,8 +20,8 @@ export const resolvers: IResolvers = {
         },
         option: async (_, args) => {
             const poll = await findPoll(args.pollId)
-            for (const option of poll.options){
-                if (option.refId === args.optionId){
+            for (const option of poll.options) {
+                if (option.refId === args.optionId) {
                     return option
                 }
             }
@@ -35,6 +35,7 @@ export const resolvers: IResolvers = {
         updateOption: helmet(updateOption),
         deleteOption: helmet(deleteOption),
         createParticipant: helmet(createParticipant),
+        updateParticipant: helmet(updateParticipant),
         updateVotes: helmet(updateVotes)
     },
     Poll: {
@@ -56,9 +57,9 @@ export const resolvers: IResolvers = {
                 possibleVotes += 10
             })
             return {
-                totalOpposition: total, 
-                agreementInPercent : Math.round((1-total/possibleVotes)*100),
-                totalVotes: possibleVotes/10
+                totalOpposition: total,
+                agreementInPercent: Math.round((1 - total / possibleVotes) * 100),
+                totalVotes: possibleVotes / 10
             }
         },
         creator: (parent) => {
@@ -66,9 +67,9 @@ export const resolvers: IResolvers = {
         },
         userRating: (parent, _, context) => {
             let userRating = null;
-            if (context.user){
+            if (context.user) {
                 parent.votes.forEach((vote: IVote) => {
-                    if (context.user.id.toString() === vote.voter.toString()){
+                    if (context.user.id.toString() === vote.voter.toString()) {
                         userRating = vote.rating
                     }
                 })
@@ -79,7 +80,7 @@ export const resolvers: IResolvers = {
     Vote: {
         voter: (parent) => {
             const user = User.findById(parent.voter)
-            const pseudonym = getPseudonymOfUser(parent.voter.toString(),parent.parent().parent())
+            const pseudonym = getPseudonymOfUser(parent.voter.toString(), parent.parent().parent())
             return {
                 user,
                 pseudonym

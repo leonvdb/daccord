@@ -29,6 +29,11 @@ const Settings = (props: Props) => {
         mutation({ variables: { pollId: poll.refId, title, description } })
         setOpenEditField('')
     }
+    const onSubmitPseudonym = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
+        e.preventDefault()
+        mutation({ variables: { pollId: poll.refId, pseudonym } })
+        setOpenEditField('')
+    }
     const cancel = () => {
         setOpenEditField('')
     }
@@ -45,11 +50,19 @@ const Settings = (props: Props) => {
                 setValue={setPseudonym}
                 name="pseudonym"
                 placeholder="Enter Pseudonym"
-                onSubmit={onSubmit}
+                onSubmit={onSubmitPseudonym}
                 cancel={cancel}
                 handleEditClick={handleEditClick}
                 update={// tslint:disable-next-line jsx-no-lambda
-                    () => { console.log("updating") }} />
+                    (cache, { data: { updateParticipant } }) => {
+                        console.log(updateParticipant)
+                        // const poll: any = cache.readQuery({ query: getPoll, variables: { id: props.poll.refId } })
+                        // cache.writeQuery({
+                        //     query: getPoll,
+                        //     variables: { id: props.poll.refId },
+                        //     data: { poll: { ...poll.poll, title: updatePoll.title } },
+                        // });
+                    }} />
             {isCreator &&
                 <div>
                     <h2>Poll</h2>

@@ -21,6 +21,7 @@ type Mutation{
     updateOption(pollId: ID! optionId: ID!, title: String, description: String): Option!
     deleteOption(pollId: ID!, optionId: ID!): Boolean!
     createParticipant(pollId: ID!, email: String!, pseudonym: String!): CreateParticipantResponse!
+    updateParticipant(pollId: ID!, pseudonym: String!): String!
     sendAuthLink(pollId: ID!, email: String!): Boolean!
     updateVotes(pollId: ID!, votes: [VoteInput!]): [Option!]
 }
