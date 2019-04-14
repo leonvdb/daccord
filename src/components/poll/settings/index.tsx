@@ -8,6 +8,7 @@ import { UPDATE_PARTICIPANT } from '../../../graphql/cudParticipant';
 import { setPseudonym } from '../../../actions/userActions';
 import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
+import WithdrawModal from './WithdrawModal';
 
 interface Props extends PropsFromDispatch {
     poll: IPollQuery
@@ -63,6 +64,10 @@ const Settings = (props: Props) => {
                     (cache, { data: { updateParticipant } }) => {
                         props.setPseudonym(updateParticipant);
                     }} />
+            {!isCreator &&
+                <div>
+                    <WithdrawModal poll={poll} />
+                </div>}
             {isCreator &&
                 <div>
                     <h2>Poll</h2>
