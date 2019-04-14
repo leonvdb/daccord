@@ -48,8 +48,8 @@ test('<Settings> as Creator open delete Modal', () => {
     fireEvent.click(getByTestId('delete-button'));
     expect(getByTestId('delete-modal'));
 })
-test('<Settings> as Creator open delete Modal', async () => {
-    const { getByTestId, queryByTestId } = render(<WrappedSettings isCreator={true} />);
+test('<Settings> as Creator open delete Modal', () => {
+    const { getByTestId, queryByTestId, getByText } = render(<WrappedSettings isCreator={true} />);
     expect(queryByTestId('edit-title-form')).toBeFalsy();
     fireEvent.click(getByTestId('edit-title-button'));
     expect(getByTestId('edit-title-form'));
@@ -60,4 +60,5 @@ test('<Settings> as Creator open delete Modal', async () => {
         }
     })
     fireEvent.click(getByTestId('title-save-button'))
+    expect(getByText(updatedTitle))
 })
