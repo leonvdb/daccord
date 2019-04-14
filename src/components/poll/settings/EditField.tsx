@@ -16,6 +16,7 @@ interface Props {
     onSubmit: (e: any, mutation: any) => void
     cancel: () => void
     handleEditClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+    error?: string
 }
 
 const EditField = (props: Props) => {
@@ -38,6 +39,7 @@ const EditField = (props: Props) => {
                                 (e: React.ChangeEvent<any>) => { props.setValue(e.target.value) }}
                             name={props.name}
                             placeholder={props.placeholder}
+                            error={props.error ? props.error : undefined}
                             testId={`${props.name}-input`} />
                         <button data-testid={`${props.name}-save-button`}>Save</button>
                         <button data-testid={`${props.name}-cancel-button`} type="button" onClick={props.cancel}>cancel</button>

@@ -16,12 +16,18 @@ interface Props extends PropsFromDispatch {
     pseudonym: string
 }
 
+interface Errors {
+    pseudonym?: string,
+    title?: string
+}
+
 const Settings = (props: Props) => {
     const { poll, user } = props
     const [title, setTitle] = useState(poll.title)
     const [description, setDescription] = useState(poll.description)
     const [pseudonym, setPseudonym] = useState(props.pseudonym)
     const [openEditField, setOpenEditField] = useState('')
+    const [errors, setErrors]: [Errors, ({ }: Errors) => void] = useState({})
     const isCreator = poll.creator.id.toString() === user.id
 
     const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,20 +36,36 @@ const Settings = (props: Props) => {
     }
     const onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault()
+        const currentErrors: Errors = {}
+        if (title.length <= 0) { currentErrors.title = 'Please enter a Title' }
+        if (Object.keys(currentErrors).length > 0) {
+            setErrors(currentErrors)
+            return;
+        }
         mutation({ variables: { pollId: poll.refId, title, description } })
         setOpenEditField('')
+        setErrors({})
     }
     const onSubmitPseudonym = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
         e.preventDefault()
+        const currentErrors: Errors = {}
+        if (pseudonym.length <= 0) { currentErrors.pseudonym = 'Please enter a pseudonym' }
+        if (Object.keys(currentErrors).length > 0) {
+            setErrors(currentErrors)
+            return;
+        }
         mutation({ variables: { pollId: poll.refId, pseudonym } })
         setOpenEditField('')
+        setErrors({})
     }
     const cancel = () => {
         if (openEditField === 'title') setTitle(poll.title)
         if (openEditField === 'description') setDescription(poll.description)
         if (openEditField === 'pseudonym') setPseudonym(props.pseudonym)
         setOpenEditField('')
+        setErrors({})
     }
+
     return (
         <React.Fragment>
             <h1>Settings</h1>
@@ -60,6 +82,7 @@ const Settings = (props: Props) => {
                 onSubmit={onSubmitPseudonym}
                 cancel={cancel}
                 handleEditClick={handleEditClick}
+                error={errors.pseudonym}
                 update={// tslint:disable-next-line jsx-no-lambda
                     (cache, { data: { updateParticipant } }) => {
                         props.setPseudonym(updateParticipant);
@@ -84,6 +107,7 @@ const Settings = (props: Props) => {
                         onSubmit={onSubmit}
                         cancel={cancel}
                         handleEditClick={handleEditClick}
+                        error={errors.title}
                         update={// tslint:disable-next-line jsx-no-lambda
                             (cache, { data: { updatePoll } }) => {
                                 const poll: any = cache.readQuery({ query: getPoll, variables: { id: props.poll.refId } })
