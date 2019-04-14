@@ -82,3 +82,19 @@ test('<Settings> as Creator cancel editing title', () => {
     expect(queryByTestId('title-save-button')).toBeFalsy
     expect(getByText(mockPoll.title))
 })
+test('<Settings> as Creator form validation of title field', () => {
+    const { getByTestId, queryByTestId } = render(<WrappedSettings isCreator={true} />);
+    fireEvent.click(getByTestId('edit-title-button'));
+    expect(getByTestId('edit-title-form'));
+    const titleInput = (getByTestId('title-input') as HTMLInputElement);
+    fireEvent.change(titleInput, {
+        target: {
+            value: ''
+        }
+    });
+    fireEvent.click(getByTestId('title-save-button'));
+    expect(getByTestId('error-message'));
+    fireEvent.click(getByTestId('title-cancel-button'));
+    fireEvent.click(getByTestId('edit-title-button'));
+    expect(queryByTestId('error-message')).toBeFalsy();
+})
