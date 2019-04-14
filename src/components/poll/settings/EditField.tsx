@@ -40,7 +40,7 @@ const EditField = (props: Props) => {
                             placeholder={props.placeholder}
                             testId={`${props.name}-input`} />
                         <button data-testid={`${props.name}-save-button`}>Save</button>
-                        <button type="button" onClick={props.cancel}>cancel</button>
+                        <button data-testid={`${props.name}-cancel-button`} type="button" onClick={props.cancel}>cancel</button>
                     </form>
                 }}
             </Mutation> :

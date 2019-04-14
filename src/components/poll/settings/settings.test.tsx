@@ -54,7 +54,7 @@ test('<Settings> as Creator open delete Modal', () => {
     fireEvent.click(getByTestId('delete-button'));
     expect(getByTestId('delete-modal'));
 })
-test('<Settings> as Creator open delete Modal', () => {
+test('<Settings> as Creator edit title', () => {
     const { getByTestId, queryByTestId, getByText } = render(<WrappedSettings isCreator={true} />);
     expect(queryByTestId('edit-title-form')).toBeFalsy();
     fireEvent.click(getByTestId('edit-title-button'));
@@ -67,4 +67,18 @@ test('<Settings> as Creator open delete Modal', () => {
     })
     fireEvent.click(getByTestId('title-save-button'))
     expect(getByText(updatedTitle))
+})
+test('<Settings> as Creator cancel editing title', () => {
+    const { getByTestId, queryByTestId, getByText } = render(<WrappedSettings isCreator={true} />);
+    fireEvent.click(getByTestId('edit-title-button'));
+    expect(getByTestId('edit-title-form'));
+    const titleInput = (getByTestId('title-input') as HTMLInputElement)
+    fireEvent.change(titleInput, {
+        target: {
+            value: updatedTitle
+        }
+    })
+    fireEvent.click(getByTestId('title-cancel-button'));
+    expect(queryByTestId('title-save-button')).toBeFalsy
+    expect(getByText(mockPoll.title))
 })
