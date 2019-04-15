@@ -15,25 +15,32 @@ export const resolvers: IResolvers = {
                 id: '',
                 email: '',
             }
+            let isParticipant = false
             if (args.authToken) {
                 if (poll.creatorToken === args.authToken) {
                     token = createJsonWebToken(poll.creator, 'CREATOR', false, args.id)
                     user = await getUser(poll.creator)
                     pseudonym = poll.creatorPseudonym
+                    isParticipant = true
                 } else {
-                    for (const participant of poll.participants){
+                    for (const participant of poll.participants) {
                         if (participant.token === args.authToken) {
                             token = createJsonWebToken(participant.id, 'PARTICIPANT', false, args.id)
                             user = await getUser(participant.id)
                             pseudonym = participant.pseudonym
+                            isParticipant = true
                         }
                     }
                 }
-            } else if (context.user){
+            } else if (context.user) {
                 user = await getUser(context.user.id)
-                pseudonym = getPseudonymOfUser(user.id, poll)
-            }  
-            return {token, user, pseudonym }
+                const relatedPseudonym = getPseudonymOfUser(user.id, poll)
+                if (relatedPseudonym) {
+                    pseudonym = relatedPseudonym
+                    isParticipant = true
+                }
+            }
+            return { isParticipant, token, user, pseudonym }
         }
 
     },

@@ -111,5 +111,5 @@ export function getPseudonymOfUser(userId: string, poll: IPollDocument) {
             }
         }
     }
-    return ''
+    return null
 }

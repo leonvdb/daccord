@@ -30,7 +30,7 @@ query($id: ID!){
     }
 }
 `
-;
+    ;
 
 export const getPollAndAuthParticipant = gql`
 query($id: ID!, $authToken: String!){
@@ -61,6 +61,7 @@ query($id: ID!, $authToken: String!){
         }
     }
     authUser(authToken: $authToken, id: $id){
+        isParticipant
         token
         user{
             id
