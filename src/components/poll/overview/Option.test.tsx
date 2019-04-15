@@ -16,6 +16,7 @@ test('<Option> with user that is not creator', () => {
                     userRating: null,
                     result: {
                         totalOpposition: 0,
+                        participationInPercent: 100,
                         agreementInPercent: 100
                     }
                 }}

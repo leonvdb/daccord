@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IPollQuery, IUser } from '../../../interfaces';
 import DeleteModal from './DeleteModal';
 import { UPDATE_POLL } from '../../../graphql/cudPoll';
@@ -29,6 +29,10 @@ const Settings = (props: Props) => {
     const [openEditField, setOpenEditField] = useState('')
     const [errors, setErrors]: [Errors, ({ }: Errors) => void] = useState({})
     const isCreator = poll.creator.id.toString() === user.id
+
+    useEffect(() => {
+        if (props.pseudonym !== pseudonym && openEditField !== 'pseudonym') setPseudonym(props.pseudonym);
+    })
 
     const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         setOpenEditField(e.currentTarget.name)

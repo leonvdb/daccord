@@ -14,6 +14,7 @@ import Poll from './components/poll';
 import './App.css';
 import i18n from './i18n';
 import setAuthToken from './utilities/setAuthToken';
+import { decode } from 'jsonwebtoken';
 
 export const client = new ApolloClient({
   uri: 'http://localhost:5000/graphql',
@@ -27,7 +28,12 @@ export const client = new ApolloClient({
 })
 
 if (localStorage.jwtToken) {
-  setAuthToken(localStorage.jwtToken)
+  const { exp }: any = decode(localStorage.jwtToken.replace('Bearer ', ''))
+  if (Date.now() / 1000 > exp) {
+    localStorage.removeItem('jwtToken');
+  } else {
+    setAuthToken(localStorage.jwtToken)
+  }
 }
 
 class App extends React.Component {

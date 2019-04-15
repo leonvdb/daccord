@@ -48,7 +48,7 @@ type Voter{
 type Result{
       totalOpposition: Int
       agreementInPercent: Int
-      totalVotes: Int
+      participationInPercent: Int
 }
 
 input VoteInput{

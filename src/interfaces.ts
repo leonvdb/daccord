@@ -50,6 +50,7 @@ export interface IVoterQuery {
 
 export interface IResult {
     totalOpposition: number
+    participationInPercent: number
     agreementInPercent: number
 }
 export interface IOption extends INewOption {

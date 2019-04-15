@@ -21,6 +21,7 @@ const mockPoll: IPollQuery = {
         userRating: 8,
         result: {
             totalOpposition: 8,
+            participationInPercent: 100,
             agreementInPercent: 20
         }
     }],

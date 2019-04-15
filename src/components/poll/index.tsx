@@ -34,7 +34,8 @@ interface IData {
 }
 
 interface IAuthUser {
-    token: string,
+    isParticipant: boolean
+    token: string
     user: IUser
     pseudonym: string
 }
@@ -43,10 +44,12 @@ interface IAuthUser {
 class Poll extends React.Component<Props> {
 
     componentDidUpdate() {
-        if (!this.props.data.loading && !this.props.user.id) {
-            const { token, user, pseudonym } = this.props.data.authUser
-            this.props.setAuthTokenAndUser(user, token)
-            this.props.setPseudonym(pseudonym)
+        if (!this.props.data.loading && !this.props.user.id && this.props.data.authUser) {
+            const { isParticipant, token, user, pseudonym } = this.props.data.authUser
+            if (isParticipant) {
+                this.props.setAuthTokenAndUser(user, token)
+                this.props.setPseudonym(pseudonym)
+            }
         }
         if (this.props.location.search && this.props.user.id) {
             this.props.history.push(`/poll/${this.props.match.params.poll_id}`)
@@ -59,13 +62,13 @@ class Poll extends React.Component<Props> {
 
     render() {
         const { user } = this.props;
-        const { loading, error } = this.props.data
+        const { loading, error }: any = this.props.data
         const pollResponse = this.props.data.poll
         const body = () => {
             if (loading) return <p>Loading...</p>
             if (error) {
                 console.log({ error })
-                return <p>Error :( </p>
+                return <p>{error.message ? error.message.replace('GraphQL error: ', '') : 'Error :('}</p>
             }
             if (pollResponse) {
                 const { poll } = this.props.data

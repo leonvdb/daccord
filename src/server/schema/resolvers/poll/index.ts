@@ -60,7 +60,7 @@ export const resolvers: IResolvers = {
             return {
                 totalOpposition: total,
                 agreementInPercent: Math.round((1 - total / possibleVotes) * 100),
-                totalVotes: possibleVotes / 10
+                participationInPercent: Math.round(((possibleVotes / 10) / parent.parent().participants.length) * 100)
             }
         },
         creator: (parent) => {
