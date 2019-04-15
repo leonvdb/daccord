@@ -22,6 +22,7 @@ query($id: ID!){
             result{
                 totalOpposition
                 agreementInPercent
+                participationInPercent
             }
             creator{
                 id
@@ -54,6 +55,7 @@ query($id: ID!, $authToken: String!){
             result{
                 totalOpposition
                 agreementInPercent
+                participationInPercent
             }
             creator{
                 id

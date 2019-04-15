@@ -10,6 +10,7 @@ mutation UpdateVotes($pollId: ID!, $votes: [VoteInput!]){
         result{
             totalOpposition
             agreementInPercent
+            participationInPercent
         }
         creator{
             id
