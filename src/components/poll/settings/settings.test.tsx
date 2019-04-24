@@ -88,7 +88,7 @@ test('<Settings> as Creator cancel editing title', () => {
         }
     })
     fireEvent.click(getByTestId('title-cancel-button'));
-    expect(queryByTestId('title-save-button')).toBeFalsy
+    expect(queryByTestId('title-save-button')).toBeFalsy();
     expect(getByText(mockPoll.title))
 })
 test('<Settings> as Creator form validation of title field', () => {
