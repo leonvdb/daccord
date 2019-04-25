@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { primary } from '../../../style/utilities/Colors'
+import { UnstyledLink } from '../../../style/elements/Link';
+import { primary, white } from '../../../style/utilities/Colors';
 
 interface Props {
     pollId: string
@@ -9,17 +9,17 @@ interface Props {
 }
 
 
-const SideNav = ({className, pollId}: Props) => {
+const SideNav = ({ className, pollId }: Props) => {
     return (
         <div className={className}>
             <div style={{ marginTop: "20rem", width: "100%", textAlign: "center", display: "inline-block" }}>
-                <Link className="unstyled-link" to={`/poll/${pollId}/`}>Overview</Link>
+                <UnstyledLink to={`/poll/${pollId}/`}>Overview</UnstyledLink>
             </div>
             <div style={{ marginTop: "3rem", width: "100%", textAlign: "center" }}>
-                <Link className="unstyled-link" to={`/poll/${pollId}/results`}>Results</Link>
+                <UnstyledLink to={`/poll/${pollId}/results`}>Results</UnstyledLink>
             </div>
             <div style={{ marginTop: "3rem", width: "100%", textAlign: "center" }}>
-                <Link className="unstyled-link" to={`/poll/${pollId}/settings`}>Settings</Link>
+                <UnstyledLink to={`/poll/${pollId}/settings`}>Settings</UnstyledLink>
             </div>
         </div>
     )
@@ -28,9 +28,9 @@ const SideNav = ({className, pollId}: Props) => {
 export default styled(SideNav)`
 max-width: inherit;
 width: 100%;
-height: 92vh;
+height: 100%;
 position: fixed;
 bottom: 0px;
 background: ${primary};
-color: #fff;
+color: ${white};
 `
