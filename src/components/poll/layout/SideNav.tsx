@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { UnstyledLink } from '../../../style/elements/Link';
 import { primary, white } from '../../../style/utilities/Colors';
 import { fixedRelativeToParent } from '../../../style/utilities/Position';
+import Plus from '../../../plus.svg';
+import { Link } from 'react-router-dom';
 
 interface Props {
     pollId: string
@@ -29,6 +31,11 @@ const SideNav = ({ className, pollId }: Props) => {
             </PositionWrapper>
             <PositionWrapper topInPercent={60}>
                 <UnstyledLink to={`/poll/${pollId}/settings`}>Settings</UnstyledLink>
+            </PositionWrapper>
+            <PositionWrapper topInPercent={92}>
+                <Link to={'/create'}>
+                <img src={Plus} alt="Create Poll" />
+                </Link>
             </PositionWrapper>
         </div>
     )
