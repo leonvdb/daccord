@@ -1,5 +1,5 @@
 import { SET_JWT_TOKEN } from '../actions/types';
-import { AppAction, IJwtPayload } from 'src/interfaces';
+import { AppAction, IJwtPayload } from '../interfaces';
 
 export interface AuthReducer {
     jwt: IJwtPayload

@@ -1,6 +1,6 @@
 import { CLEAR_ERROR, SET_ERROR } from './types';
 import { ActionCreator } from 'redux';
-import { AppAction } from 'src/interfaces';
+import { AppAction } from '../interfaces';
 
 export const clearError: ActionCreator<AppAction> = (error: string) => {
     //TODO: Don't add dispatch here, but in MapDispatchToProps instead and Type properly

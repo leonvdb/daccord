@@ -1,5 +1,5 @@
 import { secretOrKey } from '../config/secrets';
-import { IJwtPayloadData } from 'src/interfaces';
+import { IJwtPayloadData } from '../../interfaces';
 import * as jwt from 'jsonwebtoken';
 
 export function createJsonWebToken(userId: string, userType: string, isForLoggedInAccount: boolean, forPollId?: string): string {

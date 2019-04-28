@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import TextInputGroup from '../../layout/TextInputGroup';
-import { IOptionQuery } from 'src/interfaces';
+import { IOptionQuery } from '../../../interfaces';
 import { Mutation } from 'react-apollo';
 import { UPDATE_OPTION, DELETE_OPTION } from '../../../graphql/cudOption';
 import { getPoll } from '../../../graphql/getPoll';

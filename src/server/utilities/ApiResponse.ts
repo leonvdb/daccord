@@ -1,4 +1,4 @@
-interface IApiResponse<TPayload>{
+interface IApiResponse<TPayload> {
     message: string,
     payload: TPayload
 }
@@ -12,8 +12,8 @@ export class ApiResponse<TPayload> implements IApiResponse<TPayload> {
      * @param payload Data returned by the API endpoint
      * @param message Message from the API endpoint
      */
-    constructor(payload?: TPayload, message?: string) {
-        if (payload) this.payload = payload
+    constructor(payload: TPayload, message?: string) {
+        this.payload = payload
         if (message) this.message = message
     }
 

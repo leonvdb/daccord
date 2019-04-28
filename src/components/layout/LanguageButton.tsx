@@ -4,7 +4,7 @@ import { DropdownItem } from 'reactstrap';
 import { setLanguage } from '../../actions/langActions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { AppAction } from 'src/interfaces';
+import { AppAction } from '../../interfaces';
 
 interface Props extends PropsFromDispatch {
   langName: string,

@@ -1,5 +1,5 @@
 import { SET_PSEUDONYM } from '../actions/types';
-import { AppAction } from 'src/interfaces';
+import { AppAction } from '../interfaces';
 
 export interface ParticipantReducer {
     pseudonym: string

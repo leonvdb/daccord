@@ -1,4 +1,4 @@
-import { AppAction, IVoteNew } from 'src/interfaces';
+import { AppAction, IVoteNew } from '../interfaces';
 import { HANDLE_RATING_CHANGE, CLEAR_RATING_CHANGES } from '../actions/types'
 
 export interface VoteReducer {
@@ -12,17 +12,17 @@ const initialState: VoteReducer = {
 
 export default function (state = initialState, action: AppAction) {
     switch (action.type) {
-        case HANDLE_RATING_CHANGE: 
+        case HANDLE_RATING_CHANGE:
             let newVote = true;
             const votes = state.votes.map(vote => {
                 if (vote.optionId === action.payload.optionId) {
                     newVote = false
-                    return {optionId: vote.optionId, rating: action.payload.rating}
+                    return { optionId: vote.optionId, rating: action.payload.rating }
                 }
                 return vote;
             })
             if (newVote) votes.push(action.payload)
-            
+
             return {
                 ...state,
                 votes

@@ -6,12 +6,12 @@
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "npm-run-all -l -p mongodb server client",
-    "server": "nodemon --signal SIGTERM --watch \"src/**/*.ts\" --ignore \"src/**/*.spec.ts\" --exec \"node_modules/.bin/ts-node\" src/server/server.ts",
+    "server": "ts-node --inspect -- src/server/server.ts",
     "mongodb": "mongod --dbpath data/db",
-    "client": "react-scripts-ts start",
-    "build-client": "react-scripts-ts build",
-    "test-client": "react-scripts-ts test --verbose false",
-    "eject": "react-scripts-ts eject",
+    "client": "react-scripts start",
+    "build-client": "react-scripts build",
+    "test-client": "react-scripts test --verbose false",
+    "eject": "react-scripts eject",
     "test": "jest --watch --verbose false"
   },
   "repository": {
@@ -56,7 +56,6 @@
     "react-redux": "^5.1.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
-    "react-scripts-ts": "^4.0.8",
     "reactstrap": "^6.5.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",

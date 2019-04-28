@@ -1,7 +1,7 @@
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { PassportStatic } from 'passport'
 import { secretOrKey } from './secrets'
-import { IJwtPayload } from 'src/interfaces';
+import { IJwtPayload } from '../../interfaces';
 import { User } from '../models/User';
 
 const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()

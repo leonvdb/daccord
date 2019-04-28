@@ -1,5 +1,5 @@
 import { CLEAR_ERROR, SET_ERROR } from '../actions/types';
-import { AppAction } from 'src/interfaces';
+import { AppAction } from '../interfaces';
 
 const initialState: string[] = []
 

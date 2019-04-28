@@ -4,27 +4,23 @@ import { ApiError } from './ApiError';
 import { ObjectID } from 'bson';
 
 
-export function findOrCreateUser(email: string) {
-    return User.findOne({ email })
-        .then((user: IUserDocument) => {
-            if (!user) {
-                // Create new poll with user.id
-                return createUser(email);
-            }
-            return user;
-        });
+export async function findOrCreateUser(email: string) {
+    const user: IUserDocument | null = await User.findOne({ email })
+    if (!user) {
+        // Create new poll with user.id
+        return createUser(email);
+    }
+    return user;
 }
 
-export function findUserById(userId: string) {
-    return User.findById(userId)
-        .then((user: IUserDocument) => {
-            if (!user) {
-                // Create new poll with user.id
-                const message = `There is no user for the ID ${userId}`
-                Promise.reject(message)
-            }
-            return user;
-        });
+export async function findUserById(userId: string) {
+    const user: IUserDocument | null = await User.findById(userId)
+    if (!user) {
+        // Create new poll with user.id
+        const message = `There is no user for the ID ${userId}`
+        Promise.reject(message)
+    }
+    return user;
 }
 
 
@@ -59,7 +55,7 @@ export function findOption(poll: IPollDocument, optId: string) {
     }
 }
 
-function validatePoll(poll: IPollDocument, ): IPollDocument {
+function validatePoll(poll: IPollDocument | null): IPollDocument {
     //Check if poll exists
     if (!poll) {
         // This should work because it is handled by the asnycHandler middleware

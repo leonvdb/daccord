@@ -1,5 +1,5 @@
 import { SET_LANGUAGE } from '../actions/types';
-import { AppAction } from 'src/interfaces';
+import { AppAction } from '../interfaces';
 
 export interface LanguageReducer {
     languageLabel: string

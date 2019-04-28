@@ -1,5 +1,5 @@
 import { ActionCreator } from 'redux';
-import { AppAction, IJwtPayload } from 'src/interfaces';
+import { AppAction, IJwtPayload } from '../interfaces';
 import { SET_CURRENT_USER, SET_PSEUDONYM } from './types';
 
 

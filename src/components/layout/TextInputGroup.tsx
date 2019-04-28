@@ -7,7 +7,7 @@ interface Props {
     value: string,
     error?: string,
     placeholder: string,
-    onChange: (event: React.ChangeEvent) => void,
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
     type?: string,
     classNames?: string,
     testId: string

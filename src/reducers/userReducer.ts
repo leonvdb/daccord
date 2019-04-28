@@ -1,5 +1,5 @@
 import { SET_CURRENT_USER } from '../actions/types';
-import { AppAction, IUser } from 'src/interfaces';
+import { AppAction, IUser } from '../interfaces';
 
 export interface UserReducer {
     user: IUser

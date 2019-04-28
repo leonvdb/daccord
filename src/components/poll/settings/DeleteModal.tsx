@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { compose, withApollo } from 'react-apollo';
-import { IPollQuery } from 'src/interfaces';
+import { IPollQuery } from '../../../interfaces';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Mutation } from 'react-apollo';
 import { DELETE_POLL } from '../../../graphql/cudPoll'
