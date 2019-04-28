@@ -8,23 +8,28 @@ interface Props {
     pollId: string
     className?: string
 }
-const PositionWrapper= styled.div`
-${fixedRelativeToParent({topInPercent: 50})}
+
+interface PositionWrapperProps {
+    topInPercent: number
+}
+
+const PositionWrapper = styled.div<PositionWrapperProps>`
+${({ topInPercent }) => fixedRelativeToParent({ topInPercent })}
 `
 
 
 const SideNav = ({ className, pollId }: Props) => {
     return (
         <div className={className}>
-        <PositionWrapper>
+            <PositionWrapper topInPercent={40}>
                 <UnstyledLink to={`/poll/${pollId}/`}>Overview</UnstyledLink>
-        </PositionWrapper>
-            <div style={{ marginTop: "3rem", width: "100%", textAlign: "center" }}>
+            </PositionWrapper>
+            <PositionWrapper topInPercent={50}>
                 <UnstyledLink to={`/poll/${pollId}/results`}>Results</UnstyledLink>
-            </div>
-            <div style={{ marginTop: "3rem", width: "100%", textAlign: "center" }}>
+            </PositionWrapper>
+            <PositionWrapper topInPercent={60}>
                 <UnstyledLink to={`/poll/${pollId}/settings`}>Settings</UnstyledLink>
-            </div>
+            </PositionWrapper>
         </div>
     )
 }
