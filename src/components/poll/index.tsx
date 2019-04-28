@@ -81,12 +81,7 @@ class Poll extends React.Component<Props> {
                         ) : this.props.match.params.pollNavRoute === "settings" ? (
                             <Settings poll={poll} user={user} pseudonym={this.props.pseudonym} />
                         ) : (
-                                    <React.Fragment>
-                                        <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                                        {poll.description && <p>Description: {poll.description}</p>}
-                                        <p>participating as: <i>{this.props.pseudonym}</i></p>
                                         <Overview poll={poll} />
-                                    </React.Fragment>
                                 )
                     }
 
