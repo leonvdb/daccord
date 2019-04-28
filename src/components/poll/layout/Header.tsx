@@ -29,6 +29,7 @@ const Header = ({ poll, pseudonym, className }: Props) => {
 
 export default styled(Header)`
 box-shadow: 0px 2px 4px rgba(104, 104, 104, 0.25);
+background-color: #FFF;
 height: 76px;
 button{
     float: right;
