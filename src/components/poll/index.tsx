@@ -18,7 +18,7 @@ import { ApolloClient } from 'apollo-boost';
 import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
-import Header from '../layout/Header';
+import Header from './layout/Header';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -74,18 +74,14 @@ class Poll extends React.Component<Props> {
                 const { poll } = this.props.data
                 return <React.Fragment>
                     {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll} />}
+                    <Header poll={poll} pseudonym={this.props.pseudonym} />
                     {
                         this.props.match.params.pollNavRoute === "results" ? (
                             <Results poll={poll} user={user} />
                         ) : this.props.match.params.pollNavRoute === "settings" ? (
                             <Settings poll={poll} user={user} pseudonym={this.props.pseudonym} />
                         ) : (
-                                    <React.Fragment>
-                                        <h1 className="display-4 text-center mt-5">{poll.title}</h1>
-                                        {poll.description && <p>Description: {poll.description}</p>}
-                                        <p>participating as: <i>{this.props.pseudonym}</i></p>
                                         <Overview poll={poll} />
-                                    </React.Fragment>
                                 )
                     }
 
@@ -94,7 +90,6 @@ class Poll extends React.Component<Props> {
         }
         return (
             <React.Fragment>
-                <Header />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-1" style={{ paddingLeft: "0px", paddingRight: "0px" }}>

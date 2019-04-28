@@ -1,28 +1,53 @@
 import * as React from 'react';
+import styled from 'styled-components';
+import { UnstyledLink } from '../../../style/elements/Link';
+import { primary, white } from '../../../style/utilities/Colors';
+import { fixedRelativeToParent } from '../../../style/utilities/Position';
+import Plus from '../../../images/plus.svg';
 import { Link } from 'react-router-dom';
 
 interface Props {
     pollId: string
+    className?: string
 }
 
-class SideNav extends React.Component<Props> {
-    render(){
-        return (
-            <div className="bg-secondary" style={{maxWidth: "inherit", width: "100%", height: "92vh", position: "fixed", bottom: "0px"}}>
-                                <div>
-                                    <div style={{ marginTop: "20rem", width: "100%", textAlign: "center", display: "inline-block"}}>
-                                    <Link className="unstyled-link" to={`/poll/${this.props.pollId}/`}>Overview</Link>
-                                    </div>
-                                    <div style={{ marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                                    <Link className="unstyled-link" to={`/poll/${this.props.pollId}/results`}>Results</Link>
-                                    </div>
-                                    <div style={{ marginTop: "3rem", width: "100%", textAlign: "center"}}>
-                                        <Link className="unstyled-link" to={`/poll/${this.props.pollId}/settings`}>Settings</Link>
-                                    </div>
-                                </div>
-                            </div>
-        )
-    }
+interface PositionWrapperProps {
+    topInPercent: number
 }
 
-export default SideNav;
+const PositionWrapper = styled.div<PositionWrapperProps>`
+${({ topInPercent }) => fixedRelativeToParent({ topInPercent })}
+`
+
+
+const SideNav = ({ className, pollId }: Props) => {
+    return (
+        <div className={className}>
+            <PositionWrapper topInPercent={40}>
+                <UnstyledLink to={`/poll/${pollId}/`}>Overview</UnstyledLink>
+            </PositionWrapper>
+            <PositionWrapper topInPercent={50}>
+                <UnstyledLink to={`/poll/${pollId}/results`}>Results</UnstyledLink>
+            </PositionWrapper>
+            <PositionWrapper topInPercent={60}>
+                <UnstyledLink to={`/poll/${pollId}/settings`}>Settings</UnstyledLink>
+            </PositionWrapper>
+            <PositionWrapper topInPercent={92}>
+                <Link to={'/create'}>
+                <img src={Plus} alt="Create Poll" />
+                </Link>
+            </PositionWrapper>
+        </div>
+    )
+}
+
+export default styled(SideNav)`
+text-align: center;
+max-width: inherit;
+width: 100%;
+height: 100%;
+position: fixed;
+bottom: 0px;
+background: ${primary};
+color: ${white};
+`

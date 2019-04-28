@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/index.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './i18n';
