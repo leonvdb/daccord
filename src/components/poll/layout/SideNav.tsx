@@ -23,6 +23,9 @@ ${({ topInPercent }) => fixedRelativeToParent({ topInPercent })}
 const SideNav = ({ className, pollId }: Props) => {
     return (
         <div className={className}>
+            <PositionWrapper topInPercent={10}>
+            <UnstyledLink to={'/'}>Logo</UnstyledLink>
+            </ PositionWrapper>
             <PositionWrapper topInPercent={40}>
                 <UnstyledLink to={`/poll/${pollId}/`}>Overview</UnstyledLink>
             </PositionWrapper>
