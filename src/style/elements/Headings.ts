@@ -1,7 +1,13 @@
 import styled from 'styled-components';
-import { black } from '../utilities';
+import { blackBlue, black, label, heading } from '../utilities';
 
-export const Heading = styled.h1`
-color: ${black};
+export const Heading = styled.h3`
+color: ${blackBlue};
 display: inline-block;
+${heading}
+`
+
+export const Label = styled.h5`
+color: ${black}
+${label}
 `
