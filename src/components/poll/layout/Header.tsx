@@ -12,25 +12,35 @@ interface Props {
     className?: string
 }
 
+interface TableCellWrapperProps {
+    widthInPercent: number
+}
+
+const TableCellWrapper = styled.div<TableCellWrapperProps>`
+    display: table-cell;
+    vertical-align: middle;
+    width: ${({ widthInPercent }) => widthInPercent}%;
+`;
+
 const Header = ({ poll, pseudonym, className }: Props) => {
 
     const [showDescription, setShowDescription] = useState(false);
     return (
         <div className={className}>
-            <div className="center-children-vertically">
+            <TableCellWrapper widthInPercent={98}>
                 <Heading>
                     {poll.title}
                 </Heading>
                 <img onClick={// tslint:disable-next-line jsx-no-lambda
                     () => setShowDescription(!showDescription)}
                     src={Expand} alt="show description" />
-            </div>
-            <div className="center-children-vertically">
-                <button>{pseudonym}</button>
-            </div>
-            <div className="center-children-vertically">
+            </TableCellWrapper>
+            <TableCellWrapper widthInPercent={1}>
                 <SecondaryButton>Invite</SecondaryButton>
-            </div>
+            </TableCellWrapper>
+            <TableCellWrapper widthInPercent={1}>
+                <button>{pseudonym}</button>
+            </TableCellWrapper>
             {showDescription && <p>Description: {poll.description} </p>}
         </div>
     )
@@ -45,16 +55,6 @@ box-shadow: 0px 2px 4px rgba(104, 104, 104, 0.25);
 background-color: #FFF;
 height: ${headerHeightInRem}rem;
 padding: 0 3.625rem;
-.center-children-vertically{
-    display: table-cell;
-    vertical-align: middle;
-}
-.float-right{
-    float: right;
-}
-button{
-    float: right;
-}
 ${Heading}{
     margin: 0;
 }
