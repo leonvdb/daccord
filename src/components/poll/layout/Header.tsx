@@ -4,6 +4,7 @@ import { IPollQuery } from '../../../interfaces';
 import { Heading, SecondaryButton } from '../../../style/elements';
 import { headerHeightInRem } from '../../../style/utilities';
 import Expand from '../../../images/expand.svg';
+import InviteIcon from '../../../images/invite-icon.svg';
 
 interface Props {
     poll: IPollQuery
@@ -35,7 +36,7 @@ const Header = ({ poll, pseudonym, className }: Props) => {
                     src={Expand} alt="show description" />
             </TableCellWrapper>
             <TableCellWrapper widthInPercent={1}>
-                <SecondaryButton>Invite</SecondaryButton>
+                <SecondaryButton><img className="slight-up" src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
             </TableCellWrapper>
             <TableCellWrapper widthInPercent={1}>
                 <button>{pseudonym}</button>
@@ -56,6 +57,15 @@ height: ${headerHeightInRem}rem;
 padding: 0 3.625rem;
 ${Heading}{
     margin: 0;
+}
+button{
+    p{
+        display: inline-block;
+        margin: 0 0 0 0.4rem;
+    }
+}
+.slight-up{
+    margin: 0 0 0.23rem 0;
 }
 
 `;
