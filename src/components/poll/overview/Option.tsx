@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, {useState} from 'react'
 import { IOptionQuery } from '../../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
@@ -13,35 +13,26 @@ interface Props extends PropsFromDispatch {
     userRating: number | null
 }
 
-class Option extends React.Component<Props>{
-    state = {
-        modalOpen: false,
+const Option = (props: Props) => {
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const onClick = () => {
+        setModalOpen(true);
     }
 
-    onClick = () => {
-        this.setState({
-            modalOpen: true
-        })
+    const toggle = () => {
+        setModalOpen(!modalOpen)
     }
-
-    toggle = () => {
-        this.setState({
-            modalOpen: !this.state.modalOpen
-        })
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        props.handleRatingChange(props.option.refId, parseInt(e.target.value, 10))
     }
-    onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.handleRatingChange(this.props.option.refId, parseInt(e.target.value, 10))
-    }
-    render() {
-
-        const { title, description, creator } = this.props.option;
-        const { modalOpen } = this.state
-        const isCreator = creator.id.toString() === this.props.userId.toString()
+        const { title, description, creator } = props.option;
+        const isCreator = creator.id.toString() === props.userId.toString()
 
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div className="card" style={{ height: 170, cursor: 'pointer' }}>
-                    <div className="card-header" data-testid="option-header" onClick={this.onClick}>
+                    <div className="card-header" data-testid="option-header" onClick={onClick}>
                         <h5 className="card-title d-inline-block">{title}</h5>
                     </div>
                     <div className="card-body">
@@ -50,29 +41,28 @@ class Option extends React.Component<Props>{
                         <form >
                             <input
                                 data-testid="rating-input"
-                                onChange={this.onChange}
-                                value={this.props.userRating === null ? "" : this.props.userRating.toString()}
+                                onChange={onChange}
+                                value={props.userRating === null ? "" : props.userRating.toString()}
                                 className="mb-5" type="text" style={{ width: "30px" }} />
                         </form>
                     </div>
                 </div>
                 {isCreator ? (
                     <OptionEditModal
-                        pollId={this.props.pollId}
-                        option={this.props.option}
+                        pollId={props.pollId}
+                        option={props.option}
                         modalOpen={modalOpen}
-                        toggle={this.toggle} />
+                        toggle={toggle} />
                 ) : (
                         <OptionReadModal
                             title={title}
                             description={description}
                             modalOpen={modalOpen}
-                            toggle={this.toggle} />
+                            toggle={toggle} />
                     )
                 }
             </div >
         )
-    }
 }
 
 interface PropsFromDispatch {
