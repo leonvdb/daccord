@@ -20,7 +20,7 @@ import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
-import {headerHeightInRem} from '../../style/utilities/Position';
+import {headerHeightInRem} from '../../style/utilities';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {

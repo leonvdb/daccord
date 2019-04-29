@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IPollQuery } from '../../../interfaces';
-import { Heading } from '../../../style/elements/Headings';
-import { SecondaryButton } from '../../../style/elements/Buttons';
-import { headerHeightInRem } from '../../../style/utilities/Position';
+import { Heading, SecondaryButton } from '../../../style/elements';
+import { headerHeightInRem } from '../../../style/utilities';
 import Expand from '../../../images/expand.svg';
 
 interface Props {

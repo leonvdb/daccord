@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { white } from '../utilities/Colors';
+import { white } from '../utilities';
 
 export const UnstyledLink = styled(Link)`
     background: none;

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { UnstyledLink } from '../../../style/elements/Link';
-import { primary, white } from '../../../style/utilities/Colors';
-import { fixedRelativeToParent } from '../../../style/utilities/Position';
+import { UnstyledLink } from '../../../style/elements';
+import { primary, white, fixedRelativeToParent } from '../../../style/utilities';
 import Plus from '../../../images/plus.svg';
 import { Link } from 'react-router-dom';
 

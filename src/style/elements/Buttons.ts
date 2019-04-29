@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { darkGray, white } from '../utilities/Colors'
+import { darkGray, white } from '../utilities'
 
 export const SecondaryButton = styled.button`
 color: ${darkGray};
