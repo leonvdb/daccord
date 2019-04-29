@@ -20,7 +20,7 @@ import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
-import {headerHeightInRem} from '../../style/utilities';
+import {headerHeightInRem} from '../../style/utilities/Position';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -44,6 +44,8 @@ interface IAuthUser {
 
 const PositionWrapper = styled.div`
 padding: ${headerHeightInRem}rem 0 0;
+width: 100%;
+max-width: inherit;
 `
 class Poll extends React.Component<Props> {
 

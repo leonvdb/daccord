@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IPollQuery } from '../../../interfaces';
-import { Heading, SecondaryButton, Label } from '../../../style/elements';
+import { Heading, SecondaryButton, Label, TableCellWrapper } from '../../../style/elements';
 import { headerHeightInRem } from '../../../style/utilities';
 import Expand from '../../../images/expand.svg';
 import InviteIcon from '../../../images/invite-icon.svg';
@@ -11,16 +11,6 @@ interface Props {
     pseudonym: string
     className?: string
 }
-
-interface TableCellWrapperProps {
-    widthInPercent: number
-}
-
-const TableCellWrapper = styled.div<TableCellWrapperProps>`
-    display: table-cell;
-    vertical-align: middle;
-    width: ${({ widthInPercent }) => widthInPercent}%;
-`;
 
 const Header = ({ poll, pseudonym, className }: Props) => {
 
