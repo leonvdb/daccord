@@ -7,6 +7,11 @@ const fontWeights = {
 
 export const heading = css`
 font-size: 1.75rem;
+font-weight: ${fontWeights.medium};
+`
+export const headingTwo = css`
+font-size: 1.125rem;
+font-weight: normal;
 `
 
 export const buttonLabel = css`
@@ -15,6 +20,6 @@ font-weight: ${fontWeights.medium};
 `;
 
 export const label = css`
-fonst-size: 1.125rem;
+font-size: 1.125rem;
 font-weight: ${fontWeights.light};
 `

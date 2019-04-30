@@ -82,7 +82,7 @@ class AddOption extends React.Component<Props, State> {
         const { title, description, errors, addOptionOpen } = this.state
         return (
 
-            <div className="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center align-items-center">
+            <div>
                 <button
                     id="Modal"
                     onClick={this.toggle}

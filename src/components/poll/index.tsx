@@ -20,7 +20,7 @@ import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
-import {headerHeightInRem} from '../../style/utilities/Position';
+import { headerHeightInRem } from '../../style/utilities/Position';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -43,9 +43,7 @@ interface IAuthUser {
 }
 
 const PositionWrapper = styled.div`
-padding: ${headerHeightInRem}rem 0 0;
-width: 100%;
-max-width: inherit;
+padding: ${headerHeightInRem}rem 5.3125rem 0;
 `
 class Poll extends React.Component<Props> {
 
@@ -82,16 +80,16 @@ class Poll extends React.Component<Props> {
                     {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll} />}
                     <Header poll={poll} pseudonym={this.props.pseudonym} />
                     <PositionWrapper>
-                    {
-                        this.props.match.params.pollNavRoute === "results" ? (
-                            <Results poll={poll} user={user} />
+                        {
+                            this.props.match.params.pollNavRoute === "results" ? (
+                                <Results poll={poll} user={user} />
                             ) : this.props.match.params.pollNavRoute === "settings" ? (
                                 <Settings poll={poll} user={user} pseudonym={this.props.pseudonym} />
-                                ) : (
-                                    <Overview poll={poll} />
+                            ) : (
+                                        <Overview poll={poll} />
                                     )
-                                }
-                                </PositionWrapper>
+                        }
+                    </PositionWrapper>
 
                 </React.Fragment>
             }

@@ -5,7 +5,7 @@ import { Store } from '../../../reducers';
 import styled from 'styled-components'
 
 import { IOptionQuery } from '../../../interfaces';
-import { TableCellWrapper, PrimaryButton } from '../../../style/elements';
+import { TableCellWrapper, PrimaryButton, Label } from '../../../style/elements';
 import { darkGray } from '../../../style/utilities';
 
 import Option from './Option';
@@ -21,6 +21,9 @@ interface Props extends PropsFromState, PropsFromDispatch {
     poll: IPollQuery
 }
 
+const PositionWrapper = styled.div`
+padding-top: 5.8125rem;
+`
 
 class Overview extends React.Component<Props> {
 
@@ -47,29 +50,32 @@ class Overview extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <div className="container-fluid px-5">
-
-                    <div className="mt-5 d-flex flex-wrap">
-
-                        {button}
-                        {options.map(option => {
-                            let rating = option.userRating;
-                            this.props.votes.forEach(vote => {
-                                if (vote.optionId === option.refId) {
-                                    Number.isNaN(vote.rating) ? rating = null : rating = vote.rating
-                                }
-                            })
-                            return (<Option
-                                key={option.refId}
-                                option={option}
-                                userId={user.id}
-                                pollId={poll.refId}
-                                userRating={rating}
-                            />)
-                        }
-                        )}
+                <ToolBar>
+                    <div className="table-cell">
+                        <Label>
+                            Title
+                    </Label>
                     </div>
-                </div>
+                    {button}
+                </ToolBar>
+                <PositionWrapper>
+                    {options.map(option => {
+                        let rating = option.userRating;
+                        this.props.votes.forEach(vote => {
+                            if (vote.optionId === option.refId) {
+                                Number.isNaN(vote.rating) ? rating = null : rating = vote.rating
+                            }
+                        })
+                        return (<Option
+                            key={option.refId}
+                            option={option}
+                            userId={user.id}
+                            pollId={poll.refId}
+                            userRating={rating}
+                        />)
+                    }
+                    )}
+                </PositionWrapper>
                 {this.props.votes.length > 0 &&
                     <UnsavedChangesBar
                         data-testid="unsaved-changes-bar">
@@ -125,8 +131,24 @@ class Overview extends React.Component<Props> {
     }
 }
 
+const ToolBar = styled.div`
+width:100%;
+height: 2.375rem;
+max-width: calc(${11 / 12 * 100}% - 10.625rem);
+position: fixed;
+display: table;
+margin-top: 2rem;
+.table-cell{
+    display: table-cell;
+    vertical-align: bottom;
+}
+${Label}{
+    margin: 0 0 0 1.625rem;
+}
+`
+
 const UnsavedChangesBar = styled.div`
-max-width: inherit;
+max-width: ${11 / 12 * 100}%;
 width: 100%;
 height: 3.4375rem;
 padding: 0 5.3125rem;

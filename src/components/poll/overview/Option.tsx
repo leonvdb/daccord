@@ -1,16 +1,19 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import styled from 'styled-components';
 import { IOptionQuery } from '../../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
 import { connect } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
 import { handleRatingChange } from '../../../actions/voteActions';
+import { TableCellWrapper, HeadingTwo } from '../../../style/elements';
 
 interface Props extends PropsFromDispatch {
     option: IOptionQuery
     userId: string
     pollId: string
     userRating: number | null
+    className?: string
 }
 
 const Option = (props: Props) => {
@@ -23,46 +26,42 @@ const Option = (props: Props) => {
     const toggle = () => {
         setModalOpen(!modalOpen)
     }
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        props.handleRatingChange(props.option.refId, parseInt(e.target.value, 10))
-    }
-        const { title, description, creator } = props.option;
-        const isCreator = creator.id.toString() === props.userId.toString()
+    // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     props.handleRatingChange(props.option.refId, parseInt(e.target.value, 10))
+    // }
+    const { title, description, creator } = props.option;
+    const isCreator = creator.id.toString() === props.userId.toString()
 
-        return (
-            <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
-                <div className="card" style={{ height: 170, cursor: 'pointer' }}>
-                    <div className="card-header" data-testid="option-header" onClick={onClick}>
-                        <h5 className="card-title d-inline-block">{title}</h5>
-                    </div>
-                    <div className="card-body">
-                        {/* TODO: truncate to two lines */}
-                        <p className="card-text text-truncate">{description}</p>
-                        <form >
-                            <input
-                                data-testid="rating-input"
-                                onChange={onChange}
-                                value={props.userRating === null ? "" : props.userRating.toString()}
-                                className="mb-5" type="text" style={{ width: "30px" }} />
-                        </form>
-                    </div>
-                </div>
-                {isCreator ? (
-                    <OptionEditModal
-                        pollId={props.pollId}
-                        option={props.option}
+    return (
+        <div className={props.className}>
+            <TableCellWrapper widthInPercent={50}>
+                <HeadingTwo onClick={onClick}>
+                    {title}
+                </HeadingTwo>
+            </TableCellWrapper>
+            {/* <form >
+                <input
+                    data-testid="rating-input"
+                    onChange={onChange}
+                    value={props.userRating === null ? "" : props.userRating.toString()}
+                    className="mb-5" type="text" style={{ width: "30px" }} />
+            </form> */}
+            {isCreator ? (
+                <OptionEditModal
+                    pollId={props.pollId}
+                    option={props.option}
+                    modalOpen={modalOpen}
+                    toggle={toggle} />
+            ) : (
+                    <OptionReadModal
+                        title={title}
+                        description={description}
                         modalOpen={modalOpen}
                         toggle={toggle} />
-                ) : (
-                        <OptionReadModal
-                            title={title}
-                            description={description}
-                            modalOpen={modalOpen}
-                            toggle={toggle} />
-                    )
-                }
-            </div >
-        )
+                )
+            }
+        </div >
+    )
 }
 
 interface PropsFromDispatch {
@@ -74,4 +73,19 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch =>
         handleRatingChange: (optionId: string, rating: number) => dispatch(handleRatingChange(optionId, rating))
     }
 }
-export default connect(null, mapDispatchToProps)(Option);
+
+const styledOption = styled(Option)`
+width: 100%;
+height: 3.5rem;
+max-height: 3.5rem;
+margin-bottom: .5625rem;
+background: white;
+box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
+border-radius: 5px;
+display: table;
+${HeadingTwo}{
+    margin-left: 1.625rem;
+}
+`
+
+export default connect(null, mapDispatchToProps)(styledOption);
