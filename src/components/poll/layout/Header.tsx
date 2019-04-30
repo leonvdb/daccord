@@ -22,12 +22,12 @@ const Header = ({ poll, pseudonym, className }: Props) => {
                     <Heading>
                         {poll.title}
                     </Heading>
-                    <img className="slight-up" onClick={// tslint:disable-next-line jsx-no-lambda
+                    <img onClick={// tslint:disable-next-line jsx-no-lambda
                         () => setShowDescription(!showDescription)}
                         src={Expand} alt="show description" />
                 </TableCellWrapper>
                 <TableCellWrapper widthInPercent={1}>
-                    <SecondaryButton><img className="slight-up" src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
+                    <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
                 </TableCellWrapper>
                 <TableCellWrapper widthInPercent={1}>
                     <button>{pseudonym}</button>
@@ -35,8 +35,8 @@ const Header = ({ poll, pseudonym, className }: Props) => {
             </div>
             {showDescription &&
                 <div className="table-row">
-                <Label>
-                    Description
+                    <Label>
+                        Description
                 </Label>
                     <p>{poll.description} </p>
                 </div>
@@ -63,7 +63,7 @@ button{
         margin: 0 0 0 0.4rem;
     }
 }
-.slight-up{
+img{
     margin: 0 0 0.23rem 0;
 }
 .table-row-1{

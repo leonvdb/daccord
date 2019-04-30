@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
 import { handleRatingChange } from '../../../actions/voteActions';
 import { TableCellWrapper, HeadingTwo } from '../../../style/elements';
+import VotingScale from './VotingScale';
 
 interface Props extends PropsFromDispatch {
     option: IOptionQuery
@@ -34,10 +35,13 @@ const Option = (props: Props) => {
 
     return (
         <div className={props.className}>
-            <TableCellWrapper widthInPercent={50}>
+            <TableCellWrapper widthInPercent={67}>
                 <HeadingTwo onClick={onClick}>
                     {title}
                 </HeadingTwo>
+            </TableCellWrapper>
+            <TableCellWrapper widthInPercent={33}>
+                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} />
             </TableCellWrapper>
             {/* <form >
                 <input
@@ -73,6 +77,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch =>
         handleRatingChange: (optionId: string, rating: number) => dispatch(handleRatingChange(optionId, rating))
     }
 }
+
 
 const styledOption = styled(Option)`
 width: 100%;

@@ -51,17 +51,19 @@ class Overview extends React.Component<Props> {
         return (
             <React.Fragment>
                 <ToolBar>
-                    <TableCellWrapper widthInPercent={60} verticalAlign="bottom">
-                        <Label>
+                    <TableCellWrapper widthInPercent={67} verticalAlign="bottom">
+                        <Label className="margin-left">
                             Title
                     </Label>
                     </TableCellWrapper>
-                    <TableCellWrapper widthInPercent={35} verticalAlign="bottom">
-                        <Label>
+                    <TableCellWrapper widthInPercent={0} verticalAlign="bottom">
+                        <Label >
                             My Opposition
                     </Label>
                     </TableCellWrapper>
-                    {button}
+                    <TableCellWrapper className="move-right" widthInPercent={15} verticalAlign="bottom">
+                        {button}
+                    </TableCellWrapper>
                 </ToolBar>
                 <PositionWrapper>
                     {options.map(option => {
@@ -147,8 +149,11 @@ margin-top: 2rem;
     display: table-cell;
     vertical-align: bottom;
 }
-${Label}{
+.margin-left{
     margin: 0 0 0 1.625rem;
+}
+.move-right{
+    text-align: right
 }
 `
 
