@@ -1,14 +1,18 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import TextInputGroup from '../../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { Store } from '../../../reducers';
 import { Mutation } from "react-apollo";
 import { createOption } from '../../../graphql/cudOption';
 import { getPoll } from '../../../graphql/getPoll'
+import { SecondaryButton } from '../../../style/elements';
+import PlusPurple from '../../../images/plus-purple.svg';
 
 interface Props extends PropsFromState {
     pollId: string
+    className?: string
 }
 
 interface State {
@@ -82,13 +86,13 @@ class AddOption extends React.Component<Props, State> {
         const { title, description, errors, addOptionOpen } = this.state
         return (
 
-            <div>
-                <button
+            <div className={this.props.className}>
+                <SecondaryButton
                     id="Modal"
                     onClick={this.toggle}
                     className="btn btn-light border">
-                    <i className="fas fa-plus" /> Add new option
-                </button>
+                    <img src={PlusPurple} alt="Add Option" /> Add Option
+                </SecondaryButton>
                 <Modal placement="right" isOpen={addOptionOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Add a new option</ModalHeader>
                     <ModalBody>
@@ -143,4 +147,14 @@ interface PropsFromState {
     userId: string
 }
 
-export default connect(mapStateToProps, {})(AddOption);
+const styledAddOption = styled(AddOption)`
+${SecondaryButton}{
+    margin: 0;
+    padding: .5rem 1rem;
+    img{
+        margin: 0 .6875rem 0.23rem 0;
+    }
+}
+`
+
+export default connect(mapStateToProps, {})(styledAddOption);

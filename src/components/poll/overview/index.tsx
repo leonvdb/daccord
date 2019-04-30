@@ -51,11 +51,16 @@ class Overview extends React.Component<Props> {
         return (
             <React.Fragment>
                 <ToolBar>
-                    <div className="table-cell">
+                    <TableCellWrapper widthInPercent={60} verticalAlign="bottom">
                         <Label>
                             Title
                     </Label>
-                    </div>
+                    </TableCellWrapper>
+                    <TableCellWrapper widthInPercent={35} verticalAlign="bottom">
+                        <Label>
+                            My Opposition
+                    </Label>
+                    </TableCellWrapper>
                     {button}
                 </ToolBar>
                 <PositionWrapper>

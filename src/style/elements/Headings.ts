@@ -13,6 +13,6 @@ ${headingTwo}
 `
 
 export const Label = styled.h5`
-color: ${black}
+color: #000000
 ${label}
 `

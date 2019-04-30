@@ -84,7 +84,7 @@ box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
 border-radius: 5px;
 display: table;
 ${HeadingTwo}{
-    margin-left: 1.625rem;
+    margin: 0 0 0 1.625rem;
 }
 `
 
