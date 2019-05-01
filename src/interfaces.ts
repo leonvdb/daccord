@@ -77,7 +77,7 @@ export interface IVoteForPollPayload {
 
 export interface IVoteNew {
     optionId: string,
-    rating: number
+    rating: number | null
 }
 
 // User Interfaces

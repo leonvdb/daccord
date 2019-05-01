@@ -16,10 +16,16 @@ const VotingScale = (props: Props) => {
     const [current, setCurrent] = useState(props.userRating);
     const [hovering, setHovering] = useState(false)
     const onClick = (fieldNumber: number) => {
-        props.handleRatingChange(props.optionId, fieldNumber)
+        if (props.userRating === fieldNumber) {
+            setCurrent(undefined)
+            props.handleRatingChange(props.optionId, null)
+        } else {
+            props.handleRatingChange(props.optionId, fieldNumber)
+        }
     }
 
     useEffect(() => {
+        console.log(props.userRating)
         if (!hovering) setCurrent(props.userRating);
     })
 
@@ -133,12 +139,12 @@ ${({ current }) => current !== undefined && ColoredBarStyle(current)};
 `
 
 interface PropsFromDispatch {
-    handleRatingChange: (optionId: string, rating: number) => void;
+    handleRatingChange: (optionId: string, rating: number | null) => void;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch => {
     return {
-        handleRatingChange: (optionId: string, rating: number) => dispatch(handleRatingChange(optionId, rating))
+        handleRatingChange: (optionId: string, rating: number | null) => dispatch(handleRatingChange(optionId, rating))
     }
 }
 
