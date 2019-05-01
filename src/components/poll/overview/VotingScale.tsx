@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components';
 import { lightGray, scale, softBlack } from '../../../style/utilities';
+import { Dispatch, AnyAction } from 'redux';
+import { handleRatingChange } from '../../../actions/voteActions';
+import { connect } from 'react-redux';
 
-interface Props {
+interface Props extends PropsFromDispatch {
     className?: string
     userRating?: number
+    optionId: string
 }
 
 
 const VotingScale = (props: Props) => {
     const [current, setCurrent] = useState(props.userRating);
+    const onClick = (fieldNumber: number) => {
+        props.handleRatingChange(props.optionId, fieldNumber)
+    }
+
     return (
         <div className={props.className} >
             <ColoredBar current={current} />
@@ -18,6 +26,8 @@ const VotingScale = (props: Props) => {
                     () => { setCurrent(0) }}
                 onMouseLeave={// tslint:disable-next-line jsx-no-lambda
                     () => { setCurrent(props.userRating) }}
+                onClick={// tslint:disable-next-line jsx-no-lambda
+                    () => { onClick(0) }}
             >0</VotingNumber>
             <VotingNumber fieldNumber={1} current={current}
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
@@ -95,10 +105,22 @@ ${({ current }) => current !== undefined && ColoredBarStyle(current)};
 
 `
 
-export default styled(VotingScale)`
+interface PropsFromDispatch {
+    handleRatingChange: (optionId: string, rating: number) => void;
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch => {
+    return {
+        handleRatingChange: (optionId: string, rating: number) => dispatch(handleRatingChange(optionId, rating))
+    }
+}
+
+const styledVotingScale = styled(VotingScale)`
 height: 1.375rem;
 display: table;
 border-spacing: .375rem;
 border-collapse: separate;
 vertical-align: middle;
-`
+`;
+
+export default connect(null, mapDispatchToProps)(styledVotingScale);

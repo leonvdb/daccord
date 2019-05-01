@@ -3,13 +3,10 @@ import styled from 'styled-components';
 import { IOptionQuery } from '../../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
-import { connect } from 'react-redux';
-import { AnyAction, Dispatch } from 'redux';
-import { handleRatingChange } from '../../../actions/voteActions';
 import { TableCellWrapper, HeadingTwo } from '../../../style/elements';
 import VotingScale from './VotingScale';
 
-interface Props extends PropsFromDispatch {
+interface Props {
     option: IOptionQuery
     userId: string
     pollId: string
@@ -27,9 +24,7 @@ const Option = (props: Props) => {
     const toggle = () => {
         setModalOpen(!modalOpen)
     }
-    // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     props.handleRatingChange(props.option.refId, parseInt(e.target.value, 10))
-    // }
+
     const { title, description, creator } = props.option;
     const isCreator = creator.id.toString() === props.userId.toString()
 
@@ -41,15 +36,8 @@ const Option = (props: Props) => {
                 </HeadingTwo>
             </TableCellWrapper>
             <TableCellWrapper widthInPercent={33}>
-                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} />
+                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
             </TableCellWrapper>
-            {/* <form >
-                <input
-                    data-testid="rating-input"
-                    onChange={onChange}
-                    value={props.userRating === null ? "" : props.userRating.toString()}
-                    className="mb-5" type="text" style={{ width: "30px" }} />
-            </form> */}
             {isCreator ? (
                 <OptionEditModal
                     pollId={props.pollId}
@@ -68,18 +56,8 @@ const Option = (props: Props) => {
     )
 }
 
-interface PropsFromDispatch {
-    handleRatingChange: (optionId: string, rating: number) => void;
-}
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch => {
-    return {
-        handleRatingChange: (optionId: string, rating: number) => dispatch(handleRatingChange(optionId, rating))
-    }
-}
-
-
-const styledOption = styled(Option)`
+export default styled(Option)`
 width: 100%;
 height: 3.5rem;
 max-height: 3.5rem;
@@ -91,6 +69,4 @@ display: table;
 ${HeadingTwo}{
     margin: 0 0 0 1.625rem;
 }
-`
-
-export default connect(null, mapDispatchToProps)(styledOption);
+`;
