@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components';
 import { lightGray, scale, softBlack } from '../../../style/utilities';
 import { Dispatch, AnyAction } from 'redux';
@@ -14,33 +14,60 @@ interface Props extends PropsFromDispatch {
 
 const VotingScale = (props: Props) => {
     const [current, setCurrent] = useState(props.userRating);
+    const [hovering, setHovering] = useState(false)
     const onClick = (fieldNumber: number) => {
         props.handleRatingChange(props.optionId, fieldNumber)
     }
+
+    useEffect(() => {
+        if (!hovering) setCurrent(props.userRating);
+    })
 
     return (
         <div className={props.className} >
             <ColoredBar current={current} />
             <VotingNumber fieldNumber={0} current={current}
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
-                    () => { setCurrent(0) }}
+                    () => {
+                        setCurrent(0);
+                        setHovering(true)
+                    }}
                 onMouseLeave={// tslint:disable-next-line jsx-no-lambda
-                    () => { setCurrent(props.userRating) }}
+                    () => {
+                        setCurrent(props.userRating)
+                        setHovering(false)
+                    }}
                 onClick={// tslint:disable-next-line jsx-no-lambda
                     () => { onClick(0) }}
             >0</VotingNumber>
             <VotingNumber fieldNumber={1} current={current}
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
-                    () => { setCurrent(1) }}
+                    () => {
+                        setCurrent(1);
+                        setHovering(true)
+                    }}
                 onMouseLeave={// tslint:disable-next-line jsx-no-lambda
-                    () => { setCurrent(props.userRating) }}
+                    () => {
+                        setCurrent(props.userRating);
+                        setHovering(false)
+                    }}
+                onClick={// tslint:disable-next-line jsx-no-lambda
+                    () => { onClick(1) }}
 
             >1</VotingNumber>
             <VotingNumber fieldNumber={2} current={current}
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
-                    () => { setCurrent(2) }}
+                    () => {
+                        setCurrent(2);
+                        setHovering(true)
+                    }}
                 onMouseLeave={// tslint:disable-next-line jsx-no-lambda
-                    () => { setCurrent(props.userRating) }}
+                    () => {
+                        setCurrent(props.userRating);
+                        setHovering(false)
+                    }}
+                onClick={// tslint:disable-next-line jsx-no-lambda
+                    () => { onClick(2) }}
             >2</VotingNumber>
             <VotingNumber fieldNumber={3} >3</VotingNumber>
             <VotingNumber fieldNumber={4} >4</VotingNumber>
