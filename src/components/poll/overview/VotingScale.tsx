@@ -31,10 +31,7 @@ const VotingScale = (props: Props) => {
     return (
         <div className={props.className} >
             <ColoredBar current={current} />
-            {[...Array(11).keys()].map(fieldNumber => (<VotingNumber
-                key={`${props.optionId} ${fieldNumber}`}
-                fieldNumber={fieldNumber}
-                current={current}
+            {[...Array(11).keys()].map(fieldNumber => (<Wrapper
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
                     () => {
                         setCurrent(fieldNumber);
@@ -47,8 +44,15 @@ const VotingScale = (props: Props) => {
                     }}
                 onClick={// tslint:disable-next-line jsx-no-lambda
                     () => { onClick(fieldNumber) }}>
-                {fieldNumber}
-            </VotingNumber>)
+                <VotingNumber
+                    key={`${props.optionId} ${fieldNumber}`}
+                    fieldNumber={fieldNumber}
+                    current={current}
+                >
+                    {fieldNumber}
+                </VotingNumber>
+            </Wrapper>
+            )
             )
             }
         </div>
@@ -68,19 +72,24 @@ const ColoredBarStyle = (current: number) => {
     `
 }
 
+const Wrapper = styled.div`
+height: 1.375rem;
+width: 1.75rem;
+display: table-cell;
+`
+
 const VotingNumber = styled.span<VotingNumberProps>`
 cursor: pointer;
 border: solid 2px ${lightGray};
 width: 1.375rem;
 height: 1.375rem;
-margin-right: .375rem;
 border-radius: 50%;
 text-align: center;
-display: table-cell;
 font-size: 0.75rem;
 font-weight: 500;
 color: ${lightGray};
 position: relative;
+display: block;
 z-index: 1;
 ${({ current, fieldNumber }) => current === fieldNumber ? css`
     border: solid 2px ${scale[current].solid};
@@ -97,7 +106,6 @@ ${({ current, fieldNumber }) => current === fieldNumber ? css`
 
 
 const ColoredBar = styled.div<{ current?: number }>`
-margin-left: .375rem;
 height: 1.375rem;
 position: absolute;
 border-radius: 30px;
@@ -119,8 +127,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch =>
 const styledVotingScale = styled(VotingScale)`
 height: 1.375rem;
 display: table;
-border-spacing: .375rem;
-border-collapse: separate;
 vertical-align: middle;
 `;
 
