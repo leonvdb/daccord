@@ -25,17 +25,19 @@ const VotingScale = (props: Props) => {
     }
 
     useEffect(() => {
-        console.log(props.userRating)
         if (!hovering) setCurrent(props.userRating);
     })
 
     return (
         <div className={props.className} >
             <ColoredBar current={current} />
-            <VotingNumber fieldNumber={0} current={current}
+            {[...Array(11).keys()].map(fieldNumber => (<VotingNumber
+                key={`${props.optionId} ${fieldNumber}`}
+                fieldNumber={fieldNumber}
+                current={current}
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
                     () => {
-                        setCurrent(0);
+                        setCurrent(fieldNumber);
                         setHovering(true)
                     }}
                 onMouseLeave={// tslint:disable-next-line jsx-no-lambda
@@ -44,45 +46,11 @@ const VotingScale = (props: Props) => {
                         setHovering(false)
                     }}
                 onClick={// tslint:disable-next-line jsx-no-lambda
-                    () => { onClick(0) }}
-            >0</VotingNumber>
-            <VotingNumber fieldNumber={1} current={current}
-                onMouseEnter={// tslint:disable-next-line jsx-no-lambda
-                    () => {
-                        setCurrent(1);
-                        setHovering(true)
-                    }}
-                onMouseLeave={// tslint:disable-next-line jsx-no-lambda
-                    () => {
-                        setCurrent(props.userRating);
-                        setHovering(false)
-                    }}
-                onClick={// tslint:disable-next-line jsx-no-lambda
-                    () => { onClick(1) }}
-
-            >1</VotingNumber>
-            <VotingNumber fieldNumber={2} current={current}
-                onMouseEnter={// tslint:disable-next-line jsx-no-lambda
-                    () => {
-                        setCurrent(2);
-                        setHovering(true)
-                    }}
-                onMouseLeave={// tslint:disable-next-line jsx-no-lambda
-                    () => {
-                        setCurrent(props.userRating);
-                        setHovering(false)
-                    }}
-                onClick={// tslint:disable-next-line jsx-no-lambda
-                    () => { onClick(2) }}
-            >2</VotingNumber>
-            <VotingNumber fieldNumber={3} >3</VotingNumber>
-            <VotingNumber fieldNumber={4} >4</VotingNumber>
-            <VotingNumber fieldNumber={5} >5</VotingNumber>
-            <VotingNumber fieldNumber={6} >6</VotingNumber>
-            <VotingNumber fieldNumber={7} >7</VotingNumber>
-            <VotingNumber fieldNumber={8} >8</VotingNumber>
-            <VotingNumber fieldNumber={9} >9</VotingNumber>
-            <VotingNumber fieldNumber={10} >10</VotingNumber>
+                    () => { onClick(fieldNumber) }}>
+                {fieldNumber}
+            </VotingNumber>)
+            )
+            }
         </div>
     )
 }
