@@ -21,10 +21,6 @@ interface Props extends PropsFromState, PropsFromDispatch {
     poll: IPollQuery
 }
 
-const PositionWrapper = styled.div`
-padding-top: 5.8125rem;
-`
-
 class Overview extends React.Component<Props> {
 
     componentWillReceiveProps(nextProps: Props) {
@@ -51,7 +47,7 @@ class Overview extends React.Component<Props> {
         return (
             <React.Fragment>
 
-                <MarginWrapper>
+                <PositionWrapper>
                     <ToolBar>
                         <TableCellWrapper widthInPercent={67} verticalAlign="bottom">
                             <Label className="margin-left">
@@ -68,7 +64,7 @@ class Overview extends React.Component<Props> {
                         </TableCellWrapper>
                     </ToolBar>
 
-                    <PositionWrapper>
+                    <OptionsWrapper>
                         {options.map(option => {
                             let rating = option.userRating;
                             this.props.votes.forEach(vote => {
@@ -85,8 +81,8 @@ class Overview extends React.Component<Props> {
                             />)
                         }
                         )}
-                    </PositionWrapper>
-                </MarginWrapper>
+                    </OptionsWrapper>
+                </PositionWrapper>
                 {this.props.votes.length > 0 &&
                     <UnsavedChangesBar
                         data-testid="unsaved-changes-bar">
@@ -142,9 +138,13 @@ class Overview extends React.Component<Props> {
     }
 }
 
-const MarginWrapper = styled.div`
+const PositionWrapper = styled.div`
 padding: ${headerHeightInRem}rem 5.3125rem 0;
 `
+
+const OptionsWrapper = styled.div`
+padding-top: 5.8125rem;
+`;
 
 const ToolBar = styled.div`
 width:100%;
