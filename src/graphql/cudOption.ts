@@ -20,6 +20,7 @@ mutation CreateOption(
             result{
                 totalOpposition
                 agreementInPercent
+                participationInPercent
             }
             creator{
                 id

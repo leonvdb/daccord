@@ -31,7 +31,7 @@ const VotingScale = (props: Props) => {
     return (
         <div className={props.className} >
             <ColoredBar current={current} />
-            {[...Array(11).keys()].map(fieldNumber => (<Wrapper
+            {[...Array(11).keys()].map(fieldNumber => (<Wrapper key={`${props.optionId}${fieldNumber}`}
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
                     () => {
                         setCurrent(fieldNumber);
@@ -45,7 +45,6 @@ const VotingScale = (props: Props) => {
                 onClick={// tslint:disable-next-line jsx-no-lambda
                     () => { onClick(fieldNumber) }}>
                 <VotingNumber
-                    key={`${props.optionId} ${fieldNumber}`}
                     fieldNumber={fieldNumber}
                     current={current}
                 >
