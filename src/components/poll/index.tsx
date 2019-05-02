@@ -1,7 +1,6 @@
 import { connect, MapDispatchToProps } from 'react-redux';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { getPollAndAuthParticipant } from '../../graphql/getPoll';
 import { setAuthTokenAndUser } from '../../actions/authActions';
@@ -20,7 +19,6 @@ import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
-import { headerHeightInRem } from '../../style/utilities/Position';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -42,9 +40,7 @@ interface IAuthUser {
     pseudonym: string
 }
 
-const PositionWrapper = styled.div`
-padding: ${headerHeightInRem}rem 5.3125rem 0;
-`
+
 class Poll extends React.Component<Props> {
 
     componentDidUpdate() {
@@ -79,17 +75,15 @@ class Poll extends React.Component<Props> {
                 return <React.Fragment>
                     {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll} />}
                     <Header poll={poll} pseudonym={this.props.pseudonym} />
-                    <PositionWrapper>
-                        {
-                            this.props.match.params.pollNavRoute === "results" ? (
-                                <Results poll={poll} user={user} />
-                            ) : this.props.match.params.pollNavRoute === "settings" ? (
-                                <Settings poll={poll} user={user} pseudonym={this.props.pseudonym} />
-                            ) : (
-                                        <Overview poll={poll} />
-                                    )
-                        }
-                    </PositionWrapper>
+                    {
+                        this.props.match.params.pollNavRoute === "results" ? (
+                            <Results poll={poll} user={user} />
+                        ) : this.props.match.params.pollNavRoute === "settings" ? (
+                            <Settings poll={poll} user={user} pseudonym={this.props.pseudonym} />
+                        ) : (
+                                    <Overview poll={poll} />
+                                )
+                    }
 
                 </React.Fragment>
             }

@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { IOptionQuery } from '../../../interfaces';
 import { TableCellWrapper, PrimaryButton, Label } from '../../../style/elements';
-import { darkGray } from '../../../style/utilities';
+import { darkGray, headerHeightInRem } from '../../../style/utilities';
 
 import Option from './Option';
 import AddOption from './AddOption';
@@ -50,39 +50,43 @@ class Overview extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <ToolBar>
-                    <TableCellWrapper widthInPercent={67} verticalAlign="bottom">
-                        <Label className="margin-left">
-                            Title
+
+                <MarginWrapper>
+                    <ToolBar>
+                        <TableCellWrapper widthInPercent={67} verticalAlign="bottom">
+                            <Label className="margin-left">
+                                Title
                     </Label>
-                    </TableCellWrapper>
-                    <TableCellWrapper widthInPercent={0} verticalAlign="bottom">
-                        <Label >
-                            My Opposition
+                        </TableCellWrapper>
+                        <TableCellWrapper widthInPercent={0} verticalAlign="bottom">
+                            <Label >
+                                My Opposition
                     </Label>
-                    </TableCellWrapper>
-                    <TableCellWrapper className="move-right" widthInPercent={15} verticalAlign="bottom">
-                        {button}
-                    </TableCellWrapper>
-                </ToolBar>
-                <PositionWrapper>
-                    {options.map(option => {
-                        let rating = option.userRating;
-                        this.props.votes.forEach(vote => {
-                            if (vote.optionId === option.refId) {
-                                rating = vote.rating
-                            }
-                        })
-                        return (<Option
-                            key={option.refId}
-                            option={option}
-                            userId={user.id}
-                            pollId={poll.refId}
-                            userRating={rating}
-                        />)
-                    }
-                    )}
-                </PositionWrapper>
+                        </TableCellWrapper>
+                        <TableCellWrapper className="move-right" widthInPercent={15} verticalAlign="bottom">
+                            {button}
+                        </TableCellWrapper>
+                    </ToolBar>
+
+                    <PositionWrapper>
+                        {options.map(option => {
+                            let rating = option.userRating;
+                            this.props.votes.forEach(vote => {
+                                if (vote.optionId === option.refId) {
+                                    rating = vote.rating
+                                }
+                            })
+                            return (<Option
+                                key={option.refId}
+                                option={option}
+                                userId={user.id}
+                                pollId={poll.refId}
+                                userRating={rating}
+                            />)
+                        }
+                        )}
+                    </PositionWrapper>
+                </MarginWrapper>
                 {this.props.votes.length > 0 &&
                     <UnsavedChangesBar
                         data-testid="unsaved-changes-bar">
@@ -137,6 +141,10 @@ class Overview extends React.Component<Props> {
         );
     }
 }
+
+const MarginWrapper = styled.div`
+padding: ${headerHeightInRem}rem 5.3125rem 0;
+`
 
 const ToolBar = styled.div`
 width:100%;
