@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { darkGray, white, primaryStrong } from '../utilities'
-import {buttonLabel} from '../utilities'
+import { darkerGray, white, primaryStrong } from '../utilities'
+import { buttonLabel } from '../utilities'
 
 export const PrimaryButton = styled.button`
 color: ${white};
@@ -17,7 +17,7 @@ white-space: nowrap;
 `
 
 export const SecondaryButton = styled.button`
-color: ${darkGray};
+color: ${darkerGray};
 padding: 0.7rem 1rem;
 background-color: ${white};
 text-decoration: none;

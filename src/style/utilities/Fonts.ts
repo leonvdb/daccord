@@ -9,6 +9,12 @@ export const heading = css`
 font-size: 1.75rem;
 font-weight: ${fontWeights.medium};
 `
+
+export const smallHeading = css`
+font-size: 1.125rem;
+font-weight: ${fontWeights.medium};
+`
+
 export const headingTwo = css`
 font-size: 1.125rem;
 font-weight: normal;
@@ -22,4 +28,14 @@ font-weight: ${fontWeights.medium};
 export const label = css`
 font-size: 1.125rem;
 font-weight: ${fontWeights.light};
+`
+
+export const largeLable = css`
+font-size: 3rem;
+font-weight: normal;
+`
+
+export const smallLabel = css`
+font-size: 1rem; 
+font-weight: bold;
 `

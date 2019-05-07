@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { IPollQuery, IUser } from '../../../interfaces';
 import ResultElement from './ResultElement';
-import { Container } from '../../../style/elements';
+import { Container, LargeLabel } from '../../../style/elements';
+import styled from 'styled-components';
 
 interface Props {
     poll: IPollQuery
@@ -22,14 +23,26 @@ class Results extends React.Component<Props>{
         })
         return (
             <Container>
-                <h1>Results</h1>
-
-                {sortedOptions.map((option, index) => {
-                    return <ResultElement key={option.refId} option={option} poll={this.props.poll} user={this.props.user} rank={index + 1} />
-                })}
+                <LargeLabel>Results</LargeLabel>
+                <OptionContainer>
+                    {sortedOptions.map((option, index) => {
+                        return <ResultElement key={option.refId} option={option} poll={this.props.poll} user={this.props.user} rank={index + 1} />
+                    })}
+                </OptionContainer>
             </Container>
         )
     }
 }
+
+const OptionContainer = styled.div`
+${ResultElement}:first-child{
+    border-radius: 5px 5px 0 0;
+}
+${ResultElement}:last-child{
+    border-radius: 0 0 5px 5px;
+}
+box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
+border-radius: 5px;
+`;
 
 export default Results;

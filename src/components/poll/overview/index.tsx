@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { IOptionQuery } from '../../../interfaces';
 import { TableCellWrapper, PrimaryButton, Label, Container } from '../../../style/elements';
-import { darkGray } from '../../../style/utilities';
+import { darkerGray } from '../../../style/utilities';
 
 import Option from './Option';
 import AddOption from './AddOption';
@@ -173,7 +173,7 @@ display: table;
 p{
     margin: 0;
     font-size: .75rem;
-    color: ${darkGray}
+    color: ${darkerGray}
 }
 background: rgba(255, 255, 255, 0.88);
 box-shadow: 0px -2px 8px rgba(104, 104, 104, 0.25);
