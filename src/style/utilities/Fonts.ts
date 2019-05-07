@@ -39,3 +39,8 @@ export const smallLabel = css`
 font-size: 1rem; 
 font-weight: bold;
 `
+
+export const smallerLabel = css`
+font-size: .875rem; 
+font-weight: ${fontWeights.medium};
+`

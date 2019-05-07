@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLable, darkerGray, smallHeading, darkGray, smallLabel } from '../utilities';
+import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLable, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel } from '../utilities';
 
 export const Heading = styled.h1`
 color: ${blackBlue};
@@ -30,4 +30,9 @@ ${label}
 export const SmallLabel = styled.span`
 color: ${darkGray};
 ${smallLabel}
+`
+
+export const SmallerLabel = styled.span`
+color: ${darkGray};
+${smallerLabel}
 `

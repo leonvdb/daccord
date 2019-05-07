@@ -3,7 +3,7 @@ import { IOptionQuery, IUser, IPollQuery } from '../../../interfaces';
 import ResultDetails from './ResultDetails';
 import { colorScale, lighterGray } from '../../../style/utilities';
 import styled from 'styled-components';
-import { SmallHeading, TableCellWrapper, SmallLabel } from '../../../style/elements';
+import { SmallHeading, TableCellWrapper, SmallLabel, SmallerLabel } from '../../../style/elements';
 
 interface Props {
     option: IOptionQuery
@@ -26,7 +26,7 @@ const ResultElement = (props: Props) => {
                     <SmallHeading onClick={toggle}>{option.title}</SmallHeading>
                     <div className="float-right">
                         <SmallLabel>{option.result.agreementInPercent ? option.result.agreementInPercent : 0}%</SmallLabel>
-                        <p>Agreement</p>
+                        <SmallerLabel>Agreement</SmallerLabel>
                     </div>
                 </div>
                 <AgreementBar agreementInPercent={option.result.agreementInPercent} backgroundColorInHex={color} />
@@ -39,7 +39,6 @@ const ResultElement = (props: Props) => {
 
 }
 
-
 interface AgreementBarProps {
     agreementInPercent: number
     backgroundColorInHex: string
@@ -47,6 +46,7 @@ interface AgreementBarProps {
 interface RemainderBarProps {
     agreementInPercent: number
 }
+
 
 const RemainderBar = styled.div<RemainderBarProps>`
 width: ${({ agreementInPercent }) => `${agreementInPercent ? 100 - agreementInPercent : 100}%`};
@@ -70,13 +70,10 @@ min-height: 4rem;
 width: 100%;
 background: white;
 padding: 0 1.5rem;
+font-size: 0;
 ${SmallHeading}{
     display: inline-block;
     margin-bottom: 0;
-}
-p{
-    margin-bottom: 0;
-    display: inline-block;
 }
 .float-right{
     float: right;

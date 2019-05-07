@@ -26,13 +26,24 @@ class Results extends React.Component<Props>{
                 <LargeLabel>Results</LargeLabel>
                 <OptionContainer>
                     {sortedOptions.map((option, index) => {
-                        return <ResultElement key={option.refId} option={option} poll={this.props.poll} user={this.props.user} rank={index + 1} />
+                        return (<div key={option.refId}>
+                            <ResultElement option={option} poll={this.props.poll} user={this.props.user} rank={index + 1} />
+                            {index + 1 !== sortedOptions.length && <Divider />}
+                        </div>
+                        )
                     })}
                 </OptionContainer>
             </Container>
         )
     }
 }
+
+
+const Divider = styled.div`
+background-color: "#EDEDED";
+height: 1px; 
+width: 100%
+`;
 
 const OptionContainer = styled.div`
 ${ResultElement}:first-child{
