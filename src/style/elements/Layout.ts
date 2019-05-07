@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { headerHeightInRem } from '../utilities';
 
 interface TableCellWrapperProps {
     widthInPercent: number
@@ -10,3 +11,7 @@ export const TableCellWrapper = styled.div<TableCellWrapperProps>`
     vertical-align: ${({ verticalAlign }) => verticalAlign ? verticalAlign : "middle"};
     width: ${({ widthInPercent }) => widthInPercent}%;
 `;
+
+export const Container = styled.div`
+padding: ${headerHeightInRem}rem 5.3125rem 0;
+`

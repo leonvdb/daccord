@@ -1,4 +1,3 @@
-
 export const primary = '#6448D2';
 export const primaryStrong = '#6E49FF';
 
@@ -54,4 +53,27 @@ export const scale = {
         solid: '#EC100D',
         linear: 'linear-gradient(270deg, #EB0808 0%, rgba(255, 84, 26, 0.7) 100%);'
     },
+}
+
+export const blend = (colorInHexA: string, colorInHexB: string, weight: number) => {
+    const [redA, greenA, blueA] = extractRGBValues(colorInHexA);
+    const [redB, greenB, blueB] = extractRGBValues(colorInHexB);
+    const red = mixValues(redA, redB, weight)
+    const green = mixValues(greenA, greenB, weight)
+    const blue = mixValues(blueA, blueB, weight)
+    return `#${red}${green}${blue}`
+}
+
+const extractRGBValues = (colorInHex: string) => {
+    const red = parseInt(`${colorInHex[1]}${colorInHex[2]}`, 16);
+    const green = parseInt(`${colorInHex[3]}${colorInHex[4]}`, 16);
+    const blue = parseInt(`${colorInHex[5]}${colorInHex[6]}`, 16);
+    return [red, green, blue]
+}
+
+const mixValues = (valA: number, valB: number, weight: number) => {
+    const int = Math.floor(valA + (weight * (valB - valA)))
+    let hex = int.toString(16)
+    if (hex.length === 1) hex = `0${hex}`
+    return hex
 }

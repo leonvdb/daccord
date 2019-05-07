@@ -5,8 +5,8 @@ import { Store } from '../../../reducers';
 import styled from 'styled-components'
 
 import { IOptionQuery } from '../../../interfaces';
-import { TableCellWrapper, PrimaryButton, Label } from '../../../style/elements';
-import { darkGray, headerHeightInRem } from '../../../style/utilities';
+import { TableCellWrapper, PrimaryButton, Label, Container } from '../../../style/elements';
+import { darkGray } from '../../../style/utilities';
 
 import Option from './Option';
 import AddOption from './AddOption';
@@ -47,7 +47,7 @@ class Overview extends React.Component<Props> {
         return (
             <React.Fragment>
 
-                <PositionWrapper>
+                <Container>
                     <ToolBar>
                         <TableCellWrapper widthInPercent={67} verticalAlign="bottom">
                             <Label className="margin-left">
@@ -82,7 +82,7 @@ class Overview extends React.Component<Props> {
                         }
                         )}
                     </OptionsWrapper>
-                </PositionWrapper>
+                </Container>
                 {this.props.votes.length > 0 &&
                     <UnsavedChangesBar
                         data-testid="unsaved-changes-bar">
@@ -138,9 +138,6 @@ class Overview extends React.Component<Props> {
     }
 }
 
-const PositionWrapper = styled.div`
-padding: ${headerHeightInRem}rem 5.3125rem 0;
-`
 
 const OptionsWrapper = styled.div`
 padding-top: 5.8125rem;
