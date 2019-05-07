@@ -4,6 +4,7 @@ import ResultDetails from './ResultDetails';
 import { colorScale, lighterGray } from '../../../style/utilities';
 import styled from 'styled-components';
 import { SmallHeading, TableCellWrapper, SmallLabel, SmallerLabel } from '../../../style/elements';
+import Expand from '../../../images/expand.svg';
 
 interface Props {
     option: IOptionQuery
@@ -21,19 +22,26 @@ const ResultElement = (props: Props) => {
     const { option, poll, user, rank } = props
     return (
         <div className={props.className}>
-            <TableCellWrapper widthInPercent={100}>
-                <div className="clearfix">
-                    <SmallHeading onClick={toggle}>{option.title}</SmallHeading>
-                    <div className="float-right">
-                        <SmallLabel>{option.result.agreementInPercent ? option.result.agreementInPercent : 0}%</SmallLabel>
-                        <SmallerLabel>Agreement</SmallerLabel>
+            <div className="table-row">
+                <TableCellWrapper widthInPercent={97}>
+                    <div className="clearfix">
+                        <SmallHeading onClick={toggle}>{option.title}</SmallHeading>
+                        <div className="float-right">
+                            <SmallLabel>{option.result.agreementInPercent ? option.result.agreementInPercent : 0}%</SmallLabel>
+                            <SmallerLabel>Agreement</SmallerLabel>
+                        </div>
                     </div>
-                </div>
-                <AgreementBar agreementInPercent={option.result.agreementInPercent} backgroundColorInHex={color} />
-                <RemainderBar agreementInPercent={option.result.agreementInPercent} />
-                {/* <button onClick={toggle}>Details</button> */}
-                {showDetails && <ResultDetails option={option} poll={poll} user={user} rank={rank} />}
-            </TableCellWrapper>
+                    <AgreementBar agreementInPercent={option.result.agreementInPercent} backgroundColorInHex={color} />
+                    <RemainderBar agreementInPercent={option.result.agreementInPercent} />
+                    {/* <button onClick={toggle}>Details</button> */}
+                </TableCellWrapper>
+                <TableCellWrapper widthInPercent={3}>
+                    <img onClick={// tslint:disable-next-line jsx-no-lambda
+                        () => { toggle() }}
+                        src={Expand} alt="show details" />
+                </TableCellWrapper>
+            </div>
+            {showDetails && <ResultDetails option={option} poll={poll} user={user} rank={rank} />}
         </div>
     )
 
@@ -75,7 +83,16 @@ ${SmallHeading}{
     display: inline-block;
     margin-bottom: 0;
 }
+${TableCellWrapper}{
+    height: 4rem;
+}
 .float-right{
     float: right;
+}
+.table-row{
+    display: table-row;
+}
+img{
+    float: right; 
 }
 `;

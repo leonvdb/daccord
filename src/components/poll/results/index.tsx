@@ -41,7 +41,7 @@ class Results extends React.Component<Props>{
 
 const Divider = styled.div`
 background-color: "#EDEDED";
-height: 1px; 
+height: 2px; 
 width: 100%
 `;
 
