@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { IOptionQuery, IUser, IPollQuery } from '../../../interfaces';
 import ResultDetails from './ResultDetails';
-import { colorScale } from '../../../style/utilities';
+import { colorScale, lightGray } from '../../../style/utilities';
+import styled from 'styled-components';
 
 interface Props {
     option: IOptionQuery
     poll: IPollQuery
     user: IUser
     rank: number
+    className?: string
 }
 
 const ResultElement = (props: Props) => {
@@ -17,18 +19,45 @@ const ResultElement = (props: Props) => {
 
     const { option, poll, user, rank } = props
     return (
-        <React.Fragment>
+        <div className={props.className}>
             <div className="clearfix">
-                <p style={{ marginBottom: "0", display: "inline-block" }}>{option.title}</p>
+                <p onClick={toggle} style={{ marginBottom: "0", display: "inline-block" }}>{option.title}</p>
                 <p style={{ marginBottom: "0", float: "right", display: "inline-block" }}>{option.result.agreementInPercent ? option.result.agreementInPercent : 0}% agreement</p>
             </div>
-            <div className="mb-3" style={{ width: `${option.result.agreementInPercent ? option.result.agreementInPercent : 0}%`, height: "10px", background: `${color}`, display: "inline-block" }} />
-            <div className="mb-3" style={{ width: `${option.result.agreementInPercent ? 100 - option.result.agreementInPercent : 100}%`, height: "10px", background: "#F3F3F3", display: "inline-block" }} />
-            <button onClick={toggle}>Details</button>
+            <AgreementBar agreementInPercent={option.result.agreementInPercent} backgroundColorInHex={color} />
+            <RemainderBar agreementInPercent={option.result.agreementInPercent} />
+            {/* <button onClick={toggle}>Details</button> */}
             {showDetails && <ResultDetails option={option} poll={poll} user={user} rank={rank} />}
-        </React.Fragment>
+        </div>
     )
 
 }
 
-export default ResultElement
+interface AgreementBarProps {
+    agreementInPercent: number
+    backgroundColorInHex: string
+}
+interface RemainderBarProps {
+    agreementInPercent: number
+}
+
+const RemainderBar = styled.div<RemainderBarProps>`
+width: ${({ agreementInPercent }) => `${agreementInPercent ? 100 - agreementInPercent : 100}%`};
+height: .625rem;
+background-color: ${lightGray};
+display: inline-block;
+`;
+
+const AgreementBar = styled.div<AgreementBarProps>`
+width: ${({ agreementInPercent }) => `${agreementInPercent ? agreementInPercent : 0}%`};
+height: .625rem;
+background-color: ${({ backgroundColorInHex }) => backgroundColorInHex};
+display: inline-block;
+`
+
+export default styled(ResultElement)`
+min-height: 4rem;
+width: 100%;
+background: white;
+padding: 0 1.5rem;
+`;
