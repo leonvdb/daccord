@@ -55,7 +55,16 @@ export const scale = {
     },
 }
 
-export const blend = (colorInHexA: string, colorInHexB: string, weight: number) => {
+export const colorScale = (percent: number) => {
+    if (percent / 10 === Math.floor(percent / 10)) return scale[percent / 10].solid;
+    const colorA = scale[Math.floor(percent / 10)].solid;
+    const colorB = scale[Math.ceil(percent / 10)].solid;
+    const weight = (percent % 10) / 10;
+    return blend(colorA, colorB, weight)
+
+}
+
+const blend = (colorInHexA: string, colorInHexB: string, weight: number) => {
     const [redA, greenA, blueA] = extractRGBValues(colorInHexA);
     const [redB, greenB, blueB] = extractRGBValues(colorInHexB);
     const red = mixValues(redA, redB, weight)
