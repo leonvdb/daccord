@@ -57,7 +57,6 @@ export const resolvers: IResolvers = {
                 total += vote.rating
                 possibleVotes += 10
             })
-            console.log({ possibleVotes, participantsLength: parent.parent().participants.length })
             return {
                 totalOpposition: total,
                 agreementInPercent: Math.round((1 - total / possibleVotes) * 100),
