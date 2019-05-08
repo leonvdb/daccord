@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Query } from 'react-apollo';
 import { GET_VOTES_FROM_OPTION } from '../../../graphql/getOption';
-import { IOptionQuery, IOptionDetails, IUser, IPollQuery } from '../../../interfaces';
+import { IOptionQuery, IUser, IPollQuery } from '../../../interfaces';
+import CircularProgressBar from '../layout/CircularProgressBar';
+import { colorScale } from '../../../style/utilities';
 
 interface Props {
     option: IOptionQuery
@@ -17,22 +19,25 @@ class ResultDetails extends React.Component<Props> {
             {({ loading, error, data }) => {
                 if (loading) return <p data-testid="loading-state">Loading...</p>
                 if (error) return <p>Error :(</p>
-                const queryOption: IOptionDetails = data.option
+                // const queryOption: IOptionDetails = data.option
+                const { agreementInPercent, participationInPercent } = option.result
+                const agreementColor = colorScale(100 - agreementInPercent)
+                const participationColor = colorScale(100 - participationInPercent)
                 return (
                     <div data-testid="result-details">
-                        <p data-testid="my-vote">My Vote: {option.userRating}</p>
-                        <p>Agreement: {option.result.agreementInPercent}%</p>
-                        <p>Participation: {option.result.participationInPercent}%</p>
                         <p>Rank: {this.props.rank}</p>
+                        <p data-testid="my-vote">My Vote: {option.userRating}</p>
+                        <CircularProgressBar sqSize={62} strokeWidth={7} percentage={agreementInPercent} color={agreementColor} />
+                        <CircularProgressBar sqSize={62} strokeWidth={7} percentage={participationInPercent} color={participationColor} />
 
-                        {queryOption.votes.map(vote => {
+                        {/* {queryOption.votes.map(vote => {
                             if (vote.voter.user.id !== this.props.user.id) {
                                 return <div className="bg-info" key={vote.id}>
                                     <p>{vote.rating}</p>
                                     <p>{vote.voter.pseudonym}</p>
                                 </div>
                             }
-                        })}
+                        })} */}
                     </div>
                 )
             }}

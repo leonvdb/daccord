@@ -21,11 +21,11 @@ const ResultElement = (props: Props) => {
 
     const { option, poll, user, rank } = props
     return (
-        <div className={props.className}>
+        <div className={props.className} onClick={toggle}>
             <div className="table-row">
                 <TableCellWrapper widthInPercent={97}>
                     <div className="clearfix">
-                        <SmallHeading onClick={toggle}>{option.title}</SmallHeading>
+                        <SmallHeading >{option.title}</SmallHeading>
                         <div className="float-right">
                             <SmallLabel>{option.result.agreementInPercent ? option.result.agreementInPercent : 0}%</SmallLabel>
                             <SmallerLabel>Agreement</SmallerLabel>
@@ -33,12 +33,9 @@ const ResultElement = (props: Props) => {
                     </div>
                     <AgreementBar agreementInPercent={option.result.agreementInPercent} backgroundColorInHex={color} />
                     <RemainderBar agreementInPercent={option.result.agreementInPercent} />
-                    {/* <button onClick={toggle}>Details</button> */}
                 </TableCellWrapper>
                 <TableCellWrapper widthInPercent={3}>
-                    <img onClick={// tslint:disable-next-line jsx-no-lambda
-                        () => { toggle() }}
-                        src={Expand} alt="show details" />
+                    <img src={Expand} alt="show details" />
                 </TableCellWrapper>
             </div>
             {showDetails && <ResultDetails option={option} poll={poll} user={user} rank={rank} />}
