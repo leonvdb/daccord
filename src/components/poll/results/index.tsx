@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IPollQuery, IUser } from '../../../interfaces';
 import ResultElement from './ResultElement';
-import { Container, LargeLabel } from '../../../style/elements';
+import { Container, LargeLabel, Divider } from '../../../style/elements';
 import styled from 'styled-components';
 
 interface Props {
@@ -39,11 +39,7 @@ class Results extends React.Component<Props>{
 }
 
 
-const Divider = styled.div`
-background-color: "#EDEDED";
-height: 2px; 
-width: 100%
-`;
+
 
 const OptionContainer = styled.div`
 ${ResultElement}:first-child{

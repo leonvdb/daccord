@@ -50,7 +50,8 @@ const CircularProgressBar = (props: Props) => {
                 y="50%"
                 dy=".3em"
                 textAnchor="middle">
-                {`${percentage}%`}
+                <tspan>{`${percentage}`}</tspan>
+                <tspan className="percent-symbol">%</tspan>
             </text>
         </svg>
     )
@@ -72,9 +73,13 @@ export default styled(CircularProgressBar) <Props>`
 }
 
 .circle-text {
-  font-size: 1.25rem;
+  font-size: ${({ percentage }) => percentage === 100 ? '1rem' : '1.25rem'};
   font-weight: bold;
   fill: ${softBlack}
+}
+
+.percent-symbol{
+    font-size: .9375rem;
 }
 `;
 
