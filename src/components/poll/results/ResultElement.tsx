@@ -21,8 +21,8 @@ const ResultElement = (props: Props) => {
 
     const { option, poll, user, rank } = props
     return (
-        <div className={props.className} onClick={toggle}>
-            <div className="table-row">
+        <div className={props.className}>
+            <div className="table-row main" onClick={toggle}>
                 <TableCellWrapper widthInPercent={97}>
                     <div className="clearfix">
                         <SmallHeading >{option.title}</SmallHeading>
@@ -70,8 +70,7 @@ border-radius: 2px 0 0 2px;
 `
 
 export default styled(ResultElement)`
-display: table; 
-min-height: 4rem;
+display: table;
 width: 100%;
 background: white;
 padding: 0 1.5rem;
@@ -80,8 +79,10 @@ ${SmallHeading}{
     display: inline-block;
     margin-bottom: 0;
 }
-${TableCellWrapper}{
-    height: 4rem;
+.main{
+    ${TableCellWrapper}{
+        height: 4rem;
+    }
 }
 .float-right{
     float: right;

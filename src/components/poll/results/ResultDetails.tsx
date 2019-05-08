@@ -5,7 +5,8 @@ import { IOptionQuery, IUser, IPollQuery } from '../../../interfaces';
 import CircularProgressBar from '../layout/CircularProgressBar';
 import { colorScale, scale } from '../../../style/utilities';
 import styled from 'styled-components';
-import { Divider, TableCellWrapper, Label } from '../../../style/elements';
+import { Divider, TableCellWrapper, Label, PrimaryButton } from '../../../style/elements';
+import TableWhite from '../../../images/table-white.svg';
 interface Props {
     option: IOptionQuery
     poll: IPollQuery
@@ -24,7 +25,6 @@ const ResultDetails = (props: Props) => {
         {({ loading, error, data }) => {
             if (loading) return <p data-testid="loading-state">Loading...</p>
             if (error) return <p>Error :(</p>
-            // const queryOption: IOptionDetails = data.option
             const { agreementInPercent, participationInPercent } = option.result
             const agreementColor = colorScale(100 - agreementInPercent)
             const participationColor = colorScale(100 - participationInPercent)
@@ -50,12 +50,14 @@ const ResultDetails = (props: Props) => {
                                 </TableCellWrapper>
                                 <TableCellWrapper widthInPercent={67} />
                             </div>
-                            <div className="table-row labels">
+                            <div className="table-row">
                                 <TableCellWrapper widthInPercent={5} verticalAlign='bottom'><Label>Rank</Label></TableCellWrapper>
                                 <TableCellWrapper widthInPercent={8} verticalAlign='bottom'><Label>My Vote</Label></TableCellWrapper>
                                 <TableCellWrapper widthInPercent={10} verticalAlign='bottom'><Label>Agreement</Label></TableCellWrapper>
                                 <TableCellWrapper widthInPercent={10} verticalAlign='bottom'><Label>Participation</Label></TableCellWrapper>
-                                <TableCellWrapper widthInPercent={67} />
+                                <TableCellWrapper className="float-right" widthInPercent={67} verticalAlign='bottom'>
+                                    <PrimaryButton type="button">Individual Votes <img src={TableWhite} /></PrimaryButton>
+                                </TableCellWrapper>
                             </div>
                         </div>
                     </DetailsWrapper>
@@ -85,9 +87,24 @@ ${Label}{
     margin: 0;
 }
 
+${PrimaryButton}{
+    padding: 0.5rem 0.8rem;
+    img{
+        margin-left: .7rem;
+        margin-top: .23rem; 
+    }
+}
+
+.float-right{
+    float: right;
+    text-align: right; 
+    ${PrimaryButton}{
+        margin: 0;
+    }
+}
 .labels{
     ${TableCellWrapper}{
-    height: 2rem; 
+    height: 2rem;
 }
 }
 .rank{
