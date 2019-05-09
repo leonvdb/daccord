@@ -11,6 +11,7 @@ interface Props {
     poll: IPollQuery
     user: IUser
     rank: number
+    setCurrentView: (viewType: string) => void
     className?: string
 }
 
@@ -38,7 +39,7 @@ const ResultElement = (props: Props) => {
                     <img src={Expand} alt="show details" />
                 </TableCellWrapper>
             </div>
-            {showDetails && <ResultDetails option={option} poll={poll} user={user} rank={rank} />}
+            {showDetails && <ResultDetails option={option} poll={poll} user={user} rank={rank} setCurrentView={props.setCurrentView} />}
         </div>
     )
 

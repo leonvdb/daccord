@@ -50,7 +50,8 @@ const mocks = [
 test('<Poll />', async () => {
     const { getByTestId } = render(
         <MockedProvider mocks={mocks} addTypename={false}>
-            <ResultDetails poll={mockPoll} option={mockOption} user={mockCreatorUser} rank={1} />
+            <ResultDetails poll={mockPoll} option={mockOption} user={mockCreatorUser} rank={1} setCurrentView={ // tslint:disable-next-line jsx-no-lambda
+                (currentView: string) => { console.log(currentView) }} />
         </MockedProvider>
     );
     expect(getByTestId('loading-state'));

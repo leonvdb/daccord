@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { IPollQuery, IUser } from '../../../interfaces';
 import ResultElement from './ResultElement';
 import { Container, LargeLabel, Divider } from '../../../style/elements';
@@ -9,33 +9,38 @@ interface Props {
     user: IUser
 }
 
-class Results extends React.Component<Props>{
-    render() {
-        const unsortedOptions = [...this.props.poll.options]
-        const sortedOptions = unsortedOptions.sort((a, b) => {
-            if (a.result.agreementInPercent > b.result.agreementInPercent) {
-                return -1
-            } else if (a.result.agreementInPercent < b.result.agreementInPercent) {
-                return 1
-            } else {
-                return 0
-            }
-        })
-        return (
-            <Container>
-                <LargeLabel>Results</LargeLabel>
+const Results = (props: Props) => {
+    const [currentView, setCurrentView] = useState('list')
+    const unsortedOptions = [...props.poll.options]
+    const sortedOptions = unsortedOptions.sort((a, b) => {
+        if (a.result.agreementInPercent > b.result.agreementInPercent) {
+            return -1
+        } else if (a.result.agreementInPercent < b.result.agreementInPercent) {
+            return 1
+        } else {
+            return 0
+        }
+    })
+    return (
+        <Container>
+            <LargeLabel>Results</LargeLabel>
+            {currentView === 'list' ? (
                 <OptionContainer>
                     {sortedOptions.map((option, index) => {
                         return (<div key={option.refId}>
-                            <ResultElement option={option} poll={this.props.poll} user={this.props.user} rank={index + 1} />
+                            <ResultElement option={option} poll={props.poll} user={props.user} rank={index + 1} setCurrentView={setCurrentView} />
                             {index + 1 !== sortedOptions.length && <Divider />}
                         </div>
                         )
                     })}
                 </OptionContainer>
-            </Container>
-        )
-    }
+
+            ) : (
+                    <div>Hi</div>
+                )}
+
+        </Container>
+    )
 }
 
 
