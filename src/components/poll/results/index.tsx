@@ -3,6 +3,9 @@ import { IPollQuery, IUser } from '../../../interfaces';
 import ResultElement from './ResultElement';
 import { Container, LargeLabel, Divider, ToggleButton } from '../../../style/elements';
 import styled from 'styled-components';
+import ListWhite from '../../../images/list-white.svg';
+import TableWhite from '../../../images/table-white.svg';
+import SVG from 'react-inlinesvg';
 
 interface Props {
     poll: IPollQuery
@@ -25,7 +28,10 @@ const Results = (props: Props) => {
         <Container>
             <FlexContainer>
                 <LargeLabel>Results</LargeLabel>
-                <ToggleButton>Table</ToggleButton>
+                <ToggleButton>
+                    <SVG src={ListWhite} />
+                    <SVG src={TableWhite} />
+                </ToggleButton>
             </FlexContainer>
             {currentView === 'list' ? (
                 <OptionContainer>

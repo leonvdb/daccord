@@ -30,7 +30,19 @@ white-space: nowrap;
 `
 
 export const ToggleButton = styled.div`
+display: flex;
 background-color: ${white};
 border: 0.8px solid #5B39DC;
 border-radius: 4px;
+svg{
+    rect{
+        fill: ${primaryStrong}
+    }
+    .only-stroke{
+        fill: none;
+        stroke: ${primaryStrong}
+    }
+
+    margin: 0.5rem;
+}
 `
