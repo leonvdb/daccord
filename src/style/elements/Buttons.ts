@@ -28,3 +28,9 @@ margin: 0 1.625rem;
 ${buttonLabel};
 white-space: nowrap;
 `
+
+export const ToggleButton = styled.div`
+background-color: ${white};
+border: 0.8px solid #5B39DC;
+border-radius: 4px;
+`

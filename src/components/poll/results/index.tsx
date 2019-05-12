@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IPollQuery, IUser } from '../../../interfaces';
 import ResultElement from './ResultElement';
-import { Container, LargeLabel, Divider } from '../../../style/elements';
+import { Container, LargeLabel, Divider, ToggleButton } from '../../../style/elements';
 import styled from 'styled-components';
 
 interface Props {
@@ -23,7 +23,10 @@ const Results = (props: Props) => {
     })
     return (
         <Container>
-            <LargeLabel>Results</LargeLabel>
+            <FlexContainer>
+                <LargeLabel>Results</LargeLabel>
+                <ToggleButton>Table</ToggleButton>
+            </FlexContainer>
             {currentView === 'list' ? (
                 <OptionContainer>
                     {sortedOptions.map((option, index) => {
@@ -45,6 +48,19 @@ const Results = (props: Props) => {
 
 
 
+const FlexContainer = styled.div`
+margin: 3rem 0;
+display: flex;
+justify-content: space-between;
+${ToggleButton}{
+    align-self: flex-end;
+}
+${LargeLabel}{
+    margin: 0;
+    line-height: .9em;
+}
+
+`;
 
 const OptionContainer = styled.div`
 ${ResultElement}:first-child{
