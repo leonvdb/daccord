@@ -4,7 +4,7 @@ import ResultDetails from './ResultDetails';
 import { colorScale, lighterGray } from '../../../style/utilities';
 import styled from 'styled-components';
 import { SmallHeading, TableCellWrapper, SmallLabel, SmallerLabel } from '../../../style/elements';
-import Expand from '../../../images/expand.svg';
+import ExpandButton from '../../../style/elements/Expand';
 
 interface Props {
     option: IOptionQuery
@@ -36,7 +36,7 @@ const ResultElement = (props: Props) => {
                     <RemainderBar agreementInPercent={option.result.agreementInPercent} />
                 </TableCellWrapper>
                 <TableCellWrapper widthInPercent={3}>
-                    <img src={Expand} alt="show details" />
+                    <ExpandButton clicked={showDetails} />
                 </TableCellWrapper>
             </div>
             {showDetails && <ResultDetails option={option} poll={poll} user={user} rank={rank} setCurrentView={props.setCurrentView} />}

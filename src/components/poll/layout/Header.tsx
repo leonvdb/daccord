@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { IPollQuery } from '../../../interfaces';
 import { Heading, SecondaryButton, Label, TableCellWrapper } from '../../../style/elements';
 import { headerHeightInRem } from '../../../style/utilities';
-import Expand from '../../../images/expand.svg';
 import InviteIcon from '../../../images/invite-icon.svg';
+import ExpandButton from '../../../style/elements/Expand';
 
 interface Props {
     poll: IPollQuery
@@ -22,9 +22,8 @@ const Header = ({ poll, pseudonym, className }: Props) => {
                     <Heading>
                         {poll.title}
                     </Heading>
-                    <img onClick={// tslint:disable-next-line jsx-no-lambda
-                        () => setShowDescription(!showDescription)}
-                        src={Expand} alt="show description" />
+                    <ExpandButton clicked={showDescription} onClick={// tslint:disable-next-line jsx-no-lambda
+                        () => setShowDescription(!showDescription)} alt="show description" />
                 </TableCellWrapper>
                 <TableCellWrapper widthInPercent={1}>
                     <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
