@@ -54,7 +54,7 @@ const Results = (props: Props) => {
             ) : (
                     <OptionContainer>
                         <TableWrapper>
-                            <div className="table-row">
+                            <div className="partcipants-row table-row">
                                 <TableCellWrapper widthInPercent={29.29} />
                                 <TableCellWrapper widthInPercent={10}>
                                     Bla
@@ -134,7 +134,7 @@ text-align: center;
     display: table-row;
 }
 
-.table-row:first-child{
+.partcipants-row{
     ${TableCellWrapper}{
     border-bottom: solid 2px ${darkGray};
     font-weight: 500;
@@ -150,9 +150,13 @@ ${TableCellWrapper}:first-child{
     border-left: none;
     border-right: solid 2px ${darkGray};
 }
+${TableCellWrapper}:nth-child(2){
+    border-left: none;
+}
 `
 
 const OptionContainer = styled.div`
+overflow: hidden;
 ${ResultElement}:first-child{
     border-radius: 5px 5px 0 0;
 }
