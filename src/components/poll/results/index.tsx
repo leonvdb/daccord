@@ -7,10 +7,13 @@ import ListWhite from '../../../images/list-white.svg';
 import TableWhite from '../../../images/table-white.svg';
 import SVG from 'react-inlinesvg';
 import { darkGray } from '../../../style/utilities';
+import ParticipantsRow from './ParticipantsRow';
+import ResultRow from './ResultRow';
 
 interface Props {
     poll: IPollQuery
     user: IUser
+    pseudonym: string
 }
 
 const Results = (props: Props) => {
@@ -54,54 +57,8 @@ const Results = (props: Props) => {
             ) : (
                     <OptionContainer>
                         <TableWrapper>
-                            <div className="partcipants-row table-row">
-                                <TableCellWrapper widthInPercent={29.29} />
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                            </div>
-                            <div className="table-row">
-                                <TableCellWrapper widthInPercent={29.29} />
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                                <TableCellWrapper widthInPercent={10}>
-                                    Bla
-                        </TableCellWrapper>
-                            </div>
+                            <ParticipantsRow poll={props.poll} pseudonym={props.pseudonym} />
+                            <ResultRow />
                         </TableWrapper>
                     </OptionContainer>
                 )}
@@ -130,38 +87,27 @@ display: table;
 background: white;
 width: 100%;
 text-align: center;
-.table-row{
-    display: table-row;
-}
-
-.partcipants-row{
-    ${TableCellWrapper}{
-    border-bottom: solid 2px ${darkGray};
-    font-weight: 500;
-}
-}
 ${TableCellWrapper}{
     height: 4.5625rem;
-    border-style: solid;
-    border-color: #DDD;
-    border-width: 0px 0px 1px 1px;
-}
-${TableCellWrapper}:first-child{
-    border-left: none;
+    &:first-child{
+        border-left: none;
     border-right: solid 2px ${darkGray};
+    }
+    &:nth-child(2){
+        border-left: none;
+    }
 }
-${TableCellWrapper}:nth-child(2){
-    border-left: none;
-}
-`
+`;
 
 const OptionContainer = styled.div`
 overflow: hidden;
-${ResultElement}:first-child{
-    border-radius: 5px 5px 0 0;
-}
-${ResultElement}:last-child{
-    border-radius: 0 0 5px 5px;
+${ResultElement}{
+    &:first-child{
+        border-radius: 5px 5px 0 0;
+    }
+    &:last-child{
+        border-radius: 0 0 5px 5px;
+    }
 }
 box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
 border-radius: 5px;

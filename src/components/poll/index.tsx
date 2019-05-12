@@ -77,7 +77,7 @@ class Poll extends React.Component<Props> {
                     <Header poll={poll} pseudonym={this.props.pseudonym} />
                     {
                         this.props.match.params.pollNavRoute === "results" ? (
-                            <Results poll={poll} user={user} />
+                            <Results poll={poll} user={user} pseudonym={this.props.pseudonym} />
                         ) : this.props.match.params.pollNavRoute === "settings" ? (
                             <Settings poll={poll} user={user} pseudonym={this.props.pseudonym} />
                         ) : (
