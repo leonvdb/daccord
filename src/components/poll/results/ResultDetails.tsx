@@ -38,7 +38,7 @@ const ResultDetails = (props: Props) => {
                             {option.userRating !== null ? option.userRating : '-'}
                         </TableCellWrapper>
                         <TableCellWrapper widthInPercent={10}>
-                            <CircularProgressBar sqSize={62} strokeWidth={7} percentage={agreementInPercent} color={agreementColor} />
+                            <CircularProgressBar sqSize={62} strokeWidth={7} percentage={agreementInPercent ? agreementInPercent : 0} color={agreementColor} />
                         </TableCellWrapper>
                         <TableCellWrapper widthInPercent={10}>
                             <CircularProgressBar sqSize={62} strokeWidth={7} percentage={participationInPercent} color={participationColor} />
