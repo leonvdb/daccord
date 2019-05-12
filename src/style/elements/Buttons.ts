@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darkerGray, white, primaryStrong } from '../utilities'
 import { buttonLabel } from '../utilities'
 
@@ -29,11 +29,14 @@ ${buttonLabel};
 white-space: nowrap;
 `
 
-export const ToggleButton = styled.div`
+export const ToggleViewButton = styled.div<ToggleViewButtonProps>`
 display: flex;
 background-color: ${white};
 border: 0.8px solid #5B39DC;
 border-radius: 4px;
+div{
+    cursor: pointer;
+}
 svg{
     rect{
         fill: ${primaryStrong}
@@ -45,4 +48,24 @@ svg{
 
     margin: 0.5rem;
 }
-`
+${({ currentView }) => focusedToggle(currentView)}
+`;
+
+const focusedToggle = (currentView: string) => css`
+.${currentView}-select{
+    background: ${primaryStrong};
+    cursor: auto;
+    svg{
+        rect{
+            fill: ${white};
+        }
+        .only-stroke{
+            fill: none;
+            stroke: ${white};
+        }
+    }
+}`;
+
+interface ToggleViewButtonProps {
+    currentView: string
+}

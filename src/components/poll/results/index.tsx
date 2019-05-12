@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IPollQuery, IUser } from '../../../interfaces';
 import ResultElement from './ResultElement';
-import { Container, LargeLabel, Divider, ToggleButton } from '../../../style/elements';
+import { Container, LargeLabel, Divider, ToggleViewButton } from '../../../style/elements';
 import styled from 'styled-components';
 import ListWhite from '../../../images/list-white.svg';
 import TableWhite from '../../../images/table-white.svg';
@@ -28,10 +28,16 @@ const Results = (props: Props) => {
         <Container>
             <FlexContainer>
                 <LargeLabel>Results</LargeLabel>
-                <ToggleButton>
-                    <SVG src={ListWhite} />
-                    <SVG src={TableWhite} />
-                </ToggleButton>
+                <ToggleViewButton currentView={currentView}>
+                    <div className="list-select" onClick={ // tslint:disable-next-line jsx-no-lambda
+                        () => { setCurrentView('list') }}>
+                        <SVG src={ListWhite} />
+                    </div>
+                    <div className="table-select" onClick={ // tslint:disable-next-line jsx-no-lambda
+                        () => { setCurrentView('table') }}>
+                        <SVG src={TableWhite} />
+                    </div>
+                </ToggleViewButton>
             </FlexContainer>
             {currentView === 'list' ? (
                 <OptionContainer>
@@ -58,7 +64,7 @@ const FlexContainer = styled.div`
 margin: 3rem 0;
 display: flex;
 justify-content: space-between;
-${ToggleButton}{
+${ToggleViewButton}{
     align-self: flex-end;
 }
 ${LargeLabel}{
