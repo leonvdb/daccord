@@ -16,6 +16,7 @@ export interface IPollQuery {
     description?: string
     refId: string
     creator: IUser
+    creatorPseudonym: string
     options: IOptionQuery[]
     participants: IParticipant[]
 }
@@ -92,6 +93,7 @@ export interface IUser extends IUserInformation {
 
 
 export interface IParticipant {
+    pseudonym: string
     user: IUser
 }
 export interface INewParticipant extends IUserInformation {

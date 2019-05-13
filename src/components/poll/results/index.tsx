@@ -57,7 +57,7 @@ const Results = (props: Props) => {
             ) : (
                     <OptionContainer>
                         <TableWrapper>
-                            <ParticipantsRow poll={props.poll} pseudonym={props.pseudonym} />
+                            <ParticipantsRow poll={props.poll} pseudonym={props.pseudonym} user={props.user} />
                             <ResultRow />
                         </TableWrapper>
                     </OptionContainer>

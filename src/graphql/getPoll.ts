@@ -9,7 +9,9 @@ query($id: ID!){
         creator{
             id
         }
+        creatorPseudonym
         participants{
+            pseudonym
             user{
                 id
             }
@@ -42,7 +44,9 @@ query($id: ID!, $authToken: String!){
         creator{
             id
         }
+        creatorPseudonym
         participants{
+            pseudonym
             user{
                 id
             }
