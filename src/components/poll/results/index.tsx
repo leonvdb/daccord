@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { IPollQuery, IUser } from '../../../interfaces';
 import ResultElement from './ResultElement';
-import { Container, LargeLabel, Divider, ToggleViewButton, TableCellWrapper } from '../../../style/elements';
+import { Container, LargeLabel, Divider, ToggleViewButton } from '../../../style/elements';
 import styled from 'styled-components';
 import ListWhite from '../../../images/list-white.svg';
 import TableWhite from '../../../images/table-white.svg';
 import SVG from 'react-inlinesvg';
-import { darkGray } from '../../../style/utilities';
-import ParticipantsRow from './ParticipantsRow';
-import ResultRow from './ResultRow';
-import { Query } from 'react-apollo';
-import { GET_INDIVIDUAL_VOTES } from '../../../graphql/getPoll';
+import TableView from './tableView';
 
 interface Props {
     poll: IPollQuery
@@ -30,6 +26,7 @@ const Results = (props: Props) => {
             return 0
         }
     })
+    const { poll, pseudonym, user } = props;
     return (
         <Container>
             <FlexContainer>
@@ -57,23 +54,7 @@ const Results = (props: Props) => {
                 </OptionContainer>
 
             ) : (
-                    <Query query={GET_INDIVIDUAL_VOTES} variables={{ id: props.poll.refId }}>
-                        {({ loading, error, data }) => {
-                            if (loading) return <p>Loading...</p>
-                            if (error) {
-                                console.log({ error })
-                                return <p>{error.message ? error.message.replace('GraphQL error: ', '') : 'Error :('}</p>
-                            }
-                            console.log({ data })
-                            return (<OptionContainer>
-                                <TableWrapper>
-                                    <ParticipantsRow poll={props.poll} pseudonym={props.pseudonym} user={props.user} />
-                                    <ResultRow />
-                                </TableWrapper>
-                            </OptionContainer>)
-                        }}
-
-                    </Query>
+                    <TableView poll={poll} pseudonym={pseudonym} user={user} />
                 )}
 
         </Container>
@@ -92,23 +73,6 @@ ${ToggleViewButton}{
 ${LargeLabel}{
     margin: 0;
     line-height: .9em;
-}
-`;
-
-const TableWrapper = styled.div`
-display: table;
-background: white;
-width: 100%;
-text-align: center;
-${TableCellWrapper}{
-    height: 4.5625rem;
-    &:first-child{
-        border-left: none;
-    border-right: solid 2px ${darkGray};
-    }
-    &:nth-child(2){
-        border-left: none;
-    }
 }
 `;
 
