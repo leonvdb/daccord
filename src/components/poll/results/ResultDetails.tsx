@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IOptionQuery, IUser, IPollQuery } from '../../../interfaces';
 import CircularProgressBar from '../layout/CircularProgressBar';
-import { colorScale, scale } from '../../../style/utilities';
+import { colorScale, scale, veryLarge } from '../../../style/utilities';
 import styled from 'styled-components';
 import { Divider, TableCellWrapper, Label, PrimaryButton } from '../../../style/elements';
 import TableWhite from '../../../images/table-white.svg';
@@ -57,18 +57,6 @@ const ResultDetails = (props: Props) => {
                     </div>
                 </div>
             </DetailsWrapper>
-
-            {/* <p>Rank: {rank}</p>
-                        <p data-testid="my-vote">My Vote: {option.userRating}</p> */}
-
-            {/* {queryOption.votes.map(vote => {
-                        if (vote.voter.user.id !== this.props.user.id) {
-                            return <div className="bg-info" key={vote.id}>
-                            <p>{vote.rating}</p>
-                            <p>{vote.voter.pseudonym}</p>
-                            </div>
-                        }
-                    })} */}
         </div>
     )
 }
@@ -106,8 +94,7 @@ ${PrimaryButton}{
 }
 .user-rating{
     color: ${({ userRatingColor }) => userRatingColor};
-    font-weight: bold;
-    font-size: 2.5rem;
+    ${veryLarge}
 }
 .table{
 display: table;

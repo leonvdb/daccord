@@ -43,4 +43,9 @@ font-weight: bold;
 export const smallerLabel = css`
 font-size: .875rem; 
 font-weight: ${fontWeights.medium};
-`
+`;
+
+export const veryLarge = css`
+font-weight: bold;
+font-size: 2.5rem;
+`;

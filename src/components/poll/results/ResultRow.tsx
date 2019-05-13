@@ -2,6 +2,7 @@ import React from 'react'
 import { TableCellWrapper } from '../../../style/elements';
 import styled from 'styled-components';
 import { IOptionDetails } from '../../../interfaces';
+import { scale, veryLarge } from '../../../style/utilities';
 
 interface Props {
     className?: string
@@ -21,7 +22,8 @@ const ResultRow = (props: Props) => {
                 {props.option.refId}
             </TableCellWrapper>
             {displayedParticipants.map(participant => {
-                return <TableCellWrapper widthInPercent={10} key={`rating-${option.refId}-${participant.id}`}>
+                const ratingColor: string | undefined = participantsVotesDict[participant.id] !== undefined ? scale[participantsVotesDict[participant.id]].solid : undefined
+                return <TableCellWrapper widthInPercent={10} key={`rating-${option.refId}-${participant.id}`} customColor={ratingColor} className="rating">
                     {participantsVotesDict[participant.id] !== undefined ? participantsVotesDict[participant.id] : "-"}
                 </TableCellWrapper>
             })}
@@ -35,5 +37,8 @@ ${TableCellWrapper}{
     border-style: solid;
     border-color: #DDD;
     border-width: 0px 0px 1px 1px;
+}
+.rating{
+    ${veryLarge}
 }
 `;
