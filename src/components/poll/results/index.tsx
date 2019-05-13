@@ -9,6 +9,8 @@ import SVG from 'react-inlinesvg';
 import { darkGray } from '../../../style/utilities';
 import ParticipantsRow from './ParticipantsRow';
 import ResultRow from './ResultRow';
+import { Query } from 'react-apollo';
+import { GET_INDIVIDUAL_VOTES } from '../../../graphql/getPoll';
 
 interface Props {
     poll: IPollQuery
@@ -55,12 +57,23 @@ const Results = (props: Props) => {
                 </OptionContainer>
 
             ) : (
-                    <OptionContainer>
-                        <TableWrapper>
-                            <ParticipantsRow poll={props.poll} pseudonym={props.pseudonym} user={props.user} />
-                            <ResultRow />
-                        </TableWrapper>
-                    </OptionContainer>
+                    <Query query={GET_INDIVIDUAL_VOTES} variables={{ id: props.poll.refId }}>
+                        {({ loading, error, data }) => {
+                            if (loading) return <p>Loading...</p>
+                            if (error) {
+                                console.log({ error })
+                                return <p>{error.message ? error.message.replace('GraphQL error: ', '') : 'Error :('}</p>
+                            }
+                            console.log({ data })
+                            return (<OptionContainer>
+                                <TableWrapper>
+                                    <ParticipantsRow poll={props.poll} pseudonym={props.pseudonym} user={props.user} />
+                                    <ResultRow />
+                                </TableWrapper>
+                            </OptionContainer>)
+                        }}
+
+                    </Query>
                 )}
 
         </Container>

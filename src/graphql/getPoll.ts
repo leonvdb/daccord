@@ -81,6 +81,7 @@ query($id: ID!, $authToken: String!){
 export const GET_INDIVIDUAL_VOTES = gql`
 query($id: ID!){
     poll(id: $id){
+        refId
         options{
             refId
             votes{
