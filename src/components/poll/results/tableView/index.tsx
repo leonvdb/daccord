@@ -4,7 +4,7 @@ import { GET_INDIVIDUAL_VOTES } from '../../../../graphql/getPoll';
 import styled from 'styled-components';
 import { TableCellWrapper } from '../../../../style/elements';
 import { darkGray } from '../../../../style/utilities';
-import { IPollQuery, IUser } from '../../../../interfaces';
+import { IPollQuery, IUser, IOptionDetails } from '../../../../interfaces';
 import ResultRow from '../ResultRow';
 import ParticipantsRow from '../ParticipantsRow';
 
@@ -36,11 +36,12 @@ const TableView = (props: Props) => {
                     console.log({ error })
                     return <p>{error.message ? error.message.replace('GraphQL error: ', '') : 'Error :('}</p>
                 }
-                console.log({ data })
                 return (<OptionContainer>
                     <TableWrapper>
                         <ParticipantsRow displayedParticipants={displayedParticipants} />
-                        <ResultRow />
+                        {data.poll.options.map((option: IOptionDetails) => {
+                            return <ResultRow option={option} key={`table-result-${option.refId}`} displayedParticipants={displayedParticipants} />
+                        })}
                     </TableWrapper>
                 </OptionContainer>)
             }}

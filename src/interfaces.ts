@@ -36,6 +36,7 @@ export interface IOptionQuery extends INewOption {
 
 export interface IOptionDetails {
     votes: IVoteDetails[]
+    refId: string
 }
 
 export interface IVoteDetails {
