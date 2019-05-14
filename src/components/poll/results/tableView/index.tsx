@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Query } from 'react-apollo';
 import { GET_INDIVIDUAL_VOTES } from '../../../../graphql/getPoll';
 import styled from 'styled-components';
@@ -19,18 +19,33 @@ interface Props {
 
 const TableView = (props: Props) => {
     const { poll, user } = props;
+    const [firstDisplayedParticipant, setFirstDisplayedParticipant] = useState(0)
     const userAndCreator = [{ id: user.id, pseudonym: "You" }]
     if (poll.creator.id !== user.id) {
         userAndCreator.push({ id: poll.creator.id, pseudonym: poll.creatorPseudonym })
     }
     const displayedParticipants = [...userAndCreator]
-    for (const participant of poll.participants) {
+    let userInParticipants = -1
+    const remainingSpace = 7 - displayedParticipants.length
+    for (let i = firstDisplayedParticipant; i < remainingSpace; i++) {
+        const participant = poll.participants[i]
         if (participant.user.id !== user.id) {
             const { user, pseudonym } = participant
             displayedParticipants.push({ id: user.id, pseudonym })
+        } else {
+            userInParticipants = i
         }
-        if (displayedParticipants.length >= 7) break;
     }
+
+    const goBack = () => {
+        console.log("back")
+    }
+    const goForward = () => {
+        setFirstDisplayedParticipant(firstDisplayedParticipant + 5)
+        console.log("forward")
+        console.log(userInParticipants);
+    }
+
     return (
         <div className={props.className}>
             <TableWrapper className="labels">
@@ -40,8 +55,8 @@ const TableView = (props: Props) => {
                 <TableCellWrapper widthInPercent={70.71} verticalAlign="bottom">
                     <Label>Participants</Label>
                     <div className="arrows">
-                        <Arrow active={false} />
-                        <Arrow direction="right" active={true} />
+                        <Arrow active={false} onClick={goBack} />
+                        <Arrow direction="right" active={true} onClick={goForward} />
                     </div>
                 </TableCellWrapper>
             </TableWrapper>
