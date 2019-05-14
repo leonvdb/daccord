@@ -24,7 +24,10 @@ display: inline-block;
 svg{
     ${({ direction }) => direction === "right" ? css`transform: rotate(180deg);` : ''}
     circle{
-    ${({ active }) => active ? css`fill: ${primaryStrong};` : ''}
+    ${({ active }) => active ? css`
+    fill: ${primaryStrong};
+    cursor: pointer;
+        ` : ''}
     }
 }
 `

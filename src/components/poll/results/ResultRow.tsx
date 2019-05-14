@@ -21,11 +21,16 @@ const ResultRow = (props: Props) => {
             <TableCellWrapper widthInPercent={29.29}>
                 {props.option.refId}
             </TableCellWrapper>
-            {displayedParticipants.map(participant => {
-                const ratingColor: string | undefined = participantsVotesDict[participant.id] !== undefined ? scale[participantsVotesDict[participant.id]].solid : undefined
-                return <TableCellWrapper widthInPercent={10} key={`rating-${option.refId}-${participant.id}`} customColor={ratingColor} className="rating">
-                    {participantsVotesDict[participant.id] !== undefined ? participantsVotesDict[participant.id] : "-"}
-                </TableCellWrapper>
+            {[...Array(7).keys()].map((value, index) => {
+                const participant = displayedParticipants[index]
+                if (participant) {
+                    const ratingColor: string | undefined = participantsVotesDict[participant.id] !== undefined ? scale[participantsVotesDict[participant.id]].solid : undefined;
+                    return <TableCellWrapper widthInPercent={10} key={`rating-${option.refId}-${participant.id}`} customColor={ratingColor} className="rating">
+                        {participantsVotesDict[participant.id] !== undefined ? participantsVotesDict[participant.id] : "-"}
+                    </TableCellWrapper>
+                } else {
+                    return <TableCellWrapper widthInPercent={10} key={`rating-${option.refId}-${value}`} className="rating" />
+                }
             })}
         </div>
     )
