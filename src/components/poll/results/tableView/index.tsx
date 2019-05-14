@@ -20,30 +20,23 @@ interface Props {
 const TableView = (props: Props) => {
     const { poll, user } = props;
     const [firstDisplayedParticipant, setFirstDisplayedParticipant] = useState(0)
-    const userAndCreator = [{ id: user.id, pseudonym: "You" }]
+    const allParticipants = []
     if (poll.creator.id !== user.id) {
-        userAndCreator.push({ id: poll.creator.id, pseudonym: poll.creatorPseudonym })
+        allParticipants.push({ id: poll.creator.id, pseudonym: poll.creatorPseudonym })
     }
-    const displayedParticipants = [...userAndCreator]
-    let userInParticipants = -1
-    const remainingSpace = 7 - displayedParticipants.length
-    for (let i = firstDisplayedParticipant; i < remainingSpace; i++) {
-        const participant = poll.participants[i]
+    poll.participants.forEach(participant => {
         if (participant.user.id !== user.id) {
             const { user, pseudonym } = participant
-            displayedParticipants.push({ id: user.id, pseudonym })
-        } else {
-            userInParticipants = i
+            allParticipants.push({ id: user.id, pseudonym })
         }
-    }
-
+    })
+    const displayedParticipants = [{ id: user.id, pseudonym: "You" }, ...allParticipants.slice(firstDisplayedParticipant, firstDisplayedParticipant + 6)]
     const goBack = () => {
         console.log("back")
     }
     const goForward = () => {
-        setFirstDisplayedParticipant(firstDisplayedParticipant + 5)
+        setFirstDisplayedParticipant(firstDisplayedParticipant + 6)
         console.log("forward")
-        console.log(userInParticipants);
     }
 
     return (
