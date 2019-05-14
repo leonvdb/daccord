@@ -83,6 +83,11 @@ query($id: ID!){
     poll(id: $id){
         refId
         options{
+            title
+            userRating
+            result{
+                agreementInPercent
+            }
             refId
             votes{
                 voter{

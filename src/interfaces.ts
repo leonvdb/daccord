@@ -34,6 +34,12 @@ export interface IOptionQuery extends INewOption {
     result: IResult
 }
 
+export interface IExtededOptionDetails extends IOptionDetails {
+    title: string
+    userRating: number | null
+    result: IResult
+}
+
 export interface IOptionDetails {
     votes: IVoteDetails[]
     refId: string

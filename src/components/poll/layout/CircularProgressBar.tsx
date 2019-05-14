@@ -45,7 +45,6 @@ const CircularProgressBar = (props: Props) => {
                     strokeDashoffset: dashOffset
                 }} />
             <text
-                className="circle-text"
                 x="50%"
                 y="50%"
                 dy=".3em"
@@ -72,7 +71,7 @@ export default styled(CircularProgressBar) <Props>`
   stroke-linecap: round;
 }
 
-.circle-text {
+text {
   font-size: ${({ percentage }) => percentage === 100 ? '1rem' : '1.25rem'};
   font-weight: bold;
   fill: ${softBlack}

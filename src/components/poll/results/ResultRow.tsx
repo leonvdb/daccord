@@ -1,13 +1,15 @@
 import React from 'react'
 import { TableCellWrapper } from '../../../style/elements';
 import styled from 'styled-components';
-import { IOptionDetails } from '../../../interfaces';
-import { scale, veryLarge } from '../../../style/utilities';
+import { IUser, IExtededOptionDetails } from '../../../interfaces';
+import { scale, veryLarge, colorScale } from '../../../style/utilities';
+import CircularProgressBar from '../layout/CircularProgressBar';
 
 interface Props {
     className?: string
-    option: IOptionDetails
+    option: IExtededOptionDetails
     displayedParticipants: Array<{ id: string, pseudonym: string }>
+    user: IUser
 }
 
 const ResultRow = (props: Props) => {
@@ -16,10 +18,13 @@ const ResultRow = (props: Props) => {
     option.votes.forEach(vote => {
         participantsVotesDict[vote.voter.user.id] = vote.rating
     })
+    const agreementColor = colorScale(100 - option.result.agreementInPercent)
+    participantsVotesDict[props.user.id] = option.userRating
     return (
         <div className={props.className}>
             <TableCellWrapper widthInPercent={29.29}>
-                {props.option.refId}
+                <CircularProgressBar percentage={option.result.agreementInPercent} color={agreementColor} sqSize={50} strokeWidth={5} />
+                {props.option.title}
             </TableCellWrapper>
             {[...Array(7).keys()].map((value, index) => {
                 const participant = displayedParticipants[index]
@@ -38,6 +43,15 @@ const ResultRow = (props: Props) => {
 
 export default styled(ResultRow)`
 display: table-row;
+${CircularProgressBar}{
+    margin-right: 1rem;
+    text{
+    font-size: .9em; 
+    .percent-symbol{
+        font-size: .9em;
+    }
+    }
+}
 ${TableCellWrapper}{
     border-style: solid;
     border-color: #DDD;

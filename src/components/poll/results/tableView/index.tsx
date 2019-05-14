@@ -4,7 +4,7 @@ import { GET_INDIVIDUAL_VOTES } from '../../../../graphql/getPoll';
 import styled from 'styled-components';
 import { TableCellWrapper, Label } from '../../../../style/elements';
 import { darkGray } from '../../../../style/utilities';
-import { IPollQuery, IUser, IOptionDetails } from '../../../../interfaces';
+import { IPollQuery, IUser, IExtededOptionDetails } from '../../../../interfaces';
 import ResultRow from '../ResultRow';
 import ParticipantsRow from '../ParticipantsRow';
 import Arrow from '../../../../style/elements/Arrow';
@@ -64,8 +64,8 @@ const TableView = (props: Props) => {
                     return (<OptionContainer>
                         <TableWrapper>
                             <ParticipantsRow displayedParticipants={displayedParticipants} />
-                            {data.poll.options.map((option: IOptionDetails) => {
-                                return <ResultRow option={option} key={`table-result-${option.refId}`} displayedParticipants={displayedParticipants} />
+                            {data.poll.options.map((option: IExtededOptionDetails) => {
+                                return <ResultRow option={option} key={`table-result-${option.refId}`} displayedParticipants={displayedParticipants} user={props.user} />
                             })}
                         </TableWrapper>
                     </OptionContainer>)
