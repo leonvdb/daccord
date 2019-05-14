@@ -31,12 +31,13 @@ const TableView = (props: Props) => {
         }
     })
     const displayedParticipants = [{ id: user.id, pseudonym: "You" }, ...allParticipants.slice(firstDisplayedParticipant, firstDisplayedParticipant + 6)]
+    const backAvailable = firstDisplayedParticipant > 0 ? true : false
+    const forwardAvailable = firstDisplayedParticipant + 6 < allParticipants.length
     const goBack = () => {
-        console.log("back")
+        setFirstDisplayedParticipant(firstDisplayedParticipant - 6)
     }
     const goForward = () => {
         setFirstDisplayedParticipant(firstDisplayedParticipant + 6)
-        console.log("forward")
     }
 
     return (
@@ -48,8 +49,8 @@ const TableView = (props: Props) => {
                 <TableCellWrapper widthInPercent={70.71} verticalAlign="bottom">
                     <Label>Participants</Label>
                     <div className="arrows">
-                        <Arrow active={false} onClick={goBack} />
-                        <Arrow direction="right" active={true} onClick={goForward} />
+                        <Arrow active={backAvailable} onClick={backAvailable ? goBack : undefined} />
+                        <Arrow direction="right" active={forwardAvailable} onClick={forwardAvailable ? goForward : undefined} />
                     </div>
                 </TableCellWrapper>
             </TableWrapper>
