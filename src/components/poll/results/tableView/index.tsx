@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Query } from 'react-apollo';
 import { GET_INDIVIDUAL_VOTES } from '../../../../graphql/getPoll';
 import styled from 'styled-components';
@@ -19,18 +19,27 @@ interface Props {
 
 const TableView = (props: Props) => {
     const { poll, user } = props;
-    const userAndCreator = [{ id: user.id, pseudonym: "You" }]
+    const [firstDisplayedParticipant, setFirstDisplayedParticipant] = useState(0)
+    const allParticipants = []
     if (poll.creator.id !== user.id) {
-        userAndCreator.push({ id: poll.creator.id, pseudonym: poll.creatorPseudonym })
+        allParticipants.push({ id: poll.creator.id, pseudonym: poll.creatorPseudonym })
     }
-    const displayedParticipants = [...userAndCreator]
-    for (const participant of poll.participants) {
+    poll.participants.forEach(participant => {
         if (participant.user.id !== user.id) {
             const { user, pseudonym } = participant
-            displayedParticipants.push({ id: user.id, pseudonym })
+            allParticipants.push({ id: user.id, pseudonym })
         }
-        if (displayedParticipants.length >= 7) break;
+    })
+    const displayedParticipants = [{ id: user.id, pseudonym: "You" }, ...allParticipants.slice(firstDisplayedParticipant, firstDisplayedParticipant + 6)]
+    const backAvailable = firstDisplayedParticipant > 0 ? true : false
+    const forwardAvailable = firstDisplayedParticipant + 6 < allParticipants.length
+    const goBack = () => {
+        setFirstDisplayedParticipant(firstDisplayedParticipant - 6)
     }
+    const goForward = () => {
+        setFirstDisplayedParticipant(firstDisplayedParticipant + 6)
+    }
+
     return (
         <div className={props.className}>
             <TableWrapper className="labels">
@@ -40,8 +49,8 @@ const TableView = (props: Props) => {
                 <TableCellWrapper widthInPercent={70.71} verticalAlign="bottom">
                     <Label>Participants</Label>
                     <div className="arrows">
-                        <Arrow active={false} />
-                        <Arrow direction="right" active={true} />
+                        <Arrow active={backAvailable} onClick={backAvailable ? goBack : undefined} />
+                        <Arrow direction="right" active={forwardAvailable} onClick={forwardAvailable ? goForward : undefined} />
                     </div>
                 </TableCellWrapper>
             </TableWrapper>

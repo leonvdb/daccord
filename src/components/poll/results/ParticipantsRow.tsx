@@ -13,7 +13,7 @@ const ParticipantsRow = (props: Props) => {
             <TableCellWrapper widthInPercent={29.29} />
             {[...Array(7).keys()].map((fieldId, index) => {
                 return (<TableCellWrapper widthInPercent={10} key={`Participant-${fieldId}`}>
-                    {props.displayedParticipants[index].pseudonym}
+                    {props.displayedParticipants[index] ? props.displayedParticipants[index].pseudonym : ''}
                 </TableCellWrapper>)
             })}
         </div>

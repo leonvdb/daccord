@@ -7,12 +7,13 @@ import { primaryStrong } from '../utilities';
 interface Props {
     className?: string
     direction?: string
+    onClick?: () => void
     active: boolean
 }
 
 const Arrow = (props: Props) => {
     return (
-        <Wrapper direction={props.direction} active={props.active}>
+        <Wrapper direction={props.direction} active={props.active} onClick={props.onClick}>
             <SVG src={ArrowGrayLeft} />
         </Wrapper>
     )
