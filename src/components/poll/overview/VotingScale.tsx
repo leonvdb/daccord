@@ -32,6 +32,7 @@ const VotingScale = (props: Props) => {
         <div className={props.className} >
             <ColoredBar current={current} />
             {[...Array(11).keys()].map(fieldNumber => (<Wrapper key={`${props.optionId}${fieldNumber}`}
+                data-testid={`scale-${fieldNumber}`}
                 onMouseEnter={// tslint:disable-next-line jsx-no-lambda
                     () => {
                         setCurrent(fieldNumber);

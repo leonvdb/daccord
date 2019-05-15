@@ -34,7 +34,7 @@ const ResultDetails = (props: Props) => {
                         <TableCellWrapper widthInPercent={5} className="rank">
                             {rank}
                         </TableCellWrapper>
-                        <TableCellWrapper widthInPercent={8} className="user-rating">
+                        <TableCellWrapper widthInPercent={8} className="user-rating" data-testid="my-vote">
                             {option.userRating !== null ? option.userRating : '-'}
                         </TableCellWrapper>
                         <TableCellWrapper widthInPercent={10}>

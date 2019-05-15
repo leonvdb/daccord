@@ -31,7 +31,7 @@ const Option = (props: Props) => {
     return (
         <div className={props.className}>
             <TableCellWrapper widthInPercent={67}>
-                <HeadingTwo onClick={onClick}>
+                <HeadingTwo onClick={onClick} data-testid="option-heading">
                     {title}
                 </HeadingTwo>
             </TableCellWrapper>
