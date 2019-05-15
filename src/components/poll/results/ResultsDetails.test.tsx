@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitForElement } from 'react-testing-library';
+import { render } from 'react-testing-library';
 import ResultDetails from './ResultDetails'
 import { MockedProvider } from 'react-apollo/test-utils';
 import { GET_VOTES_FROM_OPTION } from '../../../graphql/getOption';
@@ -50,10 +50,9 @@ const mocks = [
 test('<Poll />', async () => {
     const { getByTestId } = render(
         <MockedProvider mocks={mocks} addTypename={false}>
-            <ResultDetails poll={mockPoll} option={mockOption} user={mockCreatorUser} rank={1} />
+            <ResultDetails poll={mockPoll} option={mockOption} user={mockCreatorUser} rank={1} setCurrentView={ // tslint:disable-next-line jsx-no-lambda
+                (currentView: string) => { console.log(currentView) }} />
         </MockedProvider>
     );
-    expect(getByTestId('loading-state'));
-    await waitForElement(() => getByTestId('result-details'));
     expect(getByTestId('my-vote'))
 })

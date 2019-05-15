@@ -4,6 +4,7 @@ const mockPoll: IPollQuery = {
     title: "Test Poll",
     description: "Description of the Test Poll",
     refId: "TestRefId",
+    creatorPseudonym: "Test Creator",
     creator: {
         id: "TestCreatorId",
         email: "creator@example.com",
@@ -26,6 +27,7 @@ const mockPoll: IPollQuery = {
         }
     }],
     participants: [{
+        pseudonym: "Test Participant",
         user: {
             id: "TestParticipantId",
             email: "participant@example.com",

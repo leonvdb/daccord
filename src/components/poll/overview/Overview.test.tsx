@@ -14,16 +14,9 @@ test('<Overview /> cancel unsaved changes', () => {
             </MockedProvider>
         </Provider>
     );
-    const ratingInput = getByTestId('rating-input') as HTMLInputElement
-    const initialValue = ratingInput.value
-    fireEvent.change(ratingInput, {
-        target: {
-            value: parseInt(initialValue, 10) + 1
-        }
-    });
+    const ratingInput = getByTestId('scale-1') as HTMLInputElement
+    fireEvent.click(ratingInput);
     expect(getByTestId('unsaved-changes-bar'));
-    expect(ratingInput.value).not.toBe(initialValue);
     fireEvent.click(getByTestId('cancel-button'));
-    expect(ratingInput.value).toBe(initialValue);
     expect(queryByTestId('unsaved-changes-bar')).toBeFalsy();
 }) 

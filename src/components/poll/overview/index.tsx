@@ -2,8 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { IUser, IPollQuery, IVoteNew } from '../../../interfaces';
 import { Store } from '../../../reducers';
+import styled from 'styled-components'
 
 import { IOptionQuery } from '../../../interfaces';
+import { TableCellWrapper, PrimaryButton, Label, Container } from '../../../style/elements';
+import { darkerGray } from '../../../style/utilities';
 
 import Option from './Option';
 import AddOption from './AddOption';
@@ -43,16 +46,30 @@ class Overview extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <div className="container-fluid px-5">
 
-                    <div className="mt-5 d-flex flex-wrap">
+                <Container>
+                    <ToolBar>
+                        <TableCellWrapper widthInPercent={67} verticalAlign="bottom">
+                            <Label className="margin-left">
+                                Title
+                    </Label>
+                        </TableCellWrapper>
+                        <TableCellWrapper widthInPercent={0} verticalAlign="bottom">
+                            <Label >
+                                My Opposition
+                    </Label>
+                        </TableCellWrapper>
+                        <TableCellWrapper className="move-right" widthInPercent={15} verticalAlign="bottom">
+                            {button}
+                        </TableCellWrapper>
+                    </ToolBar>
 
-                        {button}
+                    <OptionsWrapper>
                         {options.map(option => {
                             let rating = option.userRating;
                             this.props.votes.forEach(vote => {
                                 if (vote.optionId === option.refId) {
-                                    Number.isNaN(vote.rating) ? rating = null : rating = vote.rating
+                                    rating = vote.rating
                                 }
                             })
                             return (<Option
@@ -64,14 +81,23 @@ class Overview extends React.Component<Props> {
                             />)
                         }
                         )}
-                    </div>
-                </div>
+                    </OptionsWrapper>
+                </Container>
                 {this.props.votes.length > 0 &&
-                    <div
-                        data-testid="unsaved-changes-bar"
-                        style={{ maxWidth: "inherit", width: "100%", height: "6vh", position: "fixed", bottom: "0px", display: "table", borderTop: "1px solid #ccc", background: "rgba(193, 193, 193, 0.88)" }}>
-                        <div style={{ display: "table-cell", verticalAlign: "middle" }}>
-                            <p style={{ display: "inline-block" }} className="ml-5">you made changes that are currently unsaved</p>
+                    <UnsavedChangesBar
+                        data-testid="unsaved-changes-bar">
+                        <TableCellWrapper widthInPercent={99}>
+                            <p>You made changes that are currently unsaved</p>
+                        </TableCellWrapper>
+                        <TableCellWrapper widthInPercent={1}>
+                            <button
+                                data-testid="cancel-button"
+                                onClick={this.onClick}
+                            >
+                                cancel
+                                            </button>
+                        </TableCellWrapper>
+                        <TableCellWrapper widthInPercent={1}>
                             <Mutation mutation={UPDATE_VOTES}
                                 update={// tslint:disable-next-line jsx-no-lambda
                                     (cache, { data: { updateVotes } }) => {
@@ -95,32 +121,64 @@ class Overview extends React.Component<Props> {
                                         });
                                     }}>
                                 {(UPDATE_VOTES) => (
-                                    <button
-                                        className="btn btn-secondary mr-5"
-                                        style={{ float: "right", display: "inline-block" }}
-                                        onClick={() => {// tslint:disable-next-line jsx-no-lambda
-                                            UPDATE_VOTES({ variables: { pollId: this.props.poll.refId, votes: this.props.votes } })
-                                        }
-                                        }>
+                                    <PrimaryButton onClick={() => {// tslint:disable-next-line jsx-no-lambda
+                                        UPDATE_VOTES({ variables: { pollId: this.props.poll.refId, votes: this.props.votes } })
+                                    }
+                                    }>
                                         Save
-                            </button>
+                                </PrimaryButton>
+
                                 )}
                             </Mutation>
-                            <button
-                                data-testid="cancel-button"
-                                className="btn btn-link mr-2"
-                                style={{ float: "right", display: "inline-block" }}
-                                onClick={this.onClick}
-                            >
-                                cancel
-                                </button>
-                        </div>
-                    </div>
+                        </TableCellWrapper>
+                    </UnsavedChangesBar>
                 }
             </React.Fragment>
         );
     }
 }
+
+
+const OptionsWrapper = styled.div`
+padding-top: 5.8125rem;
+`;
+
+const ToolBar = styled.div`
+width:100%;
+height: 2.375rem;
+max-width: calc(${11 / 12 * 100}% - 10.625rem);
+position: fixed;
+display: table;
+margin-top: 2rem;
+.table-cell{
+    display: table-cell;
+    vertical-align: bottom;
+}
+.margin-left{
+    margin: 0 0 0 1.625rem;
+}
+.move-right{
+    text-align: right
+}
+`
+
+const UnsavedChangesBar = styled.div`
+max-width: ${11 / 12 * 100}%;
+width: 100%;
+height: 3.4375rem;
+padding: 0 5.3125rem;
+position: fixed;
+bottom: 0;
+display: table;
+p{
+    margin: 0;
+    font-size: .75rem;
+    color: ${darkerGray}
+}
+background: rgba(255, 255, 255, 0.88);
+box-shadow: 0px -2px 8px rgba(104, 104, 104, 0.25);
+backdrop-filter: blur(4px);
+`;
 
 interface PropsFromState {
     user: IUser
@@ -131,7 +189,6 @@ interface PropsFromDispatch {
     clearError: (error: string) => void
     clearRatingChanges: () => void
 }
-
 
 
 const mapStateToProps = (state: Store) => ({

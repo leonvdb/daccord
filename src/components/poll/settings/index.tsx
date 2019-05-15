@@ -9,6 +9,7 @@ import { setPseudonym } from '../../../actions/userActions';
 import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import WithdrawModal from './WithdrawModal';
+import { Container } from '../../../style/elements';
 
 interface Props extends PropsFromDispatch {
     poll: IPollQuery
@@ -71,7 +72,7 @@ const Settings = (props: Props) => {
     }
 
     return (
-        <React.Fragment>
+        <Container>
             <h1>Settings</h1>
             <h2>User</h2>
             <EditField
@@ -145,7 +146,7 @@ const Settings = (props: Props) => {
                     />
                 </div>
             }
-        </React.Fragment>
+        </Container>
     )
 }
 

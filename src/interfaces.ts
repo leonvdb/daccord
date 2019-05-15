@@ -16,6 +16,7 @@ export interface IPollQuery {
     description?: string
     refId: string
     creator: IUser
+    creatorPseudonym: string
     options: IOptionQuery[]
     participants: IParticipant[]
 }
@@ -33,8 +34,15 @@ export interface IOptionQuery extends INewOption {
     result: IResult
 }
 
+export interface IExtededOptionDetails extends IOptionDetails {
+    title: string
+    userRating: number | null
+    result: IResult
+}
+
 export interface IOptionDetails {
     votes: IVoteDetails[]
+    refId: string
 }
 
 export interface IVoteDetails {
@@ -77,7 +85,7 @@ export interface IVoteForPollPayload {
 
 export interface IVoteNew {
     optionId: string,
-    rating: number
+    rating: number | null
 }
 
 // User Interfaces
@@ -92,6 +100,7 @@ export interface IUser extends IUserInformation {
 
 
 export interface IParticipant {
+    pseudonym: string
     user: IUser
 }
 export interface INewParticipant extends IUserInformation {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import GlobalStyle from './style/Global';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { I18nextProvider } from "react-i18next";
@@ -11,7 +12,6 @@ import Landing from './components/Landing';
 import NotFound from './components/NotFound';
 import Poll from './components/poll';
 
-import './App.css';
 import i18n from './i18n';
 import setAuthToken from './utilities/setAuthToken';
 import { decode } from 'jsonwebtoken';
@@ -44,6 +44,7 @@ class App extends React.Component {
           <Provider store={store}>
             <BrowserRouter>
               <div className="App">
+                <GlobalStyle />
                 <Switch>
                   <Route exact={true} path="/" component={Landing} />
                   <Route exact={true} path="/poll/:poll_id" component={Poll} />

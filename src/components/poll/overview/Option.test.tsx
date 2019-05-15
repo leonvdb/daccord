@@ -27,7 +27,7 @@ test('<Option> with user that is not creator', () => {
         </Provider>
     );
     const { getByTestId } = wrapper;
-    const header = getByTestId('option-header');
+    const header = getByTestId('option-heading');
     fireEvent.click(header)
     expect(getByTestId('option-read-modal')).toBeTruthy()
 })

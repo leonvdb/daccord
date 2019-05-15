@@ -5,3 +5,5 @@ export const fixedRelativeToParent = ({ topInPercent = 0 } = {}): FlattenSimpleI
     position: fixed;
     top: ${topInPercent}%
 `
+
+export const headerHeightInRem = 4.75;

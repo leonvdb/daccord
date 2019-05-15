@@ -9,7 +9,9 @@ query($id: ID!){
         creator{
             id
         }
+        creatorPseudonym
         participants{
+            pseudonym
             user{
                 id
             }
@@ -42,7 +44,9 @@ query($id: ID!, $authToken: String!){
         creator{
             id
         }
+        creatorPseudonym
         participants{
+            pseudonym
             user{
                 id
             }
@@ -70,6 +74,31 @@ query($id: ID!, $authToken: String!){
             email
         }
         pseudonym
+    }
+}
+`
+
+export const GET_INDIVIDUAL_VOTES = gql`
+query($id: ID!){
+    poll(id: $id){
+        refId
+        options{
+            title
+            userRating
+            result{
+                agreementInPercent
+            }
+            refId
+            votes{
+                voter{
+                    user{
+                        id
+                    }
+                    pseudonym
+                }
+                rating
+            }
+        }
     }
 }
 `

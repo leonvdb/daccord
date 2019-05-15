@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { UnstyledLink } from '../../../style/elements/Link';
-import { primary, white } from '../../../style/utilities/Colors';
-import { fixedRelativeToParent } from '../../../style/utilities/Position';
+import { UnstyledLink } from '../../../style/elements';
+import { primary, white, fixedRelativeToParent } from '../../../style/utilities';
 import Plus from '../../../images/plus.svg';
 import { Link } from 'react-router-dom';
 
@@ -23,6 +22,9 @@ ${({ topInPercent }) => fixedRelativeToParent({ topInPercent })}
 const SideNav = ({ className, pollId }: Props) => {
     return (
         <div className={className}>
+            <PositionWrapper topInPercent={10}>
+                <UnstyledLink to={'/'}>Logo</UnstyledLink>
+            </ PositionWrapper>
             <PositionWrapper topInPercent={40}>
                 <UnstyledLink to={`/poll/${pollId}/`}>Overview</UnstyledLink>
             </PositionWrapper>
@@ -34,7 +36,7 @@ const SideNav = ({ className, pollId }: Props) => {
             </PositionWrapper>
             <PositionWrapper topInPercent={92}>
                 <Link to={'/create'}>
-                <img src={Plus} alt="Create Poll" />
+                    <img src={Plus} alt="Create Poll" />
                 </Link>
             </PositionWrapper>
         </div>
