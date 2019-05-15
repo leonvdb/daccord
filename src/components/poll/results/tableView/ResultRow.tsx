@@ -1,5 +1,5 @@
 import React from 'react'
-import { TableCellWrapper } from '../../../../style/elements';
+import { TableCellWrapper, SmallHeading } from '../../../../style/elements';
 import styled from 'styled-components';
 import { IUser, IExtededOptionDetails } from '../../../../interfaces';
 import { scale, veryLarge, colorScale } from '../../../../style/utilities';
@@ -24,7 +24,9 @@ const ResultRow = (props: Props) => {
         <div className={props.className}>
             <TableCellWrapper widthInPercent={29.29}>
                 <CircularProgressBar percentage={option.result.agreementInPercent} color={agreementColor} sqSize={50} strokeWidth={5} />
-                {props.option.title}
+                <SmallHeading>
+                    {props.option.title}
+                </SmallHeading>
             </TableCellWrapper>
             {[...Array(7).keys()].map((value, index) => {
                 const participant = displayedParticipants[index]
@@ -43,8 +45,11 @@ const ResultRow = (props: Props) => {
 
 export default styled(ResultRow)`
 display: table-row;
+${SmallHeading}{
+    display: inline-block;
+}
 ${CircularProgressBar}{
-    margin-right: 1rem;
+    margin: 0 1rem;
     text{
     font-size: .9em; 
     .percent-symbol{

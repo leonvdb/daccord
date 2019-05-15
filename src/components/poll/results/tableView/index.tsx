@@ -8,6 +8,7 @@ import { IPollQuery, IUser, IExtededOptionDetails } from '../../../../interfaces
 import ResultRow from './ResultRow';
 import ParticipantsRow from './ParticipantsRow';
 import Arrow from '../../../../style/elements/Arrow';
+import sortOptionsByAgreement from '../../../../utilities/sortOptionsByAgreement';
 
 
 interface Props {
@@ -61,10 +62,11 @@ const TableView = (props: Props) => {
                         console.log({ error })
                         return <p>{error.message ? error.message.replace('GraphQL error: ', '') : 'Error :('}</p>
                     }
+                    const sortedOptions = sortOptionsByAgreement(data.poll.options)
                     return (<OptionContainer>
                         <TableWrapper>
                             <ParticipantsRow displayedParticipants={displayedParticipants} />
-                            {data.poll.options.map((option: IExtededOptionDetails) => {
+                            {sortedOptions.map((option: IExtededOptionDetails) => {
                                 return <ResultRow option={option} key={`table-result-${option.refId}`} displayedParticipants={displayedParticipants} user={props.user} />
                             })}
                         </TableWrapper>
@@ -86,8 +88,13 @@ overflow: hidden;
 box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
 border-radius: 5px;
 ${TableWrapper}{
-    background: white;
     text-align: center;
+    background: white;
+    ${ResultRow}{
+        ${TableCellWrapper}:first-child{
+            text-align: left;
+        }
+    }
     ${TableCellWrapper}{
     height: 4.5625rem;
     &:first-child{

@@ -7,6 +7,7 @@ import ListWhite from '../../../images/list-white.svg';
 import TableWhite from '../../../images/table-white.svg';
 import SVG from 'react-inlinesvg';
 import TableView from './tableView';
+import sortOptionsByAgreement from '../../../utilities/sortOptionsByAgreement';
 
 interface Props {
     poll: IPollQuery
@@ -16,16 +17,7 @@ interface Props {
 
 const Results = (props: Props) => {
     const [currentView, setCurrentView] = useState('list')
-    const unsortedOptions = [...props.poll.options]
-    const sortedOptions = unsortedOptions.sort((a, b) => {
-        if (a.result.agreementInPercent > b.result.agreementInPercent) {
-            return -1
-        } else if (a.result.agreementInPercent < b.result.agreementInPercent) {
-            return 1
-        } else {
-            return 0
-        }
-    })
+    const sortedOptions = sortOptionsByAgreement(props.poll.options)
     const { poll, pseudonym, user } = props;
     return (
         <Container>
