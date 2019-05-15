@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { TableCellWrapper, Label } from '../../../../style/elements';
 import { darkGray } from '../../../../style/utilities';
 import { IPollQuery, IUser, IExtededOptionDetails } from '../../../../interfaces';
-import ResultRow from '../ResultRow';
-import ParticipantsRow from '../ParticipantsRow';
+import ResultRow from './ResultRow';
+import ParticipantsRow from './ParticipantsRow';
 import Arrow from '../../../../style/elements/Arrow';
 
 

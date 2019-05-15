@@ -1,7 +1,7 @@
 import React from 'react'
-import { TableCellWrapper } from '../../../style/elements';
+import { TableCellWrapper } from '../../../../style/elements';
 import styled from 'styled-components';
-import { darkGray } from '../../../style/utilities';
+import { darkGray } from '../../../../style/utilities';
 
 interface Props {
     className?: string

@@ -1,9 +1,9 @@
 import React from 'react'
-import { TableCellWrapper } from '../../../style/elements';
+import { TableCellWrapper } from '../../../../style/elements';
 import styled from 'styled-components';
-import { IUser, IExtededOptionDetails } from '../../../interfaces';
-import { scale, veryLarge, colorScale } from '../../../style/utilities';
-import CircularProgressBar from '../layout/CircularProgressBar';
+import { IUser, IExtededOptionDetails } from '../../../../interfaces';
+import { scale, veryLarge, colorScale } from '../../../../style/utilities';
+import CircularProgressBar from '../../layout/CircularProgressBar';
 
 interface Props {
     className?: string
@@ -19,7 +19,7 @@ const ResultRow = (props: Props) => {
         participantsVotesDict[vote.voter.user.id] = vote.rating
     })
     const agreementColor = colorScale(100 - option.result.agreementInPercent)
-    participantsVotesDict[props.user.id] = option.userRating
+    participantsVotesDict[props.user.id] = option.userRating ? option.userRating : undefined
     return (
         <div className={props.className}>
             <TableCellWrapper widthInPercent={29.29}>
