@@ -2,6 +2,8 @@ import React from 'react'
 import { Mutation, MutationUpdaterFn } from "react-apollo";
 import TextInputGroup from '../../layout/TextInputGroup';
 import { IPollQuery } from '../../../interfaces';
+import { Label } from '../../../style/elements';
+import styled from 'styled-components';
 
 interface Props {
     label: string
@@ -17,12 +19,13 @@ interface Props {
     cancel: () => void
     handleEditClick: (e: React.MouseEvent<HTMLButtonElement>) => void
     error?: string
+    className?: string
 }
 
 const EditField = (props: Props) => {
 
-    return <div>
-        <h4>{props.label}</h4>
+    return <div className={props.className}>
+        <Label>{props.label}</Label>
         {props.open ?
             <Mutation
                 mutation={props.mutation}
@@ -46,7 +49,7 @@ const EditField = (props: Props) => {
                     </form>
                 }}
             </Mutation> :
-            <div>
+            <div className="d-inline-block">
                 <p className="d-inline-block">{props.value}</p>
                 <button data-testid={`edit-${props.name}-button`} name={props.name} onClick={props.handleEditClick}>Edit</button>
             </div>
@@ -54,4 +57,14 @@ const EditField = (props: Props) => {
     </div>
 }
 
-export default EditField;
+export default styled(EditField)`
+${Label}{
+    display: inline-block;
+}
+form{
+    display: inline-block;
+}
+.d-inline-block{
+    display: inline-block
+}
+`;

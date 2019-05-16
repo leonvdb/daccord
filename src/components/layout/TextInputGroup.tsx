@@ -1,5 +1,6 @@
 import * as React from 'react';
 import classname from 'classnames';
+import styled from 'styled-components';
 
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
     type?: string,
     classNames?: string,
     testId: string
+    className?: string
 }
 
 const TextInputGroup = ({
@@ -21,10 +23,11 @@ const TextInputGroup = ({
     onChange,
     type = "text",
     classNames,
+    className,
     testId
 }: Props) => {
     return (
-        <div className={`form-group mx-auto ${classNames ? classNames : ''}`} >
+        <div className={`form-group mx-auto ${className} ${classNames ? classNames : ''}`} >
             <input
                 className={classname('form-control', { 'is-invalid': error })}
                 data-testid={testId}
@@ -39,4 +42,7 @@ const TextInputGroup = ({
     );
 };
 
-export default TextInputGroup
+export default styled(TextInputGroup)`
+display: inline-block;
+color: green;
+`;

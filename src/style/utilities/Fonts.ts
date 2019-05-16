@@ -30,9 +30,13 @@ font-size: 1.125rem;
 font-weight: ${fontWeights.light};
 `
 
-export const largeLable = css`
+export const largeLabel = css`
 font-size: 3rem;
 font-weight: normal;
+`
+export const mediumLabel = css`
+font-size: 1.5rem;
+font-weight: ${fontWeights.medium};
 `
 
 export const smallLabel = css`

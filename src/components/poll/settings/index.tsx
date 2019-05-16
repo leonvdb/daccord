@@ -9,12 +9,14 @@ import { setPseudonym } from '../../../actions/userActions';
 import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import WithdrawModal from './WithdrawModal';
-import { Container } from '../../../style/elements';
+import { Container, LargeLabel, MediumLabel } from '../../../style/elements';
+import styled from 'styled-components';
 
 interface Props extends PropsFromDispatch {
     poll: IPollQuery
     user: IUser
     pseudonym: string
+    className?: string
 }
 
 interface Errors {
@@ -72,9 +74,11 @@ const Settings = (props: Props) => {
     }
 
     return (
-        <Container>
-            <h1>Settings</h1>
-            <h2>User</h2>
+        <Container className={props.className}>
+            <LargeLabel>
+                Settings
+        </LargeLabel>
+            <MediumLabel>User</MediumLabel>
             <EditField
                 label="Pseudonym"
                 open={openEditField === 'pseudonym'}
@@ -161,4 +165,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch =>
 
 }
 
-export default connect(null, mapDispatchToProps)(Settings);
+const styledSettings = styled(Settings)`
+${LargeLabel}{
+    margin-bottom: 3.375rem;
+}
+${MediumLabel}{
+    margin-bottom: 2.625rem;
+}
+`;
+
+export default connect(null, mapDispatchToProps)(styledSettings);
