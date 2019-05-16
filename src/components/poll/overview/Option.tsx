@@ -5,6 +5,8 @@ import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
 import { TableCellWrapper, HeadingTwo } from '../../../style/elements';
 import VotingScale from './VotingScale';
+import ExpandButton from '../../../style/elements/Expand';
+import Label from 'reactstrap/lib/Label';
 
 interface Props {
     option: IOptionQuery
@@ -16,6 +18,7 @@ interface Props {
 
 const Option = (props: Props) => {
     const [modalOpen, setModalOpen] = useState(false);
+    const [showDetails, setShowDetails] = useState(false)
 
     const onClick = () => {
         setModalOpen(true);
@@ -35,9 +38,17 @@ const Option = (props: Props) => {
                     {title}
                 </HeadingTwo>
             </TableCellWrapper>
-            <TableCellWrapper widthInPercent={33}>
+            <TableCellWrapper widthInPercent={30}>
                 <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
             </TableCellWrapper>
+            <TableCellWrapper widthInPercent={3}>
+                <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
+                    () => { setShowDetails(!showDetails) }} />
+            </TableCellWrapper>
+            {showDetails && <div>
+                <Label>Details</Label>
+
+            </div>}
             {isCreator ? (
                 <OptionEditModal
                     pollId={props.pollId}
