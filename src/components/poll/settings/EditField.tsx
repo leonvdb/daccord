@@ -4,6 +4,7 @@ import TextInputGroup from '../../layout/TextInputGroup';
 import { IPollQuery } from '../../../interfaces';
 import { Label, GridWrapper } from '../../../style/elements';
 import styled from 'styled-components';
+import Pencil from '../../../images/pencil.svg';
 
 interface Props {
     label: string
@@ -17,7 +18,7 @@ interface Props {
     update: MutationUpdaterFn<any>
     onSubmit: (e: any, mutation: any) => void
     cancel: () => void
-    handleEditClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+    handleEditClick: (e: React.MouseEvent<HTMLDivElement>) => void
     error?: string
     className?: string
 }
@@ -51,11 +52,17 @@ const EditField = (props: Props) => {
             </Mutation> :
             <div >
                 <p>{props.value}</p>
-                <button data-testid={`edit-${props.name}-button`} name={props.name} onClick={props.handleEditClick}>Edit</button>
+                <ButtonWrapper data-testid={`edit-${props.name}-button`} id={props.name} onClick={props.handleEditClick}><img src={Pencil} alt="edit" /></ButtonWrapper>
             </div>
         }
     </GridWrapper>
 }
+
+const ButtonWrapper = styled.div`
+display: inline-block;
+margin-left: .4rem;
+cursor: pointer;
+`
 
 export default styled(EditField)`
 ${Label}{

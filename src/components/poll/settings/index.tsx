@@ -37,8 +37,8 @@ const Settings = (props: Props) => {
         if (props.pseudonym !== pseudonym && openEditField !== 'pseudonym') setPseudonym(props.pseudonym);
     })
 
-    const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setOpenEditField(e.currentTarget.name)
+    const handleEditClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        setOpenEditField(e.currentTarget.id)
 
     }
     const onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
