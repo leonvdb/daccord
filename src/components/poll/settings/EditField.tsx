@@ -70,6 +70,12 @@ ${Label}{
 }
 form{
     display: inline-block;
+    input{
+        width: auto; 
+    }
+    div{
+        display: inline-block;
+    }
 }
 p{
     display: inline-block;

@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Mutation } from 'react-apollo';
 import { DELETE_POLL } from '../../../graphql/cudPoll'
 import DefaultClient from 'apollo-boost';
+import { SettingsButton, Label, GridWrapper } from '../../../style/elements';
 
 interface Props extends RouteComponentProps {
     poll: IPollQuery
@@ -28,7 +29,10 @@ class DeleteModal extends React.Component<Props> {
 
         return (
             <div data-testid="delete-modal">
-                <button data-testid="delete-button" className="btn btn-secondary" onClick={this.toggle}>Delete Poll</button>
+                <GridWrapper gridTemplateColumns="12.5% 87.5%">
+                    <Label>Delete Poll</Label>
+                    <SettingsButton data-testid="delete-button" onClick={this.toggle}>Permanently delete this poll</SettingsButton>
+                </GridWrapper>
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Delete Poll</ModalHeader>
                     <ModalBody>

@@ -24,9 +24,9 @@ const TextInputGroup = ({
     testId
 }: Props) => {
     return (
-        <div className={`form-group mx-auto ${classNames ? classNames : ''}`} >
+        <div className={`${classNames ? classNames : ''}`} >
             <input
-                className={classname('form-control', { 'is-invalid': error })}
+                className={classname({ 'is-invalid': error })}
                 data-testid={testId}
                 type={type}
                 name={name}
