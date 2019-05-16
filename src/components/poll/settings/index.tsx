@@ -9,7 +9,7 @@ import { setPseudonym } from '../../../actions/userActions';
 import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import WithdrawModal from './WithdrawModal';
-import { Container, LargeLabel, MediumLabel } from '../../../style/elements';
+import { Container, LargeLabel, MediumLabel, GridWrapper, Label } from '../../../style/elements';
 import styled from 'styled-components';
 
 interface Props extends PropsFromDispatch {
@@ -171,6 +171,13 @@ ${LargeLabel}{
 }
 ${MediumLabel}{
     margin-bottom: 2.625rem;
+}
+${Label}{
+    font-size: 1rem; 
+}
+${GridWrapper}{
+    height: 1rem; 
+    margin-bottom: 2rem; 
 }
 `;
 

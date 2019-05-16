@@ -14,6 +14,11 @@ export const TableCellWrapper = styled.div<TableCellWrapperProps>`
     ${({ customColor }) => customColor ? css`color: ${customColor}` : ''}
 `;
 
+export const GridWrapper = styled.div<{ gridTemplateColumns: string }>`
+display: grid;
+grid-template-columns: ${({ gridTemplateColumns }) => gridTemplateColumns};
+`
+
 export const Container = styled.div`
 padding: ${headerHeightInRem}rem 5.3125rem 0;
 `

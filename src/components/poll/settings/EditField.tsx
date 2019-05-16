@@ -2,7 +2,7 @@ import React from 'react'
 import { Mutation, MutationUpdaterFn } from "react-apollo";
 import TextInputGroup from '../../layout/TextInputGroup';
 import { IPollQuery } from '../../../interfaces';
-import { Label } from '../../../style/elements';
+import { Label, GridWrapper } from '../../../style/elements';
 import styled from 'styled-components';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
 
 const EditField = (props: Props) => {
 
-    return <div className={props.className}>
+    return <GridWrapper gridTemplateColumns="12.5% 87.5%" className={props.className}>
         <Label>{props.label}</Label>
         {props.open ?
             <Mutation
@@ -49,12 +49,12 @@ const EditField = (props: Props) => {
                     </form>
                 }}
             </Mutation> :
-            <div className="d-inline-block">
-                <p className="d-inline-block">{props.value}</p>
+            <div >
+                <p>{props.value}</p>
                 <button data-testid={`edit-${props.name}-button`} name={props.name} onClick={props.handleEditClick}>Edit</button>
             </div>
         }
-    </div>
+    </GridWrapper>
 }
 
 export default styled(EditField)`
@@ -64,7 +64,7 @@ ${Label}{
 form{
     display: inline-block;
 }
-.d-inline-block{
-    display: inline-block
+p{
+    display: inline-block;
 }
 `;
