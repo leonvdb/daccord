@@ -12,6 +12,7 @@ import WithdrawModal from './WithdrawModal';
 import { Container, LargeLabel, MediumLabel, GridWrapper, Label, Divider } from '../../../style/elements';
 import styled from 'styled-components';
 import { mediumGray } from '../../../style/utilities';
+import LanguageDropdown from '../../layout/LanguageDropdown';
 
 interface Props extends PropsFromDispatch {
     poll: IPollQuery
@@ -152,6 +153,14 @@ const Settings = (props: Props) => {
                     />
                 </div>
             }
+            <div>
+                <Divider />
+                <MediumLabel>General</MediumLabel>
+                <GridWrapper gridTemplateColumns="12.5% 87.5%" className={props.className}>
+                    <Label>Language</Label>
+                    <LanguageDropdown />
+                </GridWrapper>
+            </div>
         </Container>
     )
 }
