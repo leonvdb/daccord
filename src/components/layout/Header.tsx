@@ -1,17 +1,9 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import LanguageButton from './LanguageButton';
-import { Store } from '../../reducers';
-import { connect } from 'react-redux';
+import LanguageDropdown from './LanguageDropdown';
 
-interface Language {
-    name: string,
-    code: string
-}
-
-interface Props extends PropsFromState, WithNamespaces {
+interface Props extends WithNamespaces {
 
 }
 
@@ -20,62 +12,33 @@ class Header extends React.Component<Props>{
 
     render() {
 
-        const languages: Language[] = [
-            {
-                name: "English",
-                code: "en"
-            },
-            {
-                name: "Deutsch",
-                code: "de"
-            }
-        ]
         const { t } = this.props
 
         return (
             <React.Fragment>
-            <div style={{height: "8vh"}}/>
-            <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{height: "8vh", position: "fixed", width: "100%", top: "0px", zIndex: 1}}>
-                <div className="container">
-                    <Link to="/" className="navbar-brand">WorkInProgress</Link>
-                    <UncontrolledDropdown className="nav-item mr-auto ml-2">
-                        <DropdownToggle className="text-secondary" nav={true} caret={true}>
-                            {this.props.language}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            {languages.map(language => {
-                                if (language.name !== this.props.language) {
-                                    return <LanguageButton langName={language.name} langCode={language.code} key={language.code} />
-                                }
-                            })}
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/">
-                                <div>{t("Home")}</div>
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/create">
-                                <div>{t("Create poll")}</div>
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                <div style={{ height: "8vh" }} />
+                <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{ height: "8vh", position: "fixed", width: "100%", top: "0px", zIndex: 1 }}>
+                    <div className="container">
+                        <Link to="/" className="navbar-brand">WorkInProgress</Link>
+                        <LanguageDropdown />
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/">
+                                    <div>{t("Home")}</div>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/create">
+                                    <div>{t("Create poll")}</div>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </React.Fragment>
         )
     }
 }
 
-interface PropsFromState {
-    language: string
-}
-
-const mapStateToProps = (state: Store) => ({
-    language: state.language.languageLabel
-})
-
 const ComponentWithNamespaces = withNamespaces()(Header);
-export default connect(mapStateToProps, null)(ComponentWithNamespaces);
+export default ComponentWithNamespaces;
