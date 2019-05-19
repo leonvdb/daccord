@@ -106,7 +106,6 @@ const Settings = (props: Props) => {
                 <div>
                     <Divider />
                     <MediumLabel>Poll</MediumLabel>
-                    <DeleteModal poll={poll} />
                     <EditField
                         label="Title"
                         open={openEditField === 'title'}
@@ -151,6 +150,7 @@ const Settings = (props: Props) => {
                                 });
                             }}
                     />
+                    <DeleteModal poll={poll} />
                 </div>
             }
             <div>

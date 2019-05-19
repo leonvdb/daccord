@@ -12,21 +12,17 @@ interface Props extends PropsFromDispatch {
   className?: string
 }
 
-class LanguageButton extends React.Component<Props> {
+const LanguageButton = (props: Props) => {
 
-
-  changeLanguage = (e: React.MouseEvent<HTMLDivElement>) => {
-    i18n.changeLanguage(this.props.langCode);
-    this.props.setLanguage(this.props.langName);
+  const changeLanguage = (e: React.MouseEvent<HTMLDivElement>) => {
+    i18n.changeLanguage(props.langCode);
+    props.setLanguage(props.langName);
   }
+  return (
+    <div className={props.className} onClick={// tslint:disable-next-line jsx-no-lambda
+      (e) => { changeLanguage(e) }}>{props.langName}</div>
+  )
 
-  render() {
-    return (
-      <div className={this.props.className} onClick={// tslint:disable-next-line jsx-no-lambda
-        (e) => { this.changeLanguage(e) }}>{this.props.langName}</div>
-    )
-
-  }
 }
 
 interface PropsFromDispatch {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import LanguageButton from './LanguageButton';
 import { Store } from '../../reducers';
 import { connect } from 'react-redux';
@@ -7,6 +7,7 @@ import ExpandButton from '../../style/elements/Expand';
 
 const LanguageDropdown = (props: PropsFromState) => {
     const [showDropdownMenu, setShowDropdownMenu] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
     const languages: Language[] = [
         {
             name: "English",
@@ -18,8 +19,21 @@ const LanguageDropdown = (props: PropsFromState) => {
         }
     ]
 
+    const handleClickOutside = (event: any) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            setShowDropdownMenu(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    });
+
     return (
-        <div >
+        <div ref={ref}>
             <DropdownToggle onClick={ // tslint:disable-next-line jsx-no-lambda
                 () => { setShowDropdownMenu(!showDropdownMenu) }}>
                 {props.language}
