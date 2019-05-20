@@ -56,4 +56,5 @@ font-size: 2.5rem;
 
 export const smallParagraph = css`
 font-size: .875rem;
+font-weight: normal;
 `

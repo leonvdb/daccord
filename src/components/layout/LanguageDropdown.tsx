@@ -4,6 +4,7 @@ import { Store } from '../../reducers';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import ExpandButton from '../../style/elements/Expand';
+import { DropdownToggle, DropdownMenu } from '../../style/elements/Dropdown';
 
 const LanguageDropdown = (props: PropsFromState) => {
     const [showDropdownMenu, setShowDropdownMenu] = useState(false)
@@ -51,18 +52,6 @@ const LanguageDropdown = (props: PropsFromState) => {
 }
 
 
-const DropdownMenu = styled.div`
-position: absolute;
-box-shadow: 0px 1.69167px 6.76667px rgba(4, 4, 4, 0.25);
-padding: .5rem;
-border-radius: 4px;
-`
-const DropdownToggle = styled.div`
-margin-bottom: .4rem;
-img{
-    margin-left: .4rem;
-}
-`
 
 interface Language {
     name: string,
