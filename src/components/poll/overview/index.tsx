@@ -5,7 +5,7 @@ import { Store } from '../../../reducers';
 import styled from 'styled-components'
 
 import { IOptionQuery } from '../../../interfaces';
-import { TableCellWrapper, PrimaryButton, Label, Container } from '../../../style/elements';
+import { TableCellWrapper, PrimaryButton, Label, Container, SmallerLabel } from '../../../style/elements';
 import { darkerGray } from '../../../style/utilities';
 
 import Option from './Option';
@@ -90,12 +90,10 @@ class Overview extends React.Component<Props> {
                             <p>You made changes that are currently unsaved</p>
                         </TableCellWrapper>
                         <TableCellWrapper widthInPercent={1}>
-                            <button
-                                data-testid="cancel-button"
-                                onClick={this.onClick}
-                            >
+                            <SmallerLabel data-testid="cancel-button"
+                                onClick={this.onClick}>
                                 cancel
-                                            </button>
+                                    </SmallerLabel>
                         </TableCellWrapper>
                         <TableCellWrapper widthInPercent={1}>
                             <Mutation mutation={UPDATE_VOTES}
@@ -174,6 +172,9 @@ p{
     margin: 0;
     font-size: .75rem;
     color: ${darkerGray}
+}
+${SmallerLabel}{
+    cursor: pointer;
 }
 background: rgba(255, 255, 255, 0.88);
 box-shadow: 0px -2px 8px rgba(104, 104, 104, 0.25);
