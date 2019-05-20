@@ -4,6 +4,7 @@ import { UnstyledLink } from '../../../style/elements';
 import { primary, white, fixedRelativeToParent } from '../../../style/utilities';
 import Plus from '../../../images/plus.svg';
 import { Link } from 'react-router-dom';
+import NavigationIcon from './NavigationIcon';
 
 interface Props {
     pollId: string
@@ -26,13 +27,13 @@ const SideNav = ({ className, pollId }: Props) => {
                 <UnstyledLink to={'/'}>Logo</UnstyledLink>
             </ PositionWrapper>
             <PositionWrapper topInPercent={40}>
-                <UnstyledLink to={`/poll/${pollId}/`}>Overview</UnstyledLink>
+                <NavigationIcon iconName="home" to={`/poll/${pollId}/`} active={false} />
             </PositionWrapper>
             <PositionWrapper topInPercent={50}>
-                <UnstyledLink to={`/poll/${pollId}/results`}>Results</UnstyledLink>
+                <NavigationIcon iconName="results" to={`/poll/${pollId}/results`} active={false} />
             </PositionWrapper>
             <PositionWrapper topInPercent={60}>
-                <UnstyledLink to={`/poll/${pollId}/settings`}>Settings</UnstyledLink>
+                <NavigationIcon iconName="settings" to={`/poll/${pollId}/settings`} active={false} />
             </PositionWrapper>
             <PositionWrapper topInPercent={92}>
                 <Link to={'/create'}>
