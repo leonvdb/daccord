@@ -30,7 +30,7 @@ const Header = ({ poll, pseudonym, className }: Props) => {
                     <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
                 </TableCellWrapper>
                 <TableCellWrapper widthInPercent={5} className="text-align-right">
-                    <UserDropdownMenu pseudonym={pseudonym} />
+                    <UserDropdownMenu pseudonym={pseudonym} poll={poll} />
                 </TableCellWrapper>
             </div>
             {showDescription &&
