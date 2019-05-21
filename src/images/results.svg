@@ -1,18 +1,6 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<mask id="path-1-inside-1" fill="white">
-<rect y="23.4482" width="23.4483" height="4.26332" rx="0.426332" transform="rotate(-90 0 23.4482)"/>
-</mask>
-<rect y="23.4482" width="23.4483" height="4.26332" rx="0.426332" transform="rotate(-90 0 23.4482)" stroke="#5D5ACF" stroke-width="2.4" mask="url(#path-1-inside-1)"/>
-<mask id="path-2-inside-2" fill="white">
-<rect x="6.39502" y="23.4482" width="13.6426" height="4.26332" rx="0.426332" transform="rotate(-90 6.39502 23.4482)"/>
-</mask>
-<rect x="6.39502" y="23.4482" width="13.6426" height="4.26332" rx="0.426332" transform="rotate(-90 6.39502 23.4482)" stroke="#5D5ACF" stroke-width="2.4" mask="url(#path-2-inside-2)"/>
-<mask id="path-3-inside-3" fill="white">
-<rect x="12.8965" y="23.4482" width="8.20689" height="4.22069" rx="0.426332" transform="rotate(-90 12.8965 23.4482)"/>
-</mask>
-<rect x="12.8965" y="23.4482" width="8.20689" height="4.22069" rx="0.426332" transform="rotate(-90 12.8965 23.4482)" stroke="#5D5ACF" stroke-width="2.4" mask="url(#path-3-inside-3)"/>
-<mask id="path-4-inside-4" fill="white">
-<rect x="19.2275" y="23.4482" width="16.1793" height="4.22069" rx="0.426332" transform="rotate(-90 19.2275 23.4482)"/>
-</mask>
-<rect x="19.2275" y="23.4482" width="16.1793" height="4.22069" rx="0.426332" transform="rotate(-90 19.2275 23.4482)" stroke="#5D5ACF" stroke-width="2.4" mask="url(#path-4-inside-4)"/>
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="100" width="100" height="18.1818" rx="1.81818" transform="rotate(-90 0 100)" stroke="#5D5ACF" stroke-width="5" />
+<rect x="27.2727" y="100" width="58.1818" height="18.1818" rx="1.81818" transform="rotate(-90 27.2727 100)" stroke="#5D5ACF" stroke-width="5" />
+<rect x="55" y="100" width="35" height="18" rx="1.81818" transform="rotate(-90 55 100)" stroke="#5D5ACF" stroke-width="5" />
+<rect x="82" y="100" width="69" height="18" rx="1.81818" transform="rotate(-90 82 100)" stroke="#5D5ACF" stroke-width="5" />
 </svg>

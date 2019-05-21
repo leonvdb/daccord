@@ -23,16 +23,19 @@ ${({ topInPercent }) => fixedRelativeToParent({ topInPercent })}
 const SideNav = ({ className, pollId }: Props) => {
     return (
         <div className={className}>
+            <PositionWrapper topInPercent={38.4}>
+                <FocusBlock />
+            </PositionWrapper>
             <PositionWrapper topInPercent={10}>
                 <UnstyledLink to={'/'}>Logo</UnstyledLink>
             </ PositionWrapper>
-            <PositionWrapper topInPercent={40}>
-                <NavigationIcon iconName="home" to={`/poll/${pollId}/`} active={false} />
+            <PositionWrapper topInPercent={38.4}>
+                <NavigationIcon iconName="home" to={`/poll/${pollId}/`} active={true} />
             </PositionWrapper>
-            <PositionWrapper topInPercent={50}>
+            <PositionWrapper topInPercent={45.66}>
                 <NavigationIcon iconName="results" to={`/poll/${pollId}/results`} active={false} />
             </PositionWrapper>
-            <PositionWrapper topInPercent={60}>
+            <PositionWrapper topInPercent={52.89}>
                 <NavigationIcon iconName="settings" to={`/poll/${pollId}/settings`} active={false} />
             </PositionWrapper>
             <PositionWrapper topInPercent={92}>
@@ -43,6 +46,14 @@ const SideNav = ({ className, pollId }: Props) => {
         </div>
     )
 }
+
+const FocusBlock = styled.div`
+height: 3.5rem;
+width: 104%;
+background: ${white};
+box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+border-radius: 0px 10px 10px 0px;
+`
 
 export default styled(SideNav)`
 text-align: center;

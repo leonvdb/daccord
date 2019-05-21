@@ -6,6 +6,7 @@ import Settings from '../../../images/settings.svg'
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { white } from '../../../style/utilities';
+import { TableCellWrapper } from '../../../style/elements';
 
 
 interface Props {
@@ -28,15 +29,22 @@ const NavigationIcon = (props: Props) => {
     return (
         <Link to={props.to}>
             <Wrapper active={props.active}>
-                <SVG src={src} />
+                <TableCellWrapper widthInPercent={100}>
+                    <SVG src={src} />
+                </TableCellWrapper>
             </Wrapper>
         </Link>
     )
 }
 
 const Wrapper = styled.div<{ active: boolean }>`
+width: 100%;
 height: 3.5rem;
-path{
+display: table;
+svg{
+    height: 1.5rem;
+}
+path, circle, rect{
 ${({ active }) => active ? '' : css`stroke: ${white}`}
 }
 `;
