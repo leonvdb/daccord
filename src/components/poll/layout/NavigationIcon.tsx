@@ -21,11 +21,7 @@ const NavigationIcon = (props: Props) => {
         "results": Results,
         "settings": Settings
     }
-
     const src = icons[props.iconName]
-
-    console.log({ src })
-
     return (
         <Link to={props.to}>
             <Wrapper active={props.active}>
@@ -46,6 +42,7 @@ svg{
 }
 path, circle, rect{
 ${({ active }) => active ? '' : css`stroke: ${white}`}
+transition: stroke .5s ease 0s
 }
 `;
 

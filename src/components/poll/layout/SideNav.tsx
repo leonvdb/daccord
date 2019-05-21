@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { UnstyledLink } from '../../../style/elements';
 import { primary, white, fixedRelativeToParent } from '../../../style/utilities';
 import Plus from '../../../images/plus.svg';
 import { Link } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router';
 import NavigationIcon from './NavigationIcon';
 
-interface Props {
+interface Props extends RouteComponentProps<any> {
     pollId: string
     className?: string
 }
@@ -20,23 +21,40 @@ ${({ topInPercent }) => fixedRelativeToParent({ topInPercent })}
 `
 
 
-const SideNav = ({ className, pollId }: Props) => {
+const SideNav = ({ className, pollId, location }: Props) => {
+    const [focusBlockPosition, setFocusBlockPosition] = useState(38.4)
+    const iconPositions = {
+        home: 38.4,
+        results: 45.66,
+        settings: 52.89
+    }
+
+    useEffect(() => {
+        if (location.pathname.includes('results')) {
+            setFocusBlockPosition(iconPositions.results);
+        } else if (location.pathname.includes('settings')) {
+            setFocusBlockPosition(iconPositions.settings);
+        } else {
+            setFocusBlockPosition(iconPositions.home);
+        }
+    })
+
     return (
         <div className={className}>
-            <PositionWrapper topInPercent={38.4}>
+            <PositionWrapper topInPercent={focusBlockPosition}>
                 <FocusBlock />
             </PositionWrapper>
             <PositionWrapper topInPercent={10}>
                 <UnstyledLink to={'/'}>Logo</UnstyledLink>
             </ PositionWrapper>
-            <PositionWrapper topInPercent={38.4}>
-                <NavigationIcon iconName="home" to={`/poll/${pollId}/`} active={true} />
+            <PositionWrapper topInPercent={iconPositions.home}>
+                <NavigationIcon iconName="home" to={`/poll/${pollId}/`} active={focusBlockPosition === iconPositions.home} />
             </PositionWrapper>
-            <PositionWrapper topInPercent={45.66}>
-                <NavigationIcon iconName="results" to={`/poll/${pollId}/results`} active={false} />
+            <PositionWrapper topInPercent={iconPositions.results}>
+                <NavigationIcon iconName="results" to={`/poll/${pollId}/results`} active={focusBlockPosition === iconPositions.results} />
             </PositionWrapper>
-            <PositionWrapper topInPercent={52.89}>
-                <NavigationIcon iconName="settings" to={`/poll/${pollId}/settings`} active={false} />
+            <PositionWrapper topInPercent={iconPositions.settings}>
+                <NavigationIcon iconName="settings" to={`/poll/${pollId}/settings`} active={focusBlockPosition === iconPositions.settings} />
             </PositionWrapper>
             <PositionWrapper topInPercent={92}>
                 <Link to={'/create'}>
@@ -55,7 +73,10 @@ box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 border-radius: 0px 10px 10px 0px;
 `
 
-export default styled(SideNav)`
+const styledSideNav = styled(SideNav)`
+${PositionWrapper}{
+    transition: top .5s ease 0s;
+}
 text-align: center;
 max-width: inherit;
 width: 100%;
@@ -65,3 +86,5 @@ bottom: 0px;
 background: ${primary};
 color: ${white};
 `
+
+export default withRouter(styledSideNav);
