@@ -1,33 +1,30 @@
 import * as React from 'react'
 import i18n from '../../i18n';
-import { DropdownItem } from 'reactstrap';
 import { setLanguage } from '../../actions/langActions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { AppAction } from 'src/interfaces';
+import styled from 'styled-components';
 
 interface Props extends PropsFromDispatch {
   langName: string,
   langCode: string
+  className?: string
 }
 
-class LanguageButton extends React.Component<Props> {
+const LanguageButton = (props: Props) => {
 
-
-  changeLanguage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    i18n.changeLanguage(this.props.langCode);
-    this.props.setLanguage(this.props.langName);
+  const changeLanguage = (e: React.MouseEvent<HTMLDivElement>) => {
+    i18n.changeLanguage(props.langCode);
+    props.setLanguage(props.langName);
   }
+  return (
+    <div className={props.className} onClick={// tslint:disable-next-line jsx-no-lambda
+      (e) => { changeLanguage(e) }}>{props.langName}</div>
+  )
 
-  render() {
-    return (
-      <div>
-        <DropdownItem onClick={this.changeLanguage}>{this.props.langName}</DropdownItem>
-      </div>
-    )
-
-  }
 }
+
 interface PropsFromDispatch {
   setLanguage: (language: string) => void
 }
@@ -42,4 +39,8 @@ function mapDispatchToProps(dispatch: Dispatch<AppAction>): PropsFromDispatch {
   }
 }
 
-export default connect<null, PropsFromDispatch>(null, mapDispatchToProps)(LanguageButton);
+const styledLanguageButton = styled(LanguageButton)`
+cursor: pointer;
+`;
+
+export default connect<null, PropsFromDispatch>(null, mapDispatchToProps)(styledLanguageButton);

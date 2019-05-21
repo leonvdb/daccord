@@ -7,6 +7,7 @@ import { DELETE_PARTICIPANT } from '../../../graphql/cudParticipant';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { IPollQuery } from '../../../interfaces';
 import DefaultClient from 'apollo-boost';
+import { SettingsButton, Label, GridWrapper } from '../../../style/elements';
 
 interface Props extends RouteComponentProps {
     poll: IPollQuery
@@ -18,7 +19,10 @@ const WithdrawModal = (props: Props) => {
     const toggle = () => { setModalOpen(!modalOpen) }
     return (
         <div data-testid="withdraw-modal">
-            <button data-testid="withdraw-button" className="btn btn-secondary" onClick={toggle}>Withdraw from Poll</button>
+            <GridWrapper gridTemplateColumns="12.5% 87.5%">
+                <Label>Withdrawl</Label>
+                <SettingsButton data-testid="withdraw-button" onClick={toggle}>Permanently withdraw from Poll</SettingsButton>
+            </GridWrapper>
             <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={toggle}>
                 <ModalHeader toggle={toggle}>Withdraw from Poll</ModalHeader>
                 <ModalBody>

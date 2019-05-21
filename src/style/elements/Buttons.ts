@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { darkerGray, white, primaryStrong } from '../utilities'
+import { darkerGray, white, primaryStrong, lightRed, smallParagraph } from '../utilities'
 import { buttonLabel } from '../utilities'
 
 export const PrimaryButton = styled.button`
@@ -27,6 +27,16 @@ border-radius: 4px;
 margin: 0 1.625rem;
 ${buttonLabel};
 white-space: nowrap;
+`;
+
+export const SettingsButton = styled.button`
+text-decoration: underline;
+border: none;
+background: none;
+color: ${lightRed};
+padding: 0;
+${smallParagraph}
+text-align: left;
 `
 
 export const ToggleViewButton = styled.div<ToggleViewButtonProps>`

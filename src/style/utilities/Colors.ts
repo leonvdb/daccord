@@ -1,10 +1,11 @@
 export const primary = '#6448D2';
 export const primaryStrong = '#6E49FF';
 export const darkPurple = '#413F7C';
-
+export const lightRed = "#FF4545";
 export const white = "#fff"
 export const lighterGray = "#EFEFEF";
 export const lightGray = "#E3E3E3";
+export const mediumGray = "#C4C4C4"
 export const darkGray = "#505050";
 export const darkerGray = "#474747";
 export const blackBlue = "#151932";

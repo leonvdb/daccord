@@ -9,12 +9,16 @@ import { setPseudonym } from '../../../actions/userActions';
 import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import WithdrawModal from './WithdrawModal';
-import { Container } from '../../../style/elements';
+import { Container, LargeLabel, MediumLabel, GridWrapper, Label, Divider } from '../../../style/elements';
+import styled from 'styled-components';
+import { mediumGray } from '../../../style/utilities';
+import LanguageDropdown from '../../layout/LanguageDropdown';
 
 interface Props extends PropsFromDispatch {
     poll: IPollQuery
     user: IUser
     pseudonym: string
+    className?: string
 }
 
 interface Errors {
@@ -35,8 +39,8 @@ const Settings = (props: Props) => {
         if (props.pseudonym !== pseudonym && openEditField !== 'pseudonym') setPseudonym(props.pseudonym);
     })
 
-    const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setOpenEditField(e.currentTarget.name)
+    const handleEditClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        setOpenEditField(e.currentTarget.id)
 
     }
     const onSubmit = (e: React.FormEvent<HTMLFormElement>, mutation: any) => {
@@ -72,9 +76,11 @@ const Settings = (props: Props) => {
     }
 
     return (
-        <Container>
-            <h1>Settings</h1>
-            <h2>User</h2>
+        <Container className={props.className}>
+            <LargeLabel>
+                Settings
+        </LargeLabel>
+            <MediumLabel>User</MediumLabel>
             <EditField
                 label="Pseudonym"
                 open={openEditField === 'pseudonym'}
@@ -98,8 +104,8 @@ const Settings = (props: Props) => {
                 </div>}
             {isCreator &&
                 <div>
-                    <h2>Poll</h2>
-                    <DeleteModal poll={poll} />
+                    <Divider />
+                    <MediumLabel>Poll</MediumLabel>
                     <EditField
                         label="Title"
                         open={openEditField === 'title'}
@@ -144,8 +150,17 @@ const Settings = (props: Props) => {
                                 });
                             }}
                     />
+                    <DeleteModal poll={poll} />
                 </div>
             }
+            <div>
+                <Divider />
+                <MediumLabel>General</MediumLabel>
+                <GridWrapper gridTemplateColumns="12.5% 87.5%" className={props.className}>
+                    <Label>Language</Label>
+                    <LanguageDropdown />
+                </GridWrapper>
+            </div>
         </Container>
     )
 }
@@ -161,4 +176,24 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch =>
 
 }
 
-export default connect(null, mapDispatchToProps)(Settings);
+const styledSettings = styled(Settings)`
+${Divider}{
+    background: ${mediumGray};
+    margin-bottom: 3.375rem;
+}
+${LargeLabel}{
+    margin-bottom: 3.375rem;
+}
+${MediumLabel}{
+    margin-bottom: 2.625rem;
+}
+${Label}{
+    font-size: 1rem; 
+}
+${GridWrapper}{
+    height: 1rem; 
+    margin-bottom: 2rem; 
+}
+`;
+
+export default connect(null, mapDispatchToProps)(styledSettings);

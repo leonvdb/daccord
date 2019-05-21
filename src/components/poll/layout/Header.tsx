@@ -5,6 +5,7 @@ import { Heading, SecondaryButton, Label, TableCellWrapper } from '../../../styl
 import { headerHeightInRem } from '../../../style/utilities';
 import InviteIcon from '../../../images/invite-icon.svg';
 import ExpandButton from '../../../style/elements/Expand';
+import UserDropdownMenu from './UserDropdownMenu';
 
 interface Props {
     poll: IPollQuery
@@ -18,18 +19,18 @@ const Header = ({ poll, pseudonym, className }: Props) => {
     return (
         <div className={className}>
             <div className="table-row-1">
-                <TableCellWrapper widthInPercent={98}>
+                <TableCellWrapper widthInPercent={90}>
                     <Heading>
                         {poll.title}
                     </Heading>
                     <ExpandButton clicked={showDescription} onClick={// tslint:disable-next-line jsx-no-lambda
                         () => setShowDescription(!showDescription)} alt="show description" />
                 </TableCellWrapper>
-                <TableCellWrapper widthInPercent={1}>
+                <TableCellWrapper widthInPercent={5}>
                     <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
                 </TableCellWrapper>
-                <TableCellWrapper widthInPercent={1}>
-                    <button>{pseudonym}</button>
+                <TableCellWrapper widthInPercent={5} className="text-align-right">
+                    <UserDropdownMenu pseudonym={pseudonym} poll={poll} />
                 </TableCellWrapper>
             </div>
             {showDescription &&
@@ -62,9 +63,6 @@ button{
         margin: 0 0 0 0.4rem;
     }
 }
-img{
-    margin: 0 0 0.23rem 0;
-}
 .table-row-1{
     display: table-row;
     height: ${headerHeightInRem}rem
@@ -73,4 +71,7 @@ img{
     display: table-row;
 }
 
+.text-align-right{
+    text-align: right;
+}
 `;

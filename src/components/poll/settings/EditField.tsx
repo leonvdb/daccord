@@ -2,6 +2,9 @@ import React from 'react'
 import { Mutation, MutationUpdaterFn } from "react-apollo";
 import TextInputGroup from '../../layout/TextInputGroup';
 import { IPollQuery } from '../../../interfaces';
+import { Label, GridWrapper } from '../../../style/elements';
+import styled from 'styled-components';
+import Pencil from '../../../images/pencil.svg';
 
 interface Props {
     label: string
@@ -15,14 +18,15 @@ interface Props {
     update: MutationUpdaterFn<any>
     onSubmit: (e: any, mutation: any) => void
     cancel: () => void
-    handleEditClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+    handleEditClick: (e: React.MouseEvent<HTMLDivElement>) => void
     error?: string
+    className?: string
 }
 
 const EditField = (props: Props) => {
 
-    return <div>
-        <h4>{props.label}</h4>
+    return <GridWrapper gridTemplateColumns="12.5% 87.5%" className={props.className}>
+        <Label>{props.label}</Label>
         {props.open ?
             <Mutation
                 mutation={props.mutation}
@@ -46,12 +50,34 @@ const EditField = (props: Props) => {
                     </form>
                 }}
             </Mutation> :
-            <div>
-                <p className="d-inline-block">{props.value}</p>
-                <button data-testid={`edit-${props.name}-button`} name={props.name} onClick={props.handleEditClick}>Edit</button>
+            <div >
+                <p>{props.value}</p>
+                <ButtonWrapper data-testid={`edit-${props.name}-button`} id={props.name} onClick={props.handleEditClick}><img src={Pencil} alt="edit" /></ButtonWrapper>
             </div>
         }
-    </div>
+    </GridWrapper>
 }
 
-export default EditField;
+const ButtonWrapper = styled.div`
+display: inline-block;
+margin-left: .4rem;
+cursor: pointer;
+`
+
+export default styled(EditField)`
+${Label}{
+    display: inline-block;
+}
+form{
+    display: inline-block;
+    input{
+        width: auto; 
+    }
+    div{
+        display: inline-block;
+    }
+}
+p{
+    display: inline-block;
+}
+`;
