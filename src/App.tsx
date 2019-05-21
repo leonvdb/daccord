@@ -6,6 +6,7 @@ import { I18nextProvider } from "react-i18next";
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import store from './store';
+import { BaseCSS } from 'styled-bootstrap-grid'
 
 import CreatePoll from './components/CreatePoll';
 import Landing from './components/Landing';
@@ -40,6 +41,7 @@ class App extends React.Component {
   public render() {
     return (
       <ApolloProvider client={client}>
+        <BaseCSS />
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
             <BrowserRouter>

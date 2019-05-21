@@ -19,11 +19,14 @@ import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
+import { Container, Row, Col } from 'styled-bootstrap-grid';
+import styled from 'styled-components';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
     client: ApolloClient<any>
     data: IData
+    className?: string
 }
 
 interface IData {
@@ -89,22 +92,22 @@ class Poll extends React.Component<Props> {
             }
         }
         return (
-            <React.Fragment>
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-1" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-                            <SideNav pollId={this.props.match.params.poll_id} />
-                        </div>
-                        <div className="col-11" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-                            {body()}
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
+            <Container fluid={true} className={this.props.className}>
+                <Row>
+                    <Col col={1} >
+                        <SideNav pollId={this.props.match.params.poll_id} />
+                    </Col>
+                    <Col col={11} >
+                        {body()}
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 
 }
+
+
 interface PropsFromState {
     user: IUser
     pseudonym: string
@@ -126,6 +129,12 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDis
     }
 }
 
+const styledPoll = styled(Poll)`
+${Col}{
+    padding: 0;
+}
+`;
+
 export default compose(
     withApollo,
     graphql(getPollAndAuthParticipant, {
@@ -139,6 +148,6 @@ export default compose(
     }),
     withRouter,
     connect(mapStateToProps, mapDispatchToProps))
-    (Poll);
+    (styledPoll);
 
 
