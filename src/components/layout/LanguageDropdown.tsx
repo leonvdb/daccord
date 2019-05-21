@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import LanguageButton from './LanguageButton';
 import { Store } from '../../reducers';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import ExpandButton from '../../style/elements/Expand';
 import { DropdownToggle, DropdownMenu } from '../../style/elements/Dropdown';
 
@@ -66,8 +65,5 @@ const mapStateToProps = (state: Store) => ({
     language: state.language.languageLabel
 })
 
-const styledLanguageDropdown = styled(LanguageDropdown)`
-color: black;
-`
 
-export default connect(mapStateToProps, null)(styledLanguageDropdown);
+export default connect(mapStateToProps, null)(LanguageDropdown);

@@ -38,10 +38,10 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
     >
       <form>
         <div
-          class="form-group mx-auto w-75"
+          class="w-75"
         >
           <input
-            class="form-control"
+            class=""
             data-testid="name-input"
             name="name"
             placeholder="Enter Name"
@@ -50,10 +50,10 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
           />
         </div>
         <div
-          class="form-group mx-auto w-75 mb-5"
+          class="w-75 mb-5"
         >
           <input
-            class="form-control"
+            class=""
             data-testid="email-input"
             name="email"
             placeholder="Enter Email"
