@@ -106,5 +106,8 @@ ${Row}{
 }
 ${Col}{
     height: 100%;
+    ${Row}{
+        margin: 0;
+    }
 }
 `;
