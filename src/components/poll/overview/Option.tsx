@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { IOptionQuery } from '../../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
-import { TableCellWrapper, HeadingTwo } from '../../../style/elements';
+import { HeadingTwo } from '../../../style/elements';
 import VotingScale from './VotingScale';
 import ExpandButton from '../../../style/elements/Expand';
 import Label from 'reactstrap/lib/Label';
+import { Container, Row, Col } from 'styled-bootstrap-grid';
 
 interface Props {
     option: IOptionQuery
@@ -32,19 +33,31 @@ const Option = (props: Props) => {
     const isCreator = creator.id.toString() === props.userId.toString()
 
     return (
-        <div className={props.className}>
-            <TableCellWrapper widthInPercent={67}>
-                <HeadingTwo onClick={onClick} data-testid="option-heading">
-                    {title}
-                </HeadingTwo>
-            </TableCellWrapper>
-            <TableCellWrapper widthInPercent={30}>
-                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
-            </TableCellWrapper>
-            <TableCellWrapper widthInPercent={3}>
-                <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
-                    () => { setShowDetails(!showDetails) }} />
-            </TableCellWrapper>
+        <Container fluid={true} className={props.className}>
+            <Row>
+                <Col col={8}>
+                    <Box>
+                        <HeadingTwo onClick={onClick} data-testid="option-heading">
+                            {title}
+                        </HeadingTwo>
+                    </Box>
+                </Col>
+                <Col col={4}>
+                    <Row>
+                        <Col col={10}>
+                            <Box>
+                                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
+                            </Box>
+                        </Col>
+                        <Col col={2}>
+                            <Box>
+                                <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
+                                    () => { setShowDetails(!showDetails) }} />
+                            </Box>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
             {showDetails && <div>
                 <Label>Details</Label>
 
@@ -63,10 +76,16 @@ const Option = (props: Props) => {
                         toggle={toggle} />
                 )
             }
-        </div >
+        </Container>
     )
 }
 
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+`;
 
 export default styled(Option)`
 width: 100%;
@@ -76,8 +95,16 @@ margin-bottom: .5625rem;
 background: white;
 box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
 border-radius: 5px;
-display: table;
 ${HeadingTwo}{
-    margin: 0 0 0 1.625rem;
+    margin: auto 0 auto 1.625rem;
+}
+${VotingScale}{
+    display: inline-block;
+}
+${Row}{
+    height: 100%;
+}
+${Col}{
+    height: 100%;
 }
 `;
