@@ -35,14 +35,14 @@ const Option = (props: Props) => {
     return (
         <Container fluid={true} className={props.className}>
             <Row>
-                <Col col={8}>
+                <Col col={12} lg={8}>
                     <Box>
                         <HeadingTwo onClick={onClick} data-testid="option-heading">
                             {title}
                         </HeadingTwo>
                     </Box>
                 </Col>
-                <Col col={4}>
+                <Col col={12} lg={4}>
                     <Row>
                         <Col col={10}>
                             <Box>
@@ -89,8 +89,6 @@ const Box = styled.div`
 
 export default styled(Option)`
 width: 100%;
-height: 3.5rem;
-max-height: 3.5rem;
 margin-bottom: .5625rem;
 background: white;
 box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
@@ -101,11 +99,9 @@ ${HeadingTwo}{
 ${VotingScale}{
     display: inline-block;
 }
-${Row}{
-    height: 100%;
-}
+
 ${Col}{
-    height: 100%;
+    height: 3.5rem;
     ${Row}{
         margin: 0;
     }
