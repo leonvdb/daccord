@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/leonvdb/systemic-consensys#readme",
   "dependencies": {
+    "@rebass/grid": "^6.0.0",
     "apollo-boost": "^0.1.28",
     "apollo-errors": "^1.9.0",
     "apollo-server-express": "^2.4.8",
@@ -90,6 +91,7 @@
     "@types/react-redux": "^6.0.13",
     "@types/react-router-dom": "^4.3.1",
     "@types/reactstrap": "^6.4.4",
+    "@types/rebass__grid": "^6.0.5",
     "@types/styled-components": "^4.1.8",
     "@types/uuid": "^3.4.4",
     "nodemon": "^1.18.10",

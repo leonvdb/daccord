@@ -19,10 +19,9 @@ import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
-import { Container, Row, Col } from 'styled-bootstrap-grid';
-import styled from 'styled-components';
 import Media from 'react-media';
 import { above } from '../../style/utilities';
+import { Flex, Box } from '@rebass/grid';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -93,20 +92,18 @@ class Poll extends React.Component<Props> {
                 </React.Fragment>
             }
         }
-        return (
-            <Container fluid={true} className={this.props.className}>
-                <Row>
-                    <Media query={above.lg.replace('@media ', '')}>
-                        {matches =>
-                            matches && <Col col={1} >
-                                <SideNav pollId={this.props.match.params.poll_id} />
-                            </Col>}
-                    </Media>
-                    <Col col={12} lg={11} >
-                        {body()}
-                    </Col>
-                </Row>
-            </Container>
+        return (<Flex>
+
+            <Media query={above.lg.replace('@media ', '')}>
+                {matches =>
+                    matches && <Box width={1 / 12} >
+                        <SideNav pollId={this.props.match.params.poll_id} />
+                    </Box>}
+            </Media>
+            <Box width={11 / 12} >
+                {body()}
+            </Box>
+        </Flex>
 
         )
     }
@@ -135,11 +132,6 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDis
     }
 }
 
-const styledPoll = styled(Poll)`
-${Col}{
-    padding: 0;
-}
-`;
 
 export default compose(
     withApollo,
@@ -154,6 +146,6 @@ export default compose(
     }),
     withRouter,
     connect(mapStateToProps, mapDispatchToProps))
-    (styledPoll);
+    (Poll);
 
 
