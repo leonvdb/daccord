@@ -7,7 +7,7 @@ import { HeadingTwo } from '../../../style/elements';
 import VotingScale from './VotingScale';
 import ExpandButton from '../../../style/elements/Expand';
 import Label from 'reactstrap/lib/Label';
-import { Container, Row, Col } from 'styled-bootstrap-grid';
+import { Flex, Box } from '@rebass/grid';
 
 interface Props {
     option: IOptionQuery
@@ -33,31 +33,19 @@ const Option = (props: Props) => {
     const isCreator = creator.id.toString() === props.userId.toString()
 
     return (
-        <Container fluid={true} className={props.className}>
-            <Row>
-                <Col col={12} lg={8}>
-                    <Box>
-                        <HeadingTwo onClick={onClick} data-testid="option-heading">
-                            {title}
-                        </HeadingTwo>
-                    </Box>
-                </Col>
-                <Col col={12} lg={4}>
-                    <Row>
-                        <Col col={10}>
-                            <Box>
-                                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
-                            </Box>
-                        </Col>
-                        <Col col={2}>
-                            <Box>
-                                <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
-                                    () => { setShowDetails(!showDetails) }} />
-                            </Box>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+        <Flex className={props.className} flexWrap='wrap' >
+            <BoxWrapper width={[1, 1, 1, 8 / 12]}>
+                <HeadingTwo onClick={onClick} data-testid="option-heading">
+                    {title}
+                </HeadingTwo>
+            </BoxWrapper>
+            <BoxWrapper width={4 / 12 * (5 / 6)}>
+                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
+            </BoxWrapper>
+            <BoxWrapper width={4 / 12 * (1 / 6)}>
+                <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
+                    () => { setShowDetails(!showDetails) }} />
+            </BoxWrapper>
             {showDetails && <div>
                 <Label>Details</Label>
 
@@ -76,15 +64,15 @@ const Option = (props: Props) => {
                         toggle={toggle} />
                 )
             }
-        </Container>
+        </Flex>
     )
 }
 
-const Box = styled.div`
+const BoxWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
+  height: 3.5rem;
 `;
 
 export default styled(Option)`
@@ -98,12 +86,5 @@ ${HeadingTwo}{
 }
 ${VotingScale}{
     display: inline-block;
-}
-
-${Col}{
-    height: 3.5rem;
-    ${Row}{
-        margin: 0;
-    }
 }
 `;
