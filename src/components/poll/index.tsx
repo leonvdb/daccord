@@ -21,6 +21,8 @@ import SideNav from './layout/SideNav';
 import Header from './layout/Header';
 import { Container, Row, Col } from 'styled-bootstrap-grid';
 import styled from 'styled-components';
+import Media from 'react-media';
+import { above } from '../../style/utilities';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -94,14 +96,18 @@ class Poll extends React.Component<Props> {
         return (
             <Container fluid={true} className={this.props.className}>
                 <Row>
-                    <Col col={1} >
-                        <SideNav pollId={this.props.match.params.poll_id} />
-                    </Col>
-                    <Col col={11} >
+                    <Media query={above.lg.replace('@media ', '')}>
+                        {matches =>
+                            matches && <Col col={1} >
+                                <SideNav pollId={this.props.match.params.poll_id} />
+                            </Col>}
+                    </Media>
+                    <Col col={12} lg={11} >
                         {body()}
                     </Col>
                 </Row>
             </Container>
+
         )
     }
 
