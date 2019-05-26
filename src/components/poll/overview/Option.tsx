@@ -34,15 +34,19 @@ const Option = (props: Props) => {
 
     return (
         <Flex className={props.className} flexWrap='wrap' >
-            <BoxWrapper width={[1, 1, 1, 8 / 12]}>
-                <HeadingTwo onClick={onClick} data-testid="option-heading">
-                    {title}
-                </HeadingTwo>
-            </BoxWrapper>
-            <BoxWrapper width={4 / 12 * (5 / 6)}>
-                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
-            </BoxWrapper>
-            <BoxWrapper width={4 / 12 * (1 / 6)}>
+            <Box width={17 / 18}>
+                <Flex flexWrap='wrap'>
+                    <BoxWrapper width={[1, 1, 1, 12 / 17]} pl="1.625rem">
+                        <HeadingTwo onClick={onClick} data-testid="option-heading">
+                            {title}
+                        </HeadingTwo>
+                    </BoxWrapper>
+                    <BoxWrapper width={[1, 1, 1, 5 / 17]} pl={["1.625rem", "1.625rem", "1.625rem", 0]}>
+                        <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
+                    </BoxWrapper>
+                </Flex>
+            </Box>
+            <BoxWrapper width={1 / 18}>
                 <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
                     () => { setShowDetails(!showDetails) }} />
             </BoxWrapper>
@@ -81,9 +85,6 @@ margin-bottom: .5625rem;
 background: white;
 box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
 border-radius: 5px;
-${HeadingTwo}{
-    margin: auto 0 auto 1.625rem;
-}
 ${VotingScale}{
     display: inline-block;
 }
