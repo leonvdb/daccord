@@ -70,16 +70,16 @@ const ColoredBarStyle = (current: number) => {
     width: ${1.375 + current * 1.375}rem;
     
     background: ${scale[current].linear};
-${above.custom('min', 370)}{
+${above.custom(370)}{
     width: ${1.375 + current * 1.5}rem;
 }
-${above.custom('min', 421)}{
+${above.custom(421)}{
     width: ${1.375 + current * 1.75}rem;
 }
 ${above.lg}{
     width: ${1.375 + current * 1.5}rem;
 }
-${above.custom('min', 1370)}{
+${above.custom(1370)}{
     width: ${1.375 + current * 1.75}rem;
 }
     `
@@ -89,16 +89,16 @@ const Wrapper = styled.div`
 height: 1.375rem;
 width: 1.375rem;
 display: table-cell;
-${above.custom('min', 370)}{
+${above.custom(370)}{
     width: 1.5rem;
 }
-${above.custom('min', 421)}{
+${above.custom(421)}{
     width: 1.75rem;
 }
 ${above.lg}{
     width: 1.5rem;
 }
-${above.custom('min', 1370)}{
+${above.custom(1370)}{
     width: 1.75rem;
 }
 `

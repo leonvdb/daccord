@@ -10,7 +10,7 @@ const sizes = {
 }
 
 export const above = {
-    custom: customMediaQuery,
+    custom: (breakpoint: number) => customMediaQuery('min', breakpoint),
     xs: customMediaQuery('min', sizes.xs),
     sm: customMediaQuery('min', sizes.sm),
     md: customMediaQuery('min', sizes.md),
@@ -19,7 +19,7 @@ export const above = {
 };
 
 export const below = {
-    custom: customMediaQuery,
+    custom: (breakpoint: number) => customMediaQuery('max', breakpoint),
     xs: customMediaQuery('max', sizes.xs),
     sm: customMediaQuery('max', sizes.sm),
     md: customMediaQuery('max', sizes.md),
