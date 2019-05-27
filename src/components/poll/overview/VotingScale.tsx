@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components';
-import { lightGray, scale, softBlack, below } from '../../../style/utilities';
+import { lightGray, scale, softBlack, above } from '../../../style/utilities';
 import { Dispatch, AnyAction } from 'redux';
 import { handleRatingChange } from '../../../actions/voteActions';
 import { connect } from 'react-redux';
@@ -67,38 +67,39 @@ interface VotingNumberProps {
 const ColoredBarStyle = (current: number) => {
 
     return css`
-    width: ${1.375 + current * 1.75}rem;
+    width: ${1.375 + current * 1.375}rem;
+    
     background: ${scale[current].linear};
-    ${below.custom('max', 1370)}, ${below.custom('max', 460)}{
-        width: ${1.375 + current * 1.5}rem;
-}
-${below.lg}{
-    width: ${1.375 + current * 1.75}rem;
-}
-${below.custom('max', 421)}{
+${above.custom('min', 370)}{
     width: ${1.375 + current * 1.5}rem;
 }
-${below.custom('max', 370)}{
-    width: ${1.375 + current * 1.375}rem;
+${above.custom('min', 421)}{
+    width: ${1.375 + current * 1.75}rem;
+}
+${above.lg}{
+    width: ${1.375 + current * 1.5}rem;
+}
+${above.custom('min', 1370)}{
+    width: ${1.375 + current * 1.75}rem;
 }
     `
 }
 
 const Wrapper = styled.div`
 height: 1.375rem;
-width: 1.75rem;
+width: 1.375rem;
 display: table-cell;
-${below.custom('max', 1370)}{
+${above.custom('min', 370)}{
     width: 1.5rem;
 }
-${below.lg}{
+${above.custom('min', 421)}{
     width: 1.75rem;
 }
-${below.custom('max', 421)}{
+${above.lg}{
     width: 1.5rem;
 }
-${below.custom('max', 370)}{
-    width: 1.375rem;
+${above.custom('min', 1370)}{
+    width: 1.75rem;
 }
 `
 
