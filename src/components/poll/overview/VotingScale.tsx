@@ -69,7 +69,7 @@ const ColoredBarStyle = (current: number) => {
     return css`
     width: ${1.375 + current * 1.75}rem;
     background: ${scale[current].linear};
-    ${below.custom('max', 1350)}, ${below.custom('max', 460)}{
+    ${below.custom('max', 1370)}, ${below.custom('max', 460)}{
         width: ${1.375 + current * 1.5}rem;
 }
 ${below.lg}{
@@ -88,7 +88,7 @@ const Wrapper = styled.div`
 height: 1.375rem;
 width: 1.75rem;
 display: table-cell;
-${below.custom('max', 1350)}{
+${below.custom('max', 1370)}{
     width: 1.5rem;
 }
 ${below.lg}{
