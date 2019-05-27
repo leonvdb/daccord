@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { headerHeightInRem } from '../utilities';
+import { headerHeightInRem, above } from '../utilities';
 
 interface TableCellWrapperProps {
     widthInPercent: number
@@ -20,7 +20,17 @@ grid-template-columns: ${({ gridTemplateColumns }) => gridTemplateColumns};
 `
 
 export const Container = styled.div`
+${above.lg}{
 padding: ${headerHeightInRem}rem 5.3125rem 0;
+}
+${above.md}{
+    padding: ${headerHeightInRem}rem 4rem 0;
+}
+${above.custom('min', 460)}{
+padding: ${headerHeightInRem}rem 2rem 0;
+}
+padding: ${headerHeightInRem}rem 1rem 0;
+
 `
 
 export const Divider = styled.div`

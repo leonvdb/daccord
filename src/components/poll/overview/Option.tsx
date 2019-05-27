@@ -34,19 +34,19 @@ const Option = (props: Props) => {
 
     return (
         <Flex className={props.className} flexWrap='wrap' >
-            <Box width={17 / 18}>
+            <Box width={[5 / 6, 8 / 9, 12 / 13, 17 / 18]}>
                 <Flex flexWrap='wrap'>
-                    <BoxWrapper width={[1, 1, 1, 12 / 17]} pl="1.625rem">
+                    <BoxWrapper width={[1, 1, 1, 11 / 17, 12 / 17]} pl={["1rem", "1.625rem"]}>
                         <HeadingTwo onClick={onClick} data-testid="option-heading">
                             {title}
                         </HeadingTwo>
                     </BoxWrapper>
-                    <BoxWrapper width={[1, 1, 1, 5 / 17]} pl={["1.625rem", "1.625rem", "1.625rem", 0]}>
+                    <BoxWrapper width={[1, 1, 1, 6 / 17, 5 / 17]} pl={["1rem", "1.625rem", "1.625rem", 0]}>
                         <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
                     </BoxWrapper>
                 </Flex>
             </Box>
-            <BoxWrapper width={1 / 18}>
+            <BoxWrapper width={[1 / 6, 1 / 9, 1 / 13, 1 / 18]}>
                 <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
                     () => { setShowDetails(!showDetails) }} />
             </BoxWrapper>

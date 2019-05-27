@@ -100,7 +100,7 @@ class Poll extends React.Component<Props> {
                         <SideNav pollId={this.props.match.params.poll_id} />
                     </Box>}
             </Media>
-            <Box width={11 / 12} >
+            <Box width={[1, 1, 1, 11 / 12]} >
                 {body()}
             </Box>
         </Flex>
