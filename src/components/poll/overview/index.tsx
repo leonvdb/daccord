@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { IOptionQuery } from '../../../interfaces';
 import { TableCellWrapper, PrimaryButton, Label, Container, SmallerLabel } from '../../../style/elements';
-import { darkerGray } from '../../../style/utilities';
+import { darkerGray, above } from '../../../style/utilities';
 
 import Option from './Option';
 import AddOption from './AddOption';
@@ -16,6 +16,8 @@ import { Mutation } from 'react-apollo';
 import { UPDATE_VOTES } from '../../../graphql/vote';
 import { clearRatingChanges } from '../../../actions/voteActions';
 import { getPoll } from '../../../graphql/getPoll';
+import Media from 'react-media';
+import { Flex, Box } from '@rebass/grid';
 
 interface Props extends PropsFromState, PropsFromDispatch {
     poll: IPollQuery
@@ -49,19 +51,28 @@ class Overview extends React.Component<Props> {
 
                 <Container>
                     <ToolBar>
-                        <TableCellWrapper widthInPercent={67} verticalAlign="bottom">
-                            <Label className="margin-left">
-                                Title
-                    </Label>
-                        </TableCellWrapper>
-                        <TableCellWrapper widthInPercent={0} verticalAlign="bottom">
-                            <Label >
-                                My Opposition
-                    </Label>
-                        </TableCellWrapper>
-                        <TableCellWrapper className="move-right" widthInPercent={15} verticalAlign="bottom">
+                        <Media query={above.lg.replace('@media ', '')}>
+                            {matches =>
+                                matches && <React.Fragment>
+
+                                    <ToolBarBox width={[1, 1, 1, 11 / 17, 12 / 17].map((val) => val * (17 / 18))} pl={["1rem", "1.625rem"]}>
+                                        <Label>
+                                            Title
+                                    </Label>
+                                    </ToolBarBox>
+                                    <ToolBarBox>
+                                        <Label >
+                                            My Opposition
+    </Label>
+                                    </ToolBarBox>
+                                </React.Fragment>
+
+                            }
+
+                        </Media>
+                        <ToolBarBox flex={1} className="flex-d-row">
                             {button}
-                        </TableCellWrapper>
+                        </ToolBarBox>
                     </ToolBar>
 
                     <OptionsWrapper>
@@ -141,23 +152,40 @@ const OptionsWrapper = styled.div`
 padding-top: 5.8125rem;
 `;
 
-const ToolBar = styled.div`
+export const ToolBar = styled(Flex)`
 width:100%;
 height: 2.375rem;
-max-width: calc(${11 / 12 * 100}% - 10.625rem);
+max-width: calc(100% - 2rem);
+${above.custom(460)}{
+    max-width: calc(100% - 4rem);
+}
+${above.lg}{
+    max-width: calc(${11 / 12 * 100}% - 4rem);
+}
+${above.custom(1100)}{
+    max-width: calc(${11 / 12 * 100}% - 9rem);
+}
+${above.custom(1400)}{
+    max-width: calc(${11 / 12 * 100}% - 10.625rem);
+}
 position: fixed;
-display: table;
 margin-top: 2rem;
-.table-cell{
-    display: table-cell;
-    vertical-align: bottom;
+align-items: stretch;
+flex-direction: row;
+.flex-d-row{
+    flex-direction: row;
 }
-.margin-left{
-    margin: 0 0 0 1.625rem;
-}
-.move-right{
-    text-align: right
-}
+`
+const ToolBarBox = styled(Box)`
+display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  ${Label}{
+      margin-bottom: 0;
+  }
+  button{
+      align-self: flex-end;
+  }
 `
 
 const UnsavedChangesBar = styled.div`
