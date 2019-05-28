@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IPollQuery } from '../../../interfaces';
 import { Heading, SecondaryButton, Label, TableCellWrapper } from '../../../style/elements';
-import { headerHeightInRem } from '../../../style/utilities';
+import { headerHeightInRem, above } from '../../../style/utilities';
 import InviteIcon from '../../../images/invite-icon.svg';
 import ExpandButton from '../../../style/elements/Expand';
 import UserDropdownMenu from './UserDropdownMenu';
@@ -49,7 +49,10 @@ export default styled(Header)`
 position: fixed;
 display: table;
 width: 100%;
-max-width: inherit;
+max-width: 100%;
+${above.lg}{
+    max-width: ${11 / 12 * 100}%;
+}
 box-shadow: 0px 2px 4px rgba(104, 104, 104, 0.25);
 background-color: #FFF;
 padding: 0 3.625rem;
