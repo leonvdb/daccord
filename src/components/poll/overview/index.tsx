@@ -98,7 +98,10 @@ class Overview extends React.Component<Props> {
                     <UnsavedChangesBar
                         data-testid="unsaved-changes-bar">
                         <TableCellWrapper widthInPercent={99}>
-                            <p>You made changes that are currently unsaved</p>
+                            <Media query={above.custom(700).replace('@media ', '')}>
+                                {matches =>
+                                    matches && <p>You made changes that are currently unsaved</p>}
+                            </Media>
                         </TableCellWrapper>
                         <TableCellWrapper widthInPercent={1}>
                             <SmallerLabel data-testid="cancel-button"
@@ -189,7 +192,11 @@ display: flex;
 `
 
 const UnsavedChangesBar = styled.div`
-max-width: ${11 / 12 * 100}%;
+width: 100%;
+max-width: 100%;
+${above.lg}{
+    max-width: ${11 / 12 * 100}%;
+}
 width: 100%;
 height: 3.4375rem;
 padding: 0 5.3125rem;
