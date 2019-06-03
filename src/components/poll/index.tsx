@@ -20,8 +20,9 @@ import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
 import Media from 'react-media';
-import { above } from '../../style/utilities';
+import { above, primaryStrong } from '../../style/utilities';
 import { Flex, Box } from '@rebass/grid';
+import styled from 'styled-components';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -100,11 +101,9 @@ class Poll extends React.Component<Props, { mobileNavOpen: boolean }> {
                 </React.Fragment>
             }
         }
-        return (<React.Fragment>
-            {this.state.mobileNavOpen && <div>
-                Mobile Nav
-            </div>}
-            <Flex>
+        return (<div className={this.props.className}>
+            <MobileNav isOpen={this.state.mobileNavOpen} />
+            <Main mobileNavOpen={this.state.mobileNavOpen} >
                 <Media query={above.lg.replace('@media ', '')}>
                     {matches => {
                         if (matches) {
@@ -121,12 +120,27 @@ class Poll extends React.Component<Props, { mobileNavOpen: boolean }> {
                 <Box width={[1, 1, 1, 11 / 12]} >
                     {body()}
                 </Box>
-            </Flex>
-        </React.Fragment>
+            </Main>
+        </div>
         )
     }
 
 }
+
+const MobileNav = styled.div<{ isOpen: boolean }>`
+position: fixed;
+background: ${primaryStrong};
+width: 0;
+transition: width .4s ease-in-out;
+height: 100vh;
+${({ isOpen }) => isOpen && 'width: 18.25rem;'}
+`
+
+const Main = styled(Flex) <{ mobileNavOpen: boolean }>`
+min-width: 320px;
+transition: margin .4s ease-in-out;
+margin-left: ${({ mobileNavOpen }) => mobileNavOpen ? '18.25rem' : 0}
+`;
 
 
 interface PropsFromState {
