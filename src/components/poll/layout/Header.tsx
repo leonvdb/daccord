@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { IPollQuery } from '../../../interfaces';
-import { Heading, SecondaryButton, Label, TableCellWrapper } from '../../../style/elements';
+import { Heading, SecondaryButton, Label } from '../../../style/elements';
 import { headerHeightInRem, above } from '../../../style/utilities';
 import InviteIcon from '../../../images/invite-icon.svg';
 import ExpandButton from '../../../style/elements/Expand';
 import UserDropdownMenu from './UserDropdownMenu';
+import { Flex, Box } from '@rebass/grid';
 
 interface Props {
     poll: IPollQuery
@@ -17,22 +18,26 @@ const Header = ({ poll, pseudonym, className }: Props) => {
 
     const [showDescription, setShowDescription] = useState(false);
     return (
-        <div className={className}>
-            <div className="table-row-1">
-                <TableCellWrapper widthInPercent={90}>
+        <Flex className={className} flexWrap='wrap'>
+            <BoxWrapper width={6 / 10}>
+                <div>
                     <Heading>
                         {poll.title}
                     </Heading>
                     <ExpandButton clicked={showDescription} onClick={// tslint:disable-next-line jsx-no-lambda
                         () => setShowDescription(!showDescription)} alt="show description" />
-                </TableCellWrapper>
-                <TableCellWrapper widthInPercent={5}>
+                </div>
+            </BoxWrapper>
+            <BoxWrapper flex={1}>
+                <BoxEnd>
                     <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
-                </TableCellWrapper>
-                <TableCellWrapper widthInPercent={5} className="text-align-right">
+                </BoxEnd>
+            </BoxWrapper>
+            <BoxWrapper width="auto">
+                <BoxEnd>
                     <UserDropdownMenu pseudonym={pseudonym} poll={poll} />
-                </TableCellWrapper>
-            </div>
+                </BoxEnd>
+            </BoxWrapper>
             {showDescription &&
                 <div className="table-row">
                     <Label>
@@ -41,13 +46,26 @@ const Header = ({ poll, pseudonym, className }: Props) => {
                     <p>{poll.description} </p>
                 </div>
             }
-        </div>
+        </Flex>
     )
 }
 
+const BoxWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: ${headerHeightInRem}rem;
+`;
+
+const BoxEnd = styled(Box)`
+display: flex;
+flex-direction: row;
+width: 100%;
+justify-content: flex-end;
+`
+
 export default styled(Header)`
 position: fixed;
-display: table;
 width: 100%;
 max-width: 100%;
 ${above.lg}{
@@ -61,20 +79,10 @@ ${Heading}{
     margin: 0 1rem 0 0;
 }
 button{
+    width: 7rem; 
     p{
         display: inline-block;
         margin: 0 0 0 0.4rem;
     }
-}
-.table-row-1{
-    display: table-row;
-    height: ${headerHeightInRem}rem
-}
-.table-row{
-    display: table-row;
-}
-
-.text-align-right{
-    text-align: right;
 }
 `;
