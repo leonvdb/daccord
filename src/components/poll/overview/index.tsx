@@ -152,18 +152,21 @@ class Overview extends React.Component<Props> {
 
 
 const OptionsWrapper = styled.div`
+padding-top: 1rem;
+${above.lg}{
 padding-top: 5.8125rem;
+}
 `;
 
 export const ToolBar = styled(Flex)`
 width:100%;
 height: 2.375rem;
-max-width: calc(100% - 2rem);
-${above.custom(460)}{
-    max-width: calc(100% - 4rem);
-}
+max-width: 100%;
+margin-top: 1rem;
 ${above.lg}{
     max-width: calc(${11 / 12 * 100}% - 4rem);
+    position: fixed;
+    margin-top: 2rem;
 }
 ${above.custom(1100)}{
     max-width: calc(${11 / 12 * 100}% - 9rem);
@@ -171,8 +174,6 @@ ${above.custom(1100)}{
 ${above.custom(1400)}{
     max-width: calc(${11 / 12 * 100}% - 10.625rem);
 }
-position: fixed;
-margin-top: 2rem;
 align-items: stretch;
 flex-direction: row;
 .flex-d-row{
