@@ -103,7 +103,7 @@ class Poll extends React.Component<Props, { mobileNavOpen: boolean }> {
         }
         return (<div className={this.props.className}>
             <MobileNav isOpen={this.state.mobileNavOpen} />
-            <Main mobileNavOpen={this.state.mobileNavOpen} >
+            <Main mobileNavOpen={this.state.mobileNavOpen} onClick={this.state.mobileNavOpen ? toggleMobileNav : undefined}>
                 <Media query={above.lg.replace('@media ', '')}>
                     {matches => {
                         if (matches) {
@@ -137,6 +137,7 @@ ${({ isOpen }) => isOpen && 'width: 18.25rem;'}
 `
 
 const Main = styled(Flex) <{ mobileNavOpen: boolean }>`
+height: 100vh;
 min-width: 320px;
 transition: margin .4s ease-in-out;
 margin-left: ${({ mobileNavOpen }) => mobileNavOpen ? '18.25rem' : 0}
