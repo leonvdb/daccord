@@ -13,17 +13,18 @@ import Burger from '../../../images/burger.svg'
 interface Props {
     poll: IPollQuery
     pseudonym: string
+    toggleMobileNav: () => void
     className?: string
 }
 
-const Header = ({ poll, pseudonym, className }: Props) => {
+const Header = ({ poll, pseudonym, className, toggleMobileNav }: Props) => {
 
     const [showDescription, setShowDescription] = useState(false);
     return (
         <Flex className={className} flexWrap='wrap'>
             <Media query={above.lg.replace('@media ', '')}>
                 {matches => !matches && <BoxWrapper width='auto'>
-                    <img src={Burger} id='burger' />
+                    <img src={Burger} id='burger' onClick={toggleMobileNav} />
                 </BoxWrapper>}
             </Media>
             <BoxWrapper width='auto'>
@@ -95,6 +96,7 @@ ${Heading}{
 }
 #burger{
     margin-right: 1rem;
+    cursor: pointer;
 }
 button{
     width: 7rem; 
