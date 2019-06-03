@@ -7,6 +7,8 @@ import InviteIcon from '../../../images/invite-icon.svg';
 import ExpandButton from '../../../style/elements/Expand';
 import UserDropdownMenu from './UserDropdownMenu';
 import { Flex, Box } from '@rebass/grid';
+import Media from 'react-media';
+import Burger from '../../../images/burger.svg'
 
 interface Props {
     poll: IPollQuery
@@ -19,7 +21,12 @@ const Header = ({ poll, pseudonym, className }: Props) => {
     const [showDescription, setShowDescription] = useState(false);
     return (
         <Flex className={className} flexWrap='wrap'>
-            <BoxWrapper width={6 / 10}>
+            <Media query={above.lg.replace('@media ', '')}>
+                {matches => !matches && <BoxWrapper width='auto'>
+                    <img src={Burger} id='burger' />
+                </BoxWrapper>}
+            </Media>
+            <BoxWrapper width='auto'>
                 <div>
                     <Heading>
                         {poll.title}
@@ -28,23 +35,30 @@ const Header = ({ poll, pseudonym, className }: Props) => {
                         () => setShowDescription(!showDescription)} alt="show description" />
                 </div>
             </BoxWrapper>
-            <BoxWrapper flex={1}>
-                <BoxEnd>
-                    <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
-                </BoxEnd>
-            </BoxWrapper>
-            <BoxWrapper width="auto">
-                <BoxEnd>
-                    <UserDropdownMenu pseudonym={pseudonym} poll={poll} />
-                </BoxEnd>
-            </BoxWrapper>
+            <Media query={above.lg.replace('@media ', '')}>
+                {matches => matches && <React.Fragment>
+
+                    <BoxWrapper flex={1}>
+                        <BoxEnd>
+                            <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
+                        </BoxEnd>
+                    </BoxWrapper>
+                    <BoxWrapper width="auto">
+                        <BoxEnd>
+                            <UserDropdownMenu pseudonym={pseudonym} poll={poll} />
+                        </BoxEnd>
+                    </BoxWrapper>
+                </React.Fragment>
+                }
+            </Media>
+
             {showDescription &&
-                <div className="table-row">
+                <Box width={1}>
                     <Label>
                         Description
                 </Label>
                     <p>{poll.description} </p>
-                </div>
+                </Box>
             }
         </Flex>
     )
@@ -68,15 +82,19 @@ export default styled(Header)`
 position: fixed;
 width: 100%;
 max-width: 100%;
+padding: 0 1.625rem;
 ${above.lg}{
     max-width: ${11 / 12 * 100}%;
+    padding: 0 3.625rem;
 }
 box-shadow: 0px 2px 4px rgba(104, 104, 104, 0.25);
 background-color: #FFF;
-padding: 0 3.625rem;
 z-index: 1;
 ${Heading}{
     margin: 0 1rem 0 0;
+}
+#burger{
+    margin-right: 1rem;
 }
 button{
     width: 7rem; 
