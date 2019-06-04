@@ -6,6 +6,16 @@ import store from '../../../store';
 import Overview from './index';
 import mockPoll from '../../../testingResources/mockPoll';
 
+window.matchMedia = jest.fn().mockImplementation(query => {
+    return {
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+    };
+});
+
 test('<Overview /> cancel unsaved changes', () => {
     const { getByTestId, queryByTestId } = render(
         <Provider store={store}>
