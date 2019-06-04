@@ -9,7 +9,6 @@ border-radius: 4px;
 background: ${white};
 `
 export const DropdownToggle = styled.div`
-margin-bottom: .4rem;
 display: inline-block;
 img{
     margin-left: .4rem;

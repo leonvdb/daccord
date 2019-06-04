@@ -149,7 +149,7 @@ const AuthModal = (props: Props) => {
     }
 
     return (
-        <div className="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center align-items-center">
+        <div >
             {renderButton && <button
                 data-testid='participate-button'
                 id="Modal"

@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { IOptionQuery } from '../../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
-import { TableCellWrapper, HeadingTwo } from '../../../style/elements';
+import { HeadingTwo } from '../../../style/elements';
 import VotingScale from './VotingScale';
 import ExpandButton from '../../../style/elements/Expand';
 import Label from 'reactstrap/lib/Label';
+import { Flex, Box } from '@rebass/grid';
 
 interface Props {
     option: IOptionQuery
@@ -32,19 +33,23 @@ const Option = (props: Props) => {
     const isCreator = creator.id.toString() === props.userId.toString()
 
     return (
-        <div className={props.className}>
-            <TableCellWrapper widthInPercent={67}>
-                <HeadingTwo onClick={onClick} data-testid="option-heading">
-                    {title}
-                </HeadingTwo>
-            </TableCellWrapper>
-            <TableCellWrapper widthInPercent={30}>
-                <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
-            </TableCellWrapper>
-            <TableCellWrapper widthInPercent={3}>
+        <Flex className={props.className} flexWrap='wrap' >
+            <Box width={[5 / 6, 8 / 9, 12 / 13, 17 / 18]}>
+                <Flex flexWrap='wrap'>
+                    <BoxWrapper width={[1, 1, 1, 11 / 17, 12 / 17]} pl={["1rem", "1.625rem"]}>
+                        <HeadingTwo onClick={onClick} data-testid="option-heading">
+                            {title}
+                        </HeadingTwo>
+                    </BoxWrapper>
+                    <BoxWrapper width={[1, 1, 1, 6 / 17, 5 / 17]} pl={["1rem", "1.625rem", "1.625rem", 0]}>
+                        <VotingScale userRating={props.userRating === null ? undefined : props.userRating} optionId={props.option.refId} />
+                    </BoxWrapper>
+                </Flex>
+            </Box>
+            <BoxWrapper width={[1 / 6, 1 / 9, 1 / 13, 1 / 18]}>
                 <ExpandButton clicked={showDetails} onClick={ // tslint:disable-next-line jsx-no-lambda
                     () => { setShowDetails(!showDetails) }} />
-            </TableCellWrapper>
+            </BoxWrapper>
             {showDetails && <div>
                 <Label>Details</Label>
 
@@ -63,21 +68,24 @@ const Option = (props: Props) => {
                         toggle={toggle} />
                 )
             }
-        </div >
+        </Flex>
     )
 }
 
+const BoxWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 3.5rem;
+`;
 
 export default styled(Option)`
 width: 100%;
-height: 3.5rem;
-max-height: 3.5rem;
 margin-bottom: .5625rem;
 background: white;
 box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
 border-radius: 5px;
-display: table;
-${HeadingTwo}{
-    margin: 0 0 0 1.625rem;
+${VotingScale}{
+    display: inline-block;
 }
 `;

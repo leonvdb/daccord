@@ -78,7 +78,7 @@ ${PositionWrapper}{
     transition: top .5s ease 0s;
 }
 text-align: center;
-max-width: inherit;
+max-width: ${1 / 12 * 100}%;
 width: 100%;
 height: 100%;
 position: fixed;

@@ -15,6 +15,7 @@ import Poll from './components/poll';
 import i18n from './i18n';
 import setAuthToken from './utilities/setAuthToken';
 import { decode } from 'jsonwebtoken';
+import { ThemeProvider } from 'styled-components';
 
 export const client = new ApolloClient({
   uri: 'http://localhost:5000/graphql',
@@ -36,6 +37,10 @@ if (localStorage.jwtToken) {
   }
 }
 
+const gridTheme = {
+  breakpoints: ['576px', '768px', '992px', '1200px']
+}
+
 class App extends React.Component {
   public render() {
     return (
@@ -43,16 +48,18 @@ class App extends React.Component {
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
             <BrowserRouter>
-              <div className="App">
-                <GlobalStyle />
-                <Switch>
-                  <Route exact={true} path="/" component={Landing} />
-                  <Route exact={true} path="/poll/:poll_id" component={Poll} />
-                  <Route name="pollNavRoute" path="/poll/:poll_id/:pollNavRoute" component={Poll} />
-                  <Route exact={true} path="/create" component={CreatePoll} />
-                  <Route component={NotFound} />
-                </Switch>
-              </div>
+              <ThemeProvider theme={gridTheme}>
+                <div className="App">
+                  <GlobalStyle />
+                  <Switch>
+                    <Route exact={true} path="/" component={Landing} />
+                    <Route exact={true} path="/poll/:poll_id" component={Poll} />
+                    <Route name="pollNavRoute" path="/poll/:poll_id/:pollNavRoute" component={Poll} />
+                    <Route exact={true} path="/create" component={CreatePoll} />
+                    <Route component={NotFound} />
+                  </Switch>
+                </div>
+              </ThemeProvider>
             </BrowserRouter>
           </Provider>
         </I18nextProvider>

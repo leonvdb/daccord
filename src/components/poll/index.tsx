@@ -19,11 +19,16 @@ import Results from './results';
 import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
+import Media from 'react-media';
+import { above, primary } from '../../style/utilities';
+import { Flex, Box } from '@rebass/grid';
+import styled from 'styled-components';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
     client: ApolloClient<any>
     data: IData
+    className?: string
 }
 
 interface IData {
@@ -41,7 +46,12 @@ interface IAuthUser {
 }
 
 
-class Poll extends React.Component<Props> {
+class Poll extends React.Component<Props, { mobileNavOpen: boolean }> {
+
+    constructor(props: Props) {
+        super(props);
+        this.state = { mobileNavOpen: false };
+    }
 
     componentDidUpdate() {
         if (!this.props.data.loading && !this.props.user.id && this.props.data.authUser) {
@@ -62,6 +72,9 @@ class Poll extends React.Component<Props> {
 
     render() {
         const { user } = this.props;
+        const toggleMobileNav = () => {
+            this.setState({ mobileNavOpen: !this.state.mobileNavOpen })
+        }
         const { loading, error }: any = this.props.data
         const pollResponse = this.props.data.poll
         const body = () => {
@@ -74,7 +87,7 @@ class Poll extends React.Component<Props> {
                 const { poll } = this.props.data
                 return <React.Fragment>
                     {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll} />}
-                    <Header poll={poll} pseudonym={this.props.pseudonym} />
+                    <Header poll={poll} pseudonym={this.props.pseudonym} toggleMobileNav={toggleMobileNav} />
                     {
                         this.props.match.params.pollNavRoute === "results" ? (
                             <Results poll={poll} user={user} pseudonym={this.props.pseudonym} />
@@ -88,23 +101,49 @@ class Poll extends React.Component<Props> {
                 </React.Fragment>
             }
         }
-        return (
-            <React.Fragment>
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-1" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-                            <SideNav pollId={this.props.match.params.poll_id} />
-                        </div>
-                        <div className="col-11" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-                            {body()}
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
+        return (<div className={this.props.className}>
+            <MobileNav isOpen={this.state.mobileNavOpen} />
+            <Main mobileNavOpen={this.state.mobileNavOpen} onClick={this.state.mobileNavOpen ? toggleMobileNav : undefined}>
+                <Media query={above.lg.replace('@media ', '')}>
+                    {matches => {
+                        if (matches) {
+                            if (this.state.mobileNavOpen) {
+                                this.setState({ mobileNavOpen: false })
+                            }
+                            return <Box width={1 / 12} >
+                                <SideNav pollId={this.props.match.params.poll_id} />
+                            </Box>
+                        }
+                        return null;
+                    }}
+                </Media>
+                <Box width={[1, 1, 1, 11 / 12]} >
+                    {body()}
+                </Box>
+            </Main>
+        </div>
         )
     }
 
 }
+
+const MobileNav = styled.div<{ isOpen: boolean }>`
+position: fixed;
+background: ${primary};
+width: 0;
+transition: width .4s ease-in-out;
+height: 100vh;
+${({ isOpen }) => isOpen && 'width: 18.25rem;'}
+`
+
+const Main = styled(Flex) <{ mobileNavOpen: boolean }>`
+height: 100vh;
+min-width: 320px;
+transition: margin .4s ease-in-out;
+margin-left: ${({ mobileNavOpen }) => mobileNavOpen ? '18.25rem' : 0}
+`;
+
+
 interface PropsFromState {
     user: IUser
     pseudonym: string
@@ -125,6 +164,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<Store, any, Action>): MapDis
         setPseudonym: (pseudonym: string) => dispatch(setPseudonym(pseudonym))
     }
 }
+
 
 export default compose(
     withApollo,

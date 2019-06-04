@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components';
-import { lightGray, scale, softBlack } from '../../../style/utilities';
+import { lightGray, scale, softBlack, above } from '../../../style/utilities';
 import { Dispatch, AnyAction } from 'redux';
 import { handleRatingChange } from '../../../actions/voteActions';
 import { connect } from 'react-redux';
@@ -67,15 +67,40 @@ interface VotingNumberProps {
 const ColoredBarStyle = (current: number) => {
 
     return css`
-    width: ${1.375 + current * 1.75}rem;
+    width: ${1.375 + current * 1.375}rem;
+    
     background: ${scale[current].linear};
+${above.custom(370)}{
+    width: ${1.375 + current * 1.5}rem;
+}
+${above.custom(421)}{
+    width: ${1.375 + current * 1.75}rem;
+}
+${above.lg}{
+    width: ${1.375 + current * 1.5}rem;
+}
+${above.custom(1370)}{
+    width: ${1.375 + current * 1.75}rem;
+}
     `
 }
 
 const Wrapper = styled.div`
 height: 1.375rem;
-width: 1.75rem;
+width: 1.375rem;
 display: table-cell;
+${above.custom(370)}{
+    width: 1.5rem;
+}
+${above.custom(421)}{
+    width: 1.75rem;
+}
+${above.lg}{
+    width: 1.5rem;
+}
+${above.custom(1370)}{
+    width: 1.75rem;
+}
 `
 
 const VotingNumber = styled.span<VotingNumberProps>`
