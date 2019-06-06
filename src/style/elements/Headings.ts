@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel, softBlack } from '../utilities';
+import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel, softBlack, lightRed, smallParagraph } from '../utilities';
 
 export const Heading = styled.h1`
 color: ${blackBlue};
@@ -52,4 +52,9 @@ export const InputLabel = styled.h5`
 color: ${softBlack}
 ${smallerLabel}
 
+`
+
+export const ErrorMessage = styled.p`
+color: ${lightRed};
+${smallParagraph};
 `

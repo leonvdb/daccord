@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classname from 'classnames';
-import { InputLabel } from '../../style/elements';
+import { InputLabel, ErrorMessage } from '../../style/elements';
 import styled from 'styled-components';
 import { mediumGray } from '../../style/utilities';
 
@@ -40,7 +40,7 @@ export const MinimalTextInputGroup = ({
                 placeholder={placeholder}
                 onChange={onChange}
             />
-            {error && <div data-testid="error-message" >{error}</div>}
+            {error && <ErrorMessage data-testid="error-message">{error}</ErrorMessage>}
         </div>
     );
 };
