@@ -34,6 +34,10 @@ export const largeLabel = css`
 font-size: 3rem;
 font-weight: normal;
 `
+export const largeStrongLabel = css`
+font-size: 3rem;
+font-weight: ${fontWeights.medium};
+`
 export const mediumLabel = css`
 font-size: 1.5rem;
 font-weight: ${fontWeights.medium};

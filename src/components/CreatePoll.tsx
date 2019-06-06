@@ -9,6 +9,8 @@ import { WithNamespaces, withNamespaces } from 'react-i18next';
 import validateEmail from '../utilities/validateEmail';
 import { Mutation } from 'react-apollo';
 import { CREATE_POLL } from '../graphql/cudPoll';
+import Close from '../images/close.svg';
+import { LargeStrongLabel } from '../style/elements';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces { }
 
@@ -81,16 +83,16 @@ const CreatePoll = (props: Props) => {
 
     const { t } = props
     return (
-        <div data-testid="create-poll-form" className="container">
+        <div data-testid="create-poll-form">
             <div>
                 <button data-testid="close-button" className="nav-link float-right" type="button" // tslint:disable-next-line jsx-no-lambda
                     onClick={() => {
                         props.history.goBack();
                     }}>
-                    <div>Close X</div>
+                    Close <img src={Close} />
                 </button>
             </div>
-            <h1 className="display-5 text-center my-4">{t("Create a new poll")}</h1>
+            <LargeStrongLabel>{t("Creating a new poll")}</LargeStrongLabel>
             <Mutation mutation={CREATE_POLL}
                 update={// tslint:disable-next-line jsx-no-lambda
                     (cache, { data: { createPoll } }) => {
@@ -109,7 +111,6 @@ const CreatePoll = (props: Props) => {
                             (e) => { onSubmit(e, CREATE_POLL) }}>
                             {counter === 1 && <div>
                                 <TextInputGroup
-                                    classNames="w-50"
                                     testId="title-input"
                                     name="title"
                                     placeholder="Enter Title"
@@ -118,7 +119,6 @@ const CreatePoll = (props: Props) => {
                                     error={errors.title}
                                 />
                                 <TextInputGroup
-                                    classNames="w-50"
                                     testId="description-input"
                                     name="description"
                                     placeholder="Enter Description"
@@ -130,7 +130,6 @@ const CreatePoll = (props: Props) => {
                             }
                             {counter === 2 && <div>
                                 <TextInputGroup
-                                    classNames="w-50"
                                     testId="email-input"
                                     name="email"
                                     placeholder="Enter Email"
@@ -139,7 +138,6 @@ const CreatePoll = (props: Props) => {
                                     error={errors.email}
                                 />
                                 <TextInputGroup
-                                    classNames="w-50"
                                     testId="name-input"
                                     name="name"
                                     placeholder="Enter Name"
