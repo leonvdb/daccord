@@ -1,7 +1,7 @@
 //This module is only for testing
 
 import React, { useState } from 'react'
-import TextInputGroup from './TextInputGroup';
+import { TextInputGroup } from './TextInputGroup';
 
 interface Props {
     error?: string

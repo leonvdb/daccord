@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { setAuthTokenAndUser } from '../actions/authActions';
 import { setPseudonym } from '../actions/userActions';
-import TextInputGroup from './layout/TextInputGroup';
+import { TextInputGroup } from './layout/TextInputGroup';
 import { IUser } from '../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { WithNamespaces, withNamespaces } from 'react-i18next';

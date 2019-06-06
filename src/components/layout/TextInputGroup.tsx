@@ -17,7 +17,7 @@ interface Props {
     testId: string
 }
 
-const TextInputGroup = ({
+export const MinimalTextInputGroup = ({
     name,
     value,
     error,
@@ -45,7 +45,8 @@ const TextInputGroup = ({
     );
 };
 
-export default styled(TextInputGroup)`
+
+export const TextInputGroup = styled(MinimalTextInputGroup)`
 margin-bottom: 1rem;
 ${InputLabel}{
     margin-bottom: 4px;
@@ -58,3 +59,4 @@ input{
     padding: .875rem;
 }
 `;
+

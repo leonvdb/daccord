@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IUser, IPollQuery } from '../../interfaces';
-import TextInputGroup from '../layout/TextInputGroup';
+import { TextInputGroup } from '../layout/TextInputGroup';
 import validateEmail from '../../utilities/validateEmail';
 import { Dispatch } from 'redux';
 import { CREATE_PARTICIPANT } from '../../graphql/cudParticipant';
