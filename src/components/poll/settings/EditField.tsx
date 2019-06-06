@@ -1,6 +1,6 @@
 import React from 'react'
 import { Mutation, MutationUpdaterFn } from "react-apollo";
-import TextInputGroup from '../../layout/TextInputGroup';
+import TextInputGroup from '../../layout/MinimalTextInputGroup';
 import { IPollQuery } from '../../../interfaces';
 import { Label, GridWrapper } from '../../../style/elements';
 import styled from 'styled-components';

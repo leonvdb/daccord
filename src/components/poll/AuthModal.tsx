@@ -97,7 +97,6 @@ const AuthModal = (props: Props) => {
                                     onChange={// tslint:disable-next-line jsx-no-lambda
                                         (e: React.ChangeEvent<any>) => { setName(e.target.value) }}
                                     error={errors.name}
-                                    classNames="w-75"
                                 />
                                 <TextInputGroup
                                     testId="email-input"
@@ -107,7 +106,6 @@ const AuthModal = (props: Props) => {
                                     onChange={// tslint:disable-next-line jsx-no-lambda
                                         (e: React.ChangeEvent<any>) => { setEmail(e.target.value) }}
                                     error={errors.email}
-                                    classNames="w-75 mb-5"
                                 />
                                 <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit" data-testid="submit-button">Continue</button>
                             </form>

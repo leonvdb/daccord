@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel } from '../utilities';
+import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel, softBlack } from '../utilities';
 
 export const Heading = styled.h1`
 color: ${blackBlue};
@@ -46,4 +46,10 @@ export const ButtonLabel = styled.h5`
 margin-bottom: 0;
 display: inline-block;
 ${buttonLabel}
+`
+
+export const InputLabel = styled.h5`
+color: ${softBlack}
+${smallerLabel}
+
 `
