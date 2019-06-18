@@ -13,6 +13,7 @@ const TextInputGroupParent = (props: Props) => {
     return (
         <div>
             <TextInputGroup
+                label="test"
                 testId="test-input"
                 name="test"
                 value={test}

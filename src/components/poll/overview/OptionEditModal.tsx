@@ -81,7 +81,7 @@ class OptionReadModal extends React.Component<Props> {
                                 <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
                                     (e) => { this.onSubmit(e, UPDATE_OPTION) }}>
                                     <label htmlFor={title}>Title</label>
-                                    <TextInputGroup testId="title-input" name='title' value={title} placeholder='Enter Title' onChange={this.onChange} />
+                                    <TextInputGroup label="Title" testId="title-input" name='title' value={title} placeholder='Enter Title' onChange={this.onChange} />
                                     <label htmlFor={description}>Description</label>
                                     <textarea className="form-control" name="description" id="description" rows={3} placeholder="Enter Description"
                                         value={description}

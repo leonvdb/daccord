@@ -113,6 +113,7 @@ class AddOption extends React.Component<Props, State> {
                                     <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
                                         (e) => { this.onSubmit(e, createOption) }}>
                                         <TextInputGroup
+                                            label="Title"
                                             testId="title-input"
                                             name="title"
                                             placeholder="Enter Title"

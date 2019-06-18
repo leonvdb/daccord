@@ -38,6 +38,7 @@ const EditField = (props: Props) => {
                     return <form name={props.name} data-testid={`edit-${props.name}-form`} onSubmit={ // tslint:disable-next-line jsx-no-lambda
                         (e) => { props.onSubmit(e, MUTATION) }}>
                         <MinimalTextInputGroup
+                            label={props.label}
                             value={props.value}
                             onChange={// tslint:disable-next-line jsx-no-lambda
                                 (e: React.ChangeEvent<any>) => { props.setValue(e.target.value) }}
