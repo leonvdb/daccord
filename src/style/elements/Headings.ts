@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel, softBlack, lightRed, smallParagraph, largeStrongLabel } from '../utilities';
+import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel, softBlack, lightRed, smallParagraph, largeStrongLabel, largeSecondaryLabel, lightishGray } from '../utilities';
 
 export const Heading = styled.h1`
 color: ${blackBlue};
@@ -27,10 +27,20 @@ color: #000;
 ${largeStrongLabel}
 `;
 
+export const LargeSecondaryLabel = styled.h1`
+color: ${blackBlue}
+${largeSecondaryLabel}
+`
+
 export const MediumLabel = styled.h3`
 color: ${black};
 ${mediumLabel}
 `;
+
+export const TernaryLabel = styled.h3`
+color: ${lightishGray}
+${headingTwo}
+`
 
 export const Label = styled.h5`
 color: #000000
