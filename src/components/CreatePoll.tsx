@@ -13,6 +13,7 @@ import Close from '../images/close.svg';
 import { LargeStrongLabel, LargeSecondaryLabel, TernaryLabel, SecondaryButton, PrimaryButton } from '../style/elements';
 import { Flex, Box } from '@rebass/grid';
 import styled from 'styled-components';
+import Step from './poll/layout/Step';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces {
     className?: string
@@ -184,9 +185,10 @@ const CreatePoll = (props: Props) => {
                     </Mutation>
                 </InputArea>
                 <Box width={[1 / 2]}>
-                    <span className="mx-auto mt-5 d-block text-center">
-                        {counter}/{counterLimit}
-                    </span>
+                    <div>
+                        <Step count="1" focused={false} active={false}>Number one </Step>
+                        <Step count="2" focused={true} active={true}>Number Two</Step>
+                    </div>
                 </Box>
             </Flex>
         </div>
