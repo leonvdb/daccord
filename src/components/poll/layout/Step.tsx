@@ -15,15 +15,15 @@ const Step = ({ className, count, focused, children, active }: IProps) => {
     return (
         <div className={className}>
             <Counter count={count} focused={focused} active={active} />
-            <span className={active ? '' : 'inactive'}>{children}</span>
+            <span className={focused ? '' : 'unfocused'}>{children}</span>
         </div>
     )
 }
 
 
 export default styled(Step)`
-.inactive{
-    color: '#D1D1D1'
+.unfocused{
+    color: #D1D1D1
 }
 span{
     ${smallerLabel}

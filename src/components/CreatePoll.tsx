@@ -14,6 +14,7 @@ import { LargeStrongLabel, LargeSecondaryLabel, TernaryLabel, SecondaryButton, P
 import { Flex, Box } from '@rebass/grid';
 import styled from 'styled-components';
 import Step from './poll/layout/Step';
+import { mediumGray } from '../style/utilities';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces {
     className?: string
@@ -185,15 +186,28 @@ const CreatePoll = (props: Props) => {
                     </Mutation>
                 </InputArea>
                 <Box width={[1 / 2]}>
-                    <div>
-                        <Step count="1" focused={false} active={false}>Number one </Step>
-                        <Step count="2" focused={true} active={true}>Number Two</Step>
-                    </div>
+                    <ProgressBar>
+                        <Step count="1" focused={counter === 1} active={counter >= 1}>General Information</Step>
+                        <Bar />
+                        <Step count="2" focused={counter === 2} active={counter >= 2}>Information about you</Step>
+                    </ProgressBar>
                 </Box>
             </Flex>
         </div>
     )
 };
+
+const ProgressBar = styled.div`
+    margin-top: 32.25rem;
+    margin-left: .875rem;
+`
+
+const Bar = styled.div`
+height: 3.125rem;
+width: 2px;
+background-color: ${mediumGray};
+margin-left: 17px;
+`;
 
 const CloseButton = styled.div`
 position: absolute;
