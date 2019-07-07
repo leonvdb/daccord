@@ -14,7 +14,7 @@ import { LargeStrongLabel, LargeSecondaryLabel, TernaryLabel, SecondaryButton, P
 import { Flex, Box } from '@rebass/grid';
 import styled, { css } from 'styled-components';
 import Step from './poll/layout/Step';
-import { mediumGray, primaryStrong } from '../style/utilities';
+import { mediumGray, primaryStrong, smallerLabel } from '../style/utilities';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces {
     className?: string
@@ -221,6 +221,12 @@ ${({ progress, overlay }) => overlay ? css`
 const CloseButton = styled.div`
 position: absolute;
 right: 0;
+padding: 2rem;
+button{
+    border: none;
+    background-color: inherit;
+    ${smallerLabel}
+}
 `
 
 const InputArea = styled(Box)`
