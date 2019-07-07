@@ -12,9 +12,9 @@ import { CREATE_POLL } from '../graphql/cudPoll';
 import Close from '../images/close.svg';
 import { LargeStrongLabel, LargeSecondaryLabel, TernaryLabel, SecondaryButton, PrimaryButton } from '../style/elements';
 import { Flex, Box } from '@rebass/grid';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Step from './poll/layout/Step';
-import { mediumGray } from '../style/utilities';
+import { mediumGray, primaryStrong } from '../style/utilities';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces {
     className?: string
@@ -188,7 +188,8 @@ const CreatePoll = (props: Props) => {
                 <Box width={[1 / 2]}>
                     <ProgressBar>
                         <Step count="1" focused={counter === 1} active={counter >= 1}>General Information</Step>
-                        <Bar />
+                        <Bar overlay={true} progress={counter === 1 ? 1 / 2 : 1} />
+                        <Bar overlay={false} progress={counter === 1 ? 1 / 2 : 1} />
                         <Step count="2" focused={counter === 2} active={counter >= 2}>Information about you</Step>
                     </ProgressBar>
                 </Box>
@@ -202,11 +203,19 @@ const ProgressBar = styled.div`
     margin-left: .875rem;
 `
 
-const Bar = styled.div`
+const Bar = styled.div<{ progress: number, overlay: boolean }>`
+${({ progress }) => progress === 1 / 2 ? css`margin-bottom: -4px;` : css`margin-top: -4px;`}
 height: 3.125rem;
 width: 2px;
 background-color: ${mediumGray};
 margin-left: 17px;
+transition: height ease-in-out .4s;
+${({ progress, overlay }) => overlay ? css`
+    position: absolute;
+    background-color: ${primaryStrong};
+    height: ${progress * 3.125}rem;
+`: ''
+    }
 `;
 
 const CloseButton = styled.div`
