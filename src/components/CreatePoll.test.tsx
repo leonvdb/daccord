@@ -40,6 +40,20 @@ const createPollMock = [
     },
 ];
 
+beforeAll(() => {
+    window.matchMedia = jest.fn().mockImplementation(query => {
+        return {
+            matches: false,
+            media: query,
+            onchange: null,
+            addListener: jest.fn(),
+            removeListener: jest.fn(),
+        };
+    });
+})
+
+
+
 const TestedComponent = () => (<Router history={history}>
     <MockedProvider mocks={createPollMock} addTypename={false}>
         <Provider store={store}>
