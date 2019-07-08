@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import TextInputGroup from '../../layout/TextInputGroup';
+import { TextInputGroup } from '../../layout/TextInputGroup';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { Store } from '../../../reducers';
 import { Mutation } from "react-apollo";
@@ -113,6 +113,7 @@ class AddOption extends React.Component<Props, State> {
                                     <form onSubmit={ // tslint:disable-next-line jsx-no-lambda
                                         (e) => { this.onSubmit(e, createOption) }}>
                                         <TextInputGroup
+                                            label="Title"
                                             testId="title-input"
                                             name="title"
                                             placeholder="Enter Title"

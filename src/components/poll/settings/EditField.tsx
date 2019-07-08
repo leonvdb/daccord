@@ -1,6 +1,6 @@
 import React from 'react'
 import { Mutation, MutationUpdaterFn } from "react-apollo";
-import TextInputGroup from '../../layout/TextInputGroup';
+import { MinimalTextInputGroup } from '../../layout/TextInputGroup';
 import { IPollQuery } from '../../../interfaces';
 import { Label, GridWrapper } from '../../../style/elements';
 import styled from 'styled-components';
@@ -37,7 +37,8 @@ const EditField = (props: Props) => {
                     if (error) return <div>Error :(</div>
                     return <form name={props.name} data-testid={`edit-${props.name}-form`} onSubmit={ // tslint:disable-next-line jsx-no-lambda
                         (e) => { props.onSubmit(e, MUTATION) }}>
-                        <TextInputGroup
+                        <MinimalTextInputGroup
+                            label={props.label}
                             value={props.value}
                             onChange={// tslint:disable-next-line jsx-no-lambda
                                 (e: React.ChangeEvent<any>) => { props.setValue(e.target.value) }}

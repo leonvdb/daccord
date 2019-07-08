@@ -38,8 +38,13 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
     >
       <form>
         <div
-          class="w-75"
+          class=" sc-dxgOiQ hvxlmU"
         >
+          <h5
+            class="sc-cSHVUG bOOSea"
+          >
+            Name
+          </h5>
           <input
             class=""
             data-testid="name-input"
@@ -50,8 +55,13 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
           />
         </div>
         <div
-          class="w-75 mb-5"
+          class=" sc-dxgOiQ hvxlmU"
         >
+          <h5
+            class="sc-cSHVUG bOOSea"
+          >
+            Email
+          </h5>
           <input
             class=""
             data-testid="email-input"

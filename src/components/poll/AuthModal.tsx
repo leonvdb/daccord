@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IUser, IPollQuery } from '../../interfaces';
-import TextInputGroup from '../layout/TextInputGroup';
+import { TextInputGroup } from '../layout/TextInputGroup';
 import validateEmail from '../../utilities/validateEmail';
 import { Dispatch } from 'redux';
 import { CREATE_PARTICIPANT } from '../../graphql/cudParticipant';
@@ -90,6 +90,7 @@ const AuthModal = (props: Props) => {
                             <form onSubmit={// tslint:disable-next-line jsx-no-lambda
                                 (e) => { onSubmit(e, CREATE_PARTICIPANT) }}>
                                 <TextInputGroup
+                                    label="Name"
                                     testId="name-input"
                                     name="name"
                                     placeholder="Enter Name"
@@ -97,9 +98,9 @@ const AuthModal = (props: Props) => {
                                     onChange={// tslint:disable-next-line jsx-no-lambda
                                         (e: React.ChangeEvent<any>) => { setName(e.target.value) }}
                                     error={errors.name}
-                                    classNames="w-75"
                                 />
                                 <TextInputGroup
+                                    label="Email"
                                     testId="email-input"
                                     name="email"
                                     placeholder="Enter Email"
@@ -107,7 +108,6 @@ const AuthModal = (props: Props) => {
                                     onChange={// tslint:disable-next-line jsx-no-lambda
                                         (e: React.ChangeEvent<any>) => { setEmail(e.target.value) }}
                                     error={errors.email}
-                                    classNames="w-75 mb-5"
                                 />
                                 <button className="btn btn-secondary mx-auto btn-block w-50 mt-5" type="submit" data-testid="submit-button">Continue</button>
                             </form>

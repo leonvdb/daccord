@@ -1,5 +1,8 @@
 import * as React from 'react';
 import classname from 'classnames';
+import { InputLabel, ErrorMessage } from '../../style/elements';
+import styled from 'styled-components';
+import { mediumGray } from '../../style/utilities';
 
 
 interface Props {
@@ -10,10 +13,12 @@ interface Props {
     onChange: (event: React.ChangeEvent) => void,
     type?: string,
     classNames?: string,
-    testId: string
+    className?: string,
+    testId: string,
+    label: string
 }
 
-const TextInputGroup = ({
+export const MinimalTextInputGroup = ({
     name,
     value,
     error,
@@ -21,10 +26,13 @@ const TextInputGroup = ({
     onChange,
     type = "text",
     classNames,
-    testId
+    className,
+    testId,
+    label
 }: Props) => {
     return (
-        <div className={`${classNames ? classNames : ''}`} >
+        <div className={`${classNames ? classNames : ''} ${className}`} >
+            <InputLabel>{label}</InputLabel>
             <input
                 className={classname({ 'is-invalid': error })}
                 data-testid={testId}
@@ -34,9 +42,23 @@ const TextInputGroup = ({
                 placeholder={placeholder}
                 onChange={onChange}
             />
-            {error && <div data-testid="error-message" className="invalid-feedback">{error}</div>}
+            {error && <ErrorMessage data-testid="error-message">{error}</ErrorMessage>}
         </div>
     );
 };
 
-export default TextInputGroup
+
+export const TextInputGroup = styled(MinimalTextInputGroup)`
+margin-bottom: 1rem;
+${InputLabel}{
+    margin-bottom: 4px;
+}
+input{
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 4px;
+    border: 1px solid ${mediumGray};
+    padding: .875rem;
+}
+`;
+
