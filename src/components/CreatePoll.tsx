@@ -14,7 +14,8 @@ import { LargeStrongLabel, LargeSecondaryLabel, TernaryLabel, SecondaryButton, P
 import { Flex, Box } from '@rebass/grid';
 import styled, { css } from 'styled-components';
 import Step from './poll/layout/Step';
-import { mediumGray, primaryStrong, smallerLabel } from '../style/utilities';
+import { mediumGray, primaryStrong, smallerLabel, above, below } from '../style/utilities';
+import Media from 'react-media';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces {
     className?: string
@@ -99,7 +100,7 @@ const CreatePoll = (props: Props) => {
                         Close <img src={Close} />
                     </button>
                 </CloseButton>
-                <InputArea width={[1 / 2]}>
+                <InputArea width={[1, 1, 1, 1 / 2]}>
                     <LargeStrongLabel>{t("Creating a new poll")}</LargeStrongLabel>
                     <TernaryLabel>Step {counter}</TernaryLabel>
                     <LargeSecondaryLabel>Information about you</LargeSecondaryLabel>
@@ -185,14 +186,17 @@ const CreatePoll = (props: Props) => {
                         }}
                     </Mutation>
                 </InputArea>
-                <Box width={[1 / 2]}>
-                    <ProgressBar>
-                        <Step count="1" focused={counter === 1} active={counter >= 1}>General Information</Step>
-                        <Bar overlay={true} progress={counter === 1 ? 1 / 2 : 1} />
-                        <Bar overlay={false} progress={counter === 1 ? 1 / 2 : 1} />
-                        <Step count="2" focused={counter === 2} active={counter >= 2}>Information about you</Step>
-                    </ProgressBar>
-                </Box>
+                <Media query={above.lg.replace('@media ', '')}>
+                    {matches => matches && <Box width={[1 / 2]}>
+                        <ProgressBar>
+                            <Step count="1" focused={counter === 1} active={counter >= 1}>General Information</Step>
+                            <Bar overlay={true} progress={counter === 1 ? 1 / 2 : 1} />
+                            <Bar overlay={false} progress={counter === 1 ? 1 / 2 : 1} />
+                            <Step count="2" focused={counter === 2} active={counter >= 2}>Information about you</Step>
+                        </ProgressBar>
+                    </Box>
+                    }
+                </Media>
             </Flex>
         </div>
     )
@@ -200,7 +204,10 @@ const CreatePoll = (props: Props) => {
 
 const ProgressBar = styled.div`
     margin-top: 32.25rem;
+    margin-left: 1.875rem;
+    ${above.custom(1300)}{
     margin-left: .875rem;
+}
 `
 
 const Bar = styled.div<{ progress: number, overlay: boolean }>`
@@ -230,8 +237,20 @@ button{
 `
 
 const InputArea = styled(Box)`
+padding: 0 1.5rem;
+margin-top: 5.5rem;
+${below.custom(1050)}{
+    ${LargeStrongLabel}{
+        font-size: 2.8rem;
+    }
+}
+${above.sm}{
 margin-top: 15.5rem;
+padding: 0 3rem;
+}
+${above.custom(1300)}{
 padding: 0 6.75rem;
+}
 `;
 
 interface PropsFromDispatch {
