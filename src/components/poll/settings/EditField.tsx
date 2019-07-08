@@ -71,6 +71,9 @@ ${Label}{
 }
 form{
     display: inline-block;
+    h5{
+        display: none;
+    }
     input{
         width: auto; 
     }
