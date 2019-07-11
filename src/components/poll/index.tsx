@@ -20,9 +20,10 @@ import Settings from './settings';
 import SideNav from './layout/SideNav';
 import Header from './layout/Header';
 import Media from 'react-media';
-import { above, primary } from '../../style/utilities';
+import { above } from '../../style/utilities';
 import { Flex, Box } from '@rebass/grid';
 import styled from 'styled-components';
+import MobileNav from './layout/MobileNav';
 
 
 interface Props extends RouteComponentProps<any>, PropsFromState, PropsFromDispatch {
@@ -127,14 +128,6 @@ class Poll extends React.Component<Props, { mobileNavOpen: boolean }> {
 
 }
 
-const MobileNav = styled.div<{ isOpen: boolean }>`
-position: fixed;
-background: ${primary};
-width: 0;
-transition: width .4s ease-in-out;
-height: 100vh;
-${({ isOpen }) => isOpen && 'width: 18.25rem;'}
-`
 
 const Main = styled(Flex) <{ mobileNavOpen: boolean }>`
 height: 100vh;
