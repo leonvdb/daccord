@@ -90,7 +90,7 @@ ${above.lg}{
 }
 box-shadow: 0px 2px 4px rgba(104, 104, 104, 0.25);
 background-color: #FFF;
-z-index: 1;
+z-index: 10;
 ${Heading}{
     margin: 0 1rem 0 0;
 }
