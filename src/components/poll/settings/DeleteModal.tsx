@@ -8,6 +8,7 @@ import { DELETE_POLL } from '../../../graphql/cudPoll'
 import DefaultClient from 'apollo-boost';
 import { SettingsButton, Label } from '../../../style/elements';
 import { Box, Flex } from '@rebass/grid';
+import styled from 'styled-components';
 
 interface Props extends RouteComponentProps {
     poll: IPollQuery
@@ -30,14 +31,14 @@ class DeleteModal extends React.Component<Props> {
 
         return (
             <div data-testid="delete-modal">
-                <Flex flexWrap='wrap'>
+                <StyledFlex flexWrap='wrap'>
                     <Box width={[1, 1, 1 / 8]}>
                         <Label>Delete Poll</Label>
                     </Box>
                     <Box width={[1, 1, 7 / 8]}>
                         <SettingsButton data-testid="delete-button" onClick={this.toggle}>Permanently delete this poll</SettingsButton>
                     </Box>
-                </Flex>
+                </StyledFlex>
                 <Modal placement="right" isOpen={modalOpen} target="Modal" toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Delete Poll</ModalHeader>
                     <ModalBody>
@@ -65,5 +66,8 @@ class DeleteModal extends React.Component<Props> {
     }
 }
 
+const StyledFlex = styled(Flex)`
+margin-bottom: 1rem;
+`
 
 export default compose(withRouter, withApollo)(DeleteModal);

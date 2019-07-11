@@ -157,14 +157,14 @@ const Settings = (props: Props) => {
             <div>
                 <Divider />
                 <MediumLabel>General</MediumLabel>
-                <Flex flexWrap='wrap'>
+                <StyledFlex flexWrap='wrap'>
                     <Box width={[1, 1, 1 / 8]}>
                         <Label>Language</Label>
                     </Box>
                     <Box width={[1, 1, 7 / 8]}>
                         <LanguageDropdown />
                     </Box>
-                </Flex>
+                </StyledFlex>
             </div>
         </Container>
     )
@@ -180,6 +180,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch =>
     }
 
 }
+
+const StyledFlex = styled(Flex)`
+padding-bottom: 2rem; 
+`
 
 const styledSettings = styled(Settings)`
 ${Divider}{
