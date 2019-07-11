@@ -13,6 +13,7 @@ import { Container, LargeLabel, MediumLabel, GridWrapper, Label, Divider } from 
 import styled from 'styled-components';
 import { mediumGray } from '../../../style/utilities';
 import LanguageDropdown from '../../layout/LanguageDropdown';
+import { Box, Flex } from '@rebass/grid';
 
 interface Props extends PropsFromDispatch {
     poll: IPollQuery
@@ -156,10 +157,14 @@ const Settings = (props: Props) => {
             <div>
                 <Divider />
                 <MediumLabel>General</MediumLabel>
-                <GridWrapper gridTemplateColumns="12.5% 87.5%" className={props.className}>
-                    <Label>Language</Label>
-                    <LanguageDropdown />
-                </GridWrapper>
+                <StyledFlex flexWrap='wrap'>
+                    <Box width={[1, 1, 1 / 8]}>
+                        <Label>Language</Label>
+                    </Box>
+                    <Box width={[1, 1, 7 / 8]}>
+                        <LanguageDropdown />
+                    </Box>
+                </StyledFlex>
             </div>
         </Container>
     )
@@ -175,6 +180,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): PropsFromDispatch =>
     }
 
 }
+
+const StyledFlex = styled(Flex)`
+padding-bottom: 2rem; 
+`
 
 const styledSettings = styled(Settings)`
 ${Divider}{
