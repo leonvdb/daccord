@@ -5,6 +5,7 @@ import { UnstyledLink, ButtonLabel } from '../../../style/elements';
 import InviteIcon from '../../../images/invite-icon-white.svg'
 import { Box, Flex } from '@rebass/grid';
 import UserDropdownMenu from './UserDropdownMenu';
+import NavigationIcon from './NavigationIcon';
 
 interface IProps {
     className?: string
@@ -13,6 +14,7 @@ interface IProps {
 }
 
 const MobileNav = (props: IProps) => {
+    const location = window.location.href.match(/\/poll\/[1-9A-Za-z]*\//g)
     return (
         <div className={props.className} >
             <Logo to={'/'}>Logo</Logo>
@@ -25,6 +27,7 @@ const MobileNav = (props: IProps) => {
                         <StyledUserDropdownMenu pseudonym={props.pseudonym} />
                     </Box>
                 </StyledFlex>
+                <NavigationIcon iconName="settings" to={`${location ? location[0] : ""}settings`} active={true} />
             </FadeIn>
         </div>
     )
