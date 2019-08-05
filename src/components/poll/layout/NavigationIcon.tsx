@@ -15,6 +15,7 @@ interface Props {
     to: string
     active: boolean
     mobile?: boolean
+    onClick?: () => void;
 }
 
 const NavigationIcon = (props: Props) => {
@@ -26,9 +27,9 @@ const NavigationIcon = (props: Props) => {
     const src = icons[props.iconName]
     if (props.mobile) {
         return (
-            <Link to={props.to}>
+            <Link to={props.to} onClick={props.onClick}>
                 <Wrapper active={props.active} mobile={true}>
-                    <Flex flexWrap="wrap">
+                    <Flex flexWrap="wrap" alignItems="center" className="fullHeight">
                         <Box width={2 / 7}>
                             <SVG src={src} />
                         </Box>
@@ -61,6 +62,18 @@ svg{
 ${({ mobile, active }) => mobile && css`
     display: inline-block;
     text-align: left;
+    height: 3rem;
+    background-color: rgba(255,255,255, 0);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0);
+    transition: all ease-in-out .2s;
+    transition-property: background-color, box-shadow;
+    ${active && css`
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.19);
+    `}
+    .fullHeight{
+        height: 100%;
+    }
     h5{
         margin: .3rem 0 0 .5rem;
         color: ${active ? '#5D5ACF' : 'white'}  

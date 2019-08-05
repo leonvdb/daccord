@@ -103,7 +103,7 @@ class Poll extends React.Component<Props, { mobileNavOpen: boolean }> {
             }
         }
         return (<div className={this.props.className}>
-            <MobileNav isOpen={this.state.mobileNavOpen} pseudonym={this.props.pseudonym} />
+            <MobileNav isOpen={this.state.mobileNavOpen} pseudonym={this.props.pseudonym} toggleMobileNav={toggleMobileNav} />
             <Main mobileNavOpen={this.state.mobileNavOpen} onClick={this.state.mobileNavOpen ? toggleMobileNav : undefined}>
                 <Media query={above.lg.replace('@media ', '')}>
                     {matches => {

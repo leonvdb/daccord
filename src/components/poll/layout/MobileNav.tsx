@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { primary, veryLarge } from '../../../style/utilities';
 import { UnstyledLink, ButtonLabel } from '../../../style/elements';
@@ -6,15 +6,29 @@ import InviteIcon from '../../../images/invite-icon-white.svg'
 import { Box, Flex } from '@rebass/grid';
 import UserDropdownMenu from './UserDropdownMenu';
 import NavigationIcon from './NavigationIcon';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-interface IProps {
+interface IProps extends RouteComponentProps<any> {
     className?: string
     isOpen: boolean
     pseudonym: string;
+    toggleMobileNav: () => void;
 }
 
+
 const MobileNav = (props: IProps) => {
-    const location = window.location.href.match(/\/poll\/[1-9A-Za-z]*/g)
+    const pollUrl = props.location.pathname.match(/\/poll\/[1-9A-Za-z]*/g)
+    const [focus, setFocus] = useState("home")
+
+    useEffect(() => {
+        if (location.pathname.includes('results')) {
+            setFocus('results');
+        } else if (location.pathname.includes('settings')) {
+            setFocus('settings');
+        } else {
+            setFocus('home');
+        }
+    })
     return (
         <div className={props.className} >
             <Logo to={'/'}>Logo</Logo>
@@ -28,9 +42,9 @@ const MobileNav = (props: IProps) => {
                     </Box>
                 </StyledFlex>
                 <Navigation>
-                    <NavigationIcon iconName="home" to={`${location ? location[0] : ""}/`} active={false} mobile={true} />
-                    <NavigationIcon iconName="results" to={`${location ? location[0] : ""}/results`} active={false} mobile={true} />
-                    <NavigationIcon iconName="settings" to={`${location ? location[0] : ""}/settings`} active={false} mobile={true} />
+                    <NavigationIcon iconName="home" to={`${pollUrl ? pollUrl[0] : ""}/`} active={focus === "home"} mobile={true} onClick={props.toggleMobileNav} />
+                    <NavigationIcon iconName="results" to={`${pollUrl ? pollUrl[0] : ""}/results`} active={focus === "results"} mobile={true} onClick={props.toggleMobileNav} />
+                    <NavigationIcon iconName="settings" to={`${pollUrl ? pollUrl[0] : ""}/settings`} active={focus === "settings"} mobile={true} onClick={props.toggleMobileNav} />
                 </Navigation>
             </FadeIn>
         </div>
@@ -65,7 +79,7 @@ ${({ isOpen }) => isOpen && 'opacity:1'}
 transition: opacity ease-in-out .5s;
 `
 
-export default styled(MobileNav) <{ isOpen: boolean }>`
+const StyledMobileNav = styled(MobileNav) <{ isOpen: boolean }>`
 position: fixed;
 text-align: center;
 background: ${primary};
@@ -74,3 +88,5 @@ transition: width .4s ease-in-out;
 height: 100vh;
 ${({ isOpen }) => isOpen && 'width: 18.25rem;'}
 `
+
+export default withRouter(StyledMobileNav);
