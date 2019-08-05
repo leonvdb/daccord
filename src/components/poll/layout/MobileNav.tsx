@@ -27,11 +27,19 @@ const MobileNav = (props: IProps) => {
                         <StyledUserDropdownMenu pseudonym={props.pseudonym} />
                     </Box>
                 </StyledFlex>
-                <NavigationIcon iconName="settings" to={`${location ? location[0] : ""}/settings`} active={true} />
+                <Navigation>
+                    <NavigationIcon iconName="home" to={`${location ? location[0] : ""}/`} active={false} mobile={true} />
+                    <NavigationIcon iconName="results" to={`${location ? location[0] : ""}/results`} active={false} mobile={true} />
+                    <NavigationIcon iconName="settings" to={`${location ? location[0] : ""}/settings`} active={false} mobile={true} />
+                </Navigation>
             </FadeIn>
         </div>
     )
 }
+
+const Navigation = styled.div`
+margin-top:2rem;
+`
 
 const Logo = styled(UnstyledLink)`
 ${veryLarge};
