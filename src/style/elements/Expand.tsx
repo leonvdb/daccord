@@ -11,7 +11,7 @@ const ExpandButton = (props: Props) => {
   const { clicked, onClick } = props
   return (
     <ExpandImage clicked={clicked} onClick={onClick} width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 1L7.28571 7L13 1" stroke="#6923FF" stroke-width="2" stroke-linecap="round" />
+      <path d="M1 1L7.28571 7L13 1" stroke="#6923FF" strokeWidth="2" strokeLinecap="round" />
     </ExpandImage>
   )
 }
