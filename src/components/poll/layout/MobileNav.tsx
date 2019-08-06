@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { primary, veryLarge } from '../../../style/utilities';
-import { UnstyledLink, ButtonLabel } from '../../../style/elements';
+import { UnstyledLink, ButtonLabel, SmallHeading } from '../../../style/elements';
 import InviteIcon from '../../../images/invite-icon-white.svg'
 import { Box, Flex } from '@rebass/grid';
 import UserDropdownMenu from './UserDropdownMenu';
 import NavigationIcon from './NavigationIcon';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
+import Plus from '../../../images/plus.svg'
 
 interface IProps extends RouteComponentProps<any> {
     className?: string
@@ -31,25 +33,45 @@ const MobileNav = (props: IProps) => {
     })
     return (
         <div className={props.className} >
-            <Logo to={'/'}>Logo</Logo>
-            <FadeIn isOpen={props.isOpen}>
-                <StyledFlex>
-                    <Box width={3 / 8}>
-                        <img src={InviteIcon} />
-                    </Box>
-                    <Box width={5 / 8}>
-                        <StyledUserDropdownMenu pseudonym={props.pseudonym} />
-                    </Box>
-                </StyledFlex>
-                <Navigation>
-                    <NavigationIcon iconName="home" to={`${pollUrl ? pollUrl[0] : ""}/`} active={focus === "home"} mobile={true} onClick={props.toggleMobileNav} />
-                    <NavigationIcon iconName="results" to={`${pollUrl ? pollUrl[0] : ""}/results`} active={focus === "results"} mobile={true} onClick={props.toggleMobileNav} />
-                    <NavigationIcon iconName="settings" to={`${pollUrl ? pollUrl[0] : ""}/settings`} active={focus === "settings"} mobile={true} onClick={props.toggleMobileNav} />
-                </Navigation>
-            </FadeIn>
+            {props.isOpen && <React.Fragment>
+                <Logo to={'/'}>Logo</Logo>
+                <FadeIn isOpen={props.isOpen}>
+                    <StyledFlex>
+                        <Box width={3 / 8}>
+                            <img src={InviteIcon} />
+                        </Box>
+                        <Box width={5 / 8}>
+                            <StyledUserDropdownMenu pseudonym={props.pseudonym} />
+                        </Box>
+                    </StyledFlex>
+                    <Navigation>
+                        <NavigationIcon iconName="home" to={`${pollUrl ? pollUrl[0] : ""}/`} active={focus === "home"} mobile={true} onClick={props.toggleMobileNav} />
+                        <NavigationIcon iconName="results" to={`${pollUrl ? pollUrl[0] : ""}/results`} active={focus === "results"} mobile={true} onClick={props.toggleMobileNav} />
+                        <NavigationIcon iconName="settings" to={`${pollUrl ? pollUrl[0] : ""}/settings`} active={focus === "settings"} mobile={true} onClick={props.toggleMobileNav} />
+                    </Navigation>
+
+                    <CreateButton to={'/create'}>
+                        <img src={Plus} alt="Create Poll" />
+                        <SmallHeading>Create a new Poll</SmallHeading>
+                    </CreateButton>
+                </FadeIn>
+            </React.Fragment>
+            }
         </div>
     )
 }
+
+const CreateButton = styled(Link)`
+position: absolute;
+left: 2rem;
+bottom: 1.5rem;
+h5{
+    display: inline-block;
+    color: white;
+    margin-left: 1.1875rem;
+
+}
+`
 
 const Navigation = styled.div`
 margin-top:2rem;
@@ -75,8 +97,15 @@ path{
 
 const FadeIn = styled.div<{ isOpen: boolean }>`
 opacity:0;
-${({ isOpen }) => isOpen && 'opacity:1'}
-transition: opacity ease-in-out .5s;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1
+    }
+}
+animation: fadeIn .3s ease-in-out .2s 1;
+animation-fill-mode: forwards;
 `
 
 const StyledMobileNav = styled(MobileNav) <{ isOpen: boolean }>`
