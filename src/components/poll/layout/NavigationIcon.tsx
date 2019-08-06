@@ -6,13 +6,16 @@ import Settings from '../../../images/settings.svg'
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { white } from '../../../style/utilities';
-import { TableCellWrapper } from '../../../style/elements';
+import { TableCellWrapper, SmallHeading } from '../../../style/elements';
+import { Box, Flex } from '@rebass/grid';
 
 
 interface Props {
     iconName: string
     to: string
     active: boolean
+    mobile?: boolean
+    onClick?: () => void;
 }
 
 const NavigationIcon = (props: Props) => {
@@ -22,7 +25,23 @@ const NavigationIcon = (props: Props) => {
         "settings": Settings
     }
     const src = icons[props.iconName]
-    return (
+    if (props.mobile) {
+        return (
+            <Link to={props.to} onClick={props.onClick}>
+                <Wrapper active={props.active} mobile={true}>
+                    <Flex flexWrap="wrap" alignItems="center" className="fullHeight">
+                        <Box width={2 / 7}>
+                            <SVG src={src} />
+                        </Box>
+                        <Box width={5 / 7}>
+                            <SmallHeading>{props.iconName[0].toUpperCase() + props.iconName.slice(1)}</SmallHeading>
+                        </Box>
+                    </Flex>
+                </Wrapper>
+            </Link>
+        )
+
+    } else return (
         <Link to={props.to}>
             <Wrapper active={props.active}>
                 <TableCellWrapper widthInPercent={100}>
@@ -33,13 +52,38 @@ const NavigationIcon = (props: Props) => {
     )
 }
 
-const Wrapper = styled.div<{ active: boolean }>`
+const Wrapper = styled.div<{ active: boolean, mobile?: boolean }>`
 width: 100%;
 height: 3.5rem;
 display: table;
 svg{
     height: 1.5rem;
 }
+${({ mobile, active }) => mobile && css`
+    display: inline-block;
+    text-align: left;
+    height: 3rem;
+    background-color: rgba(255,255,255, 0);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0);
+    transition: all ease-in-out .2s;
+    transition-property: background-color, box-shadow;
+    ${active && css`
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.19);
+    `}
+    .fullHeight{
+        height: 100%;
+    }
+    h5{
+        margin: .3rem 0 0 .5rem;
+        color: ${active ? '#5D5ACF' : 'white'}  
+    }
+    svg{
+        height: 1.25rem;
+        width: 1.25rem;
+        margin-left: 1.125rem;
+    }
+    `}
 path, circle, rect{
 ${({ active }) => active ? '' : css`stroke: ${white}`}
 transition: stroke .5s ease 0s

@@ -7,12 +7,10 @@ import { smallParagraph } from '../../../style/utilities';
 import SignOut from '../../../images/sign-out.svg';
 import logOut from '../../../utilities/logOut';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { IPollQuery } from '../../../interfaces';
 
 interface Props extends RouteComponentProps<any> {
     pseudonym: string
     className?: string
-    poll: IPollQuery
 }
 
 const UserDropdownMenu = (props: Props) => {
@@ -45,7 +43,6 @@ const UserDropdownMenu = (props: Props) => {
                 <DropdownElement onClick={// tslint:disable-next-line jsx-no-lambda
                     () => {
                         logOut()
-                        props.history.push(`/poll/${props.poll.refId}`)
                         window.location.reload();
                     }
                 }>Sign Out</DropdownElement> <img src={SignOut} height="14px" />

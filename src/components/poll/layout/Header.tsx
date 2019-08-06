@@ -46,7 +46,7 @@ const Header = ({ poll, pseudonym, className, toggleMobileNav }: Props) => {
                     </BoxWrapper>
                     <BoxWrapper width="auto">
                         <BoxEnd>
-                            <UserDropdownMenu pseudonym={pseudonym} poll={poll} />
+                            <UserDropdownMenu pseudonym={pseudonym} />
                         </BoxEnd>
                     </BoxWrapper>
                 </React.Fragment>
