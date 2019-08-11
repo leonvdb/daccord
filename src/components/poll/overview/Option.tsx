@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import { IOptionQuery } from '../../../interfaces';
 import OptionReadModal from './OptionReadModal';
 import OptionEditModal from './OptionEditModal';
-import { HeadingTwo } from '../../../style/elements';
+import { HeadingTwo, Label, Divider, SmallParagraph } from '../../../style/elements';
 import VotingScale from './VotingScale';
 import ExpandButton from '../../../style/elements/Expand';
-import Label from 'reactstrap/lib/Label';
 import { Flex, Box } from '@rebass/grid';
 
 interface Props {
@@ -51,7 +50,13 @@ const Option = (props: Props) => {
                     () => { setShowDetails(!showDetails) }} />
             </BoxWrapper>
             {showDetails && <div>
-                <Label>Details</Label>
+                <Box width={[5 / 6, 8 / 9, 12 / 13, 17 / 18]} pl={["1rem", "1.625rem"]}>
+                    <Divider />
+                    <Label className="description-label">Description</Label>
+                    <SmallParagraph>
+                        {description}
+                    </SmallParagraph>
+                </Box>
 
             </div>}
             {isCreator ? (
@@ -87,5 +92,11 @@ box-shadow: 0px 2px 8px rgba(104, 104, 104, 0.25);
 border-radius: 5px;
 ${VotingScale}{
     display: inline-block;
+}
+${HeadingTwo}{
+    cursor: pointer;
+}
+.description-label{
+    margin-top: .625rem;
 }
 `;

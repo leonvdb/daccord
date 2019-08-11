@@ -17,6 +17,7 @@ const ExpandButton = (props: Props) => {
 }
 
 const ExpandImage = styled.svg<{ clicked: boolean }>`
+cursor: pointer;
 margin-left: .5rem;
 transform: ${({ clicked }) => clicked ? 'rotate(180deg)' : 'rotate(0deg)'};
 transition: transform 0.3s ease-in-out;
