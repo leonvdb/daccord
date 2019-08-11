@@ -9,6 +9,7 @@ import UserDropdownMenu from './UserDropdownMenu';
 import { Flex, Box } from '@rebass/grid';
 import Media from 'react-media';
 import Burger from '../../../images/burger.svg'
+import InviteModal from './InviteModal';
 
 interface Props {
     poll: IPollQuery
@@ -20,6 +21,7 @@ interface Props {
 const Header = ({ poll, pseudonym, className, toggleMobileNav }: Props) => {
 
     const [showDescription, setShowDescription] = useState(false);
+    const [inviteOpen, setInviteOpen] = useState(false);
     return (
         <Flex className={className} flexWrap='wrap'>
             <Media query={above.lg.replace('@media ', '')}>
@@ -40,8 +42,10 @@ const Header = ({ poll, pseudonym, className, toggleMobileNav }: Props) => {
                 {matches => matches && <React.Fragment>
 
                     <BoxWrapper flex={1}>
+                        <InviteModal isOpen={inviteOpen} setIsOpen={setInviteOpen} url={`https://daccordapp.com/poll/${poll.refId}/`} />
                         <BoxEnd>
-                            <SecondaryButton><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
+                            <SecondaryButton onClick={// tslint:disable-next-line jsx-no-lambda
+                                () => setInviteOpen(true)}><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
                         </BoxEnd>
                     </BoxWrapper>
                     <BoxWrapper width="auto">
