@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import styled from 'styled-components';
-import { primary, mediumGray, primaryStrong } from '../../../style/utilities';
+import { primary, mediumGray, primaryStrong, above } from '../../../style/utilities';
 import { SmallHeading, SmallerLabel } from '../../../style/elements';
 
 interface Props {
@@ -40,10 +40,12 @@ const InviteModal = ({ isOpen, setIsOpen, url, className }: Props) => {
             <StyledModalHeader toggle={toggle}>Invite Participants</StyledModalHeader>
             <ModalBody>
                 <SmallHeading>Share this Link</SmallHeading>
-                <InputArea isCopied={isCopied}>
+                <InputArea >
                     <input value={url} ref={urlRef} />
-                    {document.queryCommandSupported('copy') && <SmallerLabel onClick={copyToClipboard}>{isCopied ? "Copied!" : "Copy"}</SmallerLabel>}
                 </InputArea>
+                {document.queryCommandSupported('copy') &&
+                    <CopyButton onClick={copyToClipboard} isCopied={isCopied}>{isCopied ? "Copied!" : "Copy"}</CopyButton>
+                }
             </ModalBody>
         </Modal>
     )
@@ -58,16 +60,18 @@ border-radius: 0;
 }
 `
 
-const InputArea = styled.div<{ isCopied: boolean }>`
+const InputArea = styled.div`
 max-width:100%;
-${SmallerLabel}{
-    position: absolute;
+`
+const CopyButton = styled(SmallerLabel) <{ isCopied: boolean }>`
+${above.custom(470)}{
+ position: absolute;
     right: 2rem;
     top: 54.5%;
+}
+    margin-left: .2rem;
     color: ${({ isCopied }) => isCopied ? 'green' : primaryStrong};
     cursor: ${({ isCopied }) => isCopied ? 'auto' : 'pointer'};
-    
-}
 `
 
 export default styled(InviteModal)`
@@ -83,5 +87,9 @@ input {
     border: 1px solid ${mediumGray};
     padding: .875rem;
     margin-bottom: 1rem;
+    font-size: .8rem;
+    ${above.sm}{
+        font-size: 100%
+    }
 }
 `;

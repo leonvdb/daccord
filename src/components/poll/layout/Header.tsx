@@ -42,7 +42,7 @@ const Header = ({ poll, pseudonym, className, toggleMobileNav }: Props) => {
                 {matches => matches && <React.Fragment>
 
                     <BoxWrapper flex={1}>
-                        <InviteModal isOpen={inviteOpen} setIsOpen={setInviteOpen} url="urlPlaceholder" />
+                        <InviteModal isOpen={inviteOpen} setIsOpen={setInviteOpen} url={`https://daccordapp.com/poll/${poll.refId}/`} />
                         <BoxEnd>
                             <SecondaryButton onClick={// tslint:disable-next-line jsx-no-lambda
                                 () => setInviteOpen(true)}><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>

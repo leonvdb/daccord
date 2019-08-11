@@ -9,6 +9,7 @@ import NavigationIcon from './NavigationIcon';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import Plus from '../../../images/plus.svg'
+import InviteModal from './InviteModal';
 
 interface IProps extends RouteComponentProps<any> {
     className?: string
@@ -21,6 +22,7 @@ interface IProps extends RouteComponentProps<any> {
 const MobileNav = (props: IProps) => {
     const pollUrl = props.location.pathname.match(/\/poll\/[1-9A-Za-z]*/g)
     const [focus, setFocus] = useState("home")
+    const [inviteOpen, setInviteOpen] = useState(false)
 
     useEffect(() => {
         if (location.pathname.includes('results')) {
@@ -33,12 +35,14 @@ const MobileNav = (props: IProps) => {
     })
     return (
         <div className={props.className} >
+            <InviteModal isOpen={inviteOpen} setIsOpen={setInviteOpen} url={`https://daccordapp.com${pollUrl}/`} />
             {props.isOpen && <React.Fragment>
                 <Logo to={'/'}>Logo</Logo>
                 <FadeIn isOpen={props.isOpen}>
                     <StyledFlex>
                         <Box width={3 / 8}>
-                            <img src={InviteIcon} />
+                            <img src={InviteIcon} onClick={// tslint:disable-next-line jsx-no-lambda
+                                () => setInviteOpen(true)} />
                         </Box>
                         <Box width={5 / 8}>
                             <StyledUserDropdownMenu pseudonym={props.pseudonym} />
