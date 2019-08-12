@@ -2,8 +2,9 @@ import React from 'react'
 import { TableCellWrapper, SmallHeading } from '../../../../style/elements';
 import styled from 'styled-components';
 import { IUser, IExtededOptionDetails } from '../../../../interfaces';
-import { scale, veryLarge, colorScale } from '../../../../style/utilities';
+import { scale, veryLarge, colorScale, above } from '../../../../style/utilities';
 import CircularProgressBar from '../../layout/CircularProgressBar';
+import Media from 'react-media';
 
 interface Props {
     className?: string
@@ -24,7 +25,13 @@ const ResultRow = (props: Props) => {
     return (
         <div className={props.className}>
             <TableCellWrapper widthInPercent={29.29}>
-                <CircularProgressBar percentage={option.result.agreementInPercent} color={agreementColor} sqSize={50} strokeWidth={5} />
+                <Media queries={{
+                    sm: above.sm.replace('@media ', ''),
+                    md: above.md.replace('@media ', ''),
+                    lg: above.lg.replace('@media ', '')
+                }} children={// tslint:disable-next-line jsx-no-lambda
+                    ({ sm, md, lg }) => <CircularProgressBar percentage={option.result.agreementInPercent} color={agreementColor} sqSize={lg ? 50 : md ? 46 : sm ? 44 : 40} strokeWidth={5} />
+                } />
                 <SmallHeading>
                     {props.option.title}
                 </SmallHeading>
@@ -48,16 +55,34 @@ export default styled(ResultRow)`
 display: table-row;
 ${SmallHeading}{
     display: inline-block;
+    font-size:.875rem;
 }
 ${CircularProgressBar}{
     margin: 0 1rem;
     text{
+    font-size: .7em; 
+    .percent-symbol{
+        font-size: .7em;
+    }
+    }
+}
+${above.sm}{
+    ${SmallHeading}{
+        font-size:1rem;
+    }
+    ${CircularProgressBar}{
+        text{
     font-size: .9em; 
     .percent-symbol{
         font-size: .9em;
     }
     }
 }
+    }
+    ${above.lg}{
+        ${SmallHeading}{
+        font-size:1.25rem;
+    }}
 ${TableCellWrapper}{
     border-style: solid;
     border-color: #DDD;
