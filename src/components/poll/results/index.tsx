@@ -8,6 +8,8 @@ import TableWhite from '../../../images/table-white.svg';
 import SVG from 'react-inlinesvg';
 import TableView from './tableView';
 import sortOptionsByAgreement from '../../../utilities/sortOptionsByAgreement';
+import Media from 'react-media';
+import { above } from '../../../style/utilities';
 
 interface Props {
     poll: IPollQuery
@@ -46,7 +48,13 @@ const Results = (props: Props) => {
                 </OptionContainer>
 
             ) : (
-                    <TableView poll={poll} pseudonym={pseudonym} user={user} />
+                    <Media queries={{
+                        sm: above.sm.replace('@media ', ''),
+                        md: above.md.replace('@media ', ''),
+                        lg: above.lg.replace('@media ', '')
+                    }} children={// tslint:disable-next-line jsx-no-lambda
+                        ({ sm, md, lg }) => <TableView poll={poll} pseudonym={pseudonym} user={user} numberOfFields={lg ? (7) : md ? 5 : sm ? 4 : 3} />
+                    } />
                 )}
 
         </Container>

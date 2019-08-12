@@ -15,11 +15,12 @@ interface Props {
     poll: IPollQuery
     pseudonym: string
     user: IUser
+    numberOfFields: number;
     className?: string
 }
 
 const TableView = (props: Props) => {
-    const { poll, user } = props;
+    const { poll, user, numberOfFields } = props;
     const [firstDisplayedParticipant, setFirstDisplayedParticipant] = useState(0)
     const allParticipants = []
     if (poll.creator.id !== user.id) {
@@ -31,14 +32,14 @@ const TableView = (props: Props) => {
             allParticipants.push({ id: user.id, pseudonym })
         }
     })
-    const displayedParticipants = [{ id: user.id, pseudonym: "You" }, ...allParticipants.slice(firstDisplayedParticipant, firstDisplayedParticipant + 6)]
+    const displayedParticipants = [{ id: user.id, pseudonym: "You" }, ...allParticipants.slice(firstDisplayedParticipant, firstDisplayedParticipant + (numberOfFields - 1))]
     const backAvailable = firstDisplayedParticipant > 0 ? true : false
-    const forwardAvailable = firstDisplayedParticipant + 6 < allParticipants.length
+    const forwardAvailable = firstDisplayedParticipant + (numberOfFields - 1) < allParticipants.length
     const goBack = () => {
-        setFirstDisplayedParticipant(firstDisplayedParticipant - 6)
+        setFirstDisplayedParticipant(firstDisplayedParticipant - (numberOfFields - 1))
     }
     const goForward = () => {
-        setFirstDisplayedParticipant(firstDisplayedParticipant + 6)
+        setFirstDisplayedParticipant(firstDisplayedParticipant + (numberOfFields - 1))
     }
 
     return (
@@ -65,9 +66,9 @@ const TableView = (props: Props) => {
                     const sortedOptions = sortOptionsByAgreement(data.poll.options)
                     return (<OptionContainer>
                         <TableWrapper>
-                            <ParticipantsRow displayedParticipants={displayedParticipants} />
+                            <ParticipantsRow displayedParticipants={displayedParticipants} numberOfFields={numberOfFields} />
                             {sortedOptions.map((option: IExtededOptionDetails) => {
-                                return <ResultRow option={option} key={`table-result-${option.refId}`} displayedParticipants={displayedParticipants} user={props.user} />
+                                return <ResultRow numberOfFields={numberOfFields} option={option} key={`table-result-${option.refId}`} displayedParticipants={displayedParticipants} user={props.user} />
                             })}
                         </TableWrapper>
                     </OptionContainer>)

@@ -10,6 +10,7 @@ interface Props {
     option: IExtededOptionDetails
     displayedParticipants: Array<{ id: string, pseudonym: string }>
     user: IUser
+    numberOfFields: number;
 }
 
 const ResultRow = (props: Props) => {
@@ -28,7 +29,7 @@ const ResultRow = (props: Props) => {
                     {props.option.title}
                 </SmallHeading>
             </TableCellWrapper>
-            {[...Array(7).keys()].map((value, index) => {
+            {[...Array(props.numberOfFields).keys()].map((value, index) => {
                 const participant = displayedParticipants[index]
                 if (participant) {
                     const ratingColor: string | undefined = participantsVotesDict[participant.id] !== undefined ? scale[participantsVotesDict[participant.id]].solid : undefined;
