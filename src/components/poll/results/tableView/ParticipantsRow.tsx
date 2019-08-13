@@ -6,12 +6,13 @@ import { darkGray } from '../../../../style/utilities';
 interface Props {
     className?: string
     displayedParticipants: Array<{ id: string, pseudonym: string }>
+    numberOfFields: number;
 }
 const ParticipantsRow = (props: Props) => {
     return (
         <div className={props.className}>
             <TableCellWrapper widthInPercent={29.29} />
-            {[...Array(7).keys()].map((fieldId, index) => {
+            {[...Array(props.numberOfFields).keys()].map((fieldId, index) => {
                 return (<TableCellWrapper widthInPercent={10} key={`Participant-${fieldId}`}>
                     {props.displayedParticipants[index] ? props.displayedParticipants[index].pseudonym : ''}
                 </TableCellWrapper>)

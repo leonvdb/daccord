@@ -156,6 +156,9 @@ padding-top: 1rem;
 ${above.lg}{
 padding-top: 5.8125rem;
 }
+${Option}:last-child {
+margin-bottom: 4rem;
+}
 `;
 
 export const ToolBar = styled(Flex)`
@@ -203,6 +206,7 @@ height: 3.4375rem;
 padding: 0 5.3125rem;
 position: fixed;
 bottom: 0;
+z-index:10;
 display: table;
 p{
     margin: 0;

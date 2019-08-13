@@ -41,7 +41,7 @@ const MobileNav = (props: IProps) => {
                 <FadeIn isOpen={props.isOpen}>
                     <StyledFlex>
                         <Box width={3 / 8}>
-                            <img src={InviteIcon} onClick={// tslint:disable-next-line jsx-no-lambda
+                            <InviteButton src={InviteIcon} onClick={// tslint:disable-next-line jsx-no-lambda
                                 () => setInviteOpen(true)} />
                         </Box>
                         <Box width={5 / 8}>
@@ -79,6 +79,9 @@ h5{
 
 const Navigation = styled.div`
 margin-top:2rem;
+`
+const InviteButton = styled.img`
+cursor: pointer;
 `
 
 const Logo = styled(UnstyledLink)`

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { IOptionQuery, IUser, IPollQuery } from '../../../interfaces';
 import CircularProgressBar from '../layout/CircularProgressBar';
-import { colorScale, scale, veryLarge } from '../../../style/utilities';
+import { colorScale, scale, veryLarge, above } from '../../../style/utilities';
 import styled from 'styled-components';
-import { Divider, TableCellWrapper, Label, PrimaryButton } from '../../../style/elements';
+import { Divider, Label, PrimaryButton } from '../../../style/elements';
 import TableWhite from '../../../images/table-white.svg';
+import { Flex, Box } from '@rebass/grid';
 interface Props {
     option: IOptionQuery
     poll: IPollQuery
@@ -29,65 +30,60 @@ const ResultDetails = (props: Props) => {
         <div>
             <Divider />
             <DetailsWrapper data-testid="result-details" userRatingColor={userRatingColor}>
-                <div className="table">
-                    <div className="table-row">
-                        <TableCellWrapper widthInPercent={5} className="rank">
+                <Flex flexWrap="wrap">
+                    <StyledBox width={[1 / 2, 1 / 2, 1 / 8]} className="box">
+                        <span className="rank">
                             {rank}
-                        </TableCellWrapper>
-                        <TableCellWrapper widthInPercent={8} className="user-rating" data-testid="my-vote">
+                        </span>
+                        <Label>Rank</Label>
+                    </StyledBox>
+                    <StyledBox width={[1 / 2, 1 / 2, 1 / 8]} className="user-rating" data-testid="my-vote">
+                        <span>
                             {option.userRating !== null ? option.userRating : '-'}
-                        </TableCellWrapper>
-                        <TableCellWrapper widthInPercent={10}>
-                            <CircularProgressBar sqSize={62} strokeWidth={7} percentage={agreementInPercent ? agreementInPercent : 0} color={agreementColor} />
-                        </TableCellWrapper>
-                        <TableCellWrapper widthInPercent={10}>
-                            <CircularProgressBar sqSize={62} strokeWidth={7} percentage={participationInPercent} color={participationColor} />
-                        </TableCellWrapper>
-                        <TableCellWrapper widthInPercent={67} />
-                    </div>
-                    <div className="table-row">
-                        <TableCellWrapper widthInPercent={5} verticalAlign='bottom'><Label>Rank</Label></TableCellWrapper>
-                        <TableCellWrapper widthInPercent={8} verticalAlign='bottom'><Label>My Vote</Label></TableCellWrapper>
-                        <TableCellWrapper widthInPercent={10} verticalAlign='bottom'><Label>Agreement</Label></TableCellWrapper>
-                        <TableCellWrapper widthInPercent={10} verticalAlign='bottom'><Label>Participation</Label></TableCellWrapper>
-                        <TableCellWrapper className="float-right" widthInPercent={67} verticalAlign='bottom'>
-                            <PrimaryButton type="button" onClick={ // tslint:disable-next-line jsx-no-lambda
-                                () => { props.setCurrentView('table') }}>Individual Votes <img src={TableWhite} /></PrimaryButton>
-                        </TableCellWrapper>
-                    </div>
-                </div>
+                        </span>
+                        <Label>My Vote</Label>
+                    </StyledBox>
+                    <StyledBox width={[1 / 2, 1 / 2, 1 / 8]}>
+                        <CircularProgressBar sqSize={62} strokeWidth={7} percentage={agreementInPercent ? agreementInPercent : 0} color={agreementColor} />
+                        <Label>Agreement</Label>
+                    </StyledBox>
+                    <StyledBox width={[1 / 2, 1 / 2, 1 / 8]}>
+                        <CircularProgressBar sqSize={62} strokeWidth={7} percentage={participationInPercent} color={participationColor} />
+                        <Label>Participation</Label>
+                    </StyledBox>
+                    <StyledBox alignSelf="flex-end" flex={1}>
+                        <PrimaryButton type="button" onClick={ // tslint:disable-next-line jsx-no-lambda
+                            () => { props.setCurrentView('table') }}>Individual Votes <img src={TableWhite} /></PrimaryButton>
+                    </StyledBox>
+                </Flex>
             </DetailsWrapper>
         </div>
     )
 }
+
+const StyledBox = styled(Box)`
+text-align:center;
+margin-bottom: 1.5rem;
+${above.md}{
+    margin-bottom: 0;
+}
+`
 const DetailsWrapper = styled.div<DetailsWrapperProps>`
 padding: 1.4375rem 0;
-${TableCellWrapper}{
-    text-align: center;
-}
 ${Label}{
-    margin: 0;
+    margin-top: 1rem;
 }
 
 ${PrimaryButton}{
+    margin: 0;
+    ${above.md}{
+    float: right;
+    }
     padding: 0.5rem 0.8rem;
     img{
         margin-left: .7rem;
         margin-top: .23rem; 
     }
-}
-
-.float-right{
-    float: right;
-    text-align: right; 
-    ${PrimaryButton}{
-        margin: 0;
-    }
-}
-.labels{
-    ${TableCellWrapper}{
-    height: 2rem;
-}
 }
 .rank{
     font-size: 2.5rem;
@@ -95,10 +91,6 @@ ${PrimaryButton}{
 .user-rating{
     color: ${({ userRatingColor }) => userRatingColor};
     ${veryLarge}
-}
-.table{
-display: table;
-margin: 0;
 }
 `
 
