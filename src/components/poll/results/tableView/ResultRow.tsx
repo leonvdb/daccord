@@ -22,7 +22,7 @@ const ResultRow = (props: Props) => {
         participantsVotesDict[vote.voter.user.id] = vote.rating
     })
     const agreementColor = colorScale(100 - option.result.agreementInPercent)
-    participantsVotesDict[props.user.id] = option.userRating ? option.userRating : undefined
+    participantsVotesDict[props.user.id] = option.userRating !== undefined && option.userRating !== null ? option.userRating : undefined
     return (
         <div className={props.className}>
             <TableCellWrapper widthInPercent={29.29}>

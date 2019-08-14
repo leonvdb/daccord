@@ -95,6 +95,7 @@ ${VotingScale}{
 }
 ${HeadingTwo}{
     cursor: pointer;
+    margin-bottom:0;
 }
 .description-label{
     margin-top: .625rem;
