@@ -1,5 +1,5 @@
 {
-  "name": "systemic-consensys",
+  "name": "daccord",
   "version": "1.0.0",
   "description": "A voting tool according to the systemic consensys principles",
   "main": "server/server.ts",
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leonvdb/systemic-consensys.git"
+    "url": "git+https://github.com/leonvdb/daccord.git"
   },
   "author": "Marek Meyer & Leon von dem Berge",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/leonvdb/systemic-consensys/issues"
+    "url": "https://github.com/leonvdb/daccord/issues"
   },
-  "homepage": "https://github.com/leonvdb/systemic-consensys#readme",
+  "homepage": "https://github.com/leonvdb/daccord#readme",
   "dependencies": {
     "@rebass/grid": "^6.0.0",
     "apollo-boost": "^0.1.28",

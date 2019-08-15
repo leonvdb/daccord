@@ -11,8 +11,8 @@ Based on the principles of *"systemic consensus"* (http://www.sk-prinzip.eu/)
 
 **Installation:**
 ```sh
-$ git clone https://github.com/leonvdb/systemic-consensys.git
-$ cd systemic-consensys
+$ git clone https://github.com/leonvdb/daccord.git
+$ cd daccord
 $ npm install
 $ touch src/server/config/secrets.ts
 ```
