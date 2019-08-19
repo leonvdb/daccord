@@ -10,6 +10,7 @@ export const mediumGray = "#C4C4C4"
 export const darkGray = "#505050";
 export const darkerGray = "#474747";
 export const blackBlue = "#151932";
+export const blackPurple = "#2E215D";
 export const softBlack = "#3E3E3E"
 export const black = "#171717";
 

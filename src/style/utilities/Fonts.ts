@@ -38,6 +38,11 @@ export const largeStrongLabel = css`
 font-size: 3rem;
 font-weight: ${fontWeights.medium};
 `
+export const largeBoldLabel = css`
+font-size: 3rem;
+font-weight: bold;
+`
+
 export const largeSecondaryLabel = css`
 font-size: 2.25rem;
 font-weight: ${fontWeights.light}
