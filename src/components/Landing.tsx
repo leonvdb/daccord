@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { LargeBoldLabel, LargeParagraph, SecondaryButton, MediumLabel } from '../style/elements';
 import { blackPurple } from '../style/utilities';
 import { Link } from 'react-router-dom';
+import Slideshow from './Slideshow';
 
 function Landing(props: WithNamespaces) {
     return (
@@ -18,6 +19,7 @@ function Landing(props: WithNamespaces) {
                 <LargeParagraph>D’accord helps your group to find empowering and sustainable solutions </LargeParagraph>
                 <Link to="/create"><SecondaryButton> <MediumLabel>Get Started</MediumLabel></SecondaryButton></Link>
             </Header>
+            <Slideshow />
             <Footer />
         </React.Fragment>
     )

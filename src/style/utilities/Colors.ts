@@ -7,6 +7,7 @@ export const lighterGray = "#EFEFEF";
 export const lightGray = "#E3E3E3";
 export const lightishGray = "#CDCDCD";
 export const mediumGray = "#C4C4C4"
+export const darkishGray = "#7C7C7C"
 export const darkGray = "#505050";
 export const darkerGray = "#474747";
 export const blackBlue = "#151932";
