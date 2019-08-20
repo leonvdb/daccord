@@ -5,9 +5,10 @@ import { default as Nav } from './layout/Header';
 import HeaderImage from '../images/header.svg'
 import styled from 'styled-components';
 import { LargeBoldLabel, LargeParagraph, SecondaryButton, MediumLabel } from '../style/elements';
-import { blackPurple } from '../style/utilities';
+import { blackPurple, above } from '../style/utilities';
 import { Link } from 'react-router-dom';
 import Slideshow from './Slideshow';
+import Media from 'react-media';
 
 function Landing(props: WithNamespaces) {
     return (
@@ -19,7 +20,9 @@ function Landing(props: WithNamespaces) {
                 <LargeParagraph>D’accord helps your group to find empowering and sustainable solutions </LargeParagraph>
                 <Link to="/create"><SecondaryButton> <MediumLabel>Get Started</MediumLabel></SecondaryButton></Link>
             </Header>
-            <Slideshow />
+            <Media query={above.custom(970).replace('@media ', '')}>
+                {matches => matches && <Slideshow />}
+            </Media>
             <Footer />
         </React.Fragment>
     )

@@ -5,7 +5,7 @@ import ResultsTable from '../images/example/results-table.png';
 import styled, { css } from 'styled-components';
 import { Flex, Box } from '@rebass/grid';
 import { SmallHeading } from '../style/elements';
-import { darkishGray } from '../style/utilities';
+import { darkishGray, above } from '../style/utilities';
 
 interface IProps {
     className?: string
@@ -59,7 +59,7 @@ const Slideshow = (props: IProps) => {
 }
 
 const ImageNavigation = styled.div`
-
+float:right;
 `
 
 const NavElement = styled.div<{ active: boolean }>`
@@ -88,8 +88,12 @@ box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
 const ImageContainer = styled.div`
-width: 800px;
-height:420px;
+width: auto;
+max-width:820px;
+height:370px;
+${above.custom(1060)}{
+height:430px;
+}
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 3px;
 overflow: hidden;
@@ -100,6 +104,12 @@ img{
 `
 
 export default styled(Slideshow)`
+${above.md}{
+    width: 85%;
+}
+${above.custom(1380)}{
 width: 70%;
+}
+max-width:1100px;
 margin: 24rem auto 10rem auto;
 `;
