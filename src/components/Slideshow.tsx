@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Overview from '../images/example/overview.png';
 import ResultsList from '../images/example/results-list.png';
 import ResultsTable from '../images/example/results-table.png';
@@ -13,6 +13,20 @@ interface IProps {
 
 const Slideshow = (props: IProps) => {
     const [currentImage, setCurrentImage] = useState('overview')
+    const [clicked, setClicked] = useState(false)
+
+    useEffect(() => {
+        if (!clicked) {
+            const interval = setInterval(() => {
+                setCurrentImage(currentImage => currentImage === 'overview' ? (
+                    'results-list') : currentImage === 'results-list' ? (
+                        'results-table'
+                    ) : 'overview');
+            }, 3000);
+            return () => clearInterval(interval);
+        }
+    });
+
     return (
         <div className={props.className}>
             <Flex>
@@ -31,21 +45,24 @@ const Slideshow = (props: IProps) => {
                 <Box width={1 / 4}>
                     <ImageNavigation>
                         <NavElement onClick={() => { // tslint:disable-next-line jsx-no-lambda
-                            setCurrentImage("overview")
+                            setCurrentImage("overview");
+                            setClicked(true);
                         }} active={currentImage === 'overview'}>
                             <SmallHeading>
                                 Organize and rate options
                         </SmallHeading>
                         </NavElement>
                         <NavElement onClick={() => { // tslint:disable-next-line jsx-no-lambda
-                            setCurrentImage("results-list")
+                            setCurrentImage("results-list");
+                            setClicked(true);
                         }} active={currentImage === 'results-list'}>
                             <SmallHeading>
                                 Check the Results
                         </SmallHeading>
                         </NavElement>
                         <NavElement onClick={() => { // tslint:disable-next-line jsx-no-lambda
-                            setCurrentImage("results-table")
+                            setCurrentImage("results-table");
+                            setClicked(true);
                         }} active={currentImage === 'results-table'}>
                             <SmallHeading>
                                 Learn about individual opinions
