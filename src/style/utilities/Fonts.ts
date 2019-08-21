@@ -53,6 +53,11 @@ font-size: 2.25rem;
 font-weight: ${fontWeights.light}
 `
 
+export const mediumHeading = css`
+font-size: 2.25rem;
+font-weight: ${fontWeights.medium}
+`
+
 export const mediumLabel = css`
 font-size: 1.5rem;
 font-weight: ${fontWeights.medium};
