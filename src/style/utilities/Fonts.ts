@@ -15,6 +15,11 @@ font-size: 1.125rem;
 font-weight: ${fontWeights.medium};
 `
 
+export const smallBoldHeading = css`
+font-size: 1.125rem;
+font-weight: bold;
+`
+
 export const headingTwo = css`
 font-size: 1.125rem;
 font-weight: normal;
