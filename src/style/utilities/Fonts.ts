@@ -82,3 +82,8 @@ export const smallParagraph = css`
 font-size: .875rem;
 font-weight: normal;
 `
+
+export const smallLightParagraph = css`
+font-size: .875rem;
+font-weight: ${fontWeights.light};
+`

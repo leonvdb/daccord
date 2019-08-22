@@ -1,11 +1,10 @@
 import * as React from 'react'
 import { withNamespaces, WithNamespaces } from 'react-i18next';
-import Footer from './layout/Footer';
 import { default as Nav } from './layout/Header';
 import HeaderImage from '../images/header.svg'
 import MobileHeaderImage from '../images/header-mobile.svg'
 import styled from 'styled-components';
-import { LargeBoldLabel, LargeParagraph, SecondaryButton, MediumLabel, SmallBoldHeading } from '../style/elements';
+import { LargeBoldLabel, LargeParagraph, SecondaryButton, MediumLabel, SmallBoldHeading, MediumHeading, SmallLightParagraph } from '../style/elements';
 import { blackPurple, above, below } from '../style/utilities';
 import { Link } from 'react-router-dom';
 import Slideshow from './Slideshow';
@@ -18,6 +17,7 @@ import DesktopFrame1 from "../images/desktop-frame-1.svg"
 import Empower from "../images/empower.svg"
 import Fair from "../images/fair.svg"
 import Idea from "../images/idea.svg"
+import Bullet from "../images/bullet.svg"
 import { Flex, Box } from '@rebass/grid';
 
 function Landing(props: WithNamespaces) {
@@ -121,13 +121,42 @@ Participants generally feel more fairly represented than in a conventional votin
                         )
                     }
                 </Media>
-                {/* <TheBasics>
+                <Basics>
                     <MediumHeading>
                         The Basics
                     </MediumHeading>
-                </TheBasics> */}
+                    <BasicsElement alignSelf="center" justifyContent="center">
+                        <Box width={[1 / 12, 1 / 20]}>
+                            <img src={Bullet} />
+                        </Box>
+                        <Box width={[11 / 12, 19 / 20]}>
+                            <SmallLightParagraph>
+                                When voting, you indicate your opposition - 0 means “I have nothing against this”, 10 means “I strongly oppose this”
+                    </SmallLightParagraph>
+                        </Box>
+                    </BasicsElement>
+                    <BasicsElement alignSelf="center" justifyContent="center">
+                    <Box width={[1 / 12, 1 / 20]}>
+                            <img src={Bullet} />
+                        </Box>
+                        <Box width={[11 / 12, 19 / 20]}>
+                            <SmallLightParagraph>
+                                You rate all of the available options rather than just voting for one.
+                    </SmallLightParagraph>
+                        </Box>
+                    </BasicsElement>
+                    <BasicsElement alignSelf="center" justifyContent="center">
+                    <Box width={[1 / 12, 1 / 20]}>
+                            <img src={Bullet} />
+                        </Box>
+                        <Box width={[11 / 12, 19 / 20]}>
+                            <SmallLightParagraph>
+                                The solution that receives the lowest amount of resistance in the group is the one with the highest consensus
+                    </SmallLightParagraph>
+                        </Box>
+                    </BasicsElement>
+                </Basics>
             </Body>
-            <Footer />
         </React.Fragment>
     )
 }
@@ -174,10 +203,38 @@ p{
 }
 `
 
-// const TheBasics = styled.div`
-// position:absolute;
-// top: 90rem;
-// `
+const Basics = styled.div`
+width: 80%;
+position:absolute;
+top: 93rem;
+max-width: 950px;
+
+${above.custom(870)}{
+    top: 124rem;
+    width: 60%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    ${MediumHeading}{
+        text-align: center;
+        margin-bottom:4rem;
+    }
+}
+`
+
+const BasicsElement = styled(Flex)`
+margin-top: .5rem;
+${above.custom(870)}{
+    margin-top: 2rem;
+    }
+${SmallLightParagraph}{
+    margin-top: .2rem;
+    ${above.custom(870)}{
+    font-size: 1.5rem;
+    margin-top: 0;
+    }
+}
+`
 
 const ShowcaseElement = styled.div<{ color: string, top: number }>`
     position:absolute;
