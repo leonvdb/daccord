@@ -79,16 +79,6 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
           Continue
         </button>
       </form>
-      <p
-        class="text-center my-2"
-      >
-        or
-      </p>
-      <button
-        class="btn btn-outline-info btn-block w-50 mx-auto"
-      >
-        Sign in
-      </button>
     </div>
   </div>
 </div>
