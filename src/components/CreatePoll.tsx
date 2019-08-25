@@ -103,7 +103,7 @@ const CreatePoll = (props: Props) => {
                 <InputArea width={[1, 1, 1, 1 / 2]}>
                     <LargeStrongLabel>{t("Creating a new poll")}</LargeStrongLabel>
                     <TernaryLabel>Step {counter}</TernaryLabel>
-                    <LargeSecondaryLabel>Information about you</LargeSecondaryLabel>
+                    <LargeSecondaryLabel>{counter === 1 ? "General Information" : "Information about you"}</LargeSecondaryLabel>
                     <Mutation mutation={CREATE_POLL}
                         update={// tslint:disable-next-line jsx-no-lambda
                             (cache, { data: { createPoll } }) => {

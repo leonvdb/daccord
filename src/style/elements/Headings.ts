@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel, softBlack, lightRed, smallParagraph, largeStrongLabel, largeSecondaryLabel, lightishGray } from '../utilities';
+import { blackBlue, black, label, heading, headingTwo, darkPurple, largeLabel, darkerGray, smallHeading, darkGray, smallLabel, smallerLabel, mediumLabel, buttonLabel, softBlack, lightRed, smallParagraph, largeStrongLabel, largeSecondaryLabel, lightishGray, largeBoldLabel, smallBoldHeading, mediumHeading } from '../utilities';
 
 export const Heading = styled.h1`
 color: ${blackBlue};
@@ -16,6 +16,9 @@ export const SmallHeading = styled.h5`
 color: ${darkerGray};
 ${smallHeading}
 `;
+export const SmallBoldHeading = styled.h5`
+${smallBoldHeading};
+`;
 
 export const LargeLabel = styled.h1`
 color: ${darkPurple};
@@ -25,6 +28,10 @@ ${largeLabel}
 export const LargeStrongLabel = styled.h1`
 color: #000;
 ${largeStrongLabel}
+`;
+
+export const LargeBoldLabel = styled.h1`
+${largeBoldLabel}
 `;
 
 export const LargeSecondaryLabel = styled.h1`
@@ -72,4 +79,8 @@ ${smallerLabel}
 export const ErrorMessage = styled.p`
 color: ${lightRed};
 ${smallParagraph};
+`
+
+export const MediumHeading = styled.h2`
+${mediumHeading};
 `

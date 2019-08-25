@@ -1,7 +1,11 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
-import LanguageDropdown from './LanguageDropdown';
+import styled from 'styled-components';
+import { SecondaryButton } from '../../style/elements';
+import PlusPurple from '../../images/plus-purple.svg';
+import Media from 'react-media';
+import { above } from '../../style/utilities';
 
 interface Props extends WithNamespaces {
 
@@ -16,29 +20,48 @@ class Header extends React.Component<Props>{
 
         return (
             <React.Fragment>
-                <div style={{ height: "8vh" }} />
-                <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{ height: "8vh", position: "fixed", width: "100%", top: "0px", zIndex: 1 }}>
-                    <div className="container">
-                        <Link to="/" className="navbar-brand">WorkInProgress</Link>
-                        <LanguageDropdown />
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/">
-                                    <div>{t("Home")}</div>
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/create">
-                                    <div>{t("Create poll")}</div>
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                <StyledNav>
+                    <LogoLink to="/">Logo</LogoLink>
+                    <Media query={above.custom(430).replace('@media ', '')}>
+                        {matches => matches && <ContributeLink to="/contribute">
+                            {t("Contribute")}
+                        </ContributeLink>}
+                    </Media>
+                    <Link to="/create">
+                        <SecondaryButton> Create Poll
+                    <img src={PlusPurple} alt="Add Option" />
+                        </SecondaryButton>
+                    </Link>
+
+                </StyledNav>
             </React.Fragment>
         )
     }
 }
+
+const LogoLink = styled(Link)`
+color: white;
+margin: 0 2.5rem;
+`
+
+const ContributeLink = styled(Link)`
+color: white;
+text-decoration: underline;
+`
+
+const StyledNav = styled.nav`
+width: 100%;
+height: 5.5rem;
+padding-top: 1.6875rem;
+z-index: 1;
+${SecondaryButton}{
+    box-shadow: 4px 8px 6.86391px rgba(74, 74, 74, 0.25);
+    float:right;
+    img{
+        margin-left: .6875rem;
+    }
+}
+`
 
 const ComponentWithNamespaces = withNamespaces()(Header);
 export default ComponentWithNamespaces;
