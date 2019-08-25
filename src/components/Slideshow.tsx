@@ -82,7 +82,7 @@ float:right;
 const NavElement = styled.div<{ active: boolean }>`
 cursor: pointer;
 height: 5rem;
-width: 11.5rem;
+width: 10rem;
 border-radius: 4px;
 margin-bottom: 1.5rem;
 padding: 1rem;
@@ -91,9 +91,12 @@ background-color: rgba(255, 255, 255, 0);
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0);
 transition: all ease-in-out .4s;
 transition-property: color, background-color, box-shadow;
+${above.custom(1000)}{
+    width: 11.5rem;
+}
 ${SmallHeading}{
-color: ${darkishGray};
-margin: 0;
+    color: ${darkishGray};
+    margin: 0;
 }
 ${({ active }) => active && css`
 ${SmallHeading}{
