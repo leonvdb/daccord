@@ -38,10 +38,10 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
     >
       <form>
         <div
-          class=" sc-ckVGcZ bkPgzK"
+          class=" sc-kkGfuU bZZBhd"
         >
           <h5
-            class="sc-cSHVUG bOOSea"
+            class="sc-chPdSV jdQlEK"
           >
             Name
           </h5>
@@ -55,10 +55,10 @@ exports[`<AuthModal /> to show Modal on Click 1`] = `
           />
         </div>
         <div
-          class=" sc-ckVGcZ bkPgzK"
+          class=" sc-kkGfuU bZZBhd"
         >
           <h5
-            class="sc-cSHVUG bOOSea"
+            class="sc-chPdSV jdQlEK"
           >
             Email
           </h5>
