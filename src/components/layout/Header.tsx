@@ -4,6 +4,8 @@ import { WithNamespaces, withNamespaces } from 'react-i18next';
 import styled from 'styled-components';
 import { SecondaryButton } from '../../style/elements';
 import PlusPurple from '../../images/plus-purple.svg';
+import Media from 'react-media';
+import { above } from '../../style/utilities';
 
 interface Props extends WithNamespaces {
 
@@ -20,9 +22,11 @@ class Header extends React.Component<Props>{
             <React.Fragment>
                 <StyledNav>
                     <LogoLink to="/">Logo</LogoLink>
-                    <ContributeLink to="/contribute">
-                        {t("Contribute")}
-                    </ContributeLink>
+                    <Media query={above.custom(430).replace('@media ', '')}>
+                        {matches => matches && <ContributeLink to="/contribute">
+                            {t("Contribute")}
+                        </ContributeLink>}
+                    </Media>
                     <Link to="/create">
                         <SecondaryButton> Create Poll
                     <img src={PlusPurple} alt="Add Option" />

@@ -21,6 +21,7 @@ import Fair from "../images/fair.svg"
 import Idea from "../images/idea.svg"
 import Bullet from "../images/bullet.svg"
 import { Flex, Box } from '@rebass/grid';
+import Footer from './layout/Footer';
 
 function Landing(props: WithNamespaces) {
     return (
@@ -185,6 +186,7 @@ Participants generally feel more fairly represented than in a conventional votin
                     </Box>
                 </InfoLinks>
             </Body>
+            <Footer />
         </React.Fragment>
     )
 }
