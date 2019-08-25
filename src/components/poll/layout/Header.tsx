@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { IPollQuery } from '../../../interfaces';
-import { Heading, SecondaryButton, Label } from '../../../style/elements';
+import { IPollQuery, IUser } from '../../../interfaces';
+import { Heading, SecondaryButton, Label, PrimaryButton } from '../../../style/elements';
 import { headerHeightInRem, above } from '../../../style/utilities';
 import InviteIcon from '../../../images/invite-icon.svg';
 import ExpandButton from '../../../style/elements/Expand';
@@ -10,15 +10,17 @@ import { Flex, Box } from '@rebass/grid';
 import Media from 'react-media';
 import Burger from '../../../images/burger.svg'
 import InviteModal from './InviteModal';
+import AuthModal from '../AuthModal';
 
 interface Props {
     poll: IPollQuery
     pseudonym: string
     toggleMobileNav: () => void
+    user: IUser
     className?: string
 }
 
-const Header = ({ poll, pseudonym, className, toggleMobileNav }: Props) => {
+const Header = ({ poll, pseudonym, className, toggleMobileNav, user }: Props) => {
 
     const [showDescription, setShowDescription] = useState(false);
     const [inviteOpen, setInviteOpen] = useState(false);
@@ -50,7 +52,7 @@ const Header = ({ poll, pseudonym, className, toggleMobileNav }: Props) => {
                     </BoxWrapper>
                     <BoxWrapper width="auto">
                         <BoxEnd>
-                            <UserDropdownMenu pseudonym={pseudonym} />
+                            {user.id ? <UserDropdownMenu pseudonym={pseudonym} /> : <AuthModal isOpen={false} renderButton={true} poll={poll} />}
                         </BoxEnd>
                     </BoxWrapper>
                 </React.Fragment>
@@ -108,5 +110,9 @@ button{
         display: inline-block;
         margin: 0 0 0 0.4rem;
     }
+}
+${PrimaryButton}{
+    width: auto;
+    margin: 0;
 }
 `;

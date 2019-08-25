@@ -6,6 +6,8 @@ import { SecondaryButton } from '../../style/elements';
 import PlusPurple from '../../images/plus-purple.svg';
 import Media from 'react-media';
 import { above } from '../../style/utilities';
+import HeaderImage from '../../images/header.svg'
+import MobileHeaderImage from '../../images/header-mobile.svg'
 
 interface Props extends WithNamespaces {
 
@@ -20,10 +22,13 @@ class Header extends React.Component<Props>{
 
         return (
             <React.Fragment>
+                <Media query={above.custom(870).replace('@media ', '')}>
+                    {matches => <BackgroundFragment src={matches ? HeaderImage : MobileHeaderImage} height={50} top={0} />}
+                </Media>
                 <StyledNav>
                     <LogoLink to="/">Logo</LogoLink>
                     <Media query={above.custom(430).replace('@media ', '')}>
-                        {matches => matches && <ContributeLink to="/contribute">
+                        {matches => matches && <ContributeLink href="https://github.com/leonvdb/daccord" target="_blank">
                             {t("Contribute")}
                         </ContributeLink>}
                     </Media>
@@ -44,10 +49,18 @@ color: white;
 margin: 0 2.5rem;
 `
 
-const ContributeLink = styled(Link)`
+const ContributeLink = styled.a`
 color: white;
 text-decoration: underline;
 `
+
+const BackgroundFragment = styled.img<{ height: number, top: number }>`  
+position:absolute;
+z-index:-10;
+width: 100%;
+top: ${({ top }) => `${top}rem`};
+height: ${({ height }) => `${height}rem`};
+`;
 
 const StyledNav = styled.nav`
 width: 100%;

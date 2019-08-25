@@ -11,6 +11,7 @@ import { setAuthTokenAndUser } from '../../actions/authActions';
 import { SEND_AUTH_LINK } from '../../graphql/sendAuthLink';
 import DefaultClient from 'apollo-boost';
 import { setPseudonym } from '../../actions/userActions';
+import { PrimaryButton } from '../../style/elements';
 
 
 interface Props extends PropsFromDispatch {
@@ -114,8 +115,6 @@ const AuthModal = (props: Props) => {
                         )
                     }}
                 </Mutation>
-                <p className="text-center my-2">or</p>
-                <button className="btn btn-outline-info btn-block w-50 mx-auto">Sign in</button>
             </ModalBody>
         </Modal>
     } else {
@@ -150,13 +149,12 @@ const AuthModal = (props: Props) => {
 
     return (
         <div >
-            {renderButton && <button
+            {renderButton && <PrimaryButton
                 data-testid='participate-button'
                 id="Modal"
-                onClick={toggle}
-                className="btn btn-outline-success">
-                <i className="fas fa-hand-peace mr-1" />Participate
-            </button>}
+                onClick={toggle}>
+                Participate
+            </PrimaryButton>}
             {modal}
         </div>
     )

@@ -10,7 +10,6 @@ import { darkerGray, above } from '../../../style/utilities';
 
 import Option from './Option';
 import AddOption from './AddOption';
-import AuthModal from '../AuthModal';
 import { clearError } from '../../../actions/errorActions';
 import { Mutation } from 'react-apollo';
 import { UPDATE_VOTES } from '../../../graphql/vote';
@@ -39,13 +38,6 @@ class Overview extends React.Component<Props> {
         const { user, poll } = this.props;
         const { options } = poll
 
-        let button;
-        if (user.id) {
-            button = <AddOption pollId={this.props.poll.refId} />
-        } else {
-            button = <AuthModal isOpen={false} renderButton={true} poll={poll} />
-        }
-
         return (
             <React.Fragment>
 
@@ -71,7 +63,7 @@ class Overview extends React.Component<Props> {
 
                         </Media>
                         <ToolBarBox flex={1} className="flex-d-row">
-                            {button}
+                            {user.id && <AddOption pollId={this.props.poll.refId} />}
                         </ToolBarBox>
                     </ToolBar>
 

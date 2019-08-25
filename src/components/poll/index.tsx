@@ -88,7 +88,7 @@ class Poll extends React.Component<Props, { mobileNavOpen: boolean }> {
                 const { poll } = this.props.data
                 return <React.Fragment>
                     {!user.id && <AuthModal isOpen={true} renderButton={false} poll={poll} />}
-                    <Header poll={poll} pseudonym={this.props.pseudonym} toggleMobileNav={toggleMobileNav} />
+                    <Header poll={poll} pseudonym={this.props.pseudonym} toggleMobileNav={toggleMobileNav} user={user} />
                     {
                         this.props.match.params.pollNavRoute === "results" ? (
                             <Results poll={poll} user={user} pseudonym={this.props.pseudonym} />
