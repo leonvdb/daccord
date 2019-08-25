@@ -13,7 +13,9 @@ import Overview from "../images/example/overview.png"
 import ResultsList from "../images/example/results-list.png"
 import ResultsTable from "../images/example/results-table.png"
 import MobileFrame1 from "../images/mobile-frame-1.svg"
+import MobileFrame2 from "../images/mobile-frame-2.svg"
 import DesktopFrame1 from "../images/desktop-frame-1.svg"
+import DesktopFrame2 from "../images/desktop-frame-2.svg"
 import Empower from "../images/empower.svg"
 import Fair from "../images/fair.svg"
 import Idea from "../images/idea.svg"
@@ -27,9 +29,15 @@ function Landing(props: WithNamespaces) {
                 {matches => <React.Fragment>
                     <BackgroundFragment src={matches ? HeaderImage : MobileHeaderImage} height={50} top={0} />
                     {matches ? (
-                        <BackgroundFragment src={DesktopFrame1} height={30} top={87} />
+                        <React.Fragment>
+                            <BackgroundFragment src={DesktopFrame1} height={30} top={87} />
+                            <BackgroundFragment src={DesktopFrame2} height={20} top={158} />
+                        </React.Fragment>
                     ) : (
-                            <BackgroundFragment src={MobileFrame1} height={20} top={70} />
+                            <React.Fragment>
+                                <BackgroundFragment src={MobileFrame1} height={20} top={70} />
+                                <BackgroundFragment src={MobileFrame2} height={27} top={112} />
+                            </React.Fragment>
                         )}
                 </React.Fragment>
                 }
@@ -136,7 +144,7 @@ Participants generally feel more fairly represented than in a conventional votin
                         </Box>
                     </BasicsElement>
                     <BasicsElement alignSelf="center" justifyContent="center">
-                    <Box width={[1 / 12, 1 / 20]}>
+                        <Box width={[1 / 12, 1 / 20]}>
                             <img src={Bullet} />
                         </Box>
                         <Box width={[11 / 12, 19 / 20]}>
@@ -146,7 +154,7 @@ Participants generally feel more fairly represented than in a conventional votin
                         </Box>
                     </BasicsElement>
                     <BasicsElement alignSelf="center" justifyContent="center">
-                    <Box width={[1 / 12, 1 / 20]}>
+                        <Box width={[1 / 12, 1 / 20]}>
                             <img src={Bullet} />
                         </Box>
                         <Box width={[11 / 12, 19 / 20]}>
@@ -156,6 +164,26 @@ Participants generally feel more fairly represented than in a conventional votin
                         </Box>
                     </BasicsElement>
                 </Basics>
+                <InfoLinks flexWrap="wrap" justifyContent="space-between">
+                    <Box width={[1, 1, 2 / 5, 3 / 7]}>
+                        <a href="https://youtu.be/3wR5YXYECOE" target="_blank">
+                            <InfoButton>
+                                <MediumLabel>
+                                    Watch an explanation video
+                        </MediumLabel>
+                            </InfoButton>
+                        </a>
+                    </Box>
+                    <Box width={[1, 1, 2 / 5, 3 / 7]}>
+                        <a href="http://www.sk-prinzip.eu/" target="_blank">
+                            <InfoButton>
+                                <MediumLabel>
+                                    Learn More about the idea
+                        </MediumLabel>
+                            </InfoButton>
+                        </a>
+                    </Box>
+                </InfoLinks>
             </Body>
         </React.Fragment>
     )
@@ -233,6 +261,31 @@ ${SmallLightParagraph}{
     font-size: 1.5rem;
     margin-top: 0;
     }
+}
+`
+
+const InfoLinks = styled(Flex)`
+position:absolute;
+top: 120rem;;
+margin: 0 auto;
+left: 0;
+right: 0;
+width: 80%;
+max-width: 1080px;
+${above.custom(870)}{
+top: 168rem;
+}
+`;
+
+const InfoButton = styled.button`
+width:100%;
+height: 4.6875rem;
+background:none;
+border: 3px solid white;
+margin-bottom: 2rem;
+${MediumLabel}{
+    margin: 0;
+    color: white;
 }
 `
 
