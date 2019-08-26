@@ -14,8 +14,7 @@
     "eject": "react-scripts-ts eject",
     "test": "jest --watch --verbose false",
     "tsc": "tsc",
-    "postinstall": "npm run tsc",
-    "heroku-postbuild": "npm install && npm run build-client"
+    "heroku-postbuild": "npm install && npm run build-client && npm run tsc"
   },
   "repository": {
     "type": "git",
