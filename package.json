@@ -13,7 +13,8 @@
     "test-client": "react-scripts-ts test --verbose false",
     "eject": "react-scripts-ts eject",
     "test": "jest --watch --verbose false",
-    "postinstall": "tsc",
+    "tsc": "tsc",
+    "postinstall": "npm run tsc",
     "heroku-postbuild": "npm install && npm run build-client"
   },
   "repository": {
