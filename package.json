@@ -28,7 +28,7 @@
   "engines": {
     "node": "10.15.0"
   },
-  "homepage": "https://github.com/leonvdb/daccord#readme",
+  "homepage": "https://daccord.herokuapp.com/",
   "dependencies": {
     "@rebass/grid": "^6.0.0",
     "@types/bs58": "^3.0.32",
