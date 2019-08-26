@@ -45,9 +45,6 @@ app.use('/graphql', (req, res, next) => {
     })(req, res, next)
 })
 
-//Test Index
-app.get('/', (req: express.Request, res: express.Response) => res.send("Test"));
-
 //graphql 
 server.applyMiddleware({ app, path: '/graphql' })
 
