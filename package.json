@@ -5,7 +5,7 @@
   "main": "server/server.ts",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "start": "npm-run-all -l -p mongodb server client",
+    "start": "npm-run-all -l -p server client",
     "server": "node src/server/server.ts",
     "mongodb": "mongod --dbpath data/db",
     "client": "react-scripts-ts start",
