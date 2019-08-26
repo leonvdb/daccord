@@ -12,7 +12,8 @@
     "build-client": "react-scripts-ts build",
     "test-client": "react-scripts-ts test --verbose false",
     "eject": "react-scripts-ts eject",
-    "test": "jest --watch --verbose false"
+    "test": "jest --watch --verbose false",
+    "heroku-postbuild": "npm install && npm run build-client"
   },
   "repository": {
     "type": "git",

@@ -9,6 +9,7 @@ import configPassport from './config/passport';
 import server from './schema'
 import { ApiError } from './utilities/ApiError';
 import { ApiResponse } from './utilities/ApiResponse';
+import path from 'path'
 
 const app = express();
 
@@ -27,7 +28,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 
 //Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/systemic-consensys')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/systemic-consensys')
     .then(() => console.log("MongoDB connected"))
     .catch((err: Error) => console.log(err));
 
@@ -57,7 +58,15 @@ app.use((err: ApiError, req: express.Request, res: express.Response, next: expre
     res.status(err.statusCode).json(new ApiResponse(err.message)); // All HTTP requests must have a response, so let's send back an error with its status code and message
 });
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('../../build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'));
+    })
+}
+
 // Setting port for server
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
