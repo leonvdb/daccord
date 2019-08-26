@@ -18,7 +18,7 @@ import { decode } from 'jsonwebtoken';
 import { ThemeProvider } from 'styled-components';
 
 export const client = new ApolloClient({
-  uri: 'https://daccord.herokuapp.com/grapqhl',
+  uri: 'https://daccord.herokuapp.com/graphql',
   request: async operation => {
     operation.setContext({
       headers: {
