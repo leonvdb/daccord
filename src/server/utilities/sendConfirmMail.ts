@@ -1,9 +1,9 @@
 import { transporter } from '../config/nodemailer';
-import { mailUser } from '../config/secrets';
+import { mailName } from '../config/secrets';
 import { IPollDocument } from '../models/Poll';
 export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType: string, token: string): void {
     let mailOptions = {
-        from: mailUser,
+        from: mailName,
         to: userEmail,
         subject: 'Error - Something went wrong',
         html: '<p>Something went horribly wrong, please contact us.<p>'
@@ -11,7 +11,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
     switch (userType) {
         case 'createNewPoll':
             mailOptions = {
-                from: mailUser,
+                from: mailName,
                 to: userEmail,
                 subject: `Your new Poll "${poll.title}" has been created!`,
                 html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to your poll </p>` // plain text body
@@ -19,7 +19,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
             break;
         case 'becomeNewParticipant':
             mailOptions = {
-                from: mailUser,
+                from: mailName,
                 to: userEmail,
                 subject: `You became a participant of "${poll.title}"!`,
                 html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to the poll </p>` // plain text body
@@ -27,7 +27,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
             break;
         case 'resendExistingParticipant':
             mailOptions = {
-                from: mailUser,
+                from: mailName,
                 to: userEmail,
                 subject: `Your access link for "${poll.title}"!`,
                 html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to the poll </p>` // plain text body
@@ -35,7 +35,7 @@ export function sendConfirmMail(userEmail: string, poll: IPollDocument, userType
             break;
         case 'resendCreator':
             mailOptions = {
-                from: mailUser,
+                from: mailName,
                 to: userEmail,
                 subject: `Your access link for "${poll.title}"!`,
                 html: `<p>Click <a href="http://localhost:3000/poll/${poll.refId}?token=${token}">here</a> to get to the poll </p>` // plain text body
