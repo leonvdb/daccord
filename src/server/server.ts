@@ -9,6 +9,7 @@ import configPassport from './config/passport';
 import server from './schema'
 import { ApiError } from './utilities/ApiError';
 import { ApiResponse } from './utilities/ApiResponse';
+import enforce from 'express-sslify';
 import path from 'path'
 
 const app = express();
@@ -53,6 +54,8 @@ app.use((err: ApiError, req: express.Request, res: express.Response, next: expre
 
     res.status(err.statusCode).json(new ApiResponse(err.message)); // All HTTP requests must have a response, so let's send back an error with its status code and message
 });
+
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../../../build')));
