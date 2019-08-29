@@ -25,39 +25,47 @@ const Header = ({ poll, pseudonym, className, toggleMobileNav, user }: Props) =>
     const [showDescription, setShowDescription] = useState(false);
     const [inviteOpen, setInviteOpen] = useState(false);
     return (
-        <Flex className={className} flexWrap='wrap'>
-            <Media query={above.lg.replace('@media ', '')}>
-                {matches => !matches && <BoxWrapper width='auto'>
-                    <img src={Burger} id='burger' onClick={toggleMobileNav} />
-                </BoxWrapper>}
-            </Media>
-            <BoxWrapper width='auto'>
-                <div>
-                    <Heading>
-                        {poll.title}
-                    </Heading>
-                    <ExpandButton clicked={showDescription} onClick={// tslint:disable-next-line jsx-no-lambda
-                        () => setShowDescription(!showDescription)} alt="show description" />
-                </div>
-            </BoxWrapper>
-            <Media query={above.lg.replace('@media ', '')}>
-                {matches => matches && <React.Fragment>
+        <Flex className={className} flexWrap="wrap">
+            <Box width={1}>
+                <Flex>
+                    <Media query={above.lg.replace('@media ', '')}>
+                        {matches => !matches && <BoxWrapper width='auto'>
+                            <img src={Burger} id='burger' onClick={toggleMobileNav} />
+                        </BoxWrapper>}
+                    </Media>
+                    <BoxWrapper width='auto'>
+                        <Flex>
+                            <BoxWrapper width='auto'>
+                                <Heading>
+                                    {poll.title}
+                                </Heading>
+                            </BoxWrapper>
+                            <BoxWrapper width='auto'>
+                                <ExpandButton clicked={showDescription} onClick={// tslint:disable-next-line jsx-no-lambda
+                                    () => setShowDescription(!showDescription)} alt="show description" />
+                            </BoxWrapper>
+                        </Flex>
+                    </BoxWrapper>
+                    <Media query={above.lg.replace('@media ', '')}>
+                        {matches => matches && <React.Fragment>
 
-                    <BoxWrapper flex={1}>
-                        <InviteModal isOpen={inviteOpen} setIsOpen={setInviteOpen} url={`https://daccordapp.com/poll/${poll.refId}/`} />
-                        <BoxEnd>
-                            <SecondaryButton onClick={// tslint:disable-next-line jsx-no-lambda
-                                () => setInviteOpen(true)}><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
-                        </BoxEnd>
-                    </BoxWrapper>
-                    <BoxWrapper width="auto">
-                        <BoxEnd>
-                            {user.id ? <UserDropdownMenu pseudonym={pseudonym} /> : <AuthModal isOpen={false} renderButton={true} poll={poll} />}
-                        </BoxEnd>
-                    </BoxWrapper>
-                </React.Fragment>
-                }
-            </Media>
+                            <BoxWrapper flex={1}>
+                                <InviteModal isOpen={inviteOpen} setIsOpen={setInviteOpen} url={`https://daccordapp.com/poll/${poll.refId}/`} />
+                                <BoxEnd>
+                                    <SecondaryButton onClick={// tslint:disable-next-line jsx-no-lambda
+                                        () => setInviteOpen(true)}><img src={InviteIcon} /> <p>Invite</p> </SecondaryButton>
+                                </BoxEnd>
+                            </BoxWrapper>
+                            <BoxWrapper width="auto">
+                                <BoxEnd>
+                                    {user.id ? <UserDropdownMenu pseudonym={pseudonym} /> : <AuthModal isOpen={false} renderButton={true} poll={poll} />}
+                                </BoxEnd>
+                            </BoxWrapper>
+                        </React.Fragment>
+                        }
+                    </Media>
+                </Flex>
+            </Box>
 
             {showDescription &&
                 <Box width={1}>
@@ -99,6 +107,13 @@ background-color: #FFF;
 z-index: 10;
 ${Heading}{
     margin: 0 1rem 0 0;
+    font-size: .9rem;
+    ${above.custom(420)}{
+    font-size: 1.25rem;
+    }
+    ${above.lg}{
+       font-size: 1.75rem;
+    }
 }
 #burger{
     margin-right: 1rem;
