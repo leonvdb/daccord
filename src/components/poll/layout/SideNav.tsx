@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { UnstyledLink } from '../../../style/elements';
 import { primary, white, fixedRelativeToParent } from '../../../style/utilities';
 import Plus from '../../../images/plus.svg';
 import { Link } from 'react-router-dom';
 import { withRouter, RouteComponentProps } from 'react-router';
 import NavigationIcon from './NavigationIcon';
+import Logo from "../../../images/logo-symbol.svg"
 
 interface Props extends RouteComponentProps<any> {
     pollId: string
@@ -44,8 +44,8 @@ const SideNav = ({ className, pollId, location }: Props) => {
             <PositionWrapper topInPercent={focusBlockPosition}>
                 <FocusBlock />
             </PositionWrapper>
-            <PositionWrapper topInPercent={10}>
-                <UnstyledLink to={'/'}>Logo</UnstyledLink>
+            <PositionWrapper topInPercent={4}>
+                <LogoLink to={'/'}><img src={Logo} /></LogoLink>
             </ PositionWrapper>
             <PositionWrapper topInPercent={iconPositions.home}>
                 <NavigationIcon iconName="home" to={`/poll/${pollId}/`} active={focusBlockPosition === iconPositions.home} />
@@ -71,6 +71,12 @@ width: 104%;
 background: ${white};
 box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 border-radius: 0px 10px 10px 0px;
+`
+
+const LogoLink = styled(Link)`
+img{
+height: 2.5rem;
+}
 `
 
 const styledSideNav = styled(SideNav)`
