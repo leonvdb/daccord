@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { primary, veryLarge } from '../../../style/utilities';
+import { primary } from '../../../style/utilities';
 import { UnstyledLink, ButtonLabel, SmallHeading } from '../../../style/elements';
 import InviteIcon from '../../../images/invite-icon-white.svg'
 import { Box, Flex } from '@rebass/grid';
@@ -9,6 +9,7 @@ import NavigationIcon from './NavigationIcon';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import Plus from '../../../images/plus.svg'
+import Logo from '../../../images/logo.svg'
 import InviteModal from './InviteModal';
 
 interface IProps extends RouteComponentProps<any> {
@@ -37,7 +38,7 @@ const MobileNav = (props: IProps) => {
         <div className={props.className} >
             <InviteModal isOpen={inviteOpen} setIsOpen={setInviteOpen} url={`https://daccordapp.com${pollUrl}/`} />
             {props.isOpen && <React.Fragment>
-                <Logo to={'/'}>Logo</Logo>
+                <LogoLink to={'/'}><img src={Logo} /></LogoLink>
                 <FadeIn isOpen={props.isOpen}>
                     <StyledFlex>
                         <Box width={3 / 8}>
@@ -84,10 +85,12 @@ const InviteButton = styled.img`
 cursor: pointer;
 `
 
-const Logo = styled(UnstyledLink)`
-${veryLarge};
+const LogoLink = styled(UnstyledLink)`
 position:relative;
-top:.5rem;
+img{
+    height: 3rem;
+    margin-top:1rem;
+}
 `
 const StyledFlex = styled(Flex)`
 margin-top: 2rem;
