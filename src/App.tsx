@@ -8,7 +8,7 @@ import { ApolloProvider } from 'react-apollo';
 import store from './store';
 
 import CreatePoll from './components/CreatePoll';
-import Landing from './components/Landing';
+import Landing from './components/landing';
 import NotFound from './components/NotFound';
 import Poll from './components/poll';
 
