@@ -1,8 +1,8 @@
 import React from 'react'
 import { Mutation, MutationUpdaterFn } from "react-apollo";
-import { MinimalTextInputGroup } from '../../layout/TextInputGroup';
+import { TextInputGroup } from '../../layout/TextInputGroup';
 import { IPollQuery } from '../../../interfaces';
-import { Label } from '../../../style/elements';
+import { Label, PrimaryButton, CancelButton } from '../../../style/elements';
 import styled from 'styled-components';
 import Pencil from '../../../images/pencil.svg';
 import { Flex, Box } from '@rebass/grid';
@@ -41,8 +41,7 @@ const EditField = (props: Props) => {
                         if (error) return <div>Error :(</div>
                         return <form name={props.name} data-testid={`edit-${props.name}-form`} onSubmit={ // tslint:disable-next-line jsx-no-lambda
                             (e) => { props.onSubmit(e, MUTATION) }}>
-                            <MinimalTextInputGroup
-                                label={props.label}
+                            <TextInputGroup
                                 value={props.value}
                                 onChange={// tslint:disable-next-line jsx-no-lambda
                                     (e: React.ChangeEvent<any>) => { props.setValue(e.target.value) }}
@@ -50,8 +49,8 @@ const EditField = (props: Props) => {
                                 placeholder={props.placeholder}
                                 error={props.error ? props.error : undefined}
                                 testId={`${props.name}-input`} />
-                            <button data-testid={`${props.name}-save-button`}>Save</button>
-                            <button data-testid={`${props.name}-cancel-button`} type="button" onClick={props.cancel}>cancel</button>
+                            <PrimaryButton data-testid={`${props.name}-save-button`}>Save</PrimaryButton>
+                            <CancelButton data-testid={`${props.name}-cancel-button`} type="button" onClick={props.cancel}>cancel</CancelButton>
                         </form>
                     }}
                 </Mutation> :
@@ -77,14 +76,19 @@ ${Label}{
 }
 form{
     display: inline-block;
-    h5{
-        display: none;
-    }
     input{
+        height: 2rem;
         width: auto; 
+        margin-bottom: 0;
     }
     div{
         display: inline-block;
+    }
+    button{
+        padding: 0 .6rem;
+        height: 2rem;
+        margin: 0 .625rem;
+        margin-right: 0;
     }
 }
 p{

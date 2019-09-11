@@ -15,7 +15,7 @@ interface Props {
     classNames?: string,
     className?: string,
     testId: string,
-    label: string
+    label?: string
 }
 
 export const MinimalTextInputGroup = ({
@@ -32,7 +32,7 @@ export const MinimalTextInputGroup = ({
 }: Props) => {
     return (
         <div className={`${classNames ? classNames : ''} ${className}`} >
-            <InputLabel>{label}</InputLabel>
+            {label && <InputLabel>{label}</InputLabel>}
             <input
                 className={classname({ 'is-invalid': error })}
                 data-testid={testId}

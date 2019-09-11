@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { darkerGray, white, primaryStrong, lightRed, smallParagraph } from '../utilities'
+import { darkerGray, white, primaryStrong, lightRed, smallParagraph, mediumGray } from '../utilities'
 import { buttonLabel } from '../utilities'
 
 export const PrimaryButton = styled.button`
@@ -14,6 +14,10 @@ margin: 0 1.625rem;
 ${buttonLabel};
 font-size: 1.125rem;
 white-space: nowrap;
+`
+
+export const CancelButton = styled(PrimaryButton)`
+background-color: ${mediumGray}
 `
 
 export const SecondaryButton = styled.button`
