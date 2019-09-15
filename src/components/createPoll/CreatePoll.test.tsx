@@ -6,10 +6,10 @@ import { createMemoryHistory } from 'history'
 import { render, cleanup, fireEvent, wait } from 'react-testing-library'
 import CreatePoll from './CreatePoll';
 import { Provider } from 'react-redux';
-import store from '../store';
+import store from '../../store';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { CREATE_POLL } from '../graphql/cudPoll';
-import mockPoll from '../testingResources/mockPoll';
+import { CREATE_POLL } from '../../graphql/cudPoll';
+import mockPoll from '../../testingResources/mockPoll';
 
 const createPollMock = [
     {

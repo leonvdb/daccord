@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { setAuthTokenAndUser } from '../actions/authActions';
-import { setPseudonym } from '../actions/userActions';
-import { TextInputGroup } from './layout/TextInputGroup';
-import { IUser } from '../interfaces';
+import { setAuthTokenAndUser } from '../../actions/authActions';
+import { setPseudonym } from '../../actions/userActions';
+import { TextInputGroup } from '../layout/TextInputGroup';
+import { IUser } from '../../interfaces';
 import { RouteComponentProps } from 'react-router';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
-import validateEmail from '../utilities/validateEmail';
+import validateEmail from '../../utilities/validateEmail';
 import { Mutation } from 'react-apollo';
-import { CREATE_POLL } from '../graphql/cudPoll';
-import Close from '../images/close.svg';
-import { LargeStrongLabel, LargeSecondaryLabel, TernaryLabel, SecondaryButton, PrimaryButton } from '../style/elements';
+import { CREATE_POLL } from '../../graphql/cudPoll';
+import Close from '../../images/close.svg';
+import { LargeStrongLabel, LargeSecondaryLabel, TernaryLabel, SecondaryButton, PrimaryButton } from '../../style/elements';
 import { Flex, Box } from '@rebass/grid';
-import styled, { css } from 'styled-components';
-import Step from './poll/layout/Step';
-import { mediumGray, primaryStrong, smallerLabel, above, below } from '../style/utilities';
+import styled from 'styled-components';
+import { smallerLabel, above, below } from '../../style/utilities';
 import Media from 'react-media';
+import ProgressBar from './ProgressBar';
 
 interface Props extends RouteComponentProps<any>, PropsFromDispatch, WithNamespaces {
     className?: string
@@ -35,6 +35,8 @@ const CreatePoll = (props: Props) => {
     const [email, setEmail] = useState('');
     const [errors, setErrors]: [Errors, ({ }: Errors) => void] = useState({});
     const [counter, setCounter] = useState(1);
+
+
 
     const counterLimit = 2;
 
@@ -188,12 +190,7 @@ const CreatePoll = (props: Props) => {
                 </InputArea>
                 <Media query={above.lg.replace('@media ', '')}>
                     {matches => matches && <Box width={[1 / 2]}>
-                        <ProgressBar>
-                            <Step count="1" focused={counter === 1} active={counter >= 1}>General Information</Step>
-                            <Bar overlay={true} progress={counter === 1 ? 1 / 2 : 1} />
-                            <Bar overlay={false} progress={counter === 1 ? 1 / 2 : 1} />
-                            <Step count="2" focused={counter === 2} active={counter >= 2}>Information about you</Step>
-                        </ProgressBar>
+                        <ProgressBar counter={counter} />
                     </Box>
                     }
                 </Media>
@@ -201,29 +198,6 @@ const CreatePoll = (props: Props) => {
         </div>
     )
 };
-
-const ProgressBar = styled.div`
-    margin-top: 32.25rem;
-    margin-left: 1.875rem;
-    ${above.custom(1300)}{
-    margin-left: .875rem;
-}
-`
-
-const Bar = styled.div<{ progress: number, overlay: boolean }>`
-${({ progress }) => progress === 1 / 2 ? css`margin-bottom: -4px;` : css`margin-top: -4px;`}
-height: 3.125rem;
-width: 2px;
-background-color: ${mediumGray};
-margin-left: 17px;
-transition: height ease-in-out .4s;
-${({ progress, overlay }) => overlay ? css`
-    position: absolute;
-    background-color: ${primaryStrong};
-    height: ${progress * 3.125}rem;
-`: ''
-    }
-`;
 
 const CloseButton = styled.div`
 position: absolute;

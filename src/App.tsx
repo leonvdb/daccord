@@ -7,7 +7,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import store from './store';
 
-import CreatePoll from './components/CreatePoll';
+import CreatePoll from './components/createPoll/CreatePoll';
 import Landing from './components/landing';
 import NotFound from './components/NotFound';
 import Poll from './components/poll';
