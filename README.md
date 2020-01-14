@@ -2,6 +2,8 @@
 A democratic decisionsmaking tool to find sustainable and conflict free solutions.  
 Based on the principles of *"systemic consensus"* (http://www.sk-prinzip.eu/)
 
+Use the running app here: https://www.daccordapp.com/
+
 # Development
 
 **Requirements:**
